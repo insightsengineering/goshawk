@@ -1,18 +1,20 @@
-#' Function to generate a table of descriptive summary statistics accompany plots.
-#' Output render by teal.goshawk module
+#' Function to generate a table of descriptive summary statistics accompany
+#' plots.
+#' 
+#' Output render by teal.goshawk module \code{t_summarytable} returns
+#' descriptive summary statistics table
 #'
-#' \code{t_summarytable} returns descriptive summary statistics table
-#'
-#' @param data: data frame name
-#' @param biomarker: biomarker PARAM value
-#' @param trt_group: treatment group variable name e.g. arm
-#' @param time: visit variable name e.g. visit
-#' @param loq: loq variable name e.g. loq_flag
+#' @param data data frame name
+#' @param biomarker biomarker PARAM value
+#' @param trt_group treatment group variable name e.g. arm
+#' @param time visit variable name e.g. visit
+#' @param loq loq variable name e.g. loq_flag
 #'
 #' @author Balazs Toth
 #' @author first last
 #'
-#' @details provide additional information as needed. perhaps link to specification file
+#' @details provide additional information as needed. perhaps link to
+#'   specification file
 #'
 #' @return \code{returned object name} object
 #'
@@ -43,17 +45,8 @@
 #'               time = 'visit',
 #'               loq = 'loq_flag')
 #'
-
-# library includes
-library(dplyr)
-library(gridExtra)
-
 t_summarytable <- function(data, biomarker, trt_group, time, loq, ...){
-
-# check input arguments first for validation/error trapping
-# if (any("- Overall -" %in% term))
-#  stop("'- Overall -' is not a valid term, function reserves it for derivation")
-
+  
   # Helper
   sum_data <- data %>%
     group_by(eval(parse(text = time)),

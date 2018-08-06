@@ -1,0 +1,16 @@
+Package: goshawk
+Type: Package
+Title: A couple of biomarker teal modules
+Version: 0.1.0
+Authors@R: c(
+  person("Nick", "Paszty", email = "nick.paszty@gene.com", role = c("aut", "cre")),
+  person("Adrian", "Waddell", email = "adrian.waddell@roche.com", role = "ctb")
+  )
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+Depends: dplyr, gridExtra
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+
