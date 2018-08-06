@@ -11,18 +11,17 @@
 #' @param loq loq variable name e.g. loq_flag
 #'
 #' @author Balazs Toth
-#' @author first last
+#' @author Nick Paszty
 #'
-#' @details provide additional information as needed. perhaps link to
-#'   specification file
+#' @details provide additional information as needed. link to specification file \url{http://rstudio.com}
 #'
-#' @return \code{returned object name} object
+#' @return \code{tbl} object
 #'
 #' @export
 #'
 #' @examples
 #'
-#' # test data
+#' # create test data
 #' biomarker <- runif(100,3,100)
 #' biomarker.bl <- NULL
 #' for (i in 0:24) {

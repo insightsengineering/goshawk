@@ -19,19 +19,18 @@ t_summarytable(data, biomarker, trt_group, time, loq, ...)
 \item{loq}{loq variable name e.g. loq_flag}
 }
 \value{
-\code{returned object name} object
+\code{tbl} object
 }
 \description{
 Output render by teal.goshawk module \code{t_summarytable} returns
 descriptive summary statistics table
 }
 \details{
-provide additional information as needed. perhaps link to
-  specification file
+provide additional information as needed. link to specification file \url{http://rstudio.com}
 }
 \examples{
 
-# test data
+# create test data
 biomarker <- runif(100,3,100)
 biomarker.bl <- NULL
 for (i in 0:24) {
@@ -58,5 +57,5 @@ t_summarytable(data = example,
 \author{
 Balazs Toth
 
-first last
+Nick Paszty
 }
