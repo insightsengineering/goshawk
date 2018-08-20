@@ -118,8 +118,7 @@ g_lineplot <- function(label = 'Line Plot',
 
 
 ## example
-# ALB <- read_bce("/opt/BIOSTAT/prod/cdpt7692/s28625i/libraries/alb.sas7bdat")
-# ALB <- read_bce("/opt/bee/home_nas/luiw2/teal.goshawk/alb.sas7bdat")
+# ALB <- read_bce("/opt/bee/home_nas/luiw2/teal.goshawk/alb3arm.sas7bdat")
 
 # g_lineplot(label = 'Line Plot',
 #            data = ALB,
