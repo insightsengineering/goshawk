@@ -44,7 +44,7 @@ g_lineplot <- function(label = 'Line Plot',
                        hline = NULL,
                        rotate_xlab = FALSE) {
   
-  # Summary statistics
+  ## Summary statistics
   sum_data <- data %>%
     filter(eval(parse(text = biomarker_var)) == biomarker) %>%
     group_by(eval(parse(text = time)),
@@ -58,8 +58,8 @@ g_lineplot <- function(label = 'Line Plot',
               quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE))
   colnames(sum_data)[1:2] <- c(time,trt_group)
 
-  # Base plot
-  pd <- position_dodge(0.8)
+  ## Base plot
+  pd <- position_dodge(0.5)
 
   if (median) {
     line <- 'median'
@@ -86,13 +86,16 @@ g_lineplot <- function(label = 'Line Plot',
     geom_line(position = pd) +
     geom_errorbar(aes_string(ymin = down_limit,
                              ymax = up_limit),
-                  width=1,
+                  width=0.5,
                   position = pd) +
     theme_bw() +
 
-    theme(legend.position = "bottom") +
     ggtitle(paste0(biomarker, ' ', line, ' over time')) +
-    xlab('time') + ylab(paste0(biomarker, ' ', line, title))
+    xlab(time) + 
+    ylab(paste0(biomarker, ' ', line, title))+
+    theme(legend.position = "bottom",
+          plot.title = element_text(size=18))
+    
 
   # Format x-label
   if (rotate_xlab){
@@ -112,14 +115,32 @@ g_lineplot <- function(label = 'Line Plot',
       geom_hline(aes(yintercept = hline), color="red", linetype="dashed", size=0.5)
   }
 
-  plot1
   
+  ## number of obs table
+  arm <- unique(sum_data[[trt_group]])
+  x <- unique(sum_data[[time]])
+  
+  tbl <- ggplot(sum_data, aes_string(x = time, y = trt_group, label = 'count')) +
+    geom_text(size = 3.5) +
+    ggtitle("Number of observations") + 
+    theme_minimal() +
+    scale_y_discrete(breaks = sum_data[[trt_group]])+
+    scale_x_discrete(limits = x)+
+    theme(panel.grid.major = element_blank(), legend.position = "none",
+          panel.border = element_blank(), axis.text.x =  element_blank(),
+          axis.ticks =  element_blank(),
+          axis.title.x=element_blank(),
+          axis.title.y = element_blank(),
+          plot.title = element_text(size=12))
+  
+  grid.arrange(plot1, tbl, heights = c(10, 2))
+ 
 }
 
 
 ## example
 # ALB <- read_bce("/opt/bee/home_nas/luiw2/teal.goshawk/alb3arm.sas7bdat")
-
+# 
 # g_lineplot(label = 'Line Plot',
 #            data = ALB,
 #            biomarker_var = 'PARAMCD',
@@ -130,4 +151,4 @@ g_lineplot <- function(label = 'Line Plot',
 #            color_manual = NULL,
 #            median = FALSE,
 #            hline = NULL,
-#            rotate_xlab = TRUE)
+#            rotate_xlab = FALSE)
