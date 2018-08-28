@@ -5,153 +5,116 @@
 \title{Function to generate a scatter plot
 Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot visualiztion}
 \usage{
-g_scatterplot(data, biomarker, biomarker.bl, trt_group, time, loq_flag, unti,
-  timepoint, color_manual, shape_manual, logscale = FALSE, facet = NULL,
-  pct = FALSE, reg.line = FALSE)
+g_scatterplot(label = "Scatter Plot", data = ALB,
+  biomarker_var = "PARAMCD", biomarker = "CRP", value_var = "AVAL",
+  value_var_bl = "BASE", trt_group = "ARM", visit = "AVISITCD",
+  loq_flag = NULL, unit = "AVALU", timepoint = "Baseline",
+  color_manual = NULL, man_color = NULL, shape_manual = NULL,
+  hline = NULL, rotate_xlab = FALSE, logscale = FALSE, f_facet = FALSE,
+  facet = "ARM", reg.line = FALSE)
 }
 \arguments{
-\item{add}{as many param lines as there are params that this function expects}
+\item{label}{text string to be displayed as plot label.}
 
-\item{add}{as many param lines as there are params that this function expects}
+\item{data}{data frame with variables which will be displayed in the plot.}
+
+\item{biomarker_var}{name of variable containing biomarker codes e.g. PARAMCD.}
+
+\item{value_var}{name of variable containing biomarker results e.g. AVAL.}
+
+\item{value_var_bl}{name of variable containing biomarker results at baseline e.g. BASE.}
+
+\item{trt_group}{name of variable representing treatment group e.g. ARM.}
+
+\item{loq_flag}{name of variable containing LOQ flag e.g. LBLOQFL.}
+
+\item{unit}{name of variable containing biomarker unit.}
+
+\item{timepoint}{x axis visit selected label.}
+
+\item{color_manual}{vector of colors.}
+
+\item{shape_manual}{vector of shapes.}
+
+\item{logscale}{set axis values to log scale.}
+
+\item{facet}{set layout to use facet.}
+
+\item{reg.line}{include regression line in visualization.}
+
+\item{biomaker}{biomarker to visualize e.g. IGG.}
+
+\item{time}{name of variable containing visit codes e.g. AVISITCD.}
+
+\item{pct}{set axis values to percent scale.}
 }
 \value{
-\code{scatterplot} object
+\code{ggplot} object
 }
 \description{
-Function to generate a scatter plot
-Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot visualiztion
+A scatter plot is a type of plot using Cartesian coordinates to display values for typically two variables or
+for one variable at different timepoints for a set of data.
+If the points are color-coded, one additional variable can be displayed.
+The data are displayed as a collection of points, each having the value of one variable or timepoint determining
+the position on the horizontal axis and the value of the other variable or timepoint determining the position 
+on the vertical axis.
 }
 \details{
 provide additional information as needed. link to specification file \url{http://rstudio.com}
 }
 \examples{
-# Create dataset
-biomarker <- runif(100,3,100)
-biomarker.bl <- NULL
- for (i in 0:24) {
-   biomarker.bl <- c ( biomarker.bl, rep(biomarker[i * 4 + 1], 4))
- }
-arm <- c(rep('trt',50),rep('pbo',50))
-visit <- c(rep(c(0,4,8,12),25))
-loq_flag <- c(rep(c(rep('YES',10),rep('NO',10)),5))
-example <- data.frame(biomarker = biomarker, biomarker.bl = biomarker.bl, arm = arm, loq_flag = loq_flag, visit = visit)
-colnames(example) <- c('IGG', 'IGG.bl', 'arm','loq_flag','visit')
-unit <- 'g/L'
-timepoint <- 'screening'
-color_manual <- c('pbo' = "#1F78B4", 'trt' = "#33A02C")
-shape_manual <- c('NO' = 1, 'YES' = 2, 'NA' = 0)
-# Call function simple
-g_scatterplot (data = example,
-                  biomarker = 'IGG',
-                  biomarker.bl = 'IGG.bl',
-                  trt_group = 'arm',
-                  time = 'visit',
-                  loq_flag = 'loq_flag',
-                  unit,
-                  timepoint,
-                  color_manual,
-                  shape_manual)
 
-# Call function facet
-g_scatterplot (data = example,
-                  biomarker = 'IGG',
-                  biomarker.bl = 'IGG.bl',
-                  trt_group = 'arm',
-                  time = 'visit',
-                  loq_flag = 'loq_flag',
-                  unit,
-                  timepoint,
-                  color_manual,
-                  shape_manual,
-                  logscale = TRUE,
-                  facet = 'arm',
-                  pct = FALSE,
-                  reg.line = FALSE)
+\dontrun{
+# Example using analysis dataset for example ASL or ADSL,
+# ALB points to biomarker data stored in a typical LB structure. for example ALB or ADLB.
 
-# Call function facet and logscale
-g_scatterplot (data = example,
-                  biomarker = 'IGG',
-                  biomarker.bl = 'IGG.bl',
-                  trt_group = 'arm',
-                  time = 'visit',
-                  loq_flag = 'loq_flag',
-                  unit,
-                  timepoint,
-                  color_manual,
-                  shape_manual,
-                  logscale = TRUE,
-                  facet = 'arm',
-                  pct = FALSE,
-                  reg.line = FALSE)
+# for development team testing
+ASL_path <- "~/btk/lupus/dataadam/asl.sas7bdat"
+ALB_path <- "~/btk/lupus/dataadam/alb3arm.sas7bdat"
 
-# Call function facet and pct
-g_scatterplot (data = example,
-                  biomarker = 'IGG',
-                  biomarker.bl = 'IGG.bl',
-                  trt_group = 'arm',
-                  time = 'visit',
-                  loq_flag = 'loq_flag',
-                  unit,
-                  timepoint,
-                  color_manual,
-                  shape_manual,
-                  logscale = FALSE,
-                  facet = 'arm',
-                  pct = TRUE,
-                  reg.line = FALSE)
+# list of biomarkers of interest. see ALB2 assignment below
+param_choices <- c("CRP","ADIGG","IG","IGA","IGE","IGG","IGM","TEST")
 
-# Call function regression line
-g_scatterplot (data = example,
-                  biomarker = 'IGG',
-                  biomarker.bl = 'IGG.bl',
-                  trt_group = 'arm',
-                  time = 'visit',
-                  loq_flag = 'loq_flag',
-                  unit,
-                  timepoint,
-                  color_manual,
-                  shape_manual,
-                  logscale = FALSE,
-                  facet = 'arm',
-                  pct = FALSE,
-                  reg.line = TRUE)
+ASL <- read_bce(ASL_path)
+ALB0 <- read_bce(ALB_path)
 
-# Call function regression line
-g_scatterplot (data = example,
-                  biomarker = 'IGG',
-                  biomarker.bl = 'IGG.bl',
-                  trt_group = 'arm',
-                  time = 'visit',
-                  loq_flag = 'loq_flag',
-                  unit,
-                  timepoint,
-                  color_manual,
-                  shape_manual,
-                  logscale = FALSE,
-                  facet = 'arm',
-                  pct = TRUE,
-                  reg.line = TRUE)
+# post process the data to subset records per specification and to create new variables
+ALB1 <- subset(ALB0,
+              subset = PARAMCD \%in\% c(param_choices) & ITTFL == 'Y' & IAFL == 'Y' & ANLFL == 'Y' & AVISIT \%like any\% c('BASE\%','\%WEEK\%'), 
+              select = c('STUDYID', 'USUBJID', 'ITTFL', 'ANLFL', 'ARM', 'AVISIT', 'AVISITN', 'PARAMCD', 'AVAL', 'AVALU', 'BASE', 'CHG', 'PCHG'))
 
-# Call function regression line
-g_scatterplot (data = example,
-                  biomarker = 'IGG',
-                  biomarker.bl = 'IGG.bl',
-                  trt_group = 'arm',
-                  time = 'visit',
-                  loq_flag = 'loq_flag',
-                  unit,
-                  timepoint,
-                  color_manual,
-                  shape_manual,
-                  logscale = FALSE,
-                  facet = 'arm',
-                  pct = FALSE,
-                  reg.line = TRUE)
+# create a visit code - baseline record code is "BB" week records coded to "W NN"
+ALB <- ALB1 \%>\% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
+                                        substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2)))
 
+
+biomarker <- c('IGM') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+
+plot1 <- g_scatterplot(label = 'Scatter Plot',
+           data = ALB,
+           biomarker_var = 'PARAMCD', # name of variable containing the biomarker names. tm = param_var
+           biomarker = biomarker, # the PARAMCD value selected. tm = param
+           value_var = 'AVAL', # name of variable containing the analysis values. tm = value_var
+           value_var_bl = 'BASE',
+           trt_group = 'ARM',
+           visit = 'AVISITCD',
+           loq_flag = NULL,
+           unit = 'AVALU',
+           timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
+           color_manual = NULL,
+           shape_manual = NULL,
+           hline = NULL,
+           rotate_xlab = FALSE,
+           logscale = FALSE,
+           f_facet = FALSE,
+           facet = "ARM",
+           reg.line = FALSE) #regline does not work yet
+plot1 
 
 }
+}
 \author{
-Balazs Toth
+Balazs Toth (tothb2)  toth.balazs@gene.com
 
-Nick Paszty
+Nick Paszty (npaszty) paszty.nicholas@gene.com
 }
