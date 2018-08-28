@@ -1,7 +1,7 @@
 #' Function to generate a line plot
 #' output rendered by teal.goshawk module
 #'
-#' \code null
+#' \code {null}
 #'
 #' @param label text string to be displayed as plot label.
 #' @param data data frame with variables to be summarized and generate statistics which will display in the plot.
