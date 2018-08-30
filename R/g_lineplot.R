@@ -1,7 +1,7 @@
 #' Function to generate a line plot
 #' output rendered by teal.goshawk module
 #'
-#' \code null
+#' \code {null}
 #'
 #' @param label text string to be displayed as plot label.
 #' @param data data frame with variables to be summarized and generate statistics which will display in the plot.
@@ -17,6 +17,8 @@
 #' 
 #' @import ggplot2
 #' @import dplyr
+#' @import gridExtra
+#' @import stringr
 #'
 #' @author Balazs Toth
 #' @author Wenyi Liu (luiw2) wenyi.liu@roche.com
@@ -37,12 +39,30 @@ g_lineplot <- function(label = 'Line Plot',
                        biomarker_var = 'PARAMCD',
                        biomarker,
                        value_var = 'AVAL',
+                       ymin = NA, ymax = NA,
                        trt_group,
+                       trt_group_level = NULL,
                        time,
+                       time_level = NULL,
                        color_manual,
                        median = FALSE,
                        hline = NULL,
                        rotate_xlab = FALSE) {
+  
+  ## Pre-process data
+  if(!is.null(trt_group_level)){
+    data[[trt_group]] <- factor(data[[trt_group]],
+                                levels = trt_group_level)
+  } else {
+    data[[trt_group]] <- factor(data[[trt_group]])
+  }
+  
+  if(!is.null(time_level)){
+    data[[time]] <- factor(data[[time]],
+                                levels = time_level)
+  } else {
+    data[[time]] <- factor(data[[time]])
+  }
   
   ## Summary statistics
   sum_data <- data %>%
@@ -89,12 +109,13 @@ g_lineplot <- function(label = 'Line Plot',
                   width=0.5,
                   position = pd) +
     theme_bw() +
-
+    scale_y_continuous(limits = c(ymin, ymax)) +
     ggtitle(paste0(biomarker, ' ', line, ' over time')) +
     xlab(time) + 
     ylab(paste0(biomarker, ' ', line, title))+
     theme(legend.position = "bottom",
-          plot.title = element_text(size=18))
+          plot.title = element_text(size=18, margin = margin()),
+          axis.title.y = element_text(margin = margin(r = 20)))
     
 
   # Format x-label
@@ -117,14 +138,16 @@ g_lineplot <- function(label = 'Line Plot',
 
   
   ## number of obs table
-  arm <- unique(sum_data[[trt_group]])
+  sum_data[[trt_group]] <- factor(sum_data[[trt_group]],
+                                  levels = rev(levels(sum_data[[trt_group]])))
+  arm <- as.vector(unique(sum_data[[trt_group]]))
   x <- unique(sum_data[[time]])
   
   tbl <- ggplot(sum_data, aes_string(x = time, y = trt_group, label = 'count')) +
     geom_text(size = 3.5) +
     ggtitle("Number of observations") + 
     theme_minimal() +
-    scale_y_discrete(breaks = sum_data[[trt_group]])+
+    scale_y_discrete(labels = function(x = sum_data[[trt_group]]) str_wrap(x, width = 8)) + 
     scale_x_discrete(limits = x)+
     theme(panel.grid.major = element_blank(), legend.position = "none",
           panel.border = element_blank(), axis.text.x =  element_blank(),
@@ -141,6 +164,7 @@ g_lineplot <- function(label = 'Line Plot',
 ## example
 # ALB <- read_bce("/opt/bee/home_nas/luiw2/teal.goshawk/alb3arm.sas7bdat")
 # 
+# ALB <- read_bce('/opt/BIOSTAT/prod/p25615d/libraries/alb.sas7bdat')
 # g_lineplot(label = 'Line Plot',
 #            data = ALB,
 #            biomarker_var = 'PARAMCD',
