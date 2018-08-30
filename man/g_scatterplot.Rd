@@ -9,9 +9,9 @@ g_scatterplot(label = "Scatter Plot", data = ALB,
   biomarker_var = "PARAMCD", biomarker = "CRP", value_var = "AVAL",
   value_var_bl = "BASE", trt_group = "ARM", visit = "AVISITCD",
   loq_flag = NULL, unit = "AVALU", timepoint = "Baseline",
-  color_manual = NULL, man_color = NULL, shape_manual = NULL,
-  hline = NULL, rotate_xlab = FALSE, logscale = FALSE, f_facet = FALSE,
-  facet = "ARM", reg.line = FALSE)
+  min_scale = 0, max_scale = 200, color_manual = NULL, man_color = NULL,
+  shape_manual = NULL, hline = NULL, rotate_xlab = FALSE,
+  logscale = FALSE, f_facet = FALSE, facet = "ARM", reg_line = FALSE)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -40,7 +40,7 @@ g_scatterplot(label = "Scatter Plot", data = ALB,
 
 \item{facet}{set layout to use facet.}
 
-\item{reg.line}{include regression line in visualization.}
+\item{reg_line}{include regression line in visualization.}
 
 \item{biomaker}{biomarker to visualize e.g. IGG.}
 
@@ -87,8 +87,7 @@ ALB1 <- subset(ALB0,
 ALB <- ALB1 \%>\% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
                                         substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2)))
 
-
-biomarker <- c('IGM') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+biomarker <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
 
 plot1 <- g_scatterplot(label = 'Scatter Plot',
            data = ALB,
@@ -101,6 +100,8 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            loq_flag = NULL,
            unit = 'AVALU',
            timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
+           min_scale = 0,
+           max_scale = 500,
            color_manual = NULL,
            shape_manual = NULL,
            hline = NULL,
@@ -108,7 +109,7 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            logscale = FALSE,
            f_facet = FALSE,
            facet = "ARM",
-           reg.line = FALSE) #regline does not work yet
+           reg_line = FALSE) #regline does not work yet
 plot1 
 
 }

@@ -24,7 +24,7 @@
 #' @param logscale set axis values to log scale.
 #' @param facet set layout to use facet.
 #' @param pct set axis values to percent scale.
-#' @param reg.line include regression line in visualization.
+#' @param reg_line include regression line in visualization.
 #' 
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
@@ -33,6 +33,7 @@
 #'
 #' @return \code{ggplot} object
 #'
+#' @importFrom ggplot2 ggplot aes_string geom_point facet_wrap facet_grid 
 #' @export
 #'
 #' @examples
@@ -59,9 +60,8 @@
 #'# create a visit code - baseline record code is "BB" week records coded to "W NN"
 #'ALB <- ALB1 %>% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
 #'                                         substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2)))
-#'
 #' 
-#' biomarker <- c('IGM') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+#' biomarker <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
 #' 
 #' plot1 <- g_scatterplot(label = 'Scatter Plot',
 #'            data = ALB,
@@ -74,6 +74,8 @@
 #'            loq_flag = NULL,
 #'            unit = 'AVALU',
 #'            timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
+#'            min_scale = 0,
+#'            max_scale = 500,
 #'            color_manual = NULL,
 #'            shape_manual = NULL,
 #'            hline = NULL,
@@ -81,7 +83,7 @@
 #'            logscale = FALSE,
 #'            f_facet = FALSE,
 #'            facet = "ARM",
-#'            reg.line = FALSE) #regline does not work yet
+#'            reg_line = FALSE) #regline does not work yet
 #' plot1 
 #' 
 #' }
@@ -97,6 +99,8 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           loq_flag = NULL,
                           unit = "AVALU",
                           timepoint = "Baseline",
+                          min_scale = 0,
+                          max_scale = 200,
                           color_manual = NULL,
                           man_color = NULL,
                           shape_manual = NULL,
@@ -106,24 +110,23 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           f_facet = FALSE,
                           facet = "ARM",
                           #type = 'none', # abs, chg, pct, log2,
-                          reg.line = FALSE){
+                          reg_line = FALSE){
 
 
 # create scatter plot over time pairwise per treatment arm 
 plot_data <- data %>%
-  filter(eval(parse(text = biomarker_var)) == biomarker) #%>%
-  #group_by(eval(parse(text = visit)),
-  #         eval(parse(text = trt_group)))
+  filter(eval(parse(text = biomarker_var)) == biomarker)
 
-#print (plot_data)
+#plot_data_g <<- plot_data # save to global environment for debugging the sub_data statements below
+#print (plot_data) # print data for debugging
 
-# identify min and max values of BM range ignoring NA values
-  min <- min(plot_data[[value_var]], na.rm = TRUE)
-  max <- max(plot_data[[value_var]], na.rm = TRUE)
+# # identify min and max values of BM range ignoring NA values
+#   min_scale <- min(plot_data[[value_var]], na.rm = TRUE)
+#   max_scale <- max(plot_data[[value_var]], na.rm = TRUE)
 
   
 # create plot foundation
-  plot1 <-  ggplot(data = plot_data,
+  plot1 <- ggplot2::ggplot(data = plot_data,
                    aes_string(x = value_var_bl,
                               y = value_var,
                               color = trt_group)) +
@@ -132,7 +135,7 @@ plot_data <- data %>%
     theme_bw() +
     #scale_color_manual(values = color_manual, name = 'Dose') +
     #scale_shape_manual(values = shape_manual, name = 'LoQ') +
-    xlim(min, max) + ylim(min, max) +
+    xlim(min_scale, max_scale) + ylim(min_scale, max_scale) +
     ggtitle(paste0(biomarker, ' ', '(',  plot_data[[unit]], ')', ' scatter plot; over time pairwise')) +
     xlab(paste0(biomarker, ' @ ',timepoint)) +
     ylab(paste0(biomarker, ' @ Follow Up'))
@@ -145,7 +148,7 @@ plot_data <- data %>%
     }
 
 # add regression line
-    if (reg.line){
+    if (reg_line){
       
       slope <- function(x, y) {
         ratio <- sd(x)/sd(y)
@@ -156,8 +159,8 @@ plot_data <- data %>%
       
       sub_data <- subset(plot_data, !is.na(eval(parse(text = value_var))) &
                            !is.na(eval(parse(text = value_var_bl)))) %>%
-        group_by(eval(parse(text = trt_group)),
-                 eval(parse(text = visit))) %>%
+        group_by_(.dots = c(trt_group, visit)) %>%
+        filter(n() > 1) %>%
         mutate(intercept = slope(eval(parse(text = value_var)),
                                  eval(parse(text = value_var_bl)))[1]) %>%
         mutate(slope = slope(eval(parse(text = value_var)),
