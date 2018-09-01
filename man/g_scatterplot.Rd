@@ -8,10 +8,11 @@ Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot
 g_scatterplot(label = "Scatter Plot", data = ALB,
   biomarker_var = "PARAMCD", biomarker = "CRP", value_var = "AVAL",
   value_var_bl = "BASE", trt_group = "ARM", visit = "AVISITCD",
-  loq_flag = NULL, unit = "AVALU", timepoint = "Baseline",
-  min_scale = 0, max_scale = 200, color_manual = NULL, man_color = NULL,
-  shape_manual = NULL, hline = NULL, rotate_xlab = FALSE,
-  logscale = FALSE, f_facet = FALSE, facet = "ARM", reg_line = FALSE)
+  loq_flag = NULL, unit = "AVALU", xmin_scale = 0, xmax_scale = 200,
+  ymin_scale = 0, ymax_scale = 200, color_manual = NULL,
+  man_color = NULL, shape_manual = NULL, hline = NULL,
+  rotate_xlab = FALSE, logscale = FALSE, f_facet = FALSE, facet = "ARM",
+  reg_line = FALSE, dot_size = NULL)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -30,8 +31,6 @@ g_scatterplot(label = "Scatter Plot", data = ALB,
 
 \item{unit}{name of variable containing biomarker unit.}
 
-\item{timepoint}{x axis visit selected label.}
-
 \item{color_manual}{vector of colors.}
 
 \item{shape_manual}{vector of shapes.}
@@ -42,9 +41,13 @@ g_scatterplot(label = "Scatter Plot", data = ALB,
 
 \item{reg_line}{include regression line in visualization.}
 
+\item{dot_size}{scatter dot size.}
+
 \item{biomaker}{biomarker to visualize e.g. IGG.}
 
 \item{time}{name of variable containing visit codes e.g. AVISITCD.}
+
+\item{timepoint}{x axis visit selected label.}
 
 \item{pct}{set axis values to percent scale.}
 }
@@ -85,9 +88,16 @@ ALB1 <- subset(ALB0,
 
 # create a visit code - baseline record code is "BB" week records coded to "W NN"
 ALB <- ALB1 \%>\% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
-                                        substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2)))
+                                        substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) \%>\%
+               mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4)))
+    
+ALB$AVISITCDN <- as.numeric(ALB$AVISITCDN) # coerce character into numeric
 
-biomarker <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+# for proper chronological ordering of visits in visualizations
+ALB <- ALB \%>\%
+      mutate(AVISITCD = factor(AVISITCD) \%>\% reorder(AVISITCDN))
+
+biomarker <- c('ADIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
 
 plot1 <- g_scatterplot(label = 'Scatter Plot',
            data = ALB,
@@ -99,9 +109,11 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            visit = 'AVISITCD',
            loq_flag = NULL,
            unit = 'AVALU',
-           timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
-           min_scale = 0,
-           max_scale = 500,
+           #timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
+           xmin_scale = 0,
+           xmax_scale = 2500,
+           ymin_scale = 0,
+           ymax_scale = 2500,
            color_manual = NULL,
            shape_manual = NULL,
            hline = NULL,
@@ -109,7 +121,8 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            logscale = FALSE,
            f_facet = FALSE,
            facet = "ARM",
-           reg_line = FALSE) #regline does not work yet
+           reg_line = FALSE, # slope and correlation values for each ARM overwrite
+           dot_size = 1)
 plot1 
 
 }

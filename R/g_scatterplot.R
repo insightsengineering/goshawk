@@ -25,6 +25,7 @@
 #' @param facet set layout to use facet.
 #' @param pct set axis values to percent scale.
 #' @param reg_line include regression line in visualization.
+#' @param dot_size scatter dot size.
 #' 
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
@@ -33,7 +34,6 @@
 #'
 #' @return \code{ggplot} object
 #'
-#' @importFrom ggplot2 ggplot aes_string geom_point facet_wrap facet_grid 
 #' @export
 #'
 #' @examples
@@ -59,9 +59,16 @@
 #'
 #'# create a visit code - baseline record code is "BB" week records coded to "W NN"
 #'ALB <- ALB1 %>% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
-#'                                         substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2)))
-#' 
-#' biomarker <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+#'                                         substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) %>%
+#'                mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4)))
+#'     
+#'ALB$AVISITCDN <- as.numeric(ALB$AVISITCDN) # coerce character into numeric
+#'
+#'# for proper chronological ordering of visits in visualizations
+#'ALB <- ALB %>%
+#'       mutate(AVISITCD = factor(AVISITCD) %>% reorder(AVISITCDN))
+#'
+#' biomarker <- c('ADIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
 #' 
 #' plot1 <- g_scatterplot(label = 'Scatter Plot',
 #'            data = ALB,
@@ -73,9 +80,11 @@
 #'            visit = 'AVISITCD',
 #'            loq_flag = NULL,
 #'            unit = 'AVALU',
-#'            timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
-#'            min_scale = 0,
-#'            max_scale = 500,
+#'            #timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
+#'            xmin_scale = 0,
+#'            xmax_scale = 2500,
+#'            ymin_scale = 0,
+#'            ymax_scale = 2500,
 #'            color_manual = NULL,
 #'            shape_manual = NULL,
 #'            hline = NULL,
@@ -83,7 +92,8 @@
 #'            logscale = FALSE,
 #'            f_facet = FALSE,
 #'            facet = "ARM",
-#'            reg_line = FALSE) #regline does not work yet
+#'            reg_line = FALSE, # slope and correlation values for each ARM overwrite
+#'            dot_size = 1)
 #' plot1 
 #' 
 #' }
@@ -98,9 +108,11 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           visit = "AVISITCD",
                           loq_flag = NULL,
                           unit = "AVALU",
-                          timepoint = "Baseline",
-                          min_scale = 0,
-                          max_scale = 200,
+                          #timepoint = "Baseline",
+                          xmin_scale = 0,
+                          xmax_scale = 200,
+                          ymin_scale = 0,
+                          ymax_scale = 200,
                           color_manual = NULL,
                           man_color = NULL,
                           shape_manual = NULL,
@@ -109,8 +121,8 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           logscale = FALSE,
                           f_facet = FALSE,
                           facet = "ARM",
-                          #type = 'none', # abs, chg, pct, log2,
-                          reg_line = FALSE){
+                          reg_line = FALSE,
+                          dot_size = NULL){
 
 
 # create scatter plot over time pairwise per treatment arm 
@@ -135,10 +147,11 @@ plot_data <- data %>%
     theme_bw() +
     #scale_color_manual(values = color_manual, name = 'Dose') +
     #scale_shape_manual(values = shape_manual, name = 'LoQ') +
-    xlim(min_scale, max_scale) + ylim(min_scale, max_scale) +
-    ggtitle(paste0(biomarker, ' ', '(',  plot_data[[unit]], ')', ' scatter plot; over time pairwise')) +
-    xlab(paste0(biomarker, ' @ ',timepoint)) +
-    ylab(paste0(biomarker, ' @ Follow Up'))
+    xlim(xmin_scale, xmax_scale) + ylim(ymin_scale, ymax_scale) +
+    ggtitle(paste0('Biomarker ', biomarker, ' (',  plot_data[[unit]], ')')) +
+    theme(plot.title = element_text(hjust = 0.5)) +
+    xlab(paste0('Biomarker ', value_var_bl, ' Values')) +
+    ylab(paste0('Biomarker ', value_var,' Values'))
     
     
 # add grid faceting to foundation 
@@ -191,17 +204,19 @@ plot_data <- data %>%
     } 
   
   # Add abline
-#  if (type != 'none') {
-    
-    if (value_var %in% c('AVAL','AVALL2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
+    if (value_var %in% c('AVAL','AVALL2', 'BASE', 'BASEL2', 'BASE2', 'BASE2L2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
     
     if (value_var == 'CHG') {plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)}
     
-    if (value_var == 'PCHG') {plot1 <- plot1 + geom_abline(intercept = 1, slope = 0)}
+    if (value_var == 'PCHG') {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
     
-#  }
+
+  # Format dot size
+  if (!is.null(dot_size)){
+    plot1 <- plot1 +
+      geom_point(size = dot_size)
+  }
   
-   
   # Format x-label
   if (rotate_xlab){
     plot1 <- plot1 +
