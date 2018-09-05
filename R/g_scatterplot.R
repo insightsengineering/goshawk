@@ -10,10 +10,10 @@
 #'
 #' @param label text string to be displayed as plot label.
 #' @param data data frame with variables which will be displayed in the plot.
-#' @param biomarker_var name of variable containing biomarker codes e.g. PARAMCD.
-#' @param biomaker biomarker to visualize e.g. IGG. 
-#' @param value_var_bl name of variable containing biomarker results at baseline e.g. BASE.
-#' @param value_var name of variable containing biomarker results e.g. AVAL.
+#' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
+#' @param param biomarker to visualize e.g. IGG. 
+#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
+#' @param yaxis_var name of variable containing biomarker results displayed on Y-axise.g. AVAL.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param time name of variable containing visit codes e.g. AVISITCD.
 #' @param loq_flag name of variable containing LOQ flag e.g. LBLOQFL.
@@ -22,7 +22,8 @@
 #' @param color_manual vector of colors.
 #' @param shape_manual vector of shapes.
 #' @param logscale set axis values to log scale.
-#' @param facet set layout to use facet.
+#' @param facet set layout to use facetting.
+#' @param facet_var variable to use for facetting.
 #' @param pct set axis values to percent scale.
 #' @param reg_line include regression line in visualization.
 #' @param dot_size scatter dot size.
@@ -49,33 +50,54 @@
 #'# list of biomarkers of interest. see ALB2 assignment below
 #'param_choices <- c("CRP","ADIGG","IG","IGA","IGE","IGG","IGM","TEST")
 #'
-#'ASL <- read_bce(ASL_path)
+#'ASL0 <- read_bce(ASL_path)
+#'ASL <- subset(ASL0, subset = ITTFL == 'Y' & IAFL == 'Y')
+#'
 #'ALB0 <- read_bce(ALB_path)
 #'
-#'# post process the data to subset records per specification and to create new variables
-#'ALB1 <- subset(ALB0,
+#'# post process the data to subset records per specification
+#'ALB_SUBSET <- subset(ALB0,
 #'               subset = PARAMCD %in% c(param_choices) & ITTFL == 'Y' & IAFL == 'Y' & ANLFL == 'Y' & AVISIT %like any% c('BASE%','%WEEK%'), 
-#'               select = c('STUDYID', 'USUBJID', 'ITTFL', 'ANLFL', 'ARM', 'AVISIT', 'AVISITN', 'PARAMCD', 'AVAL', 'AVALU', 'BASE', 'CHG', 'PCHG'))
+#'               select = c('STUDYID', 'USUBJID', 'ITTFL', 'ANLFL', 'ARM', 'AVISIT', 'AVISITN', 'PARAMCD', 'AVAL', 'AVALU', 'BASE', 'CHG', 'PCHG',
+#'                'LBSTRESC', 'LBSTRESN'))
 #'
-#'# create a visit code - baseline record code is "BB" week records coded to "W NN"
-#'ALB <- ALB1 %>% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
+#' # calculate the minimum AVAL for each PARAMCD
+#' PARAM_MINS <- ALB_SUBSET %>%
+#' select(USUBJID, PARAMCD, AVAL) %>%
+#'   filter(PARAMCD %in% param_choices) %>%
+#'   group_by(PARAMCD) %>%
+#'   summarise(AVAL_MIN=min(AVAL, na.rm=TRUE))
+#'   
+#'# post process the data to create several new variables and adjust existing record specific valules per specification
+#'# - create a visit code variable - baseline record code is "BB" and week records coded to "W NN"
+#'# - adjust existing BASELINE record values where values are missing: According to SPA this is a STREAM artifact
+#'ALB_SUPED1 <- ALB_SUBSET %>% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
 #'                                         substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) %>%
-#'                mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4)))
-#'     
-#'ALB$AVISITCDN <- as.numeric(ALB$AVISITCDN) # coerce character into numeric
+#'                mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4))) %>%
+#'                mutate(BASE = ifelse(AVISIT == "BASELINE" & is.na(BASE), AVAL, BASE)) %>%
+#'                mutate(CHG = ifelse(AVISIT == "BASELINE" & is.na(CHG), 0, CHG)) %>%
+#'                mutate(PCHG = ifelse(AVISIT == "BASELINE" & is.na(PCHG), 0, PCHG))
+#'                # may need to add similar code for BASE2 related variables
+#'
+#'   
+#' # merge minimum AVAL value onto the ALB data to calculate the log2 variables and preserve the variable order
+#' ALB_SUPED2 <- merge(ALB_SUPED1, PARAM_MINS, by="PARAMCD")[, union(names(ALB_SUPED1), names(PARAM_MINS))] %>%
+#'        mutate(AVALL2 = ifelse(AVAL == 0, log2(AVAL_MIN/2), log2(AVAL))) %>%
+#'        mutate(BASEL2 = ifelse(BASE == 0, log2(AVAL_MIN/2), log2(BASE))) #%>% need SPA to finish adding BASE2 to ALB
+#'        #mutate(BASE2L2 = ifelse(BASE2 == 0, log2(AVAL_MIN/2), log2(AVAL)))
 #'
 #'# for proper chronological ordering of visits in visualizations
-#'ALB <- ALB %>%
-#'       mutate(AVISITCD = factor(AVISITCD) %>% reorder(AVISITCDN))
+#'ALB_SUPED2$AVISITCDN <- as.numeric(ALB_SUPED2$AVISITCDN) # coerce character into numeric
+#'ALB <- ALB_SUPED2 %>% mutate(AVISITCD = factor(AVISITCD) %>% reorder(AVISITCDN))
 #'
-#' biomarker <- c('ADIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+#' param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
 #' 
 #' plot1 <- g_scatterplot(label = 'Scatter Plot',
 #'            data = ALB,
-#'            biomarker_var = 'PARAMCD', # name of variable containing the biomarker names. tm = param_var
-#'            biomarker = biomarker, # the PARAMCD value selected. tm = param
-#'            value_var = 'AVAL', # name of variable containing the analysis values. tm = value_var
-#'            value_var_bl = 'BASE',
+#'            param_var = 'PARAMCD', # name of variable containing the biomarker names.
+#'            param = param, # the PARAMCD value selected.
+#'            xaxis_var = 'BASE',
+#'            yaxis_var = 'AVAL', # name of variable containing the analysis values.
 #'            trt_group = 'ARM',
 #'            visit = 'AVISITCD',
 #'            loq_flag = NULL,
@@ -90,9 +112,10 @@
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
 #'            logscale = FALSE,
-#'            f_facet = FALSE,
-#'            facet = "ARM",
+#'            facet = FALSE,
+#'            facet_var = "ARM",
 #'            reg_line = FALSE, # slope and correlation values for each ARM overwrite
+#'            font_size = 20,
 #'            dot_size = 1)
 #' plot1 
 #' 
@@ -100,10 +123,10 @@
 
 g_scatterplot <- function(label = 'Scatter Plot',
                           data = ALB,
-                          biomarker_var = 'PARAMCD',
-                          biomarker = "CRP",
-                          value_var = 'AVAL',
-                          value_var_bl = 'BASE',
+                          param_var = 'PARAMCD',
+                          param = "CRP",
+                          xaxis_var = 'BASE',
+                          yaxis_var = 'AVAL',
                           trt_group = "ARM",
                           visit = "AVISITCD",
                           loq_flag = NULL,
@@ -119,28 +142,21 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           hline = NULL,
                           rotate_xlab = FALSE,
                           logscale = FALSE,
-                          f_facet = FALSE,
-                          facet = "ARM",
+                          facet = FALSE,
+                          facet_var = "ARM",
                           reg_line = FALSE,
+                          font_size = 12,
                           dot_size = NULL){
 
 
 # create scatter plot over time pairwise per treatment arm 
 plot_data <- data %>%
-  filter(eval(parse(text = biomarker_var)) == biomarker)
-
-#plot_data_g <<- plot_data # save to global environment for debugging the sub_data statements below
-#print (plot_data) # print data for debugging
-
-# # identify min and max values of BM range ignoring NA values
-#   min_scale <- min(plot_data[[value_var]], na.rm = TRUE)
-#   max_scale <- max(plot_data[[value_var]], na.rm = TRUE)
-
+  filter(eval(parse(text = param_var)) == param)
   
 # create plot foundation
   plot1 <- ggplot2::ggplot(data = plot_data,
-                   aes_string(x = value_var_bl,
-                              y = value_var,
+                   aes_string(x = xaxis_var,
+                              y = yaxis_var,
                               color = trt_group)) +
     geom_point(aes_string(shape = loq_flag), size = 1, na.rm = TRUE) +
     facet_wrap(as.formula(paste0('~',visit))) +
@@ -148,16 +164,16 @@ plot_data <- data %>%
     #scale_color_manual(values = color_manual, name = 'Dose') +
     #scale_shape_manual(values = shape_manual, name = 'LoQ') +
     xlim(xmin_scale, xmax_scale) + ylim(ymin_scale, ymax_scale) +
-    ggtitle(paste0('Biomarker ', biomarker, ' (',  plot_data[[unit]], ')')) +
-    theme(plot.title = element_text(hjust = 0.5)) +
-    xlab(paste0('Biomarker ', value_var_bl, ' Values')) +
-    ylab(paste0('Biomarker ', value_var,' Values'))
+    ggtitle(paste0('Biomarker ', param, ' (',  plot_data[[unit]], ')')) +
+    theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
+    xlab(paste0('Biomarker ', xaxis_var, ' Values')) +
+    ylab(paste0('Biomarker ', yaxis_var,' Values'))
     
     
 # add grid faceting to foundation 
-    if (f_facet){
+    if (facet){
       plot1 <- plot1 +
-        facet_grid(as.formula(paste0(facet ,' ~ ', visit)))
+        facet_grid(as.formula(paste0(facet_var ,' ~ ', visit)))
     }
 
 # add regression line
@@ -170,16 +186,16 @@ plot_data <- data %>%
       }
       
       
-      sub_data <- subset(plot_data, !is.na(eval(parse(text = value_var))) &
-                           !is.na(eval(parse(text = value_var_bl)))) %>%
+      sub_data <- subset(plot_data, !is.na(eval(parse(text = yaxis_var))) &
+                           !is.na(eval(parse(text = xaxis_var)))) %>%
         group_by_(.dots = c(trt_group, visit)) %>%
         filter(n() > 1) %>%
-        mutate(intercept = slope(eval(parse(text = value_var)),
-                                 eval(parse(text = value_var_bl)))[1]) %>%
-        mutate(slope = slope(eval(parse(text = value_var)),
-                             eval(parse(text = value_var_bl)))[2]) %>%
-        mutate(corr = cor(eval(parse(text = value_var)),
-                          eval(parse(text = value_var_bl)),
+        mutate(intercept = slope(eval(parse(text = yaxis_var)),
+                                 eval(parse(text = xaxis_var)))[1]) %>%
+        mutate(slope = slope(eval(parse(text = yaxis_var)),
+                             eval(parse(text = xaxis_var)))[2]) %>%
+        mutate(corr = cor(eval(parse(text = yaxis_var)),
+                          eval(parse(text = xaxis_var)),
                           method = "spearman",
                           use = 'complete.obs'))
       
@@ -204,14 +220,27 @@ plot_data <- data %>%
     } 
   
   # Add abline
-    if (value_var %in% c('AVAL','AVALL2', 'BASE', 'BASEL2', 'BASE2', 'BASE2L2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
+    if (yaxis_var %in% c('AVAL','AVALL2', 'BASE', 'BASEL2', 'BASE2', 'BASE2L2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
     
-    if (value_var == 'CHG') {plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)}
+    if (yaxis_var == 'CHG') {plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)}
     
-    if (value_var == 'PCHG') {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
+    if (yaxis_var == 'PCHG') {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
     
 
-  # Format dot size
+  # Format font size
+  if (!is.null(font_size)){
+    plot1 <- plot1 +
+      theme(axis.title.x = element_text(size = font_size),
+            axis.text.x = element_text(size = font_size),
+            axis.title.y = element_text(size = font_size),
+            axis.text.y = element_text(size = font_size),
+            legend.title = element_text(size = font_size),
+            legend.text = element_text(size = font_size),
+            strip.text.x = element_text(size = font_size),
+            strip.text.y = element_text(size = font_size))
+  }
+
+    # Format dot size
   if (!is.null(dot_size)){
     plot1 <- plot1 +
       geom_point(size = dot_size)

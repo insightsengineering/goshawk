@@ -5,25 +5,27 @@
 \title{Function to generate a scatter plot
 Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot visualiztion}
 \usage{
-g_scatterplot(label = "Scatter Plot", data = ALB,
-  biomarker_var = "PARAMCD", biomarker = "CRP", value_var = "AVAL",
-  value_var_bl = "BASE", trt_group = "ARM", visit = "AVISITCD",
-  loq_flag = NULL, unit = "AVALU", xmin_scale = 0, xmax_scale = 200,
-  ymin_scale = 0, ymax_scale = 200, color_manual = NULL,
-  man_color = NULL, shape_manual = NULL, hline = NULL,
-  rotate_xlab = FALSE, logscale = FALSE, f_facet = FALSE, facet = "ARM",
-  reg_line = FALSE, dot_size = NULL)
+g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
+  param = "CRP", xaxis_var = "BASE", yaxis_var = "AVAL",
+  trt_group = "ARM", visit = "AVISITCD", loq_flag = NULL,
+  unit = "AVALU", xmin_scale = 0, xmax_scale = 200, ymin_scale = 0,
+  ymax_scale = 200, color_manual = NULL, man_color = NULL,
+  shape_manual = NULL, hline = NULL, rotate_xlab = FALSE,
+  logscale = FALSE, facet = FALSE, facet_var = "ARM", reg_line = FALSE,
+  font_size = 12, dot_size = NULL)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
 
 \item{data}{data frame with variables which will be displayed in the plot.}
 
-\item{biomarker_var}{name of variable containing biomarker codes e.g. PARAMCD.}
+\item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
-\item{value_var}{name of variable containing biomarker results e.g. AVAL.}
+\item{param}{biomarker to visualize e.g. IGG.}
 
-\item{value_var_bl}{name of variable containing biomarker results at baseline e.g. BASE.}
+\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. BASE.}
+
+\item{yaxis_var}{name of variable containing biomarker results displayed on Y-axise.g. AVAL.}
 
 \item{trt_group}{name of variable representing treatment group e.g. ARM.}
 
@@ -37,13 +39,13 @@ g_scatterplot(label = "Scatter Plot", data = ALB,
 
 \item{logscale}{set axis values to log scale.}
 
-\item{facet}{set layout to use facet.}
+\item{facet}{set layout to use facetting.}
+
+\item{facet_var}{variable to use for facetting.}
 
 \item{reg_line}{include regression line in visualization.}
 
 \item{dot_size}{scatter dot size.}
-
-\item{biomaker}{biomarker to visualize e.g. IGG.}
 
 \item{time}{name of variable containing visit codes e.g. AVISITCD.}
 
@@ -78,33 +80,54 @@ ALB_path <- "~/btk/lupus/dataadam/alb3arm.sas7bdat"
 # list of biomarkers of interest. see ALB2 assignment below
 param_choices <- c("CRP","ADIGG","IG","IGA","IGE","IGG","IGM","TEST")
 
-ASL <- read_bce(ASL_path)
+ASL0 <- read_bce(ASL_path)
+ASL <- subset(ASL0, subset = ITTFL == 'Y' & IAFL == 'Y')
+
 ALB0 <- read_bce(ALB_path)
 
-# post process the data to subset records per specification and to create new variables
-ALB1 <- subset(ALB0,
+# post process the data to subset records per specification
+ALB_SUBSET <- subset(ALB0,
               subset = PARAMCD \%in\% c(param_choices) & ITTFL == 'Y' & IAFL == 'Y' & ANLFL == 'Y' & AVISIT \%like any\% c('BASE\%','\%WEEK\%'), 
-              select = c('STUDYID', 'USUBJID', 'ITTFL', 'ANLFL', 'ARM', 'AVISIT', 'AVISITN', 'PARAMCD', 'AVAL', 'AVALU', 'BASE', 'CHG', 'PCHG'))
+              select = c('STUDYID', 'USUBJID', 'ITTFL', 'ANLFL', 'ARM', 'AVISIT', 'AVISITN', 'PARAMCD', 'AVAL', 'AVALU', 'BASE', 'CHG', 'PCHG',
+               'LBSTRESC', 'LBSTRESN'))
 
-# create a visit code - baseline record code is "BB" week records coded to "W NN"
-ALB <- ALB1 \%>\% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
+# calculate the minimum AVAL for each PARAMCD
+PARAM_MINS <- ALB_SUBSET \%>\%
+select(USUBJID, PARAMCD, AVAL) \%>\%
+  filter(PARAMCD \%in\% param_choices) \%>\%
+  group_by(PARAMCD) \%>\%
+  summarise(AVAL_MIN=min(AVAL, na.rm=TRUE))
+  
+# post process the data to create several new variables and adjust existing record specific valules per specification
+# - create a visit code variable - baseline record code is "BB" and week records coded to "W NN"
+# - adjust existing BASELINE record values where values are missing: According to SPA this is a STREAM artifact
+ALB_SUPED1 <- ALB_SUBSET \%>\% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
                                         substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) \%>\%
-               mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4)))
-    
-ALB$AVISITCDN <- as.numeric(ALB$AVISITCDN) # coerce character into numeric
+               mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4))) \%>\%
+               mutate(BASE = ifelse(AVISIT == "BASELINE" & is.na(BASE), AVAL, BASE)) \%>\%
+               mutate(CHG = ifelse(AVISIT == "BASELINE" & is.na(CHG), 0, CHG)) \%>\%
+               mutate(PCHG = ifelse(AVISIT == "BASELINE" & is.na(PCHG), 0, PCHG))
+               # may need to add similar code for BASE2 related variables
+
+  
+# merge minimum AVAL value onto the ALB data to calculate the log2 variables and preserve the variable order
+ALB_SUPED2 <- merge(ALB_SUPED1, PARAM_MINS, by="PARAMCD")[, union(names(ALB_SUPED1), names(PARAM_MINS))] \%>\%
+       mutate(AVALL2 = ifelse(AVAL == 0, log2(AVAL_MIN/2), log2(AVAL))) \%>\%
+       mutate(BASEL2 = ifelse(BASE == 0, log2(AVAL_MIN/2), log2(BASE))) #\%>\% need SPA to finish adding BASE2 to ALB
+       #mutate(BASE2L2 = ifelse(BASE2 == 0, log2(AVAL_MIN/2), log2(AVAL)))
 
 # for proper chronological ordering of visits in visualizations
-ALB <- ALB \%>\%
-      mutate(AVISITCD = factor(AVISITCD) \%>\% reorder(AVISITCDN))
+ALB_SUPED2$AVISITCDN <- as.numeric(ALB_SUPED2$AVISITCDN) # coerce character into numeric
+ALB <- ALB_SUPED2 \%>\% mutate(AVISITCD = factor(AVISITCD) \%>\% reorder(AVISITCDN))
 
-biomarker <- c('ADIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
 
 plot1 <- g_scatterplot(label = 'Scatter Plot',
            data = ALB,
-           biomarker_var = 'PARAMCD', # name of variable containing the biomarker names. tm = param_var
-           biomarker = biomarker, # the PARAMCD value selected. tm = param
-           value_var = 'AVAL', # name of variable containing the analysis values. tm = value_var
-           value_var_bl = 'BASE',
+           param_var = 'PARAMCD', # name of variable containing the biomarker names.
+           param = param, # the PARAMCD value selected.
+           xaxis_var = 'BASE',
+           yaxis_var = 'AVAL', # name of variable containing the analysis values.
            trt_group = 'ARM',
            visit = 'AVISITCD',
            loq_flag = NULL,
@@ -119,9 +142,10 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            hline = NULL,
            rotate_xlab = FALSE,
            logscale = FALSE,
-           f_facet = FALSE,
-           facet = "ARM",
+           facet = FALSE,
+           facet_var = "ARM",
            reg_line = FALSE, # slope and correlation values for each ARM overwrite
+           font_size = 20,
            dot_size = 1)
 plot1 
 
