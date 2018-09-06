@@ -90,7 +90,11 @@
 #'ALB_SUPED2$AVISITCDN <- as.numeric(ALB_SUPED2$AVISITCDN) # coerce character into numeric
 #'ALB <- ALB_SUPED2 %>% mutate(AVISITCD = factor(AVISITCD) %>% reorder(AVISITCDN))
 #'
+#'# to test loq_flag
+#'ALB <- ALB %>% mutate(LOQFL = ifelse(PARAMCD == "CRP" & AVAL < .5, "Y", "N"))
+#'
 #' param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+#' shape_manual <- c('N' = 1, 'Y' = 2, 'NA' = 0)
 #' 
 #' plot1 <- g_scatterplot(label = 'Scatter Plot',
 #'            data = ALB,
@@ -100,23 +104,24 @@
 #'            yaxis_var = 'AVAL', # name of variable containing the analysis values.
 #'            trt_group = 'ARM',
 #'            visit = 'AVISITCD',
-#'            loq_flag = NULL,
+#'            loq_flag = 'LOQFL',
 #'            unit = 'AVALU',
 #'            #timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
 #'            xmin_scale = 0,
-#'            xmax_scale = 2500,
+#'            xmax_scale = .5,
 #'            ymin_scale = 0,
-#'            ymax_scale = 2500,
+#'            ymax_scale = .5,
 #'            color_manual = NULL,
-#'            shape_manual = NULL,
+#'            shape_manual,
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
 #'            logscale = FALSE,
 #'            facet = FALSE,
 #'            facet_var = "ARM",
 #'            reg_line = FALSE, # slope and correlation values for each ARM overwrite
-#'            font_size = 20,
-#'            dot_size = 1)
+#'            font_size = 14,
+#'            dot_size = 2,
+#'            reg_text_size = 3)
 #' plot1 
 #' 
 #' }
@@ -129,7 +134,7 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           yaxis_var = 'AVAL',
                           trt_group = "ARM",
                           visit = "AVISITCD",
-                          loq_flag = NULL,
+                          loq_flag = "LOQFL",
                           unit = "AVALU",
                           #timepoint = "Baseline",
                           xmin_scale = 0,
@@ -138,7 +143,7 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           ymax_scale = 200,
                           color_manual = NULL,
                           man_color = NULL,
-                          shape_manual = NULL,
+                          shape_manual = c('N' = 1, 'Y' = 2, 'NA' = 0),
                           hline = NULL,
                           rotate_xlab = FALSE,
                           logscale = FALSE,
@@ -146,8 +151,8 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           facet_var = "ARM",
                           reg_line = FALSE,
                           font_size = 12,
-                          dot_size = NULL){
-
+                          dot_size = NULL,
+                          reg_text_size = 3){
 
 # create scatter plot over time pairwise per treatment arm 
 plot_data <- data %>%
@@ -158,11 +163,11 @@ plot_data <- data %>%
                    aes_string(x = xaxis_var,
                               y = yaxis_var,
                               color = trt_group)) +
-    geom_point(aes_string(shape = loq_flag), size = 1, na.rm = TRUE) +
+    geom_point(aes_string(shape = loq_flag), size = dot_size, na.rm = TRUE) +
     facet_wrap(as.formula(paste0('~',visit))) +
     theme_bw() +
     #scale_color_manual(values = color_manual, name = 'Dose') +
-    #scale_shape_manual(values = shape_manual, name = 'LoQ') +
+    scale_shape_manual(values = shape_manual, name = 'LOQ') +
     xlim(xmin_scale, xmax_scale) + ylim(ymin_scale, ymax_scale) +
     ggtitle(paste0('Biomarker ', param, ' (',  plot_data[[unit]], ')')) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
@@ -215,7 +220,7 @@ plot_data <- data %>%
                                                         'cor=',
                                                         round(corr,2)),
                                          color = eval(parse(text = trt_group))),
-                    size = 3)
+                    size = reg_text_size)
         
     } 
   
@@ -243,7 +248,7 @@ plot_data <- data %>%
     # Format dot size
   if (!is.null(dot_size)){
     plot1 <- plot1 +
-      geom_point(size = dot_size)
+      geom_point(aes_string(shape = loq_flag), size = dot_size, na.rm = TRUE)
   }
   
   # Format x-label

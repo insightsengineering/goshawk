@@ -7,12 +7,13 @@ Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot
 \usage{
 g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
   param = "CRP", xaxis_var = "BASE", yaxis_var = "AVAL",
-  trt_group = "ARM", visit = "AVISITCD", loq_flag = NULL,
+  trt_group = "ARM", visit = "AVISITCD", loq_flag = "LOQFL",
   unit = "AVALU", xmin_scale = 0, xmax_scale = 200, ymin_scale = 0,
   ymax_scale = 200, color_manual = NULL, man_color = NULL,
-  shape_manual = NULL, hline = NULL, rotate_xlab = FALSE,
-  logscale = FALSE, facet = FALSE, facet_var = "ARM", reg_line = FALSE,
-  font_size = 12, dot_size = NULL)
+  shape_manual = c(N = 1, Y = 2, `NA` = 0), hline = NULL,
+  rotate_xlab = FALSE, logscale = FALSE, facet = FALSE,
+  facet_var = "ARM", reg_line = FALSE, font_size = 12, dot_size = NULL,
+  reg_text_size = 3)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -120,7 +121,11 @@ ALB_SUPED2 <- merge(ALB_SUPED1, PARAM_MINS, by="PARAMCD")[, union(names(ALB_SUPE
 ALB_SUPED2$AVISITCDN <- as.numeric(ALB_SUPED2$AVISITCDN) # coerce character into numeric
 ALB <- ALB_SUPED2 \%>\% mutate(AVISITCD = factor(AVISITCD) \%>\% reorder(AVISITCDN))
 
+# to test loq_flag
+ALB <- ALB \%>\% mutate(LOQFL = ifelse(PARAMCD == "CRP" & AVAL < .5, "Y", "N"))
+
 param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+shape_manual <- c('N' = 1, 'Y' = 2, 'NA' = 0)
 
 plot1 <- g_scatterplot(label = 'Scatter Plot',
            data = ALB,
@@ -130,23 +135,24 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            yaxis_var = 'AVAL', # name of variable containing the analysis values.
            trt_group = 'ARM',
            visit = 'AVISITCD',
-           loq_flag = NULL,
+           loq_flag = 'LOQFL',
            unit = 'AVALU',
            #timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
            xmin_scale = 0,
-           xmax_scale = 2500,
+           xmax_scale = .5,
            ymin_scale = 0,
-           ymax_scale = 2500,
+           ymax_scale = .5,
            color_manual = NULL,
-           shape_manual = NULL,
+           shape_manual,
            hline = NULL,
            rotate_xlab = FALSE,
            logscale = FALSE,
            facet = FALSE,
            facet_var = "ARM",
            reg_line = FALSE, # slope and correlation values for each ARM overwrite
-           font_size = 20,
-           dot_size = 1)
+           font_size = 14,
+           dot_size = 2,
+           reg_text_size = 3)
 plot1 
 
 }
