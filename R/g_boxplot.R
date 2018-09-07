@@ -79,15 +79,15 @@ g_boxplot <- function(data,
                       facet = NULL) {
   
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
-  yAxisLabel <- ifelse(is.null(unit) | unit == "", biomarker, str_c(biomarker,' (',unit,')'))
+  yAxisLabel <- ifelse(is.null(unit) | unit == "", biomarker, paste0(biomarker,' (',unit,')'))
   
   # A useable name for the X axis.
   # If present, use the label for the arm parameter, if not then use the name
   # of the parameter (in title case)
-  if (has_attr(data[[arm]], "label")) {
+  if (!is.null(attr(data[[arm]], "label", exact = TRUE))) {
     armlabel <- attr(data[[arm]], "label")
   } else {
-    armlabel <- str_to_title(arm)
+    armlabel <- gsub("(?<=\\b)([a-z])", "\\U\\1", tolower(arm), perl=TRUE)
   }
   
   # Base plot
