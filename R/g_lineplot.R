@@ -1,7 +1,7 @@
-#' Function to generate a line plot
-#' output rendered by teal.goshawk module
+#' Line plot of summary statistics over time
+#' 
+#' This function is rendered by teal.goshawk module
 #'
-#' \code {null}
 #'
 #' @param label text string to be displayed as plot label.
 #' @param data data frame with variables to be summarized and generate statistics which will display in the plot.
@@ -20,18 +20,50 @@
 #' @import gridExtra
 #' @import stringr
 #'
-#' @author Balazs Toth
-#' @author Wenyi Liu (luiw2) wenyi.liu@roche.com
+#' @author Balazs Toth (toth.balazs@gene.com)
+#' @author Wenyi Liu (wenyi.liu@roche.com)
 #'
-#' @details provide additional information as needed. perhaps link to specification file.\url{http://rstudio.com}
+#' @details Currently, the output plot can display mean and median of input value. For mean, the error bar denotes
+#' 95\% confidence interval. For median, the error bar denotes median-SD to median+SD.
 #'
 #' @return \code{ggplot} object
 #'
 #' @export
 #'
 #' @examples
-#'
-#'
+#' 
+#' library(dplyr)
+#' library(ggplot2)
+#' library(gridExtra)
+#' library(stringr)
+#' 
+#' ANL <- expand.grid(
+#'   USUBJID = paste0("p-",1:100),
+#'   VISIT = paste0("visit ", 1:10),
+#'   ARM = c("ARM A", "ARM B", "ARM C"),
+#'   PARAMCD = c("CRP", "IGG", "IGM")
+#' )
+#' ANL$AVAL <- rnorm(nrow(ANL))
+#' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
+#' ANL$CHG[ANL$VISIT == "visit 1"] <- NA
+#' ANL$PCHG <- ANL$CHG/ANL$AVAL*100
+#' 
+#' ANL$ARM <- factor(ANL$ARM)
+#' ANL$VISIT <- factor(ANL$VISIT)
+#' 
+#' g_lineplot(label = 'Line Plot',
+#'            data = ANL,
+#'            biomarker_var = 'PARAMCD',
+#'            biomarker = 'CRP',
+#'            value_var = 'AVAL',
+#'            trt_group = 'ARM',
+#'            time = 'VISIT',
+#'            color_manual = NULL,
+#'            median = FALSE,
+#'            hline = NULL,
+#'            rotate_xlab = FALSE)
+#'            
+
 
 
 g_lineplot <- function(label = 'Line Plot',
@@ -159,20 +191,3 @@ g_lineplot <- function(label = 'Line Plot',
   grid.arrange(plot1, tbl, heights = c(10, 2))
  
 }
-
-
-## example
-# ALB <- read_bce("/opt/bee/home_nas/luiw2/teal.goshawk/alb3arm.sas7bdat")
-# 
-# ALB <- read_bce('/opt/BIOSTAT/prod/p25615d/libraries/alb.sas7bdat')
-# g_lineplot(label = 'Line Plot',
-#            data = ALB,
-#            biomarker_var = 'PARAMCD',
-#            biomarker = 'CRP',
-#            value_var = 'AVAL',
-#            trt_group = 'ARM',
-#            time = 'AVISIT',
-#            color_manual = NULL,
-#            median = FALSE,
-#            hline = NULL,
-#            rotate_xlab = FALSE)
