@@ -2,12 +2,12 @@
 % Please edit documentation in R/g_lineplot.R
 \name{g_lineplot}
 \alias{g_lineplot}
-\title{Function to generate a line plot
-output rendered by teal.goshawk module}
+\title{Line plot of summary statistics over time}
 \usage{
 g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD", biomarker,
-  value_var = "AVAL", trt_group, time, color_manual, median = FALSE,
-  hline = NULL, rotate_xlab = FALSE)
+  value_var = "AVAL", ymin = NA, ymax = NA, trt_group,
+  trt_group_level = NULL, time, time_level = NULL, color_manual,
+  median = FALSE, hline = NULL, rotate_xlab = FALSE)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -36,17 +36,48 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD", biomarker,
 \code{ggplot} object
 }
 \description{
-\code{g_lineplot} returns a ggplot object
+This function is rendered by teal.goshawk module
 }
 \details{
-provide additional information as needed. perhaps link to specification file.\url{http://rstudio.com}
+Currently, the output plot can display mean and median of input value. For mean, the error bar denotes
+95\% confidence interval. For median, the error bar denotes median-SD to median+SD.
 }
 \examples{
 
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
+library(stringr)
 
+ANL <- expand.grid(
+  USUBJID = paste0("p-",1:100),
+  VISIT = paste0("visit ", 1:10),
+  ARM = c("ARM A", "ARM B", "ARM C"),
+  PARAMCD = c("CRP", "IGG", "IGM")
+)
+ANL$AVAL <- rnorm(nrow(ANL))
+ANL$CHG <- rnorm(nrow(ANL), 2, 2)
+ANL$CHG[ANL$VISIT == "visit 1"] <- NA
+ANL$PCHG <- ANL$CHG/ANL$AVAL*100
+
+ANL$ARM <- factor(ANL$ARM)
+ANL$VISIT <- factor(ANL$VISIT)
+
+g_lineplot(label = 'Line Plot',
+           data = ANL,
+           biomarker_var = 'PARAMCD',
+           biomarker = 'CRP',
+           value_var = 'AVAL',
+           trt_group = 'ARM',
+           time = 'VISIT',
+           color_manual = NULL,
+           median = FALSE,
+           hline = NULL,
+           rotate_xlab = FALSE)
+           
 }
 \author{
-Balazs Toth
+Balazs Toth (toth.balazs@gene.com)
 
-Wenyi Liu (luiw2) wenyi.liu@roche.com
+Wenyi Liu (wenyi.liu@roche.com)
 }
