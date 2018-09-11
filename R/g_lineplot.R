@@ -9,7 +9,9 @@
 #' @param biomaker biomarker name to be analyzed. 
 #' @param value_var name of variable containing biomarker results.
 #' @param trt_group name of variable representing treatment group.
+#' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
+#' @param time_level vector that can be used to define the factor level of time.
 #' @param color_manual vector of colors.
 #' @param median boolean whether to display median results.
 #' @param hline numeric value represnting intercept of horizontal line.
