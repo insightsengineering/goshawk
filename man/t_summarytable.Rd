@@ -28,15 +28,15 @@ t_summarytable(data, trt_group, param_var, param, xaxis_var,
 }
 \description{
 Output render by teal.goshawk module \code{t_summarytable} returns
-descriptive summary statistics table
+descriptive summary statistics table as a data frame
 }
 \details{
 provide additional information as needed. link to specification file \url{http://rstudio.com}
 }
 \examples{
 
-ALB <- read_bce("/opt/bee/home_nas/npaszty/btk/lupus/dataadam/alb3arm.sas7bdat")
-param <- c('IGG') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+\dontrun{
+# use post processed data created in app.R file
 
 # call function
 t_summarytable(data = ALB,
@@ -48,7 +48,7 @@ t_summarytable(data = ALB,
                font_size = 12,
                loq_flag_var = 'LOQFL')
 
-table1
+}
 
 }
 \author{
