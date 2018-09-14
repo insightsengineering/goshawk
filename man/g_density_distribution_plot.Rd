@@ -10,8 +10,8 @@ g_density_distribution_plot(label = "Density Distribution Plot", data = ALB,
   param_var = "PARAMCD", param = "CRP", xaxis_var = "AVAL",
   trt_group = "ARM", unit = "AVALU", xmin_scale = 0, xmax_scale = 200,
   color_manual = NULL, hline = NULL, rotate_xlab = FALSE,
-  logscale = FALSE, facet = FALSE, facet_var = "AVISITCD",
-  font_size = 12, line_size = 2)
+  logscale = FALSE, facet_var = "AVISITCD", font_size = 12,
+  line_size = 2)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -31,8 +31,6 @@ g_density_distribution_plot(label = "Density Distribution Plot", data = ALB,
 \item{color_manual}{vector of colors.}
 
 \item{logscale}{set axis values to log scale.}
-
-\item{facet}{set layout to use facetting.}
 
 \item{facet_var}{variable to use for facetting.}
 
@@ -91,7 +89,8 @@ select(USUBJID, PARAMCD, AVAL) \%>\%
 # - adjust existing BASELINE record values where values are missing: According to SPA this is a STREAM artifact
 ALB_SUPED1 <- ALB_SUBSET \%>\% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
                                         substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) \%>\%
-               mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4))) \%>\%
+               mutate(AVISITCD = ifelse(AVISITCD == "BB", "BL", AVISITCD)) \%>\%
+               mutate(AVISITCDN =  ifelse(AVISITCD == "BL", 0, substr(AVISITCD,start=2, stop=4))) \%>\%
                mutate(BASE = ifelse(AVISIT == "BASELINE" & is.na(BASE), AVAL, BASE)) \%>\%
                mutate(CHG = ifelse(AVISIT == "BASELINE" & is.na(CHG), 0, CHG)) \%>\%
                mutate(PCHG = ifelse(AVISIT == "BASELINE" & is.na(PCHG), 0, PCHG))
@@ -126,7 +125,6 @@ plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
            hline = NULL,
            rotate_xlab = FALSE,
            logscale = FALSE,
-           facet = TRUE,
            facet_var = 'AVISITCD',
            font_size = 10,
            line_size = .5)

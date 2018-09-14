@@ -15,7 +15,6 @@
 #' @param unit name of variable containing biomarker unit.
 #' @param color_manual vector of colors.
 #' @param logscale set axis values to log scale.
-#' @param facet set layout to use facetting.
 #' @param facet_var variable to use for facetting.
 #' @param pct set axis values to percent scale.
 #' @param reg_line include regression line in visualization.
@@ -70,7 +69,8 @@
 #'# - adjust existing BASELINE record values where values are missing: According to SPA this is a STREAM artifact
 #'ALB_SUPED1 <- ALB_SUBSET %>% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
 #'                                         substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) %>%
-#'                mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4))) %>%
+#'                mutate(AVISITCD = ifelse(AVISITCD == "BB", "BL", AVISITCD)) %>%
+#'                mutate(AVISITCDN =  ifelse(AVISITCD == "BL", 0, substr(AVISITCD,start=2, stop=4))) %>%
 #'                mutate(BASE = ifelse(AVISIT == "BASELINE" & is.na(BASE), AVAL, BASE)) %>%
 #'                mutate(CHG = ifelse(AVISIT == "BASELINE" & is.na(CHG), 0, CHG)) %>%
 #'                mutate(PCHG = ifelse(AVISIT == "BASELINE" & is.na(PCHG), 0, PCHG))
@@ -105,7 +105,6 @@
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
 #'            logscale = FALSE,
-#'            facet = TRUE,
 #'            facet_var = 'AVISITCD',
 #'            font_size = 10,
 #'            line_size = .5)
@@ -127,48 +126,26 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
                                 hline = NULL,
                                 rotate_xlab = FALSE,
                                 logscale = FALSE,
-                                facet = FALSE,
                                 facet_var = "AVISITCD",
                                 font_size = 12,
                                 line_size = 2){
 
-  
-  # for debugging
-  print(paste0('Inside goshawk, FACET is now: ', facet))
-  
   plot_data <- data %>%
     filter(eval(parse(text = param_var)) == param) %>%
     mutate(JUNK = 1)
   
-  plot1 <- ggplot() +
-    geom_density(data = plot_data, aes(x = eval(parse(text = xaxis_var)), linetype = 'all'), size = line_size) + 
-    geom_density(data = plot_data, aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
+  plot1 <- ggplot(plot_data) +
+    geom_density(aes(x = eval(parse(text = xaxis_var)), linetype = 'Comb.'), size = line_size) + 
+    geom_density(aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
     #scale_color_manual(values = color_manual, name = 'Arm') +
-    scale_linetype_manual(name = "All", values = c(all="solid", per_dose="solid")) +
-    #facet_wrap(as.formula(paste0('~', facet_var))) +
+    scale_linetype_manual(name = "Comb.", values = c(Comb.="solid", per_dose="solid")) +
+    facet_wrap(as.formula(paste0('~', facet_var))) +
     theme_bw() +
     xlim(xmin_scale, xmax_scale) +
-    ggtitle(paste0('Biomarker ', param, ' (',  plot_data[[unit]], ') Density Overall & by ARM @ Visits')) +
+    ggtitle(paste0('Biomarker ', param, ' (',  plot_data[[unit]], ') Density Combined Treatment (Comb.) & by Treatment @ Visits')) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(paste0('Biomarker ', xaxis_var, ' Values')) +
     ylab(paste0('Density'))
-
-  print(plot1$facet)
-  
-  # for debugging
-  print(paste0("Inside goshawk just before facet if. FACET is now: ", facet))
-  
-  # add grid faceting to foundation - this block works when running the function but honks when
-  # calling function from teal module
-  # if (facet){
-  # 
-  #   # for debugging
-  #   print(paste0("Inside goshawk inside facet if. FACET is now: ", facet))
-  #   print(paste0("Inside goshawk inside facet if. FACET_VAR is now: ", facet_var))
-  # 
-  #   plot1 <- plot1 +
-  #   facet_grid(as.formula(paste0('.~ ', facet_var)))
-  # }
 
   #Add horizontal line
   if (!is.null(hline)){
