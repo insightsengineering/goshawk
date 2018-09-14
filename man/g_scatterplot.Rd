@@ -7,13 +7,12 @@ Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot
 \usage{
 g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
   param = "CRP", xaxis_var = "BASE", yaxis_var = "AVAL",
-  trt_group = "ARM", visit = "AVISITCD", loq_flag = "LOQFL",
+  trt_group = "ARM", visit = "AVISITCD", loq_flag_var = "LOQFL",
   unit = "AVALU", xmin_scale = 0, xmax_scale = 200, ymin_scale = 0,
-  ymax_scale = 200, color_manual = NULL, man_color = NULL,
-  shape_manual = c(N = 1, Y = 2, `NA` = 0), hline = NULL,
-  rotate_xlab = FALSE, logscale = FALSE, facet = FALSE,
-  facet_var = "ARM", reg_line = FALSE, font_size = 12, dot_size = NULL,
-  reg_text_size = 3)
+  ymax_scale = 200, color_manual = NULL, shape_manual = c(N = 1, Y = 2,
+  `NA` = 0), hline = NULL, rotate_xlab = FALSE, logscale = FALSE,
+  facet = FALSE, facet_var = "ARM", reg_line = FALSE, font_size = 12,
+  dot_size = NULL, reg_text_size = 3)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -30,7 +29,7 @@ g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
 
 \item{trt_group}{name of variable representing treatment group e.g. ARM.}
 
-\item{loq_flag}{name of variable containing LOQ flag e.g. LBLOQFL.}
+\item{loq_flag_var}{name of variable containing LOQ flag e.g. LBLOQFL.}
 
 \item{unit}{name of variable containing biomarker unit.}
 
@@ -48,7 +47,7 @@ g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
 
 \item{dot_size}{scatter dot size.}
 
-\item{time}{name of variable containing visit codes e.g. AVISITCD.}
+\item{time}{name of variable containing nominal visits e.g. AVISITCD.}
 
 \item{timepoint}{x axis visit selected label.}
 
@@ -104,7 +103,8 @@ select(USUBJID, PARAMCD, AVAL) \%>\%
 # - adjust existing BASELINE record values where values are missing: According to SPA this is a STREAM artifact
 ALB_SUPED1 <- ALB_SUBSET \%>\% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
                                         substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) \%>\%
-               mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4))) \%>\%
+               mutate(AVISITCD = ifelse(AVISITCD == "BB", "BL", AVISITCD)) \%>\%
+               mutate(AVISITCDN =  ifelse(AVISITCD == "BL", 0, substr(AVISITCD,start=2, stop=4))) \%>\%
                mutate(BASE = ifelse(AVISIT == "BASELINE" & is.na(BASE), AVAL, BASE)) \%>\%
                mutate(CHG = ifelse(AVISIT == "BASELINE" & is.na(CHG), 0, CHG)) \%>\%
                mutate(PCHG = ifelse(AVISIT == "BASELINE" & is.na(PCHG), 0, PCHG))
@@ -121,7 +121,7 @@ ALB_SUPED2 <- merge(ALB_SUPED1, PARAM_MINS, by="PARAMCD")[, union(names(ALB_SUPE
 ALB_SUPED2$AVISITCDN <- as.numeric(ALB_SUPED2$AVISITCDN) # coerce character into numeric
 ALB <- ALB_SUPED2 \%>\% mutate(AVISITCD = factor(AVISITCD) \%>\% reorder(AVISITCDN))
 
-# to test loq_flag
+# to test loq_flag_var
 ALB <- ALB \%>\% mutate(LOQFL = ifelse(PARAMCD == "CRP" & AVAL < .5, "Y", "N"))
 
 param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
@@ -135,7 +135,7 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            yaxis_var = 'AVAL', # name of variable containing the analysis values.
            trt_group = 'ARM',
            visit = 'AVISITCD',
-           loq_flag = 'LOQFL',
+           loq_flag_var = 'LOQFL',
            unit = 'AVALU',
            #timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
            xmin_scale = 0,

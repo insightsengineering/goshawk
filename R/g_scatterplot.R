@@ -15,8 +15,8 @@
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
 #' @param yaxis_var name of variable containing biomarker results displayed on Y-axise.g. AVAL.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
-#' @param time name of variable containing visit codes e.g. AVISITCD.
-#' @param loq_flag name of variable containing LOQ flag e.g. LBLOQFL.
+#' @param time name of variable containing nominal visits e.g. AVISITCD.
+#' @param loq_flag_var name of variable containing LOQ flag e.g. LBLOQFL.
 #' @param unit name of variable containing biomarker unit.
 #' @param timepoint x axis visit selected label.
 #' @param color_manual vector of colors.
@@ -27,6 +27,10 @@
 #' @param pct set axis values to percent scale.
 #' @param reg_line include regression line in visualization.
 #' @param dot_size scatter dot size.
+#' 
+#' @import DescTools
+#' @import dplyr
+#' @import ggplot2
 #' 
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
@@ -73,7 +77,8 @@
 #'# - adjust existing BASELINE record values where values are missing: According to SPA this is a STREAM artifact
 #'ALB_SUPED1 <- ALB_SUBSET %>% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
 #'                                         substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) %>%
-#'                mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4))) %>%
+#'                mutate(AVISITCD = ifelse(AVISITCD == "BB", "BL", AVISITCD)) %>%
+#'                mutate(AVISITCDN =  ifelse(AVISITCD == "BL", 0, substr(AVISITCD,start=2, stop=4))) %>%
 #'                mutate(BASE = ifelse(AVISIT == "BASELINE" & is.na(BASE), AVAL, BASE)) %>%
 #'                mutate(CHG = ifelse(AVISIT == "BASELINE" & is.na(CHG), 0, CHG)) %>%
 #'                mutate(PCHG = ifelse(AVISIT == "BASELINE" & is.na(PCHG), 0, PCHG))
@@ -90,7 +95,7 @@
 #'ALB_SUPED2$AVISITCDN <- as.numeric(ALB_SUPED2$AVISITCDN) # coerce character into numeric
 #'ALB <- ALB_SUPED2 %>% mutate(AVISITCD = factor(AVISITCD) %>% reorder(AVISITCDN))
 #'
-#'# to test loq_flag
+#'# to test loq_flag_var
 #'ALB <- ALB %>% mutate(LOQFL = ifelse(PARAMCD == "CRP" & AVAL < .5, "Y", "N"))
 #'
 #' param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
@@ -104,7 +109,7 @@
 #'            yaxis_var = 'AVAL', # name of variable containing the analysis values.
 #'            trt_group = 'ARM',
 #'            visit = 'AVISITCD',
-#'            loq_flag = 'LOQFL',
+#'            loq_flag_var = 'LOQFL',
 #'            unit = 'AVALU',
 #'            #timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
 #'            xmin_scale = 0,
@@ -134,7 +139,7 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           yaxis_var = 'AVAL',
                           trt_group = "ARM",
                           visit = "AVISITCD",
-                          loq_flag = "LOQFL",
+                          loq_flag_var = "LOQFL",
                           unit = "AVALU",
                           #timepoint = "Baseline",
                           xmin_scale = 0,
@@ -142,7 +147,6 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           ymin_scale = 0,
                           ymax_scale = 200,
                           color_manual = NULL,
-                          man_color = NULL,
                           shape_manual = c('N' = 1, 'Y' = 2, 'NA' = 0),
                           hline = NULL,
                           rotate_xlab = FALSE,
@@ -163,8 +167,8 @@ plot_data <- data %>%
                    aes_string(x = xaxis_var,
                               y = yaxis_var,
                               color = trt_group)) +
-    geom_point(aes_string(shape = loq_flag), size = dot_size, na.rm = TRUE) +
-    facet_wrap(as.formula(paste0('~',visit))) +
+    geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
+    facet_wrap(as.formula(paste0('~', visit))) +
     theme_bw() +
     #scale_color_manual(values = color_manual, name = 'Dose') +
     scale_shape_manual(values = shape_manual, name = 'LOQ') +
@@ -248,7 +252,7 @@ plot_data <- data %>%
     # Format dot size
   if (!is.null(dot_size)){
     plot1 <- plot1 +
-      geom_point(aes_string(shape = loq_flag), size = dot_size, na.rm = TRUE)
+      geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
   }
   
   # Format x-label
@@ -268,7 +272,6 @@ plot_data <- data %>%
     plot1 <- plot1 +
       geom_hline(aes(yintercept = hline), color="red", linetype="dashed", size=0.5)
   }
-  
   
   plot1
   
