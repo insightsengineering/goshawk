@@ -9,7 +9,9 @@
 #' @param biomaker biomarker name to be analyzed. 
 #' @param value_var name of variable containing biomarker results.
 #' @param trt_group name of variable representing treatment group.
+#' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
+#' @param time_level vector that can be used to define the factor level of time.
 #' @param ymin y-axis lower limit.
 #' @param ymax y-axis upper limit.
 #' @param facet_ncol number of facets per row.
@@ -60,13 +62,32 @@ g_spaghettiplot <- function(data,
                             biomarker,
                             value_var = 'AVAL',
                             trt_group,
+                            trt_group_level = NULL,
                             time,
+                            time_level = NULL,
                             ymin = NA,
                             ymax = NA,
                             facet_ncol = 2,
                             hline = NULL,
                             rotate_xlab = FALSE){
+  
+  ## Pre-process data
+  if(!is.null(trt_group_level)){
+    data[[trt_group]] <- factor(data[[trt_group]],
+                                levels = trt_group_level)
+  } else {
+    data[[trt_group]] <- factor(data[[trt_group]])
+  }
+  
+  if(!is.null(time_level)){
+    data[[time]] <- factor(data[[time]],
+                           levels = time_level)
+  } else {
+    data[[time]] <- factor(data[[time]])
+  }
+  
 
+  # Plot
   for.plot <- data[data[[biomarker_var]] %in% biomarker,]
   
   title <- list("AVAL" = "Analysis Value", "CHG" = "Change from Baseline")

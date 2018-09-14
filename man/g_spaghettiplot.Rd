@@ -5,8 +5,9 @@
 \title{Spaghetti plot}
 \usage{
 g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
-  biomarker, value_var = "AVAL", trt_group, time, ymin = NA, ymax = NA,
-  facet_ncol = 2, hline = NULL, rotate_xlab = FALSE)
+  biomarker, value_var = "AVAL", trt_group, trt_group_level = NULL, time,
+  time_level = NULL, ymin = NA, ymax = NA, facet_ncol = 2,
+  hline = NULL, rotate_xlab = FALSE)
 }
 \arguments{
 \item{data}{data frame with variables to be summarized and generate statistics which will display in the plot.}
@@ -19,7 +20,11 @@ g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
 
 \item{trt_group}{name of variable representing treatment group.}
 
+\item{trt_group_level}{vector that can be used to define the factor level of trt_group.}
+
 \item{time}{name of vairable containing visit names.}
+
+\item{time_level}{vector that can be used to define the factor level of time.}
 
 \item{ymin}{y-axis lower limit.}
 

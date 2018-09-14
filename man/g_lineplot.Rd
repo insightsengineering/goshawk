@@ -20,7 +20,11 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD", biomarker,
 
 \item{trt_group}{name of variable representing treatment group.}
 
+\item{trt_group_level}{vector that can be used to define the factor level of trt_group.}
+
 \item{time}{name of vairable containing visit names.}
+
+\item{time_level}{vector that can be used to define the factor level of time.}
 
 \item{color_manual}{vector of colors.}
 
