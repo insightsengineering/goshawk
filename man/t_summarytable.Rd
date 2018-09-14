@@ -5,44 +5,50 @@
 \title{Function to generate a table of descriptive summary statistics accompany
 plots.}
 \usage{
-t_summarytable(data, trt_group, biomarker_var, biomarker, value_var, visit, loq,
-  ...)
+t_summarytable(data, trt_group, param_var, param, xaxis_var,
+  visit_var = "AVISITCD", font_size = 12, loq_flag_var = "LOQFL", ...)
 }
 \arguments{
 \item{data}{frame name}
 
 \item{trt_group}{treatment group variable name e.g. ARM}
 
-\item{biomarker}{PARAM value}
+\item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
-\item{loq}{loq variable name e.g. loq_flag (not in current ALB)}
+\item{param}{biomarker to visualize e.g. IGG.}
 
-\item{time}{visit variable name e.g. VISIT}
+\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. BASE.}
+
+\item{visit_var}{name of variable containing visit values e.g. AVISITCD}
+
+\item{loq_flag_var}{loq variable name e.g. loq_flag_var (not in current ALB)}
 }
 \value{
 \code{tbl} object
 }
 \description{
 Output render by teal.goshawk module \code{t_summarytable} returns
-descriptive summary statistics table
+descriptive summary statistics table as a data frame
 }
 \details{
 provide additional information as needed. link to specification file \url{http://rstudio.com}
 }
 \examples{
 
-ALB <- read_bce("/opt/bee/home_nas/npaszty/btk/lupus/dataadam/alb3arm.sas7bdat")
-biomarker <- c('IGG') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+\dontrun{
+# use post processed data created in app.R file
 
 # call function
 t_summarytable(data = ALB,
                trt_group = 'ARM',
-               biomarker_var = 'PARAMCD',
-               biomarker = biomarker, # the PARAMCD value
-               value_var = 'AVAL',
-               visit = 'AVISIT',
-               loq = NULL)
-              
+               param_var = 'PARAMCD',
+               param = param, # the PARAMCD value
+               xaxis_var = 'AVAL',
+               visit_var = 'AVISITCD',
+               font_size = 12,
+               loq_flag_var = 'LOQFL')
+
+}
 
 }
 \author{
