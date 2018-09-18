@@ -19,6 +19,7 @@
 #' 
 #' @import ggplot2
 #' @import dplyr
+#' @import grid
 #' @importFrom stringr str_wrap
 #' @importFrom gridExtra grid.arrange
 #'
@@ -154,7 +155,7 @@ g_lineplot <- function(label = 'Line Plot',
                        trt_group_level = NULL,
                        time,
                        time_level = NULL,
-                       color_manual,
+                       color_manual = NULL,
                        median = FALSE,
                        hline = NULL,
                        rotate_xlab = FALSE) {
@@ -266,7 +267,18 @@ g_lineplot <- function(label = 'Line Plot',
           axis.title.y = element_blank(),
           plot.title = element_text(size=12))
   
-  grid.arrange(plot1, tbl, heights = c(10, 2))
+  glist <- lapply(list(plot=plot1, text=tbl), ggplotGrob)
+  leftmar <- do.call(unit.pmax, lapply(glist, "[[", "widths"))
+  glist.aligned <- lapply(glist, function(x) {
+    x$widths <- leftmar
+    x
+  })
+  
+  #Plot the two grobs using grid.arrange
+  grid.newpage()
+  do.call(grid.arrange, c(glist.aligned, 
+                          list(ncol=1), 
+                          list(heights=c(18,length(unique(sum_data[[trt_group]]))))))
  
 }
 
