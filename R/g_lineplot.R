@@ -19,8 +19,8 @@
 #' 
 #' @import ggplot2
 #' @import dplyr
-#' @import gridExtra
-#' @import stringr
+#' @importFrom stringr str_wrap
+#' @importFrom gridExtra grid.arrange
 #'
 #' @author Balazs Toth (toth.balazs@gene.com)
 #' @author Wenyi Liu (wenyi.liu@roche.com)
