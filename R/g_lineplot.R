@@ -155,7 +155,7 @@ g_lineplot <- function(label = 'Line Plot',
                        trt_group_level = NULL,
                        time,
                        time_level = NULL,
-                       color_manual,
+                       color_manual = NULL,
                        median = FALSE,
                        hline = NULL,
                        rotate_xlab = FALSE) {

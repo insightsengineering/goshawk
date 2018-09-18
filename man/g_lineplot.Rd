@@ -6,7 +6,7 @@
 \usage{
 g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD", biomarker,
   value_var = "AVAL", ymin = NA, ymax = NA, trt_group,
-  trt_group_level = NULL, time, time_level = NULL, color_manual,
+  trt_group_level = NULL, time, time_level = NULL, color_manual = NULL,
   median = FALSE, hline = NULL, rotate_xlab = FALSE)
 }
 \arguments{
