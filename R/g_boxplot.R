@@ -1,22 +1,18 @@
 #' Function to generate a boxplot
 #' Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualization
 #'
-#' A box plot is a method for graphically depicting groups of numerical data
-#' through their quartiles. Box plots may also have lines extending vertically
-#' from the boxes (whiskers) indicating variability outside the upper and lower
-#' quartiles, hence the term box-and-whisker. Outliers may be plotted as
-#' individual points. Box plots are non-parametric: they display variation in
-#' samples of a statistical population without making any assumptions of the
-#' underlying statistical distribution. The spacings between the different parts
-#' of the box indicate the degree of dispersion (spread) and skewness in the
-#' data, and show outliers. In addition to the points themselves, they allow one
-#' to visually estimate various L-estimators, notably the interquartile range,
-#' midhinge, range, mid-range, and trimean.
+#' A box plot is a method for graphically depicting groups of numerical data through their quartiles. Box 
+#' plots may also have lines extending vertically from the boxes (whiskers) indicating variability 
+#' outside the upper and lower quartiles, hence the term box-and-whisker. Outliers may be plotted as 
+#' individual points. Box plots are non-parametric: they display variation in samples of a statistical 
+#' population without making any assumptions of the underlying statistical distribution. The spacings 
+#' between the different parts of the box indicate the degree of dispersion (spread) and skewness in the 
+#' data, and show outliers. In addition to the points themselves, they allow one to visually estimate 
+#' various L-estimators, notably the interquartile range, midhinge, range, mid-range, and trimean. 
 #'
 #' @param data data frame with variables which will be displayed in the plot.
 #' @param biomarker biomarker to visualize e.g. IGG. 
-#' @param value_var name of variable containing biomarker results displayed on
-#'   Y-axis e.g. AVAL.
+#' @param value_var name of variable containing biomarker results displayed on Y-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment trt_group e.g. ARM.
 #' @param loq_flag  name of variable containing LOQ flag e.g. LBLOQFL.
 #' @param unit biomarker unit label e.g. (U/L)
@@ -28,7 +24,6 @@
 #' @param ymin_scale minimum value for the Y axis
 #' @param ymax_scale maximum value for the Y axis
 #' @param facet variable to facet the plot by, or "None" if no faceting required.
-#  @param dot_size size of the symbols
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param alpha transparency for the points (0 = transparent, 1 = opaque)
 #' 
@@ -36,8 +31,7 @@
 #' @author Balazs Toth
 #' @author Jeff Tomlinson (tomlinsj) jeffrey.tomlinson@roche.com
 #'
-#' @details provide additional information as needed. perhaps link to
-#'   specification file.\url{http://rstudio.com}
+#' @details provide additional information as needed. perhaps link to specification file.\url{http://rstudio.com}
 #'
 #' @return \code{ggplot} object
 #'
@@ -105,7 +99,7 @@ g_boxplot <- function(data,
   plot1 <-  ggplot()
     
   # Add boxes if required 
-  if (box) { 
+  if (box) {
     plot1 <- plot1 +
       geom_boxplot(data = data,
                    aes_string( x = trt_group,
@@ -129,17 +123,22 @@ g_boxplot <- function(data,
     theme_bw() +
     ggtitle(paste0(value_var,' distribution @ ',timepoint,' per arm')) 
 
-  # Colors supplied?
+  # Colors supplied?   
+  # if (!is.null(color_manual)) {
+  #   cols <- color_manual
+  # } else {
+  #   cols <- c("#1B9E77", "#D95F02", "#7570B3", "#E7298A", 
+  #             "#66A61E", "#E6AB02", "#A6761D", "#666666")
+  # }  
+  
+  # Colors supplied?  Use color_manual, otherwise default ggplot coloring.  
   if (!is.null(color_manual)) {
     cols <- color_manual
-  } else {
-    cols <- c("#1B9E77", "#D95F02", "#7570B3", "#E7298A", 
-              "#66A61E", "#E6AB02", "#A6761D", "#666666")
-  }  
-  plot1 <- plot1 +
-    scale_color_manual(values = cols, name = armlabel) +
-    scale_fill_manual(values = cols, name = armlabel)  
-
+    plot1 <- plot1 +
+      scale_color_manual(values = cols, name = armlabel) +
+      scale_fill_manual(values = cols, name = armlabel)  
+  }
+  
   # LOQ needed?
   if (!is.null(shape_manual) ) {
     plot1 <- plot1 +

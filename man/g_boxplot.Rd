@@ -8,7 +8,7 @@ Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualiz
 g_boxplot(data, biomarker, value_var, trt_group, loq_flag = "LOQFL",
   unit = NULL, timepoint = NULL, color_manual = NULL,
   shape_manual = NULL, box = TRUE, logscale = FALSE, ymax_scale = NULL,
-  ymin_scale = NULL, dot_size = 2, alpha = 1, font_size = NULL,
+  ymin_scale = NULL, dot_size = 2, alpha = 1, font_size = NULL, 
   facet = NULL)
 }
 \arguments{
@@ -16,8 +16,7 @@ g_boxplot(data, biomarker, value_var, trt_group, loq_flag = "LOQFL",
 
 \item{biomarker}{biomarker to visualize e.g. IGG.}
 
-\item{value_var}{name of variable containing biomarker results displayed on
-Y-axis e.g. AVAL.}
+\item{value_var}{name of variable containing biomarker results displayed on Y-axis e.g. AVAL.}
 
 \item{trt_group}{name of variable representing treatment trt_group e.g. ARM.}
 
@@ -49,21 +48,17 @@ Y-axis e.g. AVAL.}
 \code{ggplot} object
 }
 \description{
-A box plot is a method for graphically depicting groups of numerical data
-through their quartiles. Box plots may also have lines extending vertically
-from the boxes (whiskers) indicating variability outside the upper and lower
-quartiles, hence the term box-and-whisker. Outliers may be plotted as
-individual points. Box plots are non-parametric: they display variation in
-samples of a statistical population without making any assumptions of the
-underlying statistical distribution. The spacings between the different parts
-of the box indicate the degree of dispersion (spread) and skewness in the
-data, and show outliers. In addition to the points themselves, they allow one
-to visually estimate various L-estimators, notably the interquartile range,
-midhinge, range, mid-range, and trimean.
+A box plot is a method for graphically depicting groups of numerical data through their quartiles. Box 
+plots may also have lines extending vertically from the boxes (whiskers) indicating variability 
+outside the upper and lower quartiles, hence the term box-and-whisker. Outliers may be plotted as 
+individual points. Box plots are non-parametric: they display variation in samples of a statistical 
+population without making any assumptions of the underlying statistical distribution. The spacings 
+between the different parts of the box indicate the degree of dispersion (spread) and skewness in the 
+data, and show outliers. In addition to the points themselves, they allow one to visually estimate 
+various L-estimators, notably the interquartile range, midhinge, range, mid-range, and trimean.
 }
 \details{
-provide additional information as needed. perhaps link to
-  specification file.\url{http://rstudio.com}
+provide additional information as needed. perhaps link to specification file.\url{http://rstudio.com}
 }
 \examples{
 
