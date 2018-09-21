@@ -1,38 +1,48 @@
 #' Function to generate a boxplot
 #' Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualization
 #'
-#' A box plot is a method for graphically depicting groups of numerical data through their quartiles. Box 
-#' plots may also have lines extending vertically from the boxes (whiskers) indicating variability 
-#' outside the upper and lower quartiles, hence the term box-and-whisker. Outliers may be plotted as 
-#' individual points. Box plots are non-parametric: they display variation in samples of a statistical 
-#' population without making any assumptions of the underlying statistical distribution. The spacings 
-#' between the different parts of the box indicate the degree of dispersion (spread) and skewness in the 
-#' data, and show outliers. In addition to the points themselves, they allow one to visually estimate 
-#' various L-estimators, notably the interquartile range, midhinge, range, mid-range, and trimean. 
+#' A box plot is a method for graphically depicting groups of numerical data
+#' through their quartiles. Box plots may also have lines extending vertically
+#' from the boxes (whiskers) indicating variability outside the upper and lower
+#' quartiles, hence the term box-and-whisker. Outliers may be plotted as
+#' individual points. Box plots are non-parametric: they display variation in
+#' samples of a statistical population without making any assumptions of the
+#' underlying statistical distribution. The spacings between the different parts
+#' of the box indicate the degree of dispersion (spread) and skewness in the
+#' data, and show outliers. In addition to the points themselves, they allow one
+#' to visually estimate various L-estimators, notably the interquartile range,
+#' midhinge, range, mid-range, and trimean.
 #'
 #' @param data data frame with variables which will be displayed in the plot.
-#' @param biomarker biomarker to visualize e.g. IGG. 
-#' @param value_var name of variable containing biomarker results displayed on Y-axis e.g. AVAL.
+#' @param biomarker biomarker to visualize e.g. IGG.
+#' @param value_var name of variable containing biomarker results displayed on
+#'   Y-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment trt_group e.g. ARM.
 #' @param loq_flag  name of variable containing LOQ flag e.g. LBLOQFL.
 #' @param unit biomarker unit label e.g. (U/L)
-#' @param timepoint 
+#' @param timepoint text to include on the plot title
 #' @param color_manual vector of colour for trt_group
 #' @param shape_manual vector of shapes (used with log_flag)
 #' @param box add boxes to the plot (boolean)
-#' @param logscale use a log scale for the Y axis (boolean) 
+#' @param logscale use a log scale for the Y axis (boolean)
 #' @param ymin_scale minimum value for the Y axis
 #' @param ymax_scale maximum value for the Y axis
-#' @param facet variable to facet the plot by, or "None" if no faceting required.
+#' @param facet variable to facet the plot by, or "None" if no faceting
+#'   required. 
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param alpha transparency for the points (0 = transparent, 1 = opaque)
-#' 
+#'   
+#' @import ggplot2
+#' @import dplyr
+#' @import grid
+#' @importFrom gridExtra grid.arrange
 #'
 #' @author Balazs Toth
 #' @author Jeff Tomlinson (tomlinsj) jeffrey.tomlinson@roche.com
 #'
-#' @details provide additional information as needed. perhaps link to specification file.\url{http://rstudio.com}
-#'
+#' @details provide additional information as needed. perhaps link to
+#'   specification file.\url{http://rstudio.com}
+#'   
 #' @return \code{ggplot} object
 #'
 #' @export
@@ -40,15 +50,51 @@
 #' @examples
 #'
 #'\dontrun{
-#' # ALB is a VAD or ADAM format dataset, subsetted for the appropriate population.
-#' # Select the parameter of interest to plot.
-#' albplot <- ALB %>% 
-#'   filter(PARAMCD == "IGA") 
+#' library(random.cdisc.data)
+#' library(dplyr)
 #' 
-#' # Plot boxplots for IGA by Treatment (ARM) faceted by AVISIT, to display a 
-#' # boxplot for each visit.  
+#' # Example data for 100 patients from 3 treatment groups
+#' ASL <- radam('ASL', start_with = list(
+#'   STUDYID = "XX99999",
+#'   USUBJID = paste0("XX99999-999-",1:100),
+#'   ITTFL = 'Y',
+#'   SEX = c("M", "F"),
+#'   ARM = paste("ARM", LETTERS[1:3])
+#' ))
+#' 
+#' # Create an example ALB dataset from the 100 patient, with 6 visits with 3 
+#' # parameters for each subject.  
+#' ALB <- expand.grid(USUBJID = ASL$USUBJID
+#'               , AVISIT = c("BASELINE",  paste0("VISIT ", 1:5))
+#'               , PARAMCD = c("CRP", "IGA", "IGG")
+#'               , stringsAsFactors = FALSE
+#'     ) %>% 
+#'   mutate( AVAL = rnorm(nrow(ALB), mean = 50, sd = 8) )
+#' 
+#' ALB <- ALB %>% 
+#'   left_join(ALB %>% 
+#'               filter(AVISIT == "BASELINE") %>% 
+#'               select(USUBJID, PARAMCD, BASE = AVAL)
+#'             , by = c("USUBJID", "PARAMCD")) %>% 
+#'   left_join(ASL, by = "USUBJID") %>% 
+#'   mutate(CHG = AVAL - BASE, PCHG = 100 * CHG/BASE) %>% 
+#'   mutate(LOQFL = ifelse(AVAL < 32, "Y", "N"))
+#' 
+#' 
+#' # Example 1.
+#' 
+#' # Plot boxplots for IGA by Treatment (ARM) faceted by AVISIT, to display a
+#' # boxplot for each visit.
 #' # Specific colors are given for each treatment group.
 #' # Values that are flagged by LOQFL are given a different symbol.
+#' # Log scale for the Y axis.
+#' # Points are plot with a transparency
+#' 
+#' # ALB is a VAD or ADAM format dataset, subsetted for the appropriate population.
+#' # Select the parameter of interest to plot.
+#' albplot <- ALB %>%
+#'   filter(PARAMCD == "IGA")
+#' 
 #' g_boxplot(albplot
 #'           , biomarker = "IGA"
 #'           , value_var = "AVAL"
@@ -56,10 +102,24 @@
 #'           , loq_flag = 'LOQFL'
 #'           , timepoint = "over time"
 #'           , unit = "U/L"
-#'           , color_manual = c('ARM 1' = "#1F78B4", 'ARM 2' = "#33A02C", 'ARM 3' = "#601010")
+#'           , color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
 #'           , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
 #'           , facet = "AVISIT"
-#'           , box = TRUE
+#'           , alpha = 0.5
+#'           , logscale = TRUE
+#' )
+#' 
+#' 
+#' # Example 2
+#' #
+#' # A plot using mostly default values. 
+#' albplot <- ALB %>%
+#'   filter(PARAMCD == "CRP" & AVISIT == "BASELINE")
+#' 
+#' g_boxplot(albplot
+#'           , biomarker = "CRP"
+#'           , value_var = "AVAL"
+#'           , trt_group = "ARM"
 #' )
 #' 
 #'}
@@ -84,7 +144,9 @@ g_boxplot <- function(data,
                        facet = NULL) {
 
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
-  yAxisLabel <- ifelse(is.null(unit) | unit == "", biomarker, paste0(biomarker,' (',unit,')'))
+  yAxisLabel <- ifelse(is.null(unit), biomarker, 
+                       ifelse(unit == "", biomarker, paste0(biomarker,' (',unit,')'))
+                       )
 
   # A useable name for the X axis.
   # If present, use the label for the trt_group parameter, if not then use the name
@@ -123,14 +185,6 @@ g_boxplot <- function(data,
     theme_bw() +
     ggtitle(paste0(value_var,' distribution @ ',timepoint,' per arm')) 
 
-  # Colors supplied?   
-  # if (!is.null(color_manual)) {
-  #   cols <- color_manual
-  # } else {
-  #   cols <- c("#1B9E77", "#D95F02", "#7570B3", "#E7298A", 
-  #             "#66A61E", "#E6AB02", "#A6761D", "#666666")
-  # }  
-  
   # Colors supplied?  Use color_manual, otherwise default ggplot coloring.  
   if (!is.null(color_manual)) {
     cols <- color_manual
