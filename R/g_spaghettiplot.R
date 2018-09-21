@@ -104,7 +104,7 @@
 #' plot1
 #'
 #' # EXAMPLE 2:
-#' 
+#'
 #' library(dplyr)
 #' 
 #' ANL <- expand.grid(
@@ -117,6 +117,7 @@
 #' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 #' ANL$CHG[ANL$VISIT == "visit 1"] <- NA
 #' ANL$PCHG <- ANL$CHG/ANL$AVAL*100
+#' ANL$AVALU <- 'mg'
 #' 
 #' ANL$ARM <- factor(ANL$ARM)
 #' ANL$VISIT <- factor(ANL$VISIT)
@@ -136,6 +137,7 @@ g_spaghettiplot <- function(data,
                             biomarker_var = 'PARAMCD',
                             biomarker,
                             value_var = 'AVAL',
+                            unit_var = 'AVALU',
                             trt_group,
                             trt_group_level = NULL,
                             time,
@@ -165,6 +167,8 @@ g_spaghettiplot <- function(data,
   # Plot
   for.plot <- data[data[[biomarker_var]] %in% biomarker,]
   
+  unit <- unique(for.plot[[unit_var]])
+  
   title <- list("AVAL" = "Analysis Value", "CHG" = "Change from Baseline")
   
   plot <- ggplot(data = for.plot, 
@@ -174,7 +178,7 @@ g_spaghettiplot <- function(data,
     facet_wrap(trt_group, ncol = facet_ncol) + 
     theme_bw() +
     scale_y_continuous(limits = c(ymin, ymax)) +
-    ggtitle(paste0(biomarker, " - ", title[[value_var]], " over time")) +
+    ggtitle(paste0(biomarker, ' (', unit, ') ', " - ", title[[value_var]], " over time")) +
     xlab(time) + 
     ylab(paste0(biomarker))
   
