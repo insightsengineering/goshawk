@@ -85,11 +85,10 @@ t_summarytable <- function(data,
   
   # combine the two data sets and apply some formatting
   sum_data <<- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
-    arrange(PARAMCD, AVISITCD, row_ord) %>% # sort
-    mutate(Biomarker = PARAMCD, Treatment = ARM, Visit = AVISITCD) %>% # rename variables
-    ungroup() %>% # need to ungroup to drop previously identified grouping variables PARAMCD and ARM
-    select(-PARAMCD, -ARM, -AVISITCD, -row_ord) %>% # drop
-    select(Biomarker, Treatment, Visit, n:PctLOQ) # reorder variables
+    ungroup() %>%     # need to ungroup to drop previously identified grouping variables PARAMCD and ARM
+    select(Biomarker = param_var, Treatment = trt_group, Visit = visit_var, n:PctLOQ, row_ord) %>% # reorder variables
+    arrange(Biomarker, Visit, row_ord) %>% 
+    select(-row_ord)
     
   
 }
