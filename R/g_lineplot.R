@@ -126,6 +126,7 @@
 #' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 #' ANL$CHG[ANL$VISIT == "visit 1"] <- NA
 #' ANL$PCHG <- ANL$CHG/ANL$AVAL*100
+#' ANL$AVALU <- 'mg'
 #' 
 #' ANL$ARM <- factor(ANL$ARM)
 #' ANL$VISIT <- factor(ANL$VISIT)
@@ -150,6 +151,7 @@ g_lineplot <- function(label = 'Line Plot',
                        biomarker_var = 'PARAMCD',
                        biomarker,
                        value_var = 'AVAL',
+                       unit_var = 'AVALU',
                        ymin = NA, ymax = NA,
                        trt_group,
                        trt_group_level = NULL,
@@ -206,8 +208,9 @@ g_lineplot <- function(label = 'Line Plot',
   if (grepl('CHG',value_var)) {
     title <- paste0(' change from baseline')
   }
-
-
+  
+  unit <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[unit_var]])
+  
   plot1 <-  ggplot(data = sum_data,
                    aes_string(x = time,
                               y = line,
@@ -221,7 +224,7 @@ g_lineplot <- function(label = 'Line Plot',
                   position = pd) +
     theme_bw() +
     scale_y_continuous(limits = c(ymin, ymax)) +
-    ggtitle(paste0(biomarker, ' ', line, ' over time')) +
+    ggtitle(paste0(biomarker, ' (', unit, ') ', line, ' over time')) +
     xlab(time) + 
     ylab(paste0(biomarker, ' ', line, title))+
     theme(legend.position = "bottom",
