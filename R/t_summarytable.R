@@ -12,8 +12,8 @@
 #' @param visit_var name of variable containing visit values e.g. AVISITCD
 #' @param loq_flag_var loq variable name e.g. loq_flag_var (not in current ALB)
 #'
-#' @author Balazs Toth
-#' @author Nick Paszty
+#' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
+#' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
 #' @details provide additional information as needed. link to specification file \url{http://rstudio.com}
 #'
