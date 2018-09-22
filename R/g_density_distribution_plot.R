@@ -38,7 +38,7 @@
 #' # ALB points to biomarker data stored in a typical LB structure. for example ALB or ADLB.
 #' 
 #' # need a test data set created using random.cdisc.data.
-#' # example call uses call expects ALB structure 
+#' # example call uses expects ALB structure 
 #'
 #' param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_density_distribution_plot.R
 #' 
