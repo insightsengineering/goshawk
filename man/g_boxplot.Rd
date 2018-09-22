@@ -5,9 +5,10 @@
 \title{Function to generate a boxplot
 Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualization}
 \usage{
-g_boxplot(data, biomarker, value_var, arm, loq_flag = NULL, unit = NULL,
-  timepoint = NULL, color_manual = NULL, shape_manual = NULL,
-  box = TRUE, logscale = FALSE, ymax_scale = NULL, ymin_scale = NULL,
+g_boxplot(data, biomarker, value_var, trt_group, loq_flag = "LOQFL",
+  unit = NULL, timepoint = NULL, color_manual = NULL,
+  shape_manual = NULL, box = TRUE, logscale = FALSE, ymax_scale = NULL,
+  ymin_scale = NULL, dot_size = 2, alpha = 1, font_size = NULL,
   facet = NULL)
 }
 \arguments{
@@ -15,9 +16,10 @@ g_boxplot(data, biomarker, value_var, arm, loq_flag = NULL, unit = NULL,
 
 \item{biomarker}{biomarker to visualize e.g. IGG.}
 
-\item{value_var}{name of variable containing biomarker results displayed on Y-axis e.g. AVAL.}
+\item{value_var}{name of variable containing biomarker results displayed on
+Y-axis e.g. AVAL.}
 
-\item{arm}{name of variable representing treatment arm e.g. ARM.}
+\item{trt_group}{name of variable representing treatment trt_group e.g. ARM.}
 
 \item{loq_flag}{name of variable containing LOQ flag e.g. LBLOQFL.}
 
@@ -25,7 +27,7 @@ g_boxplot(data, biomarker, value_var, arm, loq_flag = NULL, unit = NULL,
 
 \item{timepoint}{}
 
-\item{color_manual}{vector of colour for arm}
+\item{color_manual}{vector of colour for trt_group}
 
 \item{shape_manual}{vector of shapes (used with log_flag)}
 
@@ -37,23 +39,31 @@ g_boxplot(data, biomarker, value_var, arm, loq_flag = NULL, unit = NULL,
 
 \item{ymin_scale}{minimum value for the Y axis}
 
+\item{alpha}{transparency for the points (0 = transparent, 1 = opaque)}
+
+\item{font_size}{point size of tex to use.  NULL is use default size}
+
 \item{facet}{variable to facet the plot by, or "None" if no faceting required.}
 }
 \value{
 \code{ggplot} object
 }
 \description{
-A box plot is a method for graphically depicting groups of numerical data through their quartiles. Box 
-plots may also have lines extending vertically from the boxes (whiskers) indicating variability 
-outside the upper and lower quartiles, hence the term box-and-whisker. Outliers may be plotted as 
-individual points. Box plots are non-parametric: they display variation in samples of a statistical 
-population without making any assumptions of the underlying statistical distribution. The spacings 
-between the different parts of the box indicate the degree of dispersion (spread) and skewness in the 
-data, and show outliers. In addition to the points themselves, they allow one to visually estimate 
-various L-estimators, notably the interquartile range, midhinge, range, mid-range, and trimean.
+A box plot is a method for graphically depicting groups of numerical data
+through their quartiles. Box plots may also have lines extending vertically
+from the boxes (whiskers) indicating variability outside the upper and lower
+quartiles, hence the term box-and-whisker. Outliers may be plotted as
+individual points. Box plots are non-parametric: they display variation in
+samples of a statistical population without making any assumptions of the
+underlying statistical distribution. The spacings between the different parts
+of the box indicate the degree of dispersion (spread) and skewness in the
+data, and show outliers. In addition to the points themselves, they allow one
+to visually estimate various L-estimators, notably the interquartile range,
+midhinge, range, mid-range, and trimean.
 }
 \details{
-provide additional information as needed. perhaps link to specification file.\url{http://rstudio.com}
+provide additional information as needed. perhaps link to
+  specification file.\url{http://rstudio.com}
 }
 \examples{
 
@@ -70,7 +80,7 @@ albplot <- ALB \%>\%
 g_boxplot(albplot
           , biomarker = "IGA"
           , value_var = "AVAL"
-          , arm = "ARM"
+          , trt_group = "ARM"
           , loq_flag = 'LOQFL'
           , timepoint = "over time"
           , unit = "U/L"
