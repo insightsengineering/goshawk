@@ -6,7 +6,7 @@
 plots.}
 \usage{
 t_summarytable(data, trt_group, param_var, param, xaxis_var,
-  visit_var = "AVISITCD", font_size = 12, loq_flag_var = "LOQFL", ...)
+  visit_var = "AVISITCD", loq_flag_var = "LOQFL", ...)
 }
 \arguments{
 \item{data}{frame name}
@@ -45,7 +45,6 @@ t_summarytable(data = ALB,
                param = param, # the PARAMCD value
                xaxis_var = 'AVAL',
                visit_var = 'AVISITCD',
-               font_size = 12,
                loq_flag_var = 'LOQFL')
 
 }
