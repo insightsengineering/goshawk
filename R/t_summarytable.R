@@ -12,8 +12,8 @@
 #' @param visit_var name of variable containing visit values e.g. AVISITCD
 #' @param loq_flag_var loq variable name e.g. loq_flag_var (not in current ALB)
 #'
-#' @author Balazs Toth
-#' @author Nick Paszty
+#' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
+#' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
 #' @details provide additional information as needed. link to specification file \url{http://rstudio.com}
 #'
@@ -33,7 +33,6 @@
 #'                param = param, # the PARAMCD value
 #'                xaxis_var = 'AVAL',
 #'                visit_var = 'AVISITCD',
-#'                font_size = 12,
 #'                loq_flag_var = 'LOQFL')
 #'
 #'}
@@ -45,7 +44,6 @@ t_summarytable <- function(data,
                            param,
                            xaxis_var,
                            visit_var = 'AVISITCD',
-                           font_size = 12,
                            loq_flag_var = 'LOQFL', ...){
   
   table_data <<- data %>%
@@ -54,7 +52,7 @@ t_summarytable <- function(data,
   # by ARM table
   sum_data_by_arm <<- table_data %>%
     filter(eval(parse(text = param_var)) == param) %>%
-    group_by_(.dots = c(param_var, trt_group, visit_var)) %>%
+    group_by_(.dots = c(param_var, trt_group, "TRTORD", visit_var)) %>%
     summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
               Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
               Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
@@ -63,11 +61,8 @@ t_summarytable <- function(data,
               Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
               PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(is.na(eval(parse(text = xaxis_var)))),1),
               PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var))=='Y')/length(eval(parse(text = loq_flag_var))=='Y'),2)
-              ) %>%
-        # not sure why using trt_group instead of ARM doesn't work so using ARM
-        # !!!!!!!!!! THIS CODE IS NOT GENERIC SO NEEDS TO BE UPDATED !!!!!!!!!!
-        mutate(row_ord = ifelse(grepl("1", ARM), 1, ifelse(grepl("2", ARM), 2, ifelse(grepl("3", ARM), 3, NA))))
-
+              ) 
+  
   # by combined ARM table
   sum_data_combined_arm <<- table_data %>%
     filter(eval(parse(text = param_var)) == param) %>%
@@ -79,17 +74,15 @@ t_summarytable <- function(data,
               Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
               Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
               PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(is.na(eval(parse(text = xaxis_var)))),1),
-              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y')/length(eval(parse(text = loq_flag_var)) == 'Y'),2)
-    ) %>%
-    mutate(ARM = "Comb.", row_ord = 4)
+              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y')/length(eval(parse(text = loq_flag_var)) == 'Y'),2),
+              MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
+    ) %>% # additional use of max function identifies maximum treatment order across all visits.
+    mutate(ARM = "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) 
   
-  # combine the two data sets and apply some formatting
+  # combine the two data sets and apply some formatting. Note that R coerces ARM into character since it is a factor and character
   sum_data <<- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
-    arrange(PARAMCD, AVISITCD, row_ord) %>% # sort
-    mutate(Biomarker = PARAMCD, Treatment = ARM, Visit = AVISITCD) %>% # rename variables
-    ungroup() %>% # need to ungroup to drop previously identified grouping variables PARAMCD and ARM
-    select(-PARAMCD, -ARM, -AVISITCD, -row_ord) %>% # drop
-    select(Biomarker, Treatment, Visit, n:PctLOQ) # reorder variables
-    
-  
+    ungroup() %>% # need to ungroup to drop previously identified grouping variables
+    select(Biomarker = param_var, Treatment = trt_group, Visit = visit_var, n:PctLOQ, TRTORD) %>% # reorder variables
+    arrange(Biomarker, Visit, TRTORD) %>% # drop variable
+    select(-TRTORD)
 }
