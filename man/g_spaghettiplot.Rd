@@ -5,9 +5,9 @@
 \title{Spaghetti plot}
 \usage{
 g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
-  biomarker, value_var = "AVAL", trt_group, trt_group_level = NULL, time,
-  time_level = NULL, ymin = NA, ymax = NA, facet_ncol = 2,
-  hline = NULL, rotate_xlab = FALSE)
+  biomarker, value_var = "AVAL", unit_var = "AVALU", trt_group,
+  trt_group_level = NULL, time, time_level = NULL, ymin = NA, ymax = NA,
+  facet_ncol = 2, hline = NULL, rotate_xlab = FALSE)
 }
 \arguments{
 \item{data}{data frame with variables to be summarized and generate statistics which will display in the plot.}
@@ -61,6 +61,7 @@ ANL$AVAL <- rnorm(nrow(ANL))
 ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 ANL$CHG[ANL$VISIT == "visit 1"] <- NA
 ANL$PCHG <- ANL$CHG/ANL$AVAL*100
+ANL$AVALU <- 'mg'
 
 ANL$ARM <- factor(ANL$ARM)
 ANL$VISIT <- factor(ANL$VISIT)
