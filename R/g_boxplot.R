@@ -192,7 +192,7 @@ g_boxplot <- function(data,
       scale_color_manual(values = cols, name = armlabel) +
       scale_fill_manual(values = cols, name = armlabel)  
   }
-  
+
   # LOQ needed?
   if (!is.null(shape_manual) ) {
     plot1 <- plot1 +
@@ -209,15 +209,15 @@ g_boxplot <- function(data,
     plot1 <- plot1 +
       coord_trans( y = "log10")
   }
-  
+
   #Add facetting
   if (!is.null(facet) ){
-    if (facet != "None") {
+    if (facet != "None" & facet %in% names(data)) {
       plot1 <- plot1 +
         facet_wrap(as.formula(paste0('.~',facet)))
     }
   }
-  
+
   # Format font size
   if (!is.null(font_size)){
     plot1 <- plot1 +
