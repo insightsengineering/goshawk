@@ -51,7 +51,7 @@ t_summarytable(data = ALB,
 
 }
 \author{
-Balazs Toth
+Nick Paszty (npaszty) paszty.nicholas@gene.com
 
-Nick Paszty
+Balazs Toth (tothb2)  toth.balazs@gene.com
 }

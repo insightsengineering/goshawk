@@ -82,9 +82,8 @@ This function displays a scatter plot. link to specification file \url{http://rs
 # Example using analysis dataset for example ASL or ADSL,
 # ALB points to biomarker data stored in a typical LB structure. for example ALB or ADLB.
 
-
 # need a test data set created using random.cdisc.data.
-# example call uses call expects ALB structure 
+# example call uses expects ALB structure 
 
 param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
 
