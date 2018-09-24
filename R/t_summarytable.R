@@ -46,11 +46,11 @@ t_summarytable <- function(data,
                            visit_var = 'AVISITCD',
                            loq_flag_var = 'LOQFL', ...){
   
-  table_data <<- data %>%
+  table_data <- data %>%
     filter(eval(parse(text = param_var)) == param)
   
   # by ARM table
-  sum_data_by_arm <<- table_data %>%
+  sum_data_by_arm <- table_data %>%
     filter(eval(parse(text = param_var)) == param) %>%
     group_by_(.dots = c(param_var, trt_group, "TRTORD", visit_var)) %>%
     summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
@@ -64,7 +64,7 @@ t_summarytable <- function(data,
               ) 
   
   # by combined ARM table
-  sum_data_combined_arm <<- table_data %>%
+  sum_data_combined_arm <- table_data %>%
     filter(eval(parse(text = param_var)) == param) %>%
     group_by_(.dots = c(param_var, visit_var)) %>%
     summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
@@ -80,7 +80,7 @@ t_summarytable <- function(data,
     mutate(ARM = "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) 
   
   # combine the two data sets and apply some formatting. Note that R coerces ARM into character since it is a factor and character
-  sum_data <<- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
+  sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
     ungroup() %>% # need to ungroup to drop previously identified grouping variables
     select(Biomarker = param_var, Treatment = trt_group, Visit = visit_var, n:PctLOQ, TRTORD) %>% # reorder variables
     arrange(Biomarker, Visit, TRTORD) %>% # drop variable
