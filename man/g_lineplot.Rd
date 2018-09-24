@@ -5,8 +5,8 @@
 \title{Line plot of summary statistics over time}
 \usage{
 g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD", biomarker,
-  value_var = "AVAL", ymin = NA, ymax = NA, trt_group,
-  trt_group_level = NULL, time, time_level = NULL, color_manual,
+  value_var = "AVAL", unit_var = "AVALU", ymin = NA, ymax = NA,
+  trt_group, trt_group_level = NULL, time, time_level = NULL, color_manual,
   median = FALSE, hline = NULL, rotate_xlab = FALSE)
 }
 \arguments{
@@ -63,6 +63,7 @@ ANL$AVAL <- rnorm(nrow(ANL))
 ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 ANL$CHG[ANL$VISIT == "visit 1"] <- NA
 ANL$PCHG <- ANL$CHG/ANL$AVAL*100
+ANL$AVALU <- 'mg'
 
 ANL$ARM <- factor(ANL$ARM)
 ANL$VISIT <- factor(ANL$VISIT)
