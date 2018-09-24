@@ -7,18 +7,19 @@ Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot
 \usage{
 g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
   param = "CRP", xaxis_var = "BASE", yaxis_var = "AVAL",
-  trt_group = "ARM", visit = "AVISITCD", loq_flag = "LOQFL",
+  trt_group = "ARM", visit = "AVISITCD", loq_flag_var = "LOQFL",
   unit = "AVALU", xmin_scale = 0, xmax_scale = 200, ymin_scale = 0,
-  ymax_scale = 200, color_manual = NULL, man_color = NULL,
-  shape_manual = c(N = 1, Y = 2, `NA` = 0), hline = NULL,
-  rotate_xlab = FALSE, logscale = FALSE, facet = FALSE,
-  facet_var = "ARM", reg_line = FALSE, font_size = 12, dot_size = NULL,
+  ymax_scale = 200, color_manual = NULL, shape_manual = c(N = 1, Y = 2,
+  `NA` = 0), facet = FALSE, facet_var = "ARM", reg_line = FALSE,
+  rotate_xlab = FALSE, hline = NULL, font_size = 12, dot_size = NULL,
   reg_text_size = 3)
 }
 \arguments{
-\item{label}{text string to be displayed as plot label.}
+\item{label}{text string to used to identify plot.}
 
-\item{data}{data frame with variables which will be displayed in the plot.}
+\item{data}{data frame with variables which will be displayed in the plot.
+Note that the data are expected to be in vertical form with the
+\code{PARAMCD} variable filtering to one observation per patient per visit.}
 
 \item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
@@ -30,32 +31,39 @@ g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
 
 \item{trt_group}{name of variable representing treatment group e.g. ARM.}
 
-\item{loq_flag}{name of variable containing LOQ flag e.g. LBLOQFL.}
+\item{visit}{name of variable containing nominal visits e.g. AVISITCD.}
 
-\item{unit}{name of variable containing biomarker unit.}
+\item{loq_flag_var}{name of variable containing LOQ flag e.g. LBLOQFL.}
 
-\item{color_manual}{vector of colors.}
+\item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
-\item{shape_manual}{vector of shapes.}
+\item{xmin_scale}{minimum value of xaxis_var variable for selected biomarker.}
 
-\item{logscale}{set axis values to log scale.}
+\item{xmax_scale}{maximum value of xaxis_var variable for selected biomarker.}
+
+\item{ymin_scale}{minimum value of yaxis_var variable for selected biomarker.}
+
+\item{ymax_scale}{maximum value of yaxis_var variable for selected biomarker.}
+
+\item{color_manual}{vector of colors. Currently plot uses default colors and this control is set to NULL.}
+
+\item{shape_manual}{vector of shapes to display LOQ values vs. non-LOQ values.}
 
 \item{facet}{set layout to use facetting.}
 
 \item{facet_var}{variable to use for facetting.}
 
-\item{reg_line}{include regression line in visualization.}
+\item{reg_line}{include regression line and annotations for slope and coefficient in visualization. Use with facet TRUE.}
+
+\item{rotate_xlab}{45 degree rotation of x-axis values.}
+
+\item{hline}{y-axis value to position of horizontal line.}
+
+\item{font_size}{control font size for title, x-axis, y-axis and legend font.}
 
 \item{dot_size}{scatter dot size.}
 
-\item{time}{name of variable containing visit codes e.g. AVISITCD.}
-
-\item{timepoint}{x axis visit selected label.}
-
-\item{pct}{set axis values to percent scale.}
-}
-\value{
-\code{ggplot} object
+\item{reg_text_size}{regression line annotation font size.}
 }
 \description{
 A scatter plot is a type of plot using Cartesian coordinates to display values for typically two variables or
@@ -66,7 +74,7 @@ the position on the horizontal axis and the value of the other variable or timep
 on the vertical axis.
 }
 \details{
-provide additional information as needed. link to specification file \url{http://rstudio.com}
+This function displays a scatter plot. link to specification file \url{http://rstudio.com}
 }
 \examples{
 
@@ -74,82 +82,33 @@ provide additional information as needed. link to specification file \url{http:/
 # Example using analysis dataset for example ASL or ADSL,
 # ALB points to biomarker data stored in a typical LB structure. for example ALB or ADLB.
 
-# for development team testing
-ASL_path <- "~/btk/lupus/dataadam/asl.sas7bdat"
-ALB_path <- "~/btk/lupus/dataadam/alb3arm.sas7bdat"
 
-# list of biomarkers of interest. see ALB2 assignment below
-param_choices <- c("CRP","ADIGG","IG","IGA","IGE","IGG","IGM","TEST")
+# need a test data set created using random.cdisc.data.
+# example call uses call expects ALB structure 
 
-ASL0 <- read_bce(ASL_path)
-ASL <- subset(ASL0, subset = ITTFL == 'Y' & IAFL == 'Y')
-
-ALB0 <- read_bce(ALB_path)
-
-# post process the data to subset records per specification
-ALB_SUBSET <- subset(ALB0,
-              subset = PARAMCD \%in\% c(param_choices) & ITTFL == 'Y' & IAFL == 'Y' & ANLFL == 'Y' & AVISIT \%like any\% c('BASE\%','\%WEEK\%'), 
-              select = c('STUDYID', 'USUBJID', 'ITTFL', 'ANLFL', 'ARM', 'AVISIT', 'AVISITN', 'PARAMCD', 'AVAL', 'AVALU', 'BASE', 'CHG', 'PCHG',
-               'LBSTRESC', 'LBSTRESN'))
-
-# calculate the minimum AVAL for each PARAMCD
-PARAM_MINS <- ALB_SUBSET \%>\%
-select(USUBJID, PARAMCD, AVAL) \%>\%
-  filter(PARAMCD \%in\% param_choices) \%>\%
-  group_by(PARAMCD) \%>\%
-  summarise(AVAL_MIN=min(AVAL, na.rm=TRUE))
-  
-# post process the data to create several new variables and adjust existing record specific valules per specification
-# - create a visit code variable - baseline record code is "BB" and week records coded to "W NN"
-# - adjust existing BASELINE record values where values are missing: According to SPA this is a STREAM artifact
-ALB_SUPED1 <- ALB_SUBSET \%>\% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
-                                        substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) \%>\%
-               mutate(AVISITCDN =  ifelse(AVISITCD == "BB", 0, substr(AVISITCD,start=2, stop=4))) \%>\%
-               mutate(BASE = ifelse(AVISIT == "BASELINE" & is.na(BASE), AVAL, BASE)) \%>\%
-               mutate(CHG = ifelse(AVISIT == "BASELINE" & is.na(CHG), 0, CHG)) \%>\%
-               mutate(PCHG = ifelse(AVISIT == "BASELINE" & is.na(PCHG), 0, PCHG))
-               # may need to add similar code for BASE2 related variables
-
-  
-# merge minimum AVAL value onto the ALB data to calculate the log2 variables and preserve the variable order
-ALB_SUPED2 <- merge(ALB_SUPED1, PARAM_MINS, by="PARAMCD")[, union(names(ALB_SUPED1), names(PARAM_MINS))] \%>\%
-       mutate(AVALL2 = ifelse(AVAL == 0, log2(AVAL_MIN/2), log2(AVAL))) \%>\%
-       mutate(BASEL2 = ifelse(BASE == 0, log2(AVAL_MIN/2), log2(BASE))) #\%>\% need SPA to finish adding BASE2 to ALB
-       #mutate(BASE2L2 = ifelse(BASE2 == 0, log2(AVAL_MIN/2), log2(AVAL)))
-
-# for proper chronological ordering of visits in visualizations
-ALB_SUPED2$AVISITCDN <- as.numeric(ALB_SUPED2$AVISITCDN) # coerce character into numeric
-ALB <- ALB_SUPED2 \%>\% mutate(AVISITCD = factor(AVISITCD) \%>\% reorder(AVISITCDN))
-
-# to test loq_flag
-ALB <- ALB \%>\% mutate(LOQFL = ifelse(PARAMCD == "CRP" & AVAL < .5, "Y", "N"))
-
-param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
-shape_manual <- c('N' = 1, 'Y' = 2, 'NA' = 0)
+param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
 
 plot1 <- g_scatterplot(label = 'Scatter Plot',
            data = ALB,
-           param_var = 'PARAMCD', # name of variable containing the biomarker names.
-           param = param, # the PARAMCD value selected.
+           param_var = 'PARAMCD', 
+           param = param,
            xaxis_var = 'BASE',
-           yaxis_var = 'AVAL', # name of variable containing the analysis values.
+           yaxis_var = 'AVAL',
            trt_group = 'ARM',
            visit = 'AVISITCD',
-           loq_flag = 'LOQFL',
+           loq_flag_var = 'LOQFL',
            unit = 'AVALU',
-           #timepoint = 'Baseline', # build flexibility into app to be able to change x axis visit
            xmin_scale = 0,
            xmax_scale = .5,
            ymin_scale = 0,
            ymax_scale = .5,
            color_manual = NULL,
-           shape_manual,
+           shape_manual = c('N' = 1, 'Y' = 2, 'NA' = 0),
            hline = NULL,
            rotate_xlab = FALSE,
-           logscale = FALSE,
            facet = FALSE,
            facet_var = "ARM",
-           reg_line = FALSE, # slope and correlation values for each ARM overwrite
+           reg_line = FALSE,
            font_size = 14,
            dot_size = 2,
            reg_text_size = 3)
@@ -158,7 +117,7 @@ plot1
 }
 }
 \author{
-Balazs Toth (tothb2)  toth.balazs@gene.com
-
 Nick Paszty (npaszty) paszty.nicholas@gene.com
+
+Balazs Toth (tothb2)  toth.balazs@gene.com
 }

@@ -2,16 +2,18 @@
 #' plots.
 #' 
 #' Output render by teal.goshawk module \code{t_summarytable} returns
-#' descriptive summary statistics table
+#' descriptive summary statistics table as a data frame
 #'
 #' @param data frame name
-#' @param biomarker PARAM value
 #' @param trt_group treatment group variable name e.g. ARM
-#' @param time visit variable name e.g. VISIT
-#' @param loq loq variable name e.g. loq_flag (not in current ALB)
+#' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
+#' @param param biomarker to visualize e.g. IGG. 
+#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
+#' @param visit_var name of variable containing visit values e.g. AVISITCD
+#' @param loq_flag_var loq variable name e.g. loq_flag_var (not in current ALB)
 #'
-#' @author Balazs Toth
-#' @author Nick Paszty
+#' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
+#' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
 #' @details provide additional information as needed. link to specification file \url{http://rstudio.com}
 #'
@@ -21,46 +23,66 @@
 #'
 #' @examples
 #'
-#' ALB <- read_bce("/opt/bee/home_nas/npaszty/btk/lupus/dataadam/alb3arm.sas7bdat")
-#' biomarker <- c('IGG') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+#'\dontrun{
+#' # use post processed data created in app.R file
 #' 
 #' # call function
 #' t_summarytable(data = ALB,
 #'                trt_group = 'ARM',
-#'                biomarker_var = 'PARAMCD',
-#'                biomarker = biomarker, # the PARAMCD value
-#'                value_var = 'AVAL',
-#'                visit = 'AVISIT',
-#'                loq = NULL)
-#'               
+#'                param_var = 'PARAMCD',
+#'                param = param, # the PARAMCD value
+#'                xaxis_var = 'AVAL',
+#'                visit_var = 'AVISITCD',
+#'                loq_flag_var = 'LOQFL')
 #'
+#'}
+#'
+
 t_summarytable <- function(data,
                            trt_group,
-                           biomarker_var,
-                           biomarker,
-                           value_var,
-                           visit,
-                           loq, ...){
+                           param_var,
+                           param,
+                           xaxis_var,
+                           visit_var = 'AVISITCD',
+                           loq_flag_var = 'LOQFL', ...){
   
-  # Helper
-  sum_data <- data %>%
-    filter(eval(parse(text = biomarker_var)) == biomarker) %>%
-    group_by(eval(parse(text = visit)),
-             eval(parse(text = trt_group))) %>%
-    summarise(n = sum(!is.na(eval(parse(text = value_var)))),
-              avg = round(mean(eval(parse(text = value_var)),
-                               na.rm = TRUE),1),
-              med = round(median(eval(parse(text = value_var)),
-                                 na.rm = TRUE),1),
-              sd = round(sd(eval(parse(text = value_var)),
-                            na.rm = TRUE),1)
-              #pctLOQ = round(100 * sum(eval(parse(text = loq))=='YES')/
-              #                 length(eval(parse(text = loq))=='YES'),2)
-              )
-
-  tbl <- tableGrob(t(sum_data))
-  grid.arrange(arrangeGrob(tbl, ncol=1, nrow=1))
-
-  return(tbl)
-
+  table_data <<- data %>%
+    filter(eval(parse(text = param_var)) == param)
+  
+  # by ARM table
+  sum_data_by_arm <<- table_data %>%
+    filter(eval(parse(text = param_var)) == param) %>%
+    group_by_(.dots = c(param_var, trt_group, "TRTORD", visit_var)) %>%
+    summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
+              Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
+              Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
+              StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
+              Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
+              Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
+              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(is.na(eval(parse(text = xaxis_var)))),1),
+              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var))=='Y')/length(eval(parse(text = loq_flag_var))=='Y'),2)
+              ) 
+  
+  # by combined ARM table
+  sum_data_combined_arm <<- table_data %>%
+    filter(eval(parse(text = param_var)) == param) %>%
+    group_by_(.dots = c(param_var, visit_var)) %>%
+    summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
+              Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
+              Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
+              StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
+              Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
+              Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
+              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(is.na(eval(parse(text = xaxis_var)))),1),
+              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y')/length(eval(parse(text = loq_flag_var)) == 'Y'),2),
+              MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
+    ) %>% # additional use of max function identifies maximum treatment order across all visits.
+    mutate(ARM = "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) 
+  
+  # combine the two data sets and apply some formatting. Note that R coerces ARM into character since it is a factor and character
+  sum_data <<- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
+    ungroup() %>% # need to ungroup to drop previously identified grouping variables
+    select(Biomarker = param_var, Treatment = trt_group, Visit = visit_var, n:PctLOQ, TRTORD) %>% # reorder variables
+    arrange(Biomarker, Visit, TRTORD) %>% # drop variable
+    select(-TRTORD)
 }
