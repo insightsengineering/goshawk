@@ -141,7 +141,7 @@ g_boxplot <- function(data,
                        dot_size = 2,
                        alpha = 1.0,
                        font_size = NULL,
-                       facet = NULL) {
+                       facet = NULL) { 
 
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
   yAxisLabel <- ifelse(is.null(unit), biomarker, 
@@ -210,7 +210,7 @@ g_boxplot <- function(data,
       coord_trans( y = "log10")
   }
 
-  #Add facetting
+  #Add facetting.
   if (!is.null(facet) ){
     if (facet != "None" & facet %in% names(data)) {
       plot1 <- plot1 +
