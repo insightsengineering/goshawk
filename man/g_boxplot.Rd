@@ -5,7 +5,7 @@
 \title{Function to generate a boxplot
 Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualization}
 \usage{
-g_boxplot(data, biomarker, value_var, trt_group, loq_flag = "LOQFL",
+g_boxplot(data, biomarker, value_var, trt_group, loq_flag = NULL,
   unit = NULL, timepoint = NULL, color_manual = NULL,
   shape_manual = NULL, box = TRUE, logscale = FALSE, ymax_scale = NULL,
   ymin_scale = NULL, dot_size = 2, alpha = 1, font_size = NULL,
