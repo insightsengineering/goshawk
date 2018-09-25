@@ -123,11 +123,11 @@ g_boxplot(albplot
           , loq_flag = 'LOQFL'
           , timepoint = "over time"
           , unit = "U/L"
-          , color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
+          #, color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
           , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
-          , facet = "AVISIT"
+          , facet = "AVISITCD"
           , alpha = 0.5
-          , logscale = TRUE
+          , logscale = FALSE
 )
 
 
