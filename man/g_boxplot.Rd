@@ -5,7 +5,7 @@
 \title{Function to generate a boxplot
 Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualization}
 \usage{
-g_boxplot(data, biomarker, value_var, trt_group, loq_flag = "LOQFL",
+g_boxplot(data, biomarker, value_var, trt_group, loq_flag = NULL,
   unit = NULL, timepoint = NULL, color_manual = NULL,
   shape_manual = NULL, box = TRUE, logscale = FALSE, ymax_scale = NULL,
   ymin_scale = NULL, dot_size = 2, alpha = 1, font_size = NULL,
@@ -71,6 +71,7 @@ provide additional information as needed. perhaps link to
 \dontrun{
 library(random.cdisc.data)
 library(dplyr)
+library(goshawk)
 
 # Example data for 100 patients from 3 treatment groups
 ASL <- radam('ASL', start_with = list(
@@ -87,7 +88,9 @@ ALB <- expand.grid(USUBJID = ASL$USUBJID
               , AVISIT = c("BASELINE",  paste0("VISIT ", 1:5))
               , PARAMCD = c("CRP", "IGA", "IGG")
               , stringsAsFactors = FALSE
-    ) \%>\% 
+    ) 
+    
+ALB <- ALB \%>\%
   mutate( AVAL = rnorm(nrow(ALB), mean = 50, sd = 8) )
 
 ALB <- ALB \%>\% 
@@ -98,7 +101,6 @@ ALB <- ALB \%>\%
   left_join(ASL, by = "USUBJID") \%>\% 
   mutate(CHG = AVAL - BASE, PCHG = 100 * CHG/BASE) \%>\% 
   mutate(LOQFL = ifelse(AVAL < 32, "Y", "N"))
-
 
 # Example 1.
 
