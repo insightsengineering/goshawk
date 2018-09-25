@@ -71,6 +71,7 @@ provide additional information as needed. perhaps link to
 \dontrun{
 library(random.cdisc.data)
 library(dplyr)
+library(goshawk)
 
 # Example data for 100 patients from 3 treatment groups
 ASL <- radam('ASL', start_with = list(
@@ -87,7 +88,9 @@ ALB <- expand.grid(USUBJID = ASL$USUBJID
               , AVISIT = c("BASELINE",  paste0("VISIT ", 1:5))
               , PARAMCD = c("CRP", "IGA", "IGG")
               , stringsAsFactors = FALSE
-    ) \%>\% 
+    ) 
+    
+ALB <- ALB \%>\%
   mutate( AVAL = rnorm(nrow(ALB), mean = 50, sd = 8) )
 
 ALB <- ALB \%>\% 
@@ -98,7 +101,6 @@ ALB <- ALB \%>\%
   left_join(ASL, by = "USUBJID") \%>\% 
   mutate(CHG = AVAL - BASE, PCHG = 100 * CHG/BASE) \%>\% 
   mutate(LOQFL = ifelse(AVAL < 32, "Y", "N"))
-
 
 # Example 1.
 
