@@ -8,6 +8,7 @@
 #' @param biomarker_var name of variable containing biomarker names.
 #' @param biomaker biomarker name to be analyzed. 
 #' @param value_var name of variable containing biomarker results.
+#' @param unit_var name of variable containing biomarker result unit.
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
@@ -22,6 +23,7 @@
 #' @import grid
 #' @importFrom stringr str_wrap
 #' @importFrom gridExtra grid.arrange
+#' @importFrom grid unit.pmax
 #'
 #' @author Balazs Toth (toth.balazs@gene.com)
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -39,6 +41,7 @@
 #' library(dplyr)
 #' library(ggplot2)
 #' library(gridExtra)
+#' library(grid)
 #' library(stringr)
 #' library(DescTools)
 #' 
@@ -114,6 +117,7 @@
 #' library(dplyr)
 #' library(ggplot2)
 #' library(gridExtra)
+#' library(grid)
 #' library(stringr)
 #' 
 #' ANL <- expand.grid(
