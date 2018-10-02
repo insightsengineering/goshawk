@@ -75,9 +75,9 @@
 #'            shape_manual = c('N' = 1, 'Y' = 2, 'NA' = 0),
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
-#'            facet = FALSE,
+#'            facet = TRUE,
 #'            facet_var = "ARM",
-#'            reg_line = FALSE,
+#'            reg_line = TRUE,
 #'            font_size = 14,
 #'            dot_size = 2,
 #'            reg_text_size = 3)
@@ -174,7 +174,8 @@ plot_data <- data %>%
                                                         'cor=',
                                                         round(corr,2)),
                                          color = eval(parse(text = trt_group))),
-                    size = reg_text_size)
+                    size = reg_text_size) +
+          labs(caption = paste("Deming Regression Model"))
         
     } 
   
