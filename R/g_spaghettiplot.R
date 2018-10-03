@@ -12,6 +12,7 @@
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time.
+#' @param color_manual vector of colors.
 #' @param ymin y-axis lower limit.
 #' @param ymax y-axis upper limit.
 #' @param facet_ncol number of facets per row.
