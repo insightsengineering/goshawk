@@ -129,8 +129,10 @@
 #'                 value_var = 'AVAL',
 #'                 trt_group = 'ARM',
 #'                 time = 'VISIT',
+#'                 color_manual = c("ARM A" = "#000000", "ARM B" = "#3498DB", "ARM C" = "#E74C3C"),
 #'                 hline = NULL,
 #'                 rotate_xlab = FALSE)
+
 
 g_spaghettiplot <- function(data,
                             subj_id = 'USUBJID',
@@ -142,6 +144,7 @@ g_spaghettiplot <- function(data,
                             trt_group_level = NULL,
                             time,
                             time_level = NULL,
+                            color_manual = NULL,
                             ymin = NA,
                             ymax = NA,
                             facet_ncol = 2,
@@ -186,6 +189,12 @@ g_spaghettiplot <- function(data,
   if (rotate_xlab){
     plot <- plot +
       theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  }
+  
+  # Add manual color
+  if (!is.null(color_manual)){
+    plot <- plot +
+      scale_color_manual(values = color_manual, name = 'Dose')
   }
   
   #Add horizontal line
