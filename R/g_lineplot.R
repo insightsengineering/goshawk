@@ -228,7 +228,7 @@ g_lineplot <- function(label = 'Line Plot',
     theme_bw() +
     scale_y_continuous(limits = c(ymin, ymax)) +
     ggtitle(paste0(biomarker, ' (', unit, ') ', line, ' over time')) +
-    labs(caption = paste("Currently, the output plot can display mean and median of input value. For mean, the error bar denotes 95% confidence interval. For median, the error bar denotes median-SD to median+SD.")) +
+    labs(caption = paste("The output plot can display mean and median of input value.\nFor mean, the error bar denotes 95% confidence interval.\nFor median, the error bar denotes median-SD to median+SD.")) +
     xlab(time) + 
     ylab(paste0(biomarker, ' ', line, title))+
     theme(legend.position = "bottom",
