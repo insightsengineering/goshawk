@@ -24,8 +24,8 @@
 #' @param xmax_scale maximum value of xaxis_var variable for selected biomarker.
 #' @param ymin_scale minimum value of yaxis_var variable for selected biomarker.
 #' @param ymax_scale maximum value of yaxis_var variable for selected biomarker.
-#' @param color_manual vector of colors. Currently plot uses default colors and this control is set to NULL.
-#' @param shape_manual vector of shapes to display LOQ values vs. non-LOQ values.
+#' @param color_manual vector of treatment colors. assigned values in app.R otherwise uses default colors.
+#' @param shape_manual vector of LOQ shapes. assigned values in app.R otherwise uses default shapes.
 #' @param facet set layout to use facetting.
 #' @param facet_var variable to use for facetting.
 #' @param reg_line include regression line and annotations for slope and coefficient in visualization. Use with facet TRUE.
@@ -38,6 +38,7 @@
 #' @import DescTools
 #' @import dplyr
 #' @import ggplot2
+#' @import mcr
 #' 
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
@@ -67,17 +68,13 @@
 #'            visit = 'AVISITCD',
 #'            loq_flag_var = 'LOQFL',
 #'            unit = 'AVALU',
-#'            xmin_scale = 0,
-#'            xmax_scale = .5,
-#'            ymin_scale = 0,
-#'            ymax_scale = .5,
-#'            color_manual = NULL,
-#'            shape_manual = c('N' = 1, 'Y' = 2, 'NA' = 0),
+#'            color_manual = color_manual,
+#'            shape_manual = shape_manual,
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
-#'            facet = TRUE,
+#'            facet = FALSE,
 #'            facet_var = "ARM",
-#'            reg_line = TRUE,
+#'            reg_line = FALSE,
 #'            font_size = 14,
 #'            dot_size = 2,
 #'            reg_text_size = 3)
@@ -95,12 +92,12 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           visit = "AVISITCD",
                           loq_flag_var = "LOQFL",
                           unit = "AVALU",
-                          xmin_scale = 0,
-                          xmax_scale = 200,
-                          ymin_scale = 0,
-                          ymax_scale = 200,
+                          xmin_scale = NULL,
+                          xmax_scale = NULL,
+                          ymin_scale = NULL,
+                          ymax_scale = NULL,
                           color_manual = NULL,
-                          shape_manual = c('N' = 1, 'Y' = 2, 'NA' = 0),
+                          shape_manual = NULL,
                           facet = FALSE,
                           facet_var = "ARM",
                           reg_line = FALSE,
@@ -111,7 +108,7 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           reg_text_size = 3){
 
 # create scatter plot over time pairwise per treatment arm 
-plot_data <- data %>%
+plot_data <<- data %>%
   filter(eval(parse(text = param_var)) == param)
 
 # create plot foundation
@@ -122,12 +119,10 @@ plot_data <- data %>%
     geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
     facet_wrap(as.formula(paste0('~', visit))) +
     theme_bw() +
-    scale_shape_manual(values = shape_manual, name = 'LOQ') +
-    xlim(xmin_scale, xmax_scale) + ylim(ymin_scale, ymax_scale) +
-    ggtitle(paste0('Biomarker ', param, ' (',  plot_data[[unit]], ')')) +
+    ggtitle(paste0(plot_data$PARAM, " (",  plot_data[[unit]], ") @ Visits")) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
-    xlab(paste0('Biomarker ', xaxis_var, ' Values')) +
-    ylab(paste0('Biomarker ', yaxis_var,' Values'))
+    xlab(paste(plot_data$PARAM, xaxis_var, "Values")) +
+    ylab(paste(plot_data$PARAM, yaxis_var, "Values"))
     
     
 # add grid faceting to foundation 
@@ -138,7 +133,8 @@ plot_data <- data %>%
 
 # add regression line
     if (reg_line){
-      
+    # !!!!!!!!!! this condition could be removed if the non continuous level biomarkers are removed from list - Bali consult needed
+    if (xmax_scale-xmin_scale > 1){  
       slope <- function(x, y) {
         ratio <- sd(x)/sd(y)
         reg <- mcr:::mc.deming(y, x, ratio)
@@ -175,18 +171,27 @@ plot_data <- data %>%
                                                         round(corr,2)),
                                          color = eval(parse(text = trt_group))),
                     size = reg_text_size) +
-          labs(caption = paste("Deming Regression Model"))
-        
+          labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
+    }
     } 
   
   # Add abline
-    if (yaxis_var %in% c('AVAL','AVALL2', 'BASE', 'BASEL2', 'BASE2', 'BASE2L2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
+    if (yaxis_var %in% c('AVAL', 'AVALL2', 'BASE2', 'BASE2L2', 'BASE', 'BASEL2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
     
-    if (yaxis_var == 'CHG') {plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)}
+    if (yaxis_var %in% c('CHG2', 'CHG')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)}
     
-    if (yaxis_var == 'PCHG') {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
+    if (yaxis_var %in% c('PCHG2', 'PCHG')) {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
     
+  # Dynamic x-axis range
+  if (!is.null(xmin_scale) & !is.null(xmax_scale)) {
+    plot1 <- plot1 + xlim(xmin_scale, xmax_scale) 
+  }
 
+  # Dynamic y-axis range
+  if (!is.null(ymin_scale) & !is.null(ymax_scale)) {
+    plot1 <- plot1 + ylim(ymin_scale, ymax_scale) 
+  }
+  
   # Format font size
   if (!is.null(font_size)){
     plot1 <- plot1 +
@@ -200,7 +205,19 @@ plot_data <- data %>%
             strip.text.y = element_text(size = font_size))
   }
 
-    # Format dot size
+  # Format treatment color
+  if (!is.null(color_manual)){
+    plot1 <- plot1 +
+      scale_color_manual(values = color_manual, name = 'Dose')
+  }
+  
+  # Format LOQ flag symbol shape
+  if (!is.null(shape_manual)){
+    plot1 <- plot1 +
+      scale_shape_manual(values = shape_manual, name = 'LOQ')
+  }
+  
+  # Format dot size
   if (!is.null(dot_size)){
     plot1 <- plot1 +
       geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
@@ -210,12 +227,6 @@ plot_data <- data %>%
   if (rotate_xlab){
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  }
-  
-  # Add manual color
-  if (!is.null(color_manual)){
-    plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = 'Dose')
   }
   
   # Add horizontal line

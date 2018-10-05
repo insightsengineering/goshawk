@@ -36,8 +36,11 @@ param_choices <- c("ACIGG", "ACIGM", "ADIGG", "ANAPC", "ANAPDS", "ANAPH", "ANAPM
                    "RNPAABC",  "RWCT_JCH", "RWCT_MZB", "RWCT_TME", "RWCT_TXN",
                    "SSAAABC")
 
-# biomarkers of interest to exclude from performing log2 calculation: these are already log2 transformed
+# biomarkers of interest to exclude from performing log2 calculation: 
+# NLBC are already log2 transformed: assigned AVAL to AVALL2
 exclude_l2 <- c("NLBC_JCH", "NLBC_MZB", "NLBC_TXN")
+# DLCT are CHG values, AVCT is average CHG: assigned NA
+exclude_chg <- c("DLCT_JCH", "DLCT_MZB", "DLCT_TXN", "AVCT_JMT")
 
 ################################################################################
 # END: SPA Input Required
@@ -47,7 +50,6 @@ exclude_l2 <- c("NLBC_JCH", "NLBC_MZB", "NLBC_TXN")
 ASL <- read_bce(ASL_path) %>%
   filter(ITTFL == 'Y' & IAFL == 'Y')
 
-# !!!!!!!!!! Need to update FL condition to include the BASE2 analysis records which are the Screening records if can not use ANLFL alone
 ALB_SUBSET <- read_bce(ALB_path) %>%
   filter(PARAMCD %in% c(param_choices) & ITTFL == 'Y' & IAFL == 'Y' & ANLFL == 'Y' & AVISIT %like any% c('SCREEN%', 'BASE%','%WEEK%')) %>%
   select(c('STUDYID', 'USUBJID',
@@ -90,13 +92,26 @@ ALB_SUPED1 <- ALB_SUBSET %>%
   
   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1, ifelse(grepl("B", ARMCD), 2, ifelse(grepl("A", ARMCD), 3, NA))))
 
-# merge minimum AVAL value onto the ALB data to calculate the log2 variables and preserve the variable order
-# !!!!!!!!!! ensure that we're not taking the log of a measure that is already a log: NLBC described as “Normalized Log2 Count” 
-# !!!!!!!!!! need to handle negative values that are causing NaN warnings
+# merge minimum AVAL value onto the ALB data to calculate the log2 variables. preserve the variable order
 ALB_SUPED2 <- merge(PARAM_MINS, ALB_SUPED1, by="PARAMCD", all=TRUE)[, union(names(ALB_SUPED1), names(PARAM_MINS))] %>%
-  mutate(AVALL2 = ifelse(PARAMCD %in% exclude_l2 , AVAL, ifelse(AVAL == 0 & AVAL_MIN > 0, log2(AVAL_MIN/2), log2(AVAL)))) %>%
-  mutate(BASEL2 = ifelse(PARAMCD %in% exclude_l2, BASE, ifelse(BASE == 0 & AVAL_MIN > 0, log2(AVAL_MIN/2), log2(BASE)))) %>%
-  mutate(BASE2L2 = ifelse(PARAMCD %in% exclude_l2, BASE2, ifelse(BASE2 == 0 & AVAL_MIN > 0, log2(AVAL_MIN/2), log2(BASE2))))
+  # visit values
+  mutate(AVALL2 = ifelse(PARAMCD %in% exclude_l2, AVAL, # excludes biomarkers where log2 is not appropriate: for example assay value already log2
+                         ifelse(PARAMCD %in% exclude_chg, NA, # excludes biomarkers where log2 is not appropriate: for example CHG type assay
+                                ifelse(AVAL == 0 & AVAL_MIN > 0, log2(AVAL_MIN/2),
+                                       ifelse(AVAL == 0 & AVAL_MIN <= 0, NA, # would be taking log2 of 0 or negative value so set to NA
+                                              ifelse(AVAL > 0, log2(AVAL), NA)))))) %>%
+  # baseline values
+  mutate(BASEL2 = ifelse(PARAMCD %in% exclude_l2, BASE,
+                         ifelse(PARAMCD %in% exclude_chg, NA,     
+                                ifelse(BASE == 0 & AVAL_MIN > 0, log2(AVAL_MIN/2),
+                                       ifelse(BASE == 0 & AVAL_MIN <= 0, NA,
+                                              ifelse(BASE > 0, log2(BASE), NA)))))) %>%
+  # screening
+  mutate(BASE2L2 = ifelse(PARAMCD %in% exclude_l2, BASE2,
+                          ifelse(PARAMCD %in% exclude_chg, NA,      
+                                 ifelse(BASE2 == 0 & AVAL_MIN > 0, log2(AVAL_MIN/2),
+                                        ifelse(BASE2 == 0 & AVAL_MIN <= 0, NA,
+                                               ifelse(BASE2 > 0, log2(BASE2), NA))))))
 
 # create final data set used by goshawk
 ALB <- ALB_SUPED2 %>% 

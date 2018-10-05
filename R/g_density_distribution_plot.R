@@ -13,7 +13,7 @@
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
-#' @param color_manual vector of colors. Currently plot uses default colors and this control is set to NULL.
+#' @param color_manual vector of treatment colors. assigned values in app.R otherwise uses default colors.
 #' @param hline y-axis value to position of horizontal line.
 #' @param rotate_xlab 45 degree rotation of x-axis values.
 #' @param facet_var variable to use for facetting.
@@ -49,9 +49,7 @@
 #'            xaxis_var = 'AVAL',
 #'            trt_group = 'ARM',
 #'            unit = 'AVALU',
-#'            xmin_scale = 0,
-#'            xmax_scale = 200,
-#'            color_manual = NULL,
+#'            color_manual = color_manual,
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
 #'            facet_var = 'AVISITCD',
@@ -69,8 +67,8 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
                                 xaxis_var = "AVAL",
                                 trt_group = "ARM",
                                 unit = "AVALU",
-                                xmin_scale = 0,
-                                xmax_scale = 200,
+                                xmin_scale = NULL,
+                                xmax_scale = NULL,
                                 color_manual = NULL,
                                 hline = NULL,
                                 rotate_xlab = FALSE,
@@ -83,18 +81,27 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
   
   plot1 <- ggplot(plot_data) +
     geom_density(aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
-    geom_density(aes(x = eval(parse(text = xaxis_var)), linetype = 'Comb.'), size = line_size) + 
-    #scale_color_manual(values = color_manual, name = 'Arm') +
-    scale_linetype_manual(name = "Comb.", values = c(Comb.="solid", per_dose="solid")) +
+    geom_density(aes(x = eval(parse(text = xaxis_var)), linetype = 'Comb.'), color = '#ffbb52', size = line_size, ) + 
+    scale_linetype_manual(name = "Combined Dose", values = c(Comb.="solid", per_dose="solid")) +
     facet_wrap(as.formula(paste0('~', facet_var))) +
     theme_bw() +
-    xlim(xmin_scale, xmax_scale) +
-    ggtitle(paste0('Biomarker ', param, ' (',  plot_data[[unit]], ') Density Combined Treatment (Comb.) & by Treatment @ Visits')) +
+    ggtitle(paste(plot_data$PARAM, "(",  plot_data[[unit]], ") Density: Combined Treatment (Comb.) & by Treatment @ Visits")) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
-    xlab(paste0('Biomarker ', xaxis_var, ' Values')) +
-    ylab(paste0('Density'))
+    xlab(paste(plot_data$PARAM, xaxis_var, "Values")) +
+    ylab(paste("Density"))
 
-  #Add horizontal line
+  # Dynamic x-axis range
+  if (!is.null(xmin_scale) & !is.null(xmax_scale)) {
+    plot1 <- plot1 + xlim(xmin_scale, xmax_scale) 
+  }
+  
+  # Format treatment color
+  if (!is.null(color_manual)){
+    plot1 <- plot1 +
+      scale_color_manual(values = color_manual, name = 'Dose')
+  }
+
+  # Add horizontal line
   if (!is.null(hline)){
     plot1 <- plot1 +
       geom_hline(aes(yintercept = hline), color="red", linetype="dashed", size=0.5)
