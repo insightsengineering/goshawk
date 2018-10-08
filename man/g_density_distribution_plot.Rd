@@ -8,9 +8,10 @@ distribution overlay plot visualiztion}
 \usage{
 g_density_distribution_plot(label = "Density Distribution Plot", data = ALB,
   param_var = "PARAMCD", param = "CRP", xaxis_var = "AVAL",
-  trt_group = "ARM", unit = "AVALU", xmin_scale = 0, xmax_scale = 200,
-  color_manual = NULL, hline = NULL, rotate_xlab = FALSE,
-  facet_var = "AVISITCD", font_size = 12, line_size = 2)
+  trt_group = "ARM", unit = "AVALU", xmin_scale = NULL,
+  xmax_scale = NULL, color_manual = NULL, hline = NULL,
+  rotate_xlab = FALSE, facet_var = "AVISITCD", font_size = 12,
+  line_size = 2)
 }
 \arguments{
 \item{label}{text string to used to identify plot.}
@@ -29,7 +30,7 @@ Note that the data are expected to be in vertical form with the
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
-\item{color_manual}{vector of colors. Currently plot uses default colors and this control is set to NULL.}
+\item{color_manual}{vector of treatment colors. assigned values in app.R otherwise uses default colors.}
 
 \item{hline}{y-axis value to position of horizontal line.}
 
@@ -65,9 +66,7 @@ plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
            xaxis_var = 'AVAL',
            trt_group = 'ARM',
            unit = 'AVALU',
-           xmin_scale = 0,
-           xmax_scale = 200,
-           color_manual = NULL,
+           color_manual = color_manual,
            hline = NULL,
            rotate_xlab = FALSE,
            facet_var = 'AVISITCD',

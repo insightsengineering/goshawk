@@ -19,6 +19,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD", biomarker,
 
 \item{value_var}{name of variable containing biomarker results.}
 
+\item{unit_var}{name of variable containing biomarker result unit.}
+
 \item{trt_group}{name of variable representing treatment group.}
 
 \item{trt_group_level}{vector that can be used to define the factor level of trt_group.}
@@ -53,6 +55,7 @@ Currently, the output plot can display mean and median of input value. For mean,
 library(dplyr)
 library(ggplot2)
 library(gridExtra)
+library(grid)
 library(stringr)
 library(DescTools)
 
@@ -128,6 +131,7 @@ plot1
 library(dplyr)
 library(ggplot2)
 library(gridExtra)
+library(grid)
 library(stringr)
 
 ANL <- expand.grid(

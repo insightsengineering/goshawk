@@ -8,6 +8,7 @@
 #' @param biomarker_var name of variable containing biomarker names.
 #' @param biomaker biomarker name to be analyzed. 
 #' @param value_var name of variable containing biomarker results.
+#' @param unit_var name of variable containing biomarker result unit.
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
@@ -22,6 +23,7 @@
 #' @import grid
 #' @importFrom stringr str_wrap
 #' @importFrom gridExtra grid.arrange
+#' @importFrom grid unit.pmax
 #'
 #' @author Balazs Toth (toth.balazs@gene.com)
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -39,6 +41,7 @@
 #' library(dplyr)
 #' library(ggplot2)
 #' library(gridExtra)
+#' library(grid)
 #' library(stringr)
 #' library(DescTools)
 #' 
@@ -110,10 +113,11 @@
 #' plot1
 #' 
 #' # EXAMPLE 2:
-#' 
+#'
 #' library(dplyr)
 #' library(ggplot2)
 #' library(gridExtra)
+#' library(grid)
 #' library(stringr)
 #' 
 #' ANL <- expand.grid(
@@ -143,7 +147,6 @@
 #'            hline = NULL,
 #'            rotate_xlab = FALSE)
 #'            
-
 
 
 g_lineplot <- function(label = 'Line Plot',
@@ -225,6 +228,7 @@ g_lineplot <- function(label = 'Line Plot',
     theme_bw() +
     scale_y_continuous(limits = c(ymin, ymax)) +
     ggtitle(paste0(biomarker, ' (', unit, ') ', line, ' over time')) +
+    labs(caption = paste("The output plot can display mean and median of input value.\nFor mean, the error bar denotes 95% confidence interval.\nFor median, the error bar denotes median-SD to median+SD.")) +
     xlab(time) + 
     ylab(paste0(biomarker, ' ', line, title))+
     theme(legend.position = "bottom",

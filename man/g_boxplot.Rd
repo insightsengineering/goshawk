@@ -141,6 +141,10 @@ g_boxplot(albplot
           , biomarker = "CRP"
           , value_var = "AVAL"
           , trt_group = "ARM"
+          , loq_flag = "LOQFL"
+          , unit = NULL
+          , color_manual = color_manual
+          , shape_manual = shape_manual
 )
 
 }

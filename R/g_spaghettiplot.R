@@ -12,6 +12,7 @@
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time.
+#' @param color_manual vector of colors.
 #' @param ymin y-axis lower limit.
 #' @param ymax y-axis upper limit.
 #' @param facet_ncol number of facets per row.
@@ -129,8 +130,10 @@
 #'                 value_var = 'AVAL',
 #'                 trt_group = 'ARM',
 #'                 time = 'VISIT',
+#'                 color_manual = c("ARM A" = "#000000", "ARM B" = "#3498DB", "ARM C" = "#E74C3C"),
 #'                 hline = NULL,
 #'                 rotate_xlab = FALSE)
+
 
 g_spaghettiplot <- function(data,
                             subj_id = 'USUBJID',
@@ -142,6 +145,7 @@ g_spaghettiplot <- function(data,
                             trt_group_level = NULL,
                             time,
                             time_level = NULL,
+                            color_manual = NULL,
                             ymin = NA,
                             ymax = NA,
                             facet_ncol = 2,
@@ -186,6 +190,12 @@ g_spaghettiplot <- function(data,
   if (rotate_xlab){
     plot <- plot +
       theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  }
+  
+  # Add manual color
+  if (!is.null(color_manual)){
+    plot <- plot +
+      scale_color_manual(values = color_manual, name = 'Dose')
   }
   
   #Add horizontal line

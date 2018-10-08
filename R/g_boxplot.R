@@ -122,6 +122,10 @@
 #'           , biomarker = "CRP"
 #'           , value_var = "AVAL"
 #'           , trt_group = "ARM"
+#'           , loq_flag = "LOQFL"
+#'           , unit = NULL
+#'           , color_manual = color_manual
+#'           , shape_manual = shape_manual
 #' )
 #' 
 #'}
@@ -146,17 +150,26 @@ g_boxplot <- function(data,
                        facet = NULL) { 
 
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
-  yAxisLabel <- ifelse(is.null(unit), biomarker, 
-                       ifelse(unit == "", biomarker, paste0(biomarker,' (',unit,')'))
+  yAxisLabel <- ifelse(is.null(unit), paste0(data$PARAM, " ", value_var, " Values"), 
+                       ifelse(unit == "", paste0(data$PARAM, value_var, " Values"), 
+                              paste0(data$PARAM,' (', unit,') ', value_var, " Values"))
                        )
 
+  # Setup the ggtitle label.  Combine the biomarker and the units (if available)
+  ggtitleLabel <- ifelse(is.null(unit), paste0(data$PARAM, " Distribution by Treatment @ Visits"), 
+                       ifelse(unit == "", paste0(data$PARAM, " Distribution by Treatment @ Visits"), 
+                              paste0(data$PARAM," (", unit,") Distribution by Treatment @ Visits"))
+  )
+  
   # A useable name for the X axis.
   # If present, use the label for the trt_group parameter, if not then use the name
   # of the parameter (in title case)
   if (!is.null(attr(data[[trt_group]], "label", exact = TRUE))) {
-    armlabel <- attr(data[[trt_group]], "label")
+    #armlabel <- attr(data[[trt_group]], "label")
+    armlabel <- "Dose"
   } else {
-    armlabel <- gsub("(?<=\\b)([a-z])", "\\U\\1", tolower(trt_group), perl=TRUE)
+    #armlabel <- gsub("(?<=\\b)([a-z])", "\\U\\1", tolower(trt_group), perl=TRUE)
+    armlabel <- "Dose"
   }
 
   # Base plot
@@ -185,14 +198,15 @@ g_boxplot <- function(data,
     xlab(armlabel) +
     ylab(yAxisLabel) +
     theme_bw() +
-    ggtitle(paste0(value_var,' distribution @ ',timepoint,' per arm')) 
-
+    # ggtitle(paste0(data$PARAM, " (",  unit, ") Distribution by Treatment @ Visits")) 
+    ggtitle(ggtitleLabel)
+    
   # Colors supplied?  Use color_manual, otherwise default ggplot coloring.  
   if (!is.null(color_manual)) {
     cols <- color_manual
     plot1 <- plot1 +
-      scale_color_manual(values = cols, name = armlabel) +
-      scale_fill_manual(values = cols, name = armlabel)  
+      scale_color_manual(values = cols, name = "Dose") +
+      scale_fill_manual(values = cols, name = "Dose")  
   }
 
   # LOQ needed?

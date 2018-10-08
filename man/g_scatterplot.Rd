@@ -8,11 +8,11 @@ Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot
 g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
   param = "CRP", xaxis_var = "BASE", yaxis_var = "AVAL",
   trt_group = "ARM", visit = "AVISITCD", loq_flag_var = "LOQFL",
-  unit = "AVALU", xmin_scale = 0, xmax_scale = 200, ymin_scale = 0,
-  ymax_scale = 200, color_manual = NULL, shape_manual = c(N = 1, Y = 2,
-  `NA` = 0), facet = FALSE, facet_var = "ARM", reg_line = FALSE,
-  rotate_xlab = FALSE, hline = NULL, font_size = 12, dot_size = NULL,
-  reg_text_size = 3)
+  unit = "AVALU", xmin_scale = NULL, xmax_scale = NULL,
+  ymin_scale = NULL, ymax_scale = NULL, color_manual = NULL,
+  shape_manual = NULL, facet = FALSE, facet_var = "ARM",
+  reg_line = FALSE, rotate_xlab = FALSE, hline = NULL, font_size = 12,
+  dot_size = NULL, reg_text_size = 3)
 }
 \arguments{
 \item{label}{text string to used to identify plot.}
@@ -45,9 +45,9 @@ Note that the data are expected to be in vertical form with the
 
 \item{ymax_scale}{maximum value of yaxis_var variable for selected biomarker.}
 
-\item{color_manual}{vector of colors. Currently plot uses default colors and this control is set to NULL.}
+\item{color_manual}{vector of treatment colors. assigned values in app.R otherwise uses default colors.}
 
-\item{shape_manual}{vector of shapes to display LOQ values vs. non-LOQ values.}
+\item{shape_manual}{vector of LOQ shapes. assigned values in app.R otherwise uses default shapes.}
 
 \item{facet}{set layout to use facetting.}
 
@@ -97,17 +97,13 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            visit = 'AVISITCD',
            loq_flag_var = 'LOQFL',
            unit = 'AVALU',
-           xmin_scale = 0,
-           xmax_scale = .5,
-           ymin_scale = 0,
-           ymax_scale = .5,
-           color_manual = NULL,
-           shape_manual = c('N' = 1, 'Y' = 2, 'NA' = 0),
+           color_manual = color_manual,
+           shape_manual = shape_manual,
            hline = NULL,
            rotate_xlab = FALSE,
-           facet = TRUE,
+           facet = FALSE,
            facet_var = "ARM",
-           reg_line = TRUE,
+           reg_line = FALSE,
            font_size = 14,
            dot_size = 2,
            reg_text_size = 3)
