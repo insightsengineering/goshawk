@@ -203,7 +203,7 @@ g_lineplot <- function(label = 'Line Plot',
     geom_text(size = 3.5) +
     ggtitle("Number of observations") + 
     theme_minimal() +
-    scale_y_discrete(labels = function(x = sum_data[[trt_group]]) str_wrap(x, width = 8)) + 
+    scale_y_discrete(labels = function(x = sum_data[[trt_group]]) str_wrap(x, width = 12)) + 
     scale_x_discrete(limits = x)+
     theme(panel.grid.major = element_blank(), legend.position = "none",
           panel.border = element_blank(), axis.text.x =  element_blank(),
