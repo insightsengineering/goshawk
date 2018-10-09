@@ -126,7 +126,7 @@ g_lineplot <- function(label = 'Line Plot',
   colnames(sum_data)[1:2] <- c(time,trt_group)
 
   ## Base plot
-  pd <- position_dodge(0.5)
+  pd <- position_dodge(0.4)
 
   if (median) {
     line <- 'median'
@@ -154,7 +154,7 @@ g_lineplot <- function(label = 'Line Plot',
     geom_line(position = pd) +
     geom_errorbar(aes_string(ymin = down_limit,
                              ymax = up_limit),
-                  width=0.5,
+                  width=0.4,
                   position = pd) +
     theme_bw() +
     scale_y_continuous(limits = c(ymin, ymax)) +
