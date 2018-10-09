@@ -6,6 +6,7 @@
 #' @param data data frame with variables to be summarized and generate statistics which will display in the plot.
 #' @param subj_id unique subject id variable name.
 #' @param biomarker_var name of variable containing biomarker names.
+#' @param biomarker_var_label name of variable containing biomarker labels.
 #' @param biomaker biomarker name to be analyzed. 
 #' @param value_var name of variable containing biomarker results.
 #' @param trt_group name of variable representing treatment group.
@@ -40,7 +41,8 @@
 #'   USUBJID = paste0("p-",1:100),
 #'   VISIT = paste0("visit ", 1:10),
 #'   ARM = c("ARM A", "ARM B", "ARM C"),
-#'   PARAMCD = c("CRP", "IGG", "IGM")
+#'   PARAMCD = c("CRP", "IGG", "IGM"),
+#'   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 #' )
 #' ANL$AVAL <- rnorm(nrow(ANL))
 #' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
@@ -66,6 +68,7 @@
 g_spaghettiplot <- function(data,
                             subj_id = 'USUBJID',
                             biomarker_var = 'PARAMCD',
+                            biomarker_var_label = 'PARAM',
                             biomarker,
                             value_var = 'AVAL',
                             unit_var = 'AVALU',
@@ -100,7 +103,13 @@ g_spaghettiplot <- function(data,
   # Plot
   for.plot <- data[data[[biomarker_var]] %in% biomarker,]
   
-  unit <- unique(for.plot[[unit_var]])
+  unit <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[unit_var]])
+  unit1 <- ifelse(is.na(unit) | unit == "", " ", paste0(' (', unit, ') '))
+  
+  biomarker1 <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[biomarker_var_label]]) 
+  
+  gtitle <- paste0(biomarker1, unit1, value_var, ' Values by Treatment @ Visits')
+  gylab <- paste0(biomarker1, ' ', value_var, ' Values')
   
   title <- list("AVAL" = "Analysis Value", "CHG" = "Change from Baseline")
   
@@ -111,9 +120,10 @@ g_spaghettiplot <- function(data,
     facet_wrap(trt_group, ncol = facet_ncol) + 
     theme_bw() +
     scale_y_continuous(limits = c(ymin, ymax)) +
-    ggtitle(paste0(biomarker, ' (', unit, ') ', " - ", title[[value_var]], " over time")) +
+    ggtitle(gtitle) +
     xlab(time) + 
-    ylab(paste0(biomarker))
+    ylab(gylab) + 
+    theme(plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5))
   
   # Format x-label
   if (rotate_xlab){

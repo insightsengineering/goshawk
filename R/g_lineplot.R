@@ -6,6 +6,7 @@
 #' @param label text string to be displayed as plot label.
 #' @param data data frame with variables to be summarized and generate statistics which will display in the plot.
 #' @param biomarker_var name of variable containing biomarker names.
+#' @param biomarker_var_label name of variable containing biomarker labels.
 #' @param biomaker biomarker name to be analyzed. 
 #' @param value_var name of variable containing biomarker results.
 #' @param unit_var name of variable containing biomarker result unit.
@@ -23,6 +24,7 @@
 #' @import dplyr
 #' @import grid
 #' @importFrom stringr str_wrap
+#' @importFrom stringr str_to_title
 #' @importFrom gridExtra grid.arrange
 #' @importFrom grid unit.pmax
 #'
@@ -45,12 +47,13 @@
 #' library(gridExtra)
 #' library(grid)
 #' library(stringr)
-#' 
+#'
 #' ANL <- expand.grid(
 #'   USUBJID = paste0("p-",1:100),
 #'   VISIT = paste0("visit ", 1:10),
 #'   ARM = c("ARM A", "ARM B", "ARM C"),
-#'   PARAMCD = c("CRP", "IGG", "IGM")
+#'   PARAMCD = c("CRP", "IGG", "IGM"),
+#'   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 #' )
 #' ANL$AVAL <- rnorm(nrow(ANL))
 #' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
@@ -78,6 +81,7 @@
 g_lineplot <- function(label = 'Line Plot',
                        data,
                        biomarker_var = 'PARAMCD',
+                       biomarker_var_label = 'PARAM',
                        biomarker,
                        value_var = 'AVAL',
                        unit_var = 'AVALU',
@@ -134,12 +138,12 @@ g_lineplot <- function(label = 'Line Plot',
     down_limit <- 'CIdown'
   }
 
-  title <- ''
-  if (grepl('CHG',value_var)) {
-    title <- paste0(' change from baseline')
-  }
-  
   unit <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[unit_var]])
+  unit1 <- ifelse(is.na(unit) | unit == "", " ", paste0(' (', unit, ') '))
+  
+  biomarker1 <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[biomarker_var_label]]) 
+  gtitle <- paste0(biomarker1, unit1, str_to_title(line), ' by Treatment @ Visits')
+  gylab <- paste0(biomarker1, ' ', str_to_title(line), ' of ', value_var, ' Values')
   
   plot1 <-  ggplot(data = sum_data,
                    aes_string(x = time,
@@ -154,12 +158,12 @@ g_lineplot <- function(label = 'Line Plot',
                   position = pd) +
     theme_bw() +
     scale_y_continuous(limits = c(ymin, ymax)) +
-    ggtitle(paste0(biomarker, ' (', unit, ') ', line, ' over time')) +
+    ggtitle(gtitle) +
     labs(caption = paste("The output plot can display mean and median of input value.\nFor mean, the error bar denotes 95% confidence interval.\nFor median, the error bar denotes median-25% quartile to median+75% quartile.")) +
     xlab(time) + 
-    ylab(paste0(biomarker, ' ', line, title))+
+    ylab(gylab)+
     theme(legend.position = "bottom",
-          plot.title = element_text(size=font_size, margin = margin()),
+          plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5),
           axis.title.y = element_text(margin = margin(r = 20)))
     
 
