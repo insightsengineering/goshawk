@@ -150,14 +150,14 @@ g_boxplot <- function(data,
                        facet = NULL) { 
 
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
-  yAxisLabel <- ifelse(is.null(unit), paste0(data$PARAM, " ", value_var, " Values"), 
-                       ifelse(unit == "", paste0(data$PARAM, value_var, " Values"), 
-                              paste0(data$PARAM,' (', unit,') ', value_var, " Values"))
+  yAxisLabel <- ifelse(is.null(unit), paste(data$PARAM, value_var, "Values"), 
+                       ifelse(unit == "", paste(data$PARAM, value_var, "Values"), 
+                              paste0(data$PARAM, " (", unit, ") ", value_var, " Values"))
                        )
 
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
-  ggtitleLabel <- ifelse(is.null(unit), paste0(data$PARAM, " Distribution by Treatment @ Visits"), 
-                       ifelse(unit == "", paste0(data$PARAM, " Distribution by Treatment @ Visits"), 
+  ggtitleLabel <- ifelse(is.null(unit), paste(data$PARAM, "Distribution by Treatment @ Visits"), 
+                       ifelse(unit == "", paste(data$PARAM, "Distribution by Treatment @ Visits"), 
                               paste0(data$PARAM," (", unit,") Distribution by Treatment @ Visits"))
   )
   
@@ -198,8 +198,8 @@ g_boxplot <- function(data,
     xlab(armlabel) +
     ylab(yAxisLabel) +
     theme_bw() +
-    # ggtitle(paste0(data$PARAM, " (",  unit, ") Distribution by Treatment @ Visits")) 
-    ggtitle(ggtitleLabel)
+    ggtitle(ggtitleLabel) +
+    theme(plot.title = element_text(size = font_size, hjust = 0.5))
     
   # Colors supplied?  Use color_manual, otherwise default ggplot coloring.  
   if (!is.null(color_manual)) {

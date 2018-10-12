@@ -54,13 +54,13 @@ t_summarytable <- function(data,
     filter(eval(parse(text = param_var)) == param) %>%
     group_by_(.dots = c(param_var, trt_group, "TRTORD", visit_var)) %>%
     summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
-              Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
-              Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
-              StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
-              Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
-              Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
-              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(is.na(eval(parse(text = xaxis_var)))),1),
-              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var))=='Y')/length(eval(parse(text = loq_flag_var))=='Y'),2)
+              Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+              Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+              StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+              Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+              Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(is.na(eval(parse(text = xaxis_var)))), digits = 2),
+              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var))=='Y')/length(eval(parse(text = loq_flag_var))=='Y'), digits = 2)
               ) 
   
   # by combined ARM table
@@ -68,13 +68,13 @@ t_summarytable <- function(data,
     filter(eval(parse(text = param_var)) == param) %>%
     group_by_(.dots = c(param_var, visit_var)) %>%
     summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
-              Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
-              Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
-              StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
-              Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
-              Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE),1),
-              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(is.na(eval(parse(text = xaxis_var)))),1),
-              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y')/length(eval(parse(text = loq_flag_var)) == 'Y'),2),
+              Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+              Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+              StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+              Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+              Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(is.na(eval(parse(text = xaxis_var)))), digits = 2),
+              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y')/length(eval(parse(text = loq_flag_var)) == 'Y'), digits = 2),
               MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
     ) %>% # additional use of max function identifies maximum treatment order across all visits.
     mutate(ARM = "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) 

@@ -56,7 +56,7 @@
 #' # need a test data set created using random.cdisc.data.
 #' # example call uses expects ALB structure 
 #' 
-#' param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
+#' param <- c('ACIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
 #' 
 #' plot1 <- g_scatterplot(label = 'Scatter Plot',
 #'            data = ALB,
@@ -111,6 +111,24 @@ g_scatterplot <- function(label = 'Scatter Plot',
 plot_data <<- data %>%
   filter(eval(parse(text = param_var)) == param)
 
+# Setup the ggtitle label.  Combine the biomarker and the units (if available)
+ggtitleLabel <- ifelse(is.null(unit), paste0(plot_data$PARAM, "@ Visits"), 
+                       ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, "@ Visits"), 
+                              paste0(plot_data$PARAM," (", plot_data[[unit]],") @ Visits"))
+)
+
+# Setup the x-axis label.  Combine the biomarker and the units (if available)
+xaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, xaxis_var, "Values"), 
+                     ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, xaxis_var, "Values"), 
+                            paste0(plot_data$PARAM," (", plot_data[[unit]],") ", xaxis_var, " Values"))
+)
+
+# Setup the y-axis label.  Combine the biomarker and the units (if available)
+yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"), 
+                     ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, yaxis_var, "Values"), 
+                            paste0(plot_data$PARAM," (", plot_data[[unit]],") ", yaxis_var, " Values"))
+)
+
 # create plot foundation
   plot1 <- ggplot2::ggplot(data = plot_data,
                    aes_string(x = xaxis_var,
@@ -119,10 +137,10 @@ plot_data <<- data %>%
     geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
     facet_wrap(as.formula(paste0('~', visit))) +
     theme_bw() +
-    ggtitle(paste0(plot_data$PARAM, " (",  plot_data[[unit]], ") @ Visits")) +
+    ggtitle(ggtitleLabel) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
-    xlab(paste(plot_data$PARAM, xaxis_var, "Values")) +
-    ylab(paste(plot_data$PARAM, yaxis_var, "Values"))
+    xlab(xaxisLabel) +
+    ylab(yaxisLabel)
     
     
 # add grid faceting to foundation 

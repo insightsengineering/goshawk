@@ -78,6 +78,18 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
 
   plot_data <- data %>%
     filter(eval(parse(text = param_var)) == param)
+
+  # Setup the ggtitle label.  Combine the biomarker and the units (if available)
+  ggtitleLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, "Density: Combined Treatment (Comb.) & by Treatment @ Visits"), 
+                         ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, "Density: Combined Treatment (Comb.) & by Treatment @ Visits"), 
+                                paste0(plot_data$PARAM," (", plot_data[[unit]],") Density: Combined Treatment (Comb.) & by Treatment @ Visits"))
+  )
+
+  # Setup the x-axis label.  Combine the biomarker and the units (if available)
+  xaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, xaxis_var, "Values"), 
+                         ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, xaxis_var, "Values"), 
+                                paste0(plot_data$PARAM," (", plot_data[[unit]],") ", xaxis_var, " Values"))
+  )
   
   plot1 <- ggplot(plot_data) +
     geom_density(aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
@@ -85,9 +97,9 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
     scale_linetype_manual(name = "Combined Dose", values = c(Comb.="solid", per_dose="solid")) +
     facet_wrap(as.formula(paste0('~', facet_var))) +
     theme_bw() +
-    ggtitle(paste(plot_data$PARAM, "(",  plot_data[[unit]], ") Density: Combined Treatment (Comb.) & by Treatment @ Visits")) +
+    ggtitle(ggtitleLabel) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
-    xlab(paste(plot_data$PARAM, xaxis_var, "Values")) +
+    xlab(paste(xaxisLabel)) +
     ylab(paste("Density"))
 
   # Dynamic x-axis range
