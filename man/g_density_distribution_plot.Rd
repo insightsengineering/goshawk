@@ -8,8 +8,7 @@ distribution overlay plot visualiztion}
 \usage{
 g_density_distribution_plot(label = "Density Distribution Plot", data = ALB,
   param_var = "PARAMCD", param = "CRP", xaxis_var = "AVAL",
-  trt_group = "ARM", unit = "AVALU", xmin_scale = NULL,
-  xmax_scale = NULL, color_manual = NULL, hline = NULL,
+  trt_group = "ARM", unit = "AVALU", color_manual = NULL, hline = NULL,
   rotate_xlab = FALSE, facet_var = "AVISITCD", font_size = 12,
   line_size = 2)
 }

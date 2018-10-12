@@ -67,8 +67,6 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
                                 xaxis_var = "AVAL",
                                 trt_group = "ARM",
                                 unit = "AVALU",
-                                xmin_scale = NULL,
-                                xmax_scale = NULL,
                                 color_manual = NULL,
                                 hline = NULL,
                                 rotate_xlab = FALSE,
@@ -102,11 +100,6 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
     xlab(paste(xaxisLabel)) +
     ylab(paste("Density"))
 
-  # Dynamic x-axis range
-  if (!is.null(xmin_scale) & !is.null(xmax_scale)) {
-    plot1 <- plot1 + xlim(xmin_scale, xmax_scale) 
-  }
-  
   # Format treatment color
   if (!is.null(color_manual)){
     plot1 <- plot1 +
