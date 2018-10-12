@@ -29,6 +29,11 @@
 #' @param ymax_scale maximum value for the Y axis
 #' @param facet variable to facet the plot by, or "None" if no faceting
 #'   required. 
+#' @param xaxis_var variable used to group the data on the x-axis.
+#' @param armlabel header for the treatment symbols in the legend.  If not specified
+#'    then the label attribute for \code{trt_group} will be used.  If there is 
+#'    no label attribute for \code{trt_group}, then the name of the parameter (
+#'    in title case) will be used.
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param alpha transparency for the points (0 = transparent, 1 = opaque)
 #'   
@@ -104,11 +109,11 @@
 #'           , loq_flag = 'LOQFL'
 #'           , timepoint = "over time"
 #'           , unit = "U/L"
-#'           , color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
+#'           #, color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
 #'           , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
-#'           , facet = "AVISIT"
+#'           , facet = "AVISITCD"
 #'           , alpha = 0.5
-#'           , logscale = TRUE
+#'           , logscale = FALSE
 #' )
 #' 
 #' 
@@ -122,6 +127,10 @@
 #'           , biomarker = "CRP"
 #'           , value_var = "AVAL"
 #'           , trt_group = "ARM"
+#'           , loq_flag = "LOQFL"
+#'           , unit = NULL
+#'           , color_manual = color_manual
+#'           , shape_manual = shape_manual
 #' )
 #' 
 #'}
@@ -131,6 +140,7 @@ g_boxplot <- function(data,
                        biomarker,
                        value_var,
                        trt_group,
+                       xaxis_var = NULL,
                        loq_flag = NULL,
                        unit = NULL,
                        timepoint = NULL,
@@ -143,22 +153,29 @@ g_boxplot <- function(data,
                        dot_size = 2,
                        alpha = 1.0,
                        font_size = NULL,
+                       armlabel = NULL,
                        facet = NULL) { 
 
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
-  yAxisLabel <- ifelse(is.null(unit), biomarker, 
-                       ifelse(unit == "", biomarker, paste0(biomarker,' (',unit,')'))
+  yAxisLabel <- ifelse(is.null(unit), paste0(data$PARAM, " ", value_var, " Values"), 
+                       ifelse(unit == "", paste0(data$PARAM, value_var, " Values"), 
+                              paste0(data$PARAM,' (', unit,') ', value_var, " Values"))
                        )
 
+  # Setup the ggtitle label.  Combine the biomarker and the units (if available)
+  ggtitleLabel <- ifelse(is.null(unit), paste0(data$PARAM, " Distribution by Treatment @ Visits"), 
+                       ifelse(unit == "", paste0(data$PARAM, " Distribution by Treatment @ Visits"), 
+                              paste0(data$PARAM," (", unit,") Distribution by Treatment @ Visits"))
+  )
+  
   # A useable name for the X axis.
-  # If present, use the label for the trt_group parameter, if not then use the name
-  # of the parameter (in title case)
-  if (!is.null(attr(data[[trt_group]], "label", exact = TRUE))) {
-    armlabel <- attr(data[[trt_group]], "label")
-  } else {
-    armlabel <- gsub("(?<=\\b)([a-z])", "\\U\\1", tolower(trt_group), perl=TRUE)
-  }
-
+  # If supplied, then use armlabel as specified.
+  # otherwise If present, use the label for the trt_group parameter, 
+  # otherwise if not then use the name of the parameter (in title case)
+  armlabel <- ifelse(!is.null(armlabel), armlabel,
+                     ifelse(!is.null(t_label), t_label,
+                            gsub("(?<=\\b)([a-z])", "\\U\\1", tolower(trt_group), perl=TRUE)))
+  
   # Base plot
   plot1 <-  ggplot()
     
@@ -166,7 +183,7 @@ g_boxplot <- function(data,
   if (box) {
     plot1 <- plot1 +
       geom_boxplot(data = data,
-                   aes_string( x = trt_group,
+                   aes_string( x = xaxis_var,
                                y = value_var,
                                color = trt_group,
                                fill = NULL),
@@ -175,7 +192,7 @@ g_boxplot <- function(data,
   
   plot1 <- plot1 +
     geom_jitter(data = data,
-                aes_string( x = trt_group,
+                aes_string( x = xaxis_var,
                             y = value_var,
                             color = trt_group,
                             shape = loq_flag),
@@ -185,14 +202,14 @@ g_boxplot <- function(data,
     xlab(armlabel) +
     ylab(yAxisLabel) +
     theme_bw() +
-    ggtitle(paste0(value_var,' distribution @ ',timepoint,' per arm')) 
-
+    ggtitle(ggtitleLabel)
+    
   # Colors supplied?  Use color_manual, otherwise default ggplot coloring.  
   if (!is.null(color_manual)) {
     cols <- color_manual
     plot1 <- plot1 +
       scale_color_manual(values = cols, name = armlabel) +
-      scale_fill_manual(values = cols, name = armlabel)  
+      scale_fill_manual(values = cols)  
   }
 
   # LOQ needed?
@@ -216,7 +233,7 @@ g_boxplot <- function(data,
   if (!is.null(facet) ){
     if (facet != "None" & facet %in% names(data)) {
       plot1 <- plot1 +
-        facet_wrap(as.formula(paste0('.~',facet)))
+        facet_wrap(as.formula(paste0('~',facet)))
     }
   }
 
@@ -232,7 +249,6 @@ g_boxplot <- function(data,
             strip.text.x = element_text(size = font_size),
             strip.text.y = element_text(size = font_size))
   }
-  
 
    return(plot1)
   
