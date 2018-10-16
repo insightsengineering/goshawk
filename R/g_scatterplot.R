@@ -20,10 +20,6 @@
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LBLOQFL.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
-#' @param xmin_scale minimum value of xaxis_var variable for selected biomarker.
-#' @param xmax_scale maximum value of xaxis_var variable for selected biomarker.
-#' @param ymin_scale minimum value of yaxis_var variable for selected biomarker.
-#' @param ymax_scale maximum value of yaxis_var variable for selected biomarker.
 #' @param color_manual vector of treatment colors. assigned values in app.R otherwise uses default colors.
 #' @param shape_manual vector of LOQ shapes. assigned values in app.R otherwise uses default shapes.
 #' @param facet set layout to use facetting.
@@ -56,7 +52,7 @@
 #' # need a test data set created using random.cdisc.data.
 #' # example call uses expects ALB structure 
 #' 
-#' param <- c('ACIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
+#' param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
 #' 
 #' plot1 <- g_scatterplot(label = 'Scatter Plot',
 #'            data = ALB,
@@ -72,9 +68,9 @@
 #'            shape_manual = shape_manual,
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
-#'            facet = FALSE,
+#'            facet = TRUE,
 #'            facet_var = "ARM",
-#'            reg_line = FALSE,
+#'            reg_line = TRUE,
 #'            font_size = 14,
 #'            dot_size = 2,
 #'            reg_text_size = 3)
@@ -92,10 +88,6 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           visit = "AVISITCD",
                           loq_flag_var = "LOQFL",
                           unit = "AVALU",
-                          xmin_scale = NULL,
-                          xmax_scale = NULL,
-                          ymin_scale = NULL,
-                          ymax_scale = NULL,
                           color_manual = NULL,
                           shape_manual = NULL,
                           facet = FALSE,
@@ -151,8 +143,10 @@ yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
 
 # add regression line
     if (reg_line){
-    # !!!!!!!!!! this condition could be removed if the non continuous level biomarkers are removed from list - Bali consult needed
-    if (xmax_scale-xmin_scale > 1){  
+    # this condition is necessary due to the binary values of some biomarkers that don't lend themselves to
+    # calculating regression
+      if ((max(plot_data[[xaxis_var]], na.rm = TRUE) - min(plot_data[[xaxis_var]], na.rm = TRUE)) > 1 &
+          (max(plot_data[[yaxis_var]], na.rm = TRUE) - min(plot_data[[yaxis_var]], na.rm = TRUE)) > 1){  
       slope <- function(x, y) {
         ratio <- sd(x)/sd(y)
         reg <- mcr:::mc.deming(y, x, ratio)
@@ -200,16 +194,6 @@ yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
     
     if (yaxis_var %in% c('PCHG2', 'PCHG')) {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
     
-  # Dynamic x-axis range
-  if (!is.null(xmin_scale) & !is.null(xmax_scale)) {
-    plot1 <- plot1 + xlim(xmin_scale, xmax_scale) 
-  }
-
-  # Dynamic y-axis range
-  if (!is.null(ymin_scale) & !is.null(ymax_scale)) {
-    plot1 <- plot1 + ylim(ymin_scale, ymax_scale) 
-  }
-  
   # Format font size
   if (!is.null(font_size)){
     plot1 <- plot1 +

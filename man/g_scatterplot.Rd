@@ -8,11 +8,10 @@ Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot
 g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
   param = "CRP", xaxis_var = "BASE", yaxis_var = "AVAL",
   trt_group = "ARM", visit = "AVISITCD", loq_flag_var = "LOQFL",
-  unit = "AVALU", xmin_scale = NULL, xmax_scale = NULL,
-  ymin_scale = NULL, ymax_scale = NULL, color_manual = NULL,
-  shape_manual = NULL, facet = FALSE, facet_var = "ARM",
-  reg_line = FALSE, rotate_xlab = FALSE, hline = NULL, font_size = 12,
-  dot_size = NULL, reg_text_size = 3)
+  unit = "AVALU", color_manual = NULL, shape_manual = NULL,
+  facet = FALSE, facet_var = "ARM", reg_line = FALSE,
+  rotate_xlab = FALSE, hline = NULL, font_size = 12, dot_size = NULL,
+  reg_text_size = 3)
 }
 \arguments{
 \item{label}{text string to used to identify plot.}
@@ -36,14 +35,6 @@ Note that the data are expected to be in vertical form with the
 \item{loq_flag_var}{name of variable containing LOQ flag e.g. LBLOQFL.}
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
-
-\item{xmin_scale}{minimum value of xaxis_var variable for selected biomarker.}
-
-\item{xmax_scale}{maximum value of xaxis_var variable for selected biomarker.}
-
-\item{ymin_scale}{minimum value of yaxis_var variable for selected biomarker.}
-
-\item{ymax_scale}{maximum value of yaxis_var variable for selected biomarker.}
 
 \item{color_manual}{vector of treatment colors. assigned values in app.R otherwise uses default colors.}
 
@@ -85,7 +76,7 @@ This function displays a scatter plot. link to specification file \url{http://rs
 # need a test data set created using random.cdisc.data.
 # example call uses expects ALB structure 
 
-param <- c('ACIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
+param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
 
 plot1 <- g_scatterplot(label = 'Scatter Plot',
            data = ALB,
@@ -101,9 +92,9 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            shape_manual = shape_manual,
            hline = NULL,
            rotate_xlab = FALSE,
-           facet = FALSE,
+           facet = TRUE,
            facet_var = "ARM",
-           reg_line = FALSE,
+           reg_line = TRUE,
            font_size = 14,
            dot_size = 2,
            reg_text_size = 3)
