@@ -76,7 +76,7 @@ This function displays a scatter plot. link to specification file \url{http://rs
 # need a test data set created using random.cdisc.data.
 # example call uses expects ALB structure 
 
-param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
+param <- c('ADIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
 
 plot1 <- g_scatterplot(label = 'Scatter Plot',
            data = ALB,

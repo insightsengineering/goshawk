@@ -52,7 +52,7 @@
 #' # need a test data set created using random.cdisc.data.
 #' # example call uses expects ALB structure 
 #' 
-#' param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
+#' param <- c('ADIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
 #' 
 #' plot1 <- g_scatterplot(label = 'Scatter Plot',
 #'            data = ALB,
@@ -100,7 +100,7 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           reg_text_size = 3){
 
 # create scatter plot over time pairwise per treatment arm 
-plot_data <<- data %>%
+plot_data <- data %>%
   filter(eval(parse(text = param_var)) == param)
 
 # Setup the ggtitle label.  Combine the biomarker and the units (if available)
@@ -143,50 +143,50 @@ yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
 
 # add regression line
     if (reg_line){
-    # this condition is necessary due to the binary values of some biomarkers that don't lend themselves to
-    # calculating regression
-      if ((max(plot_data[[xaxis_var]], na.rm = TRUE) - min(plot_data[[xaxis_var]], na.rm = TRUE)) > 1 &
-          (max(plot_data[[yaxis_var]], na.rm = TRUE) - min(plot_data[[yaxis_var]], na.rm = TRUE)) > 1){  
       slope <- function(x, y) {
         ratio <- sd(x)/sd(y)
-        reg <- mcr:::mc.deming(y, x, ratio)
-        return(c(round(reg$b0,2),round(reg$b1,2)))
+        if (!is.na(ratio) & ratio > 0){
+          reg <- mcr:::mc.deming(y, x, ratio)
+          # return the evaluation of the ratio condition as third value in numeric vector for conttroling downstream processing
+          return(c(round(reg$b0,2), round(reg$b1,2), !is.na(ratio) & ratio > 0))
+        }
+        # if ratio condition is not met then assign NA to returned vector so that NULL condition does not throw error below
+        return(as.numeric(c(NA, NA, NA)))
       }
       
       sub_data <- subset(plot_data, !is.na(eval(parse(text = yaxis_var))) &
                            !is.na(eval(parse(text = xaxis_var)))) %>%
         group_by_(.dots = c(trt_group, visit)) %>%
-        filter(n() > 1) %>%
-        mutate(intercept = slope(eval(parse(text = yaxis_var)),
-                                 eval(parse(text = xaxis_var)))[1]) %>%
+        mutate(intercept =  slope(eval(parse(text = yaxis_var)),
+                                  eval(parse(text = xaxis_var)))[1]) %>%
         mutate(slope = slope(eval(parse(text = yaxis_var)),
                              eval(parse(text = xaxis_var)))[2]) %>%
-        mutate(corr = cor(eval(parse(text = yaxis_var)),
-                          eval(parse(text = xaxis_var)),
-                          method = "spearman",
-                          use = 'complete.obs'))
-      
+        mutate(corr = ifelse(((slope(eval(parse(text = yaxis_var)),
+                                          eval(parse(text = xaxis_var))))[3]), 
+                             cor(eval(parse(text = yaxis_var)),
+                                 eval(parse(text = xaxis_var)),
+                                 method = "spearman",
+                                 use = 'complete.obs'),
+                             NA))
+        
         plot1 <- plot1 +
-          geom_abline(data = sub_data,
-                      aes_string(intercept = 'intercept',
-                                 slope = 'slope',
-                                 color = trt_group)) +
-          geom_text(data = sub_data, aes(x = -Inf,
-                                         y = Inf,
-                                         hjust = 0,
-                                         vjust = 1,
-                                         label = paste0('y=',round(intercept,2),
-                                                        '+',
-                                                        round(slope,2),
-                                                        'X', "\n",
-                                                        'cor=',
-                                                        round(corr,2)),
-                                         color = eval(parse(text = trt_group))),
-                    size = reg_text_size) +
-          labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
-    }
-    } 
-  
+        geom_abline(data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by to create annotations
+                    aes_string(intercept = 'intercept',
+                               slope = 'slope',
+                               color = trt_group)) +
+        geom_text(data = filter(sub_data, row_number() == 1), 
+                  aes( x = -Inf,
+                       y = Inf,
+                       hjust = 0,
+                       vjust = 1,
+                       label = ifelse(!is.na(intercept) & !is.na(slope) & !is.na(corr),
+                       sprintf("y=%.2f+%.2fX\ncor=%.2f", intercept, slope, corr),
+                       paste0("Insufficient Data For Regression")),
+                       color = eval(parse(text = trt_group))),
+                       size = reg_text_size) +
+                       labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
+      }
+ 
   # Add abline
     if (yaxis_var %in% c('AVAL', 'AVALL2', 'BASE2', 'BASE2L2', 'BASE', 'BASEL2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
     
