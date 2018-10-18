@@ -31,7 +31,7 @@
 #'                trt_group = 'ARM',
 #'                param_var = 'PARAMCD',
 #'                param = param, # the PARAMCD value
-#'                xaxis_var = 'AVAL',
+#'                xaxis_var = 'BASE',
 #'                visit_var = 'AVISITCD',
 #'                loq_flag_var = 'LOQFL')
 #'
@@ -59,8 +59,8 @@ t_summarytable <- function(data,
               StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
               Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
               Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(is.na(eval(parse(text = xaxis_var)))), digits = 2),
-              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var))=='Y')/length(eval(parse(text = loq_flag_var))=='Y'), digits = 2)
+              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
+              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
               ) 
   
   # by combined ARM table
@@ -73,8 +73,8 @@ t_summarytable <- function(data,
               StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
               Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
               Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(is.na(eval(parse(text = xaxis_var)))), digits = 2),
-              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y')/length(eval(parse(text = loq_flag_var)) == 'Y'), digits = 2),
+              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
+              PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
               MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
     ) %>% # additional use of max function identifies maximum treatment order across all visits.
     mutate(ARM = "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) 

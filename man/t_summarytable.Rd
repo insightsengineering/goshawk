@@ -43,7 +43,7 @@ t_summarytable(data = ALB,
                trt_group = 'ARM',
                param_var = 'PARAMCD',
                param = param, # the PARAMCD value
-               xaxis_var = 'AVAL',
+               xaxis_var = 'BASE',
                visit_var = 'AVISITCD',
                loq_flag_var = 'LOQFL')
 
