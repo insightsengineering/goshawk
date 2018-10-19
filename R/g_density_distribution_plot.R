@@ -1,23 +1,19 @@
-#' Function to generate a density distribution plot
-#' Output rendered by teal.goshawk module \code{g_density_distribution_plot} returns
-#' distribution overlay plot visualiztion
-#'
-#' This function displays an overall density plot with treatment arms overlaid.
-#'
-#' @param label text string to used to identify plot.
-#' @param data data frame with variables which will be displayed in the plot.
-#'   Note that the data are expected to be in vertical form with the
-#'   \code{PARAMCD} variable filtering to one observation per patient per visit.
+#' Function to create a density distribution plot.
+#' 
+#' Default plot displays overall density facetted by visit with treatment arms and combined treatment overlaid.
+#' 
+#' @param label text string used to identify plot.
+#' @param data ADaM structured analysis laboratory (ADLB/ALB) data frame.  
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param param biomarker to visualize e.g. IGG. 
-#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
+#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
-#' @param color_manual vector of treatment colors. assigned values in app.R otherwise uses default colors.
-#' @param hline y-axis value to position of horizontal line.
-#' @param rotate_xlab 45 degree rotation of x-axis values.
+#' @param color_manual vector of colors applied to treatment values.
 #' @param facet_var variable to use for facetting.
-#' @param font_size control font size for title, x-axis, y-axis and legend font.
+#' @param hline y-axis value to position a horizontal line.
+#' @param rotate_xlab 45 degree rotation of x-axis label values.
+#' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param line_size plot line thickness.
 #' 
 #' @import DescTools
@@ -34,13 +30,10 @@
 #' @examples
 #'
 #'\dontrun{
-#' # Example using analysis dataset for example ASL or ADSL,
-#' # ALB points to biomarker data stored in a typical LB structure. for example ALB or ADLB.
-#' 
-#' # need a test data set created using random.cdisc.data.
-#' # example call uses expects ALB structure 
+#' # Example using ADaM structure analysis dataset.
+#' # ALB refers to biomarker data stored in expected laboratory structure.
 #'
-#' param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_density_distribution_plot.R
+#' param <- c('CRP')
 #' 
 #' plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
 #'            data = ALB,
@@ -50,15 +43,15 @@
 #'            trt_group = 'ARM',
 #'            unit = 'AVALU',
 #'            color_manual = color_manual,
+#'            facet_var = 'AVISITCD',
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
-#'            facet_var = 'AVISITCD',
 #'            font_size = 10,
 #'            line_size = .5)
 #' plot1 
 #' 
 #' }
-# 
+#' 
 
 g_density_distribution_plot <- function(label = 'Density Distribution Plot',
                                 data = ALB,
@@ -68,9 +61,9 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
                                 trt_group = "ARM",
                                 unit = "AVALU",
                                 color_manual = NULL,
+                                facet_var = "AVISITCD",
                                 hline = NULL,
                                 rotate_xlab = FALSE,
-                                facet_var = "AVISITCD",
                                 font_size = 12,
                                 line_size = 2){
 

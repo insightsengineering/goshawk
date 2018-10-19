@@ -1,17 +1,9 @@
-#' Function to generate a scatter plot
-#' Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot visualiztion
+#' Function to create a scatter plot.
 #'
-#' A scatter plot is a type of plot using Cartesian coordinates to display values for typically two variables or
-#' for one variable at different timepoints for a set of data.
-#' If the points are color-coded, one additional variable can be displayed.
-#' The data are displayed as a collection of points, each having the value of one variable or timepoint determining
-#' the position on the horizontal axis and the value of the other variable or timepoint determining the position 
-#' on the vertical axis.
+#' Default plot displays scatter facetted by visit with color attributed treatment arms and symbol attributed LOQ values.
 #'
 #' @param label text string to used to identify plot.
-#' @param data data frame with variables which will be displayed in the plot.
-#'   Note that the data are expected to be in vertical form with the
-#'   \code{PARAMCD} variable filtering to one observation per patient per visit.
+#' @param data ADaM structured analysis laboratory (ADLB/ALB) data frame.  
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param param biomarker to visualize e.g. IGG. 
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
@@ -20,16 +12,16 @@
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LBLOQFL.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
-#' @param color_manual vector of treatment colors. assigned values in app.R otherwise uses default colors.
-#' @param shape_manual vector of LOQ shapes. assigned values in app.R otherwise uses default shapes.
-#' @param facet set layout to use facetting.
-#' @param facet_var variable to use for facetting.
-#' @param reg_line include regression line and annotations for slope and coefficient in visualization. Use with facet TRUE.
-#' @param rotate_xlab 45 degree rotation of x-axis values.
-#' @param hline y-axis value to position of horizontal line.
-#' @param font_size control font size for title, x-axis, y-axis and legend font.
-#' @param dot_size scatter dot size.
-#' @param reg_text_size regression line annotation font size.
+#' @param color_manual vector of colors applied to treatment values.
+#' @param shape_manual vector of symbols applied to LOQ values.
+#' @param facet set layout to use treatment facetting.
+#' @param facet_var variable to use for facetting beyond visit.
+#' @param reg_line include regression line and annotations for slope and coefficient in visualization. Use with facet = TRUE.
+#' @param hline y-axis value to position a horizontal line.
+#' @param rotate_xlab 45 degree rotation of x-axis label values.
+#' @param font_size font size control for title, x-axis label, y-axis label and legend.
+#' @param dot_size plot dot size.
+#' @param reg_text_size font size control for regression line annotations.
 #' 
 #' @import DescTools
 #' @import dplyr
@@ -46,11 +38,8 @@
 #' @examples
 #'
 #'\dontrun{
-#' # Example using analysis dataset for example ASL or ADSL,
-#' # ALB points to biomarker data stored in a typical LB structure. for example ALB or ADLB.
-#' 
-#' # need a test data set created using random.cdisc.data.
-#' # example call uses expects ALB structure 
+#' # Example using ADaM structure analysis dataset.
+#' # ALB refers to biomarker data stored in expected laboratory structure.
 #' 
 #' param <- c('ADIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
 #' 
@@ -66,17 +55,18 @@
 #'            unit = 'AVALU',
 #'            color_manual = color_manual,
 #'            shape_manual = shape_manual,
-#'            hline = NULL,
-#'            rotate_xlab = FALSE,
 #'            facet = TRUE,
 #'            facet_var = "ARM",
 #'            reg_line = TRUE,
+#'            hline = NULL,
+#'            rotate_xlab = FALSE,
 #'            font_size = 14,
 #'            dot_size = 2,
 #'            reg_text_size = 3)
 #' plot1 
 #' 
 #' }
+#' 
 
 g_scatterplot <- function(label = 'Scatter Plot',
                           data = ALB,
@@ -93,8 +83,8 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           facet = FALSE,
                           facet_var = "ARM",
                           reg_line = FALSE,
-                          rotate_xlab = FALSE,
                           hline = NULL,
+                          rotate_xlab = FALSE,
                           font_size = 12,
                           dot_size = NULL,
                           reg_text_size = 3){

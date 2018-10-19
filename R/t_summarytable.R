@@ -1,36 +1,33 @@
-#' Function to generate a table of descriptive summary statistics accompany
-#' plots.
+#' Function to create a table of descriptive summary statistics to accompany plots
 #' 
-#' Output render by teal.goshawk module \code{t_summarytable} returns
-#' descriptive summary statistics table as a data frame
+#' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, visit,
+#' n, meand, median, sd, min, max, %missing values, % LOQ values.
 #'
-#' @param data frame name
-#' @param trt_group treatment group variable name e.g. ARM
+#' @param data name of data frame to summarize.
+#' @param trt_group treatment group variable name e.g. ARM.
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param param biomarker to visualize e.g. IGG. 
-#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
-#' @param visit_var name of variable containing visit values e.g. AVISITCD
-#' @param loq_flag_var loq variable name e.g. loq_flag_var (not in current ALB)
+#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
+#' @param visit_var name of variable containing visit values e.g. AVISITCD.
+#' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
 #'
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
 #' @details provide additional information as needed. link to specification file \url{http://rstudio.com}
 #'
-#' @return \code{tbl} object
-#'
 #' @export
 #'
 #' @examples
 #'
 #'\dontrun{
-#' # use post processed data created in app.R file
+#' # Example using ADaM structure analysis dataset.
+#' # ALB refers to biomarker data stored in expected laboratory structure.
 #' 
-#' # call function
 #' t_summarytable(data = ALB,
 #'                trt_group = 'ARM',
 #'                param_var = 'PARAMCD',
-#'                param = param, # the PARAMCD value
+#'                param = param,
 #'                xaxis_var = 'BASE',
 #'                visit_var = 'AVISITCD',
 #'                loq_flag_var = 'LOQFL')

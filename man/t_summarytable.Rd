@@ -2,33 +2,29 @@
 % Please edit documentation in R/t_summarytable.R
 \name{t_summarytable}
 \alias{t_summarytable}
-\title{Function to generate a table of descriptive summary statistics accompany
-plots.}
+\title{Function to create a table of descriptive summary statistics to accompany plots}
 \usage{
 t_summarytable(data, trt_group, param_var, param, xaxis_var,
   visit_var = "AVISITCD", loq_flag_var = "LOQFL", ...)
 }
 \arguments{
-\item{data}{frame name}
+\item{data}{name of data frame to summarize.}
 
-\item{trt_group}{treatment group variable name e.g. ARM}
+\item{trt_group}{treatment group variable name e.g. ARM.}
 
 \item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
 \item{param}{biomarker to visualize e.g. IGG.}
 
-\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. BASE.}
+\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. AVAL.}
 
-\item{visit_var}{name of variable containing visit values e.g. AVISITCD}
+\item{visit_var}{name of variable containing visit values e.g. AVISITCD.}
 
-\item{loq_flag_var}{loq variable name e.g. loq_flag_var (not in current ALB)}
-}
-\value{
-\code{tbl} object
+\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
 }
 \description{
-Output render by teal.goshawk module \code{t_summarytable} returns
-descriptive summary statistics table as a data frame
+Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, visit,
+n, meand, median, sd, min, max, %missing values, % LOQ values.
 }
 \details{
 provide additional information as needed. link to specification file \url{http://rstudio.com}
@@ -36,13 +32,13 @@ provide additional information as needed. link to specification file \url{http:/
 \examples{
 
 \dontrun{
-# use post processed data created in app.R file
+# Example using ADaM structure analysis dataset.
+# ALB refers to biomarker data stored in expected laboratory structure.
 
-# call function
 t_summarytable(data = ALB,
                trt_group = 'ARM',
                param_var = 'PARAMCD',
-               param = param, # the PARAMCD value
+               param = param,
                xaxis_var = 'BASE',
                visit_var = 'AVISITCD',
                loq_flag_var = 'LOQFL')
