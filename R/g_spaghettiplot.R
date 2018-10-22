@@ -52,7 +52,7 @@
 #' 
 #' ANL$ARM <- factor(ANL$ARM)
 #' ANL$VISIT <- factor(ANL$VISIT)
-#' 
+#'
 #' g_spaghettiplot(data = ANL,
 #'                 subj_id = 'USUBJID',
 #'                 biomarker_var = 'PARAMCD',
@@ -62,7 +62,8 @@
 #'                 time = 'VISIT',
 #'                 color_manual = c("ARM A" = "#000000", "ARM B" = "#3498DB", "ARM C" = "#E74C3C"),
 #'                 hline = NULL,
-#'                 rotate_xlab = FALSE)
+#'                 rotate_xlab = FALSE,
+#'                 group_mean = TRUE)
 
 
 g_spaghettiplot <- function(data,
@@ -82,7 +83,8 @@ g_spaghettiplot <- function(data,
                             facet_ncol = 2,
                             hline = NULL,
                             rotate_xlab = FALSE,
-                            font_size = 12){
+                            font_size = 12,
+                            group_mean = FALSE){
   
   ## Pre-process data
   if(!is.null(trt_group_level)){
@@ -155,6 +157,12 @@ g_spaghettiplot <- function(data,
             legend.text = element_text(size = font_size),
             strip.text.x = element_text(size = font_size),
             strip.text.y = element_text(size = font_size))
+  }
+  
+  # Add group mean
+  if (group_mean){
+    plot <- plot +
+      stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1), color = 'green')
   }
   
   plot
