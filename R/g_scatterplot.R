@@ -3,7 +3,7 @@
 #' Default plot displays scatter facetted by visit with color attributed treatment arms and symbol attributed LOQ values.
 #'
 #' @param label text string to used to identify plot.
-#' @param data ADaM structured analysis laboratory (ADLB/ALB) data frame.  
+#' @param data ADaM structured analysis laboratory data frame e.g. ALB.  
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param param biomarker to visualize e.g. IGG. 
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
@@ -31,7 +31,7 @@
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
-#' @details This function displays a scatter plot. link to specification file \url{http://rstudio.com}
+#' @details Regression uses deming model.
 #'
 #' @export
 #'

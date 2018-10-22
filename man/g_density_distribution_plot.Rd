@@ -13,7 +13,7 @@ g_density_distribution_plot(label = "Density Distribution Plot", data = ALB,
 \arguments{
 \item{label}{text string used to identify plot.}
 
-\item{data}{ADaM structured analysis laboratory (ADLB/ALB) data frame.}
+\item{data}{ADaM structured analysis laboratory data frame e.g. ALB.}
 
 \item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
@@ -41,7 +41,7 @@ g_density_distribution_plot(label = "Density Distribution Plot", data = ALB,
 Default plot displays overall density facetted by visit with treatment arms and combined treatment overlaid.
 }
 \details{
-This function displays an overall density plot with treatment arms overlaid. link to specification file \url{http://rstudio.com}
+None
 }
 \examples{
 
@@ -50,6 +50,7 @@ This function displays an overall density plot with treatment arms overlaid. lin
 # ALB refers to biomarker data stored in expected laboratory structure.
 
 param <- c('CRP')
+color_manual <-  c('Placebo' = "#000000", '150mg QD' = "#3498DB", '200mg BID' = "#E74C3C")
 
 plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
            data = ALB,

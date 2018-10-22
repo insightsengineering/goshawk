@@ -15,7 +15,7 @@ g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
 \arguments{
 \item{label}{text string to used to identify plot.}
 
-\item{data}{ADaM structured analysis laboratory (ADLB/ALB) data frame.}
+\item{data}{ADaM structured analysis laboratory data frame e.g. ALB.}
 
 \item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
@@ -57,7 +57,7 @@ g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
 Default plot displays scatter facetted by visit with color attributed treatment arms and symbol attributed LOQ values.
 }
 \details{
-This function displays a scatter plot. link to specification file \url{http://rstudio.com}
+Regression uses deming model.
 }
 \examples{
 

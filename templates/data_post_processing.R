@@ -2,11 +2,11 @@
 # BEGIN: SPA Input Required
 ################################################################################
 # study root path under qa branch - used for determining access
-access_path <- "/opt/BIOSTAT/qa/cdt7738a"
+access_path <- "/opt/BIOSTAT/prod/cdt7738a"
 
 # absolute path and data det name
-ASL_path <- "/opt/BIOSTAT/qa/cdt7738a/s30044m/libraries/asl.sas7bdat"
-ALB_path <- "/opt/BIOSTAT/qa/cdt7738a/s30044m/libraries/alb.sas7bdat"
+ASL_path <- "/opt/BIOSTAT/prod/cdt7738a/s30044m/libraries/asl.sas7bdat"
+ALB_path <- "/opt/BIOSTAT/prod/cdt7738a/s30044m/libraries/alb.sas7bdat"
 
 # for development team testing
 # ASL_path <- "/opt/bee/home_nas/npaszty/btk/lupus/dataadam/asl.sas7bdat"

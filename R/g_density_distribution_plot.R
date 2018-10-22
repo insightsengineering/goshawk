@@ -3,7 +3,7 @@
 #' Default plot displays overall density facetted by visit with treatment arms and combined treatment overlaid.
 #' 
 #' @param label text string used to identify plot.
-#' @param data ADaM structured analysis laboratory (ADLB/ALB) data frame.  
+#' @param data ADaM structured analysis laboratory data frame e.g. ALB.  
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param param biomarker to visualize e.g. IGG. 
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
@@ -23,7 +23,7 @@
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
-#' @details This function displays an overall density plot with treatment arms overlaid. link to specification file \url{http://rstudio.com}
+#' @details None
 #'
 #' @export
 #'
@@ -34,6 +34,7 @@
 #' # ALB refers to biomarker data stored in expected laboratory structure.
 #'
 #' param <- c('CRP')
+#' color_manual <-  c('Placebo' = "#000000", '150mg QD' = "#3498DB", '200mg BID' = "#E74C3C")
 #' 
 #' plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
 #'            data = ALB,
