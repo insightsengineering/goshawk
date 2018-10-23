@@ -2,115 +2,55 @@
 % Please edit documentation in R/g_density_distribution_plot.R
 \name{g_density_distribution_plot}
 \alias{g_density_distribution_plot}
-\title{Function to generate a density distribution plot
-Output rendered by teal.goshawk module \code{g_density_distribution_plot} returns
-distribution overlay plot visualiztion}
+\title{Function to create a density distribution plot.}
 \usage{
 g_density_distribution_plot(label = "Density Distribution Plot", data = ALB,
   param_var = "PARAMCD", param = "CRP", xaxis_var = "AVAL",
-  trt_group = "ARM", unit = "AVALU", xmin_scale = 0, xmax_scale = 200,
-  color_manual = NULL, hline = NULL, rotate_xlab = FALSE,
-  logscale = FALSE, facet_var = "AVISITCD", font_size = 12,
-  line_size = 2)
+  trt_group = "ARM", unit = "AVALU", color_manual = NULL,
+  facet_var = "AVISITCD", hline = NULL, rotate_xlab = FALSE,
+  font_size = 12, line_size = 2)
 }
 \arguments{
-\item{label}{text string to be displayed as plot label.}
+\item{label}{text string used to identify plot.}
 
-\item{data}{data frame with variables which will be displayed in the plot.}
+\item{data}{ADaM structured analysis laboratory data frame e.g. ALB.}
 
 \item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
 \item{param}{biomarker to visualize e.g. IGG.}
 
-\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. BASE.}
+\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. AVAL.}
 
 \item{trt_group}{name of variable representing treatment group e.g. ARM.}
 
-\item{unit}{name of variable containing biomarker unit.}
+\item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
-\item{color_manual}{vector of colors.}
-
-\item{logscale}{set axis values to log scale.}
+\item{color_manual}{vector of colors applied to treatment values.}
 
 \item{facet_var}{variable to use for facetting.}
 
-\item{line_size}{line size.}
+\item{hline}{y-axis value to position a horizontal line.}
 
-\item{yaxis_var}{name of variable containing biomarker results displayed on Y-axise.g. AVAL.}
+\item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
-\item{loq_flag_var}{name of variable containing LOQ flag e.g. LBLOQFL.}
+\item{font_size}{font size control for title, x-axis label, y-axis label and legend.}
 
-\item{pct}{set axis values to percent scale.}
-
-\item{reg_line}{include regression line in visualization.}
-}
-\value{
-\code{ggplot} object
+\item{line_size}{plot line thickness.}
 }
 \description{
-Create overall density plot with treatment arms overlaid
+Default plot displays overall density facetted by visit with treatment arms and combined treatment overlaid.
 }
 \details{
-provide additional information as needed. link to specification file \url{http://rstudio.com}
+None
 }
 \examples{
 
 \dontrun{
-# Example using analysis dataset for example ASL or ADSL,
-# ALB points to biomarker data stored in a typical LB structure. for example ALB or ADLB.
+# Example using ADaM structure analysis dataset.
+# ALB refers to biomarker data stored in expected laboratory structure.
 
-# for development team testing
-ASL_path <- "~/btk/lupus/dataadam/asl.sas7bdat"
-ALB_path <- "~/btk/lupus/dataadam/alb3arm.sas7bdat"
-
-# list of biomarkers of interest. see ALB2 assignment below
-param_choices <- c("CRP","ADIGG","IG","IGA","IGE","IGG","IGM","TEST")
-
-ASL0 <- read_bce(ASL_path)
-ASL <- subset(ASL0, subset = ITTFL == 'Y' & IAFL == 'Y')
-
-ALB0 <- read_bce(ALB_path)
-
-# post process the data to subset records per specification
-ALB_SUBSET <- subset(ALB0,
-              subset = PARAMCD \%in\% c(param_choices) & ITTFL == 'Y' & IAFL == 'Y' & ANLFL == 'Y' & AVISIT \%like any\% c('BASE\%','\%WEEK\%'), 
-              select = c('STUDYID', 'USUBJID', 'ITTFL', 'ANLFL', 'ARM', 'AVISIT', 'AVISITN', 'PARAMCD', 'AVAL', 'AVALU', 'BASE', 'CHG', 'PCHG',
-               'LBSTRESC', 'LBSTRESN'))
-
-# calculate the minimum AVAL for each PARAMCD
-PARAM_MINS <- ALB_SUBSET \%>\%
-select(USUBJID, PARAMCD, AVAL) \%>\%
-  filter(PARAMCD \%in\% param_choices) \%>\%
-  group_by(PARAMCD) \%>\%
-  summarise(AVAL_MIN=min(AVAL, na.rm=TRUE))
-  
-# post process the data to create several new variables and adjust existing record specific valules per specification
-# - create a visit code variable - baseline record code is "BB" and week records coded to "W NN"
-# - adjust existing BASELINE record values where values are missing: According to SPA this is a STREAM artifact
-ALB_SUPED1 <- ALB_SUBSET \%>\% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1), 
-                                        substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) \%>\%
-               mutate(AVISITCD = ifelse(AVISITCD == "BB", "BL", AVISITCD)) \%>\%
-               mutate(AVISITCDN =  ifelse(AVISITCD == "BL", 0, substr(AVISITCD,start=2, stop=4))) \%>\%
-               mutate(BASE = ifelse(AVISIT == "BASELINE" & is.na(BASE), AVAL, BASE)) \%>\%
-               mutate(CHG = ifelse(AVISIT == "BASELINE" & is.na(CHG), 0, CHG)) \%>\%
-               mutate(PCHG = ifelse(AVISIT == "BASELINE" & is.na(PCHG), 0, PCHG))
-               # may need to add similar code for BASE2 related variables
-
-  
-# merge minimum AVAL value onto the ALB data to calculate the log2 variables and preserve the variable order
-ALB_SUPED2 <- merge(ALB_SUPED1, PARAM_MINS, by="PARAMCD")[, union(names(ALB_SUPED1), names(PARAM_MINS))] \%>\%
-       mutate(AVALL2 = ifelse(AVAL == 0, log2(AVAL_MIN/2), log2(AVAL))) \%>\%
-       mutate(BASEL2 = ifelse(BASE == 0, log2(AVAL_MIN/2), log2(BASE))) #\%>\% need SPA to finish adding BASE2 to ALB
-       #mutate(BASE2L2 = ifelse(BASE2 == 0, log2(AVAL_MIN/2), log2(AVAL)))
-
-# for proper chronological ordering of visits in visualizations
-ALB_SUPED2$AVISITCDN <- as.numeric(ALB_SUPED2$AVISITCDN) # coerce character into numeric
-ALB <- ALB_SUPED2 \%>\% mutate(AVISITCD = factor(AVISITCD) \%>\% reorder(AVISITCDN))
-
-# to test loq_flag_var
-ALB <- ALB \%>\% mutate(LOQFL = ifelse(PARAMCD == "CRP" & AVAL < .5, "Y", "N"))
-
-param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
+param <- c('CRP')
+color_manual <-  c('Placebo' = "#000000", '150mg QD' = "#3498DB", '200mg BID' = "#E74C3C")
 
 plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
            data = ALB,
@@ -119,21 +59,19 @@ plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
            xaxis_var = 'AVAL',
            trt_group = 'ARM',
            unit = 'AVALU',
-           xmin_scale = 0,
-           xmax_scale = 200,
-           color_manual = NULL,
+           color_manual = color_manual,
+           facet_var = 'AVISITCD',
            hline = NULL,
            rotate_xlab = FALSE,
-           logscale = FALSE,
-           facet_var = 'AVISITCD',
            font_size = 10,
            line_size = .5)
 plot1 
 
 }
+
 }
 \author{
-Balazs Toth (tothb2)  toth.balazs@gene.com
-
 Nick Paszty (npaszty) paszty.nicholas@gene.com
+
+Balazs Toth (tothb2)  toth.balazs@gene.com
 }

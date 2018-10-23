@@ -109,7 +109,7 @@
 #'           , loq_flag = 'LOQFL'
 #'           , timepoint = "over time"
 #'           , unit = "U/L"
-#'           , color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
+#'           #, color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
 #'           , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
 #'           , facet = "ARM"
 #'           , xaxis_var = "AVISIT"
@@ -202,7 +202,7 @@ g_boxplot <- function(data,
     theme_bw() +
     ggtitle(ggtitleLabel) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5))
-  
+
   # Colors supplied?  Use color_manual, otherwise default ggplot coloring.  
   if (!is.null(color_manual)) {
     cols <- color_manual

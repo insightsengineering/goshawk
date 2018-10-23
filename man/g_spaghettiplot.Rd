@@ -5,9 +5,10 @@
 \title{Spaghetti plot}
 \usage{
 g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
-  biomarker, value_var = "AVAL", unit_var = "AVALU", trt_group,
-  trt_group_level = NULL, time, time_level = NULL, ymin = NA, ymax = NA,
-  facet_ncol = 2, hline = NULL, rotate_xlab = FALSE)
+  biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
+  unit_var = "AVALU", trt_group, trt_group_level = NULL, time,
+  time_level = NULL, color_manual = NULL, ymin = NA, ymax = NA,
+  facet_ncol = 2, hline = NULL, rotate_xlab = FALSE, font_size = 12)
 }
 \arguments{
 \item{data}{data frame with variables to be summarized and generate statistics which will display in the plot.}
@@ -15,6 +16,8 @@ g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
 \item{subj_id}{unique subject id variable name.}
 
 \item{biomarker_var}{name of variable containing biomarker names.}
+
+\item{biomarker_var_label}{name of variable containing biomarker labels.}
 
 \item{value_var}{name of variable containing biomarker results.}
 
@@ -26,6 +29,8 @@ g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
 
 \item{time_level}{vector that can be used to define the factor level of time.}
 
+\item{color_manual}{vector of colors.}
+
 \item{ymin}{y-axis lower limit.}
 
 \item{ymax}{y-axis upper limit.}
@@ -33,6 +38,8 @@ g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
 \item{facet_ncol}{number of facets per row.}
 
 \item{hline}{numeric value represnting intercept of horizontal line.}
+
+\item{font_size}{control font size for title, x-axis, y-axis and legend font.}
 
 \item{biomaker}{biomarker name to be analyzed.}
 
@@ -49,13 +56,16 @@ This function is rendered by teal.goshawk module
 }
 \examples{
 
+# EXAMPLE:
+
 library(dplyr)
 
 ANL <- expand.grid(
   USUBJID = paste0("p-",1:100),
   VISIT = paste0("visit ", 1:10),
   ARM = c("ARM A", "ARM B", "ARM C"),
-  PARAMCD = c("CRP", "IGG", "IGM")
+  PARAMCD = c("CRP", "IGG", "IGM"),
+  PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 )
 ANL$AVAL <- rnorm(nrow(ANL))
 ANL$CHG <- rnorm(nrow(ANL), 2, 2)
@@ -73,6 +83,7 @@ g_spaghettiplot(data = ANL,
                 value_var = 'AVAL',
                 trt_group = 'ARM',
                 time = 'VISIT',
+                color_manual = c("ARM A" = "#000000", "ARM B" = "#3498DB", "ARM C" = "#E74C3C"),
                 hline = NULL,
                 rotate_xlab = FALSE)
 }

@@ -4,10 +4,11 @@
 \alias{g_lineplot}
 \title{Line plot of summary statistics over time}
 \usage{
-g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD", biomarker,
-  value_var = "AVAL", ymin = NA, ymax = NA, trt_group,
+g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
+  biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
+  unit_var = "AVALU", ymin = NA, ymax = NA, trt_group,
   trt_group_level = NULL, time, time_level = NULL, color_manual = NULL,
-  median = FALSE, hline = NULL, rotate_xlab = FALSE)
+  median = FALSE, hline = NULL, rotate_xlab = FALSE, font_size = 12)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -16,7 +17,11 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD", biomarker,
 
 \item{biomarker_var}{name of variable containing biomarker names.}
 
+\item{biomarker_var_label}{name of variable containing biomarker labels.}
+
 \item{value_var}{name of variable containing biomarker results.}
+
+\item{unit_var}{name of variable containing biomarker result unit.}
 
 \item{trt_group}{name of variable representing treatment group.}
 
@@ -32,6 +37,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD", biomarker,
 
 \item{hline}{numeric value represnting intercept of horizontal line.}
 
+\item{font_size}{control font size for title, x-axis, y-axis and legend font.}
+
 \item{biomaker}{biomarker name to be analyzed.}
 
 \item{roate_xlab}{boolean whether to rotate x-axis labels.}
@@ -44,101 +51,30 @@ This function is rendered by teal.goshawk module
 }
 \details{
 Currently, the output plot can display mean and median of input value. For mean, the error bar denotes
-95\% confidence interval. For median, the error bar denotes median-SD to median+SD.
+95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75% quartile.
 }
 \examples{
-# EXAMPLE 1:
+
+# EXAMPLE:
 
 library(dplyr)
 library(ggplot2)
 library(gridExtra)
-library(stringr)
-library(DescTools)
-
-# for development team testing
-ASL_path <- "~/btk/lupus/dataadam/asl.sas7bdat"
-ALB_path <- "~/btk/lupus/dataadam/alb3arm.sas7bdat"
-
-# list of biomarkers of interest. see ALB2 assignment below
-param_choices <- c("CRP","ADIGG","IG","IGA","IGE","IGG","IGM","TEST")
-
-ASL0 <- read_bce(ASL_path)
-ASL <- subset(ASL0, subset = ITTFL == 'Y' & IAFL == 'Y')
-
-ALB0 <- read_bce(ALB_path)
-
-# post process the data to subset records per specification
-ALB_SUBSET <- subset(ALB0,
-                     subset = PARAMCD \%in\% c(param_choices) & ITTFL == 'Y' & IAFL == 'Y' & ANLFL == 'Y' & AVISIT \%like any\% c('BASE\%','\%WEEK\%'),
-                     select = c('STUDYID', 'USUBJID', 'ITTFL', 'ANLFL', 'ARM', 'AVISIT', 'AVISITN', 'PARAMCD', 'AVAL', 'AVALU', 'BASE', 'CHG', 'PCHG',
-                                'LBSTRESC', 'LBSTRESN'))
-
-# calculate the minimum AVAL for each PARAMCD
-PARAM_MINS <- ALB_SUBSET \%>\%
-  select(USUBJID, PARAMCD, AVAL) \%>\%
-  filter(PARAMCD \%in\% param_choices) \%>\%
-  group_by(PARAMCD) \%>\%
-  summarise(AVAL_MIN=min(AVAL, na.rm=TRUE))
-
-# post process the data to create several new variables and adjust existing record specific valules per specification
-# - create a visit code variable - baseline record code is "BB" and week records coded to "W NN"
-# - adjust existing BASELINE record values where values are missing: According to SPA this is a STREAM artifact
-ALB_SUPED1 <- ALB_SUBSET \%>\% mutate(AVISITCD = paste0(substr(AVISIT,start=1, stop=1),
-                                                      substr(AVISIT, start=regexpr(" ", AVISIT), stop=regexpr(" ", AVISIT)+2))) \%>\%
-  mutate(AVISITCD = ifelse(AVISITCD == "BB", "BL", AVISITCD)) \%>\%
-  mutate(AVISITCDN =  ifelse(AVISITCD == "BL", 0, substr(AVISITCD,start=2, stop=4))) \%>\%
-  mutate(BASE = ifelse(AVISIT == "BASELINE" & is.na(BASE), AVAL, BASE)) \%>\%
-  mutate(CHG = ifelse(AVISIT == "BASELINE" & is.na(CHG), 0, CHG)) \%>\%
-  mutate(PCHG = ifelse(AVISIT == "BASELINE" & is.na(PCHG), 0, PCHG))
-# may need to add similar code for BASE2 related variables
-
-
-# merge minimum AVAL value onto the ALB data to calculate the log2 variables and preserve the variable order
-ALB_SUPED2 <- merge(ALB_SUPED1, PARAM_MINS, by="PARAMCD")[, union(names(ALB_SUPED1), names(PARAM_MINS))] \%>\%
-  mutate(AVALL2 = ifelse(AVAL == 0, log2(AVAL_MIN/2), log2(AVAL))) \%>\%
-  mutate(BASEL2 = ifelse(BASE == 0, log2(AVAL_MIN/2), log2(BASE))) #\%>\% need SPA to finish adding BASE2 to ALB
-#mutate(BASE2L2 = ifelse(BASE2 == 0, log2(AVAL_MIN/2), log2(AVAL)))
-
-# for proper chronological ordering of visits in visualizations
-ALB_SUPED2$AVISITCDN <- as.numeric(ALB_SUPED2$AVISITCDN) # coerce character into numeric
-ALB <- ALB_SUPED2 \%>\% mutate(AVISITCD = factor(AVISITCD) \%>\% reorder(AVISITCDN))
-
-# to test loq_flag_var
-ALB <- ALB \%>\% mutate(LOQFL = ifelse(PARAMCD == "CRP" & AVAL < .5, "Y", "N"))
-
-param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_moduleName.R
-shape_manual <- c('N' = 1, 'Y' = 2, 'NA' = 0)
-
-plot1 <- g_lineplot(label = 'Line Plot',
-                    data = ALB,
-                    biomarker_var = 'PARAMCD',
-                    biomarker = 'CRP',
-                    value_var = 'AVAL',
-                    trt_group = 'ARM',
-                    time = 'AVISITCD',
-                    color_manual = NULL,
-                    median = FALSE,
-                    hline = NULL,
-                    rotate_xlab = FALSE)
-plot1
-
-# EXAMPLE 2:
-
-library(dplyr)
-library(ggplot2)
-library(gridExtra)
+library(grid)
 library(stringr)
 
 ANL <- expand.grid(
   USUBJID = paste0("p-",1:100),
   VISIT = paste0("visit ", 1:10),
   ARM = c("ARM A", "ARM B", "ARM C"),
-  PARAMCD = c("CRP", "IGG", "IGM")
+  PARAMCD = c("CRP", "IGG", "IGM"),
+  PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 )
 ANL$AVAL <- rnorm(nrow(ANL))
 ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 ANL$CHG[ANL$VISIT == "visit 1"] <- NA
 ANL$PCHG <- ANL$CHG/ANL$AVAL*100
+ANL$AVALU <- 'mg'
 
 ANL$ARM <- factor(ANL$ARM)
 ANL$VISIT <- factor(ANL$VISIT)
@@ -154,7 +90,6 @@ g_lineplot(label = 'Line Plot',
            median = FALSE,
            hline = NULL,
            rotate_xlab = FALSE)
-           
 }
 \author{
 Balazs Toth (toth.balazs@gene.com)
