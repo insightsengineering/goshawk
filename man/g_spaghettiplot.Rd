@@ -8,7 +8,8 @@ g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
   biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
   unit_var = "AVALU", trt_group, trt_group_level = NULL, time,
   time_level = NULL, color_manual = NULL, ymin = NA, ymax = NA,
-  facet_ncol = 2, hline = NULL, rotate_xlab = FALSE, font_size = 12)
+  facet_ncol = 2, hline = NULL, rotate_xlab = FALSE, font_size = 12,
+  group_mean = FALSE)
 }
 \arguments{
 \item{data}{data frame with variables to be summarized and generate statistics which will display in the plot.}
@@ -85,7 +86,8 @@ g_spaghettiplot(data = ANL,
                 time = 'VISIT',
                 color_manual = c("ARM A" = "#000000", "ARM B" = "#3498DB", "ARM C" = "#E74C3C"),
                 hline = NULL,
-                rotate_xlab = FALSE)
+                rotate_xlab = FALSE,
+                group_mean = TRUE)
 }
 \author{
 Wenyi Liu (wenyi.liu@roche.com)

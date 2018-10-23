@@ -161,7 +161,9 @@ g_lineplot <- function(label = 'Line Plot',
     theme_bw() +
     scale_y_continuous(limits = c(ymin, ymax)) +
     ggtitle(gtitle) +
-    labs(caption = paste("The output plot can display mean and median of input value.\nFor mean, the error bar denotes 95% confidence interval.\nFor median, the error bar denotes median-25% quartile to median+75% quartile.")) +
+    labs(caption = paste("The output plot can display mean and median of input value.
+                         For mean, the error bar denotes 95% confidence interval.
+                         For median, the bar denotes the first to third quartile.")) +
     xlab(time) + 
     ylab(gylab)+
     theme(legend.position = "bottom",
