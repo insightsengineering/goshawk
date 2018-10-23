@@ -1,23 +1,19 @@
-#' Function to generate a density distribution plot
-#' Output rendered by teal.goshawk module \code{g_density_distribution_plot} returns
-#' distribution overlay plot visualiztion
-#'
-#' This function displays an overall density plot with treatment arms overlaid.
-#'
-#' @param label text string to used to identify plot.
-#' @param data data frame with variables which will be displayed in the plot.
-#'   Note that the data are expected to be in vertical form with the
-#'   \code{PARAMCD} variable filtering to one observation per patient per visit.
+#' Function to create a density distribution plot.
+#' 
+#' Default plot displays overall density facetted by visit with treatment arms and combined treatment overlaid.
+#' 
+#' @param label text string used to identify plot.
+#' @param data ADaM structured analysis laboratory data frame e.g. ALB.  
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param param biomarker to visualize e.g. IGG. 
-#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
+#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
-#' @param color_manual vector of treatment colors. assigned values in app.R otherwise uses default colors.
-#' @param hline y-axis value to position of horizontal line.
-#' @param rotate_xlab 45 degree rotation of x-axis values.
+#' @param color_manual vector of colors applied to treatment values.
 #' @param facet_var variable to use for facetting.
-#' @param font_size control font size for title, x-axis, y-axis and legend font.
+#' @param hline y-axis value to position a horizontal line.
+#' @param rotate_xlab 45 degree rotation of x-axis label values.
+#' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param line_size plot line thickness.
 #' 
 #' @import DescTools
@@ -27,20 +23,18 @@
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
-#' @details This function displays an overall density plot with treatment arms overlaid. link to specification file \url{http://rstudio.com}
+#' @details None
 #'
 #' @export
 #'
 #' @examples
 #'
 #'\dontrun{
-#' # Example using analysis dataset for example ASL or ADSL,
-#' # ALB points to biomarker data stored in a typical LB structure. for example ALB or ADLB.
-#' 
-#' # need a test data set created using random.cdisc.data.
-#' # example call uses expects ALB structure 
+#' # Example using ADaM structure analysis dataset.
+#' # ALB refers to biomarker data stored in expected laboratory structure.
 #'
-#' param <- c('CRP') # FOR TESTING: woud come from teal.goshawk.tm_g_density_distribution_plot.R
+#' param <- c('CRP')
+#' color_manual <-  c('Placebo' = "#000000", '150mg QD' = "#3498DB", '200mg BID' = "#E74C3C")
 #' 
 #' plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
 #'            data = ALB,
@@ -50,15 +44,15 @@
 #'            trt_group = 'ARM',
 #'            unit = 'AVALU',
 #'            color_manual = color_manual,
+#'            facet_var = 'AVISITCD',
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
-#'            facet_var = 'AVISITCD',
 #'            font_size = 10,
 #'            line_size = .5)
 #' plot1 
 #' 
 #' }
-# 
+#' 
 
 g_density_distribution_plot <- function(label = 'Density Distribution Plot',
                                 data = ALB,
@@ -67,12 +61,10 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
                                 xaxis_var = "AVAL",
                                 trt_group = "ARM",
                                 unit = "AVALU",
-                                xmin_scale = NULL,
-                                xmax_scale = NULL,
                                 color_manual = NULL,
+                                facet_var = "AVISITCD",
                                 hline = NULL,
                                 rotate_xlab = FALSE,
-                                facet_var = "AVISITCD",
                                 font_size = 12,
                                 line_size = 2){
 
@@ -102,11 +94,6 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
     xlab(paste(xaxisLabel)) +
     ylab(paste("Density"))
 
-  # Dynamic x-axis range
-  if (!is.null(xmin_scale) & !is.null(xmax_scale)) {
-    plot1 <- plot1 + xlim(xmin_scale, xmax_scale) 
-  }
-  
   # Format treatment color
   if (!is.null(color_manual)){
     plot1 <- plot1 +

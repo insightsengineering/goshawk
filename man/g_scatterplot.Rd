@@ -2,24 +2,20 @@
 % Please edit documentation in R/g_scatterplot.R
 \name{g_scatterplot}
 \alias{g_scatterplot}
-\title{Function to generate a scatter plot
-Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot visualiztion}
+\title{Function to create a scatter plot.}
 \usage{
 g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
   param = "CRP", xaxis_var = "BASE", yaxis_var = "AVAL",
   trt_group = "ARM", visit = "AVISITCD", loq_flag_var = "LOQFL",
-  unit = "AVALU", xmin_scale = NULL, xmax_scale = NULL,
-  ymin_scale = NULL, ymax_scale = NULL, color_manual = NULL,
-  shape_manual = NULL, facet = FALSE, facet_var = "ARM",
-  reg_line = FALSE, rotate_xlab = FALSE, hline = NULL, font_size = 12,
-  dot_size = NULL, reg_text_size = 3)
+  unit = "AVALU", color_manual = NULL, shape_manual = NULL,
+  facet = FALSE, facet_var = "ARM", reg_line = FALSE, hline = NULL,
+  rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
+  reg_text_size = 3)
 }
 \arguments{
 \item{label}{text string to used to identify plot.}
 
-\item{data}{data frame with variables which will be displayed in the plot.
-Note that the data are expected to be in vertical form with the
-\code{PARAMCD} variable filtering to one observation per patient per visit.}
+\item{data}{ADaM structured analysis laboratory data frame e.g. ALB.}
 
 \item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
@@ -37,55 +33,39 @@ Note that the data are expected to be in vertical form with the
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
-\item{xmin_scale}{minimum value of xaxis_var variable for selected biomarker.}
+\item{color_manual}{vector of colors applied to treatment values.}
 
-\item{xmax_scale}{maximum value of xaxis_var variable for selected biomarker.}
+\item{shape_manual}{vector of symbols applied to LOQ values.}
 
-\item{ymin_scale}{minimum value of yaxis_var variable for selected biomarker.}
+\item{facet}{set layout to use treatment facetting.}
 
-\item{ymax_scale}{maximum value of yaxis_var variable for selected biomarker.}
+\item{facet_var}{variable to use for facetting beyond visit.}
 
-\item{color_manual}{vector of treatment colors. assigned values in app.R otherwise uses default colors.}
+\item{reg_line}{include regression line and annotations for slope and coefficient in visualization. Use with facet = TRUE.}
 
-\item{shape_manual}{vector of LOQ shapes. assigned values in app.R otherwise uses default shapes.}
+\item{hline}{y-axis value to position a horizontal line.}
 
-\item{facet}{set layout to use facetting.}
+\item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
-\item{facet_var}{variable to use for facetting.}
+\item{font_size}{font size control for title, x-axis label, y-axis label and legend.}
 
-\item{reg_line}{include regression line and annotations for slope and coefficient in visualization. Use with facet TRUE.}
+\item{dot_size}{plot dot size.}
 
-\item{rotate_xlab}{45 degree rotation of x-axis values.}
-
-\item{hline}{y-axis value to position of horizontal line.}
-
-\item{font_size}{control font size for title, x-axis, y-axis and legend font.}
-
-\item{dot_size}{scatter dot size.}
-
-\item{reg_text_size}{regression line annotation font size.}
+\item{reg_text_size}{font size control for regression line annotations.}
 }
 \description{
-A scatter plot is a type of plot using Cartesian coordinates to display values for typically two variables or
-for one variable at different timepoints for a set of data.
-If the points are color-coded, one additional variable can be displayed.
-The data are displayed as a collection of points, each having the value of one variable or timepoint determining
-the position on the horizontal axis and the value of the other variable or timepoint determining the position 
-on the vertical axis.
+Default plot displays scatter facetted by visit with color attributed treatment arms and symbol attributed LOQ values.
 }
 \details{
-This function displays a scatter plot. link to specification file \url{http://rstudio.com}
+Regression uses deming model.
 }
 \examples{
 
 \dontrun{
-# Example using analysis dataset for example ASL or ADSL,
-# ALB points to biomarker data stored in a typical LB structure. for example ALB or ADLB.
+# Example using ADaM structure analysis dataset.
+# ALB refers to biomarker data stored in expected laboratory structure.
 
-# need a test data set created using random.cdisc.data.
-# example call uses expects ALB structure 
-
-param <- c('ACIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
+param <- c('ADIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
 
 plot1 <- g_scatterplot(label = 'Scatter Plot',
            data = ALB,
@@ -99,17 +79,18 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            unit = 'AVALU',
            color_manual = color_manual,
            shape_manual = shape_manual,
+           facet = TRUE,
+           facet_var = "ARM",
+           reg_line = TRUE,
            hline = NULL,
            rotate_xlab = FALSE,
-           facet = FALSE,
-           facet_var = "ARM",
-           reg_line = FALSE,
            font_size = 14,
            dot_size = 2,
            reg_text_size = 3)
 plot1 
 
 }
+
 }
 \author{
 Nick Paszty (npaszty) paszty.nicholas@gene.com

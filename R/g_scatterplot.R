@@ -1,17 +1,9 @@
-#' Function to generate a scatter plot
-#' Output rendered by teal.goshawk module \code{g_scatterplot} returns scatter plot visualiztion
+#' Function to create a scatter plot.
 #'
-#' A scatter plot is a type of plot using Cartesian coordinates to display values for typically two variables or
-#' for one variable at different timepoints for a set of data.
-#' If the points are color-coded, one additional variable can be displayed.
-#' The data are displayed as a collection of points, each having the value of one variable or timepoint determining
-#' the position on the horizontal axis and the value of the other variable or timepoint determining the position 
-#' on the vertical axis.
+#' Default plot displays scatter facetted by visit with color attributed treatment arms and symbol attributed LOQ values.
 #'
 #' @param label text string to used to identify plot.
-#' @param data data frame with variables which will be displayed in the plot.
-#'   Note that the data are expected to be in vertical form with the
-#'   \code{PARAMCD} variable filtering to one observation per patient per visit.
+#' @param data ADaM structured analysis laboratory data frame e.g. ALB.  
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param param biomarker to visualize e.g. IGG. 
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
@@ -20,20 +12,16 @@
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LBLOQFL.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
-#' @param xmin_scale minimum value of xaxis_var variable for selected biomarker.
-#' @param xmax_scale maximum value of xaxis_var variable for selected biomarker.
-#' @param ymin_scale minimum value of yaxis_var variable for selected biomarker.
-#' @param ymax_scale maximum value of yaxis_var variable for selected biomarker.
-#' @param color_manual vector of treatment colors. assigned values in app.R otherwise uses default colors.
-#' @param shape_manual vector of LOQ shapes. assigned values in app.R otherwise uses default shapes.
-#' @param facet set layout to use facetting.
-#' @param facet_var variable to use for facetting.
-#' @param reg_line include regression line and annotations for slope and coefficient in visualization. Use with facet TRUE.
-#' @param rotate_xlab 45 degree rotation of x-axis values.
-#' @param hline y-axis value to position of horizontal line.
-#' @param font_size control font size for title, x-axis, y-axis and legend font.
-#' @param dot_size scatter dot size.
-#' @param reg_text_size regression line annotation font size.
+#' @param color_manual vector of colors applied to treatment values.
+#' @param shape_manual vector of symbols applied to LOQ values.
+#' @param facet set layout to use treatment facetting.
+#' @param facet_var variable to use for facetting beyond visit.
+#' @param reg_line include regression line and annotations for slope and coefficient in visualization. Use with facet = TRUE.
+#' @param hline y-axis value to position a horizontal line.
+#' @param rotate_xlab 45 degree rotation of x-axis label values.
+#' @param font_size font size control for title, x-axis label, y-axis label and legend.
+#' @param dot_size plot dot size.
+#' @param reg_text_size font size control for regression line annotations.
 #' 
 #' @import DescTools
 #' @import dplyr
@@ -43,20 +31,17 @@
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
-#' @details This function displays a scatter plot. link to specification file \url{http://rstudio.com}
+#' @details Regression uses deming model.
 #'
 #' @export
 #'
 #' @examples
 #'
 #'\dontrun{
-#' # Example using analysis dataset for example ASL or ADSL,
-#' # ALB points to biomarker data stored in a typical LB structure. for example ALB or ADLB.
+#' # Example using ADaM structure analysis dataset.
+#' # ALB refers to biomarker data stored in expected laboratory structure.
 #' 
-#' # need a test data set created using random.cdisc.data.
-#' # example call uses expects ALB structure 
-#' 
-#' param <- c('ACIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
+#' param <- c('ADIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
 #' 
 #' plot1 <- g_scatterplot(label = 'Scatter Plot',
 #'            data = ALB,
@@ -70,17 +55,18 @@
 #'            unit = 'AVALU',
 #'            color_manual = color_manual,
 #'            shape_manual = shape_manual,
+#'            facet = TRUE,
+#'            facet_var = "ARM",
+#'            reg_line = TRUE,
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
-#'            facet = FALSE,
-#'            facet_var = "ARM",
-#'            reg_line = FALSE,
 #'            font_size = 14,
 #'            dot_size = 2,
 #'            reg_text_size = 3)
 #' plot1 
 #' 
 #' }
+#' 
 
 g_scatterplot <- function(label = 'Scatter Plot',
                           data = ALB,
@@ -92,23 +78,19 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           visit = "AVISITCD",
                           loq_flag_var = "LOQFL",
                           unit = "AVALU",
-                          xmin_scale = NULL,
-                          xmax_scale = NULL,
-                          ymin_scale = NULL,
-                          ymax_scale = NULL,
                           color_manual = NULL,
                           shape_manual = NULL,
                           facet = FALSE,
                           facet_var = "ARM",
                           reg_line = FALSE,
-                          rotate_xlab = FALSE,
                           hline = NULL,
+                          rotate_xlab = FALSE,
                           font_size = 12,
                           dot_size = NULL,
                           reg_text_size = 3){
 
 # create scatter plot over time pairwise per treatment arm 
-plot_data <<- data %>%
+plot_data <- data %>%
   filter(eval(parse(text = param_var)) == param)
 
 # Setup the ggtitle label.  Combine the biomarker and the units (if available)
@@ -151,48 +133,50 @@ yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
 
 # add regression line
     if (reg_line){
-    # !!!!!!!!!! this condition could be removed if the non continuous level biomarkers are removed from list - Bali consult needed
-    if (xmax_scale-xmin_scale > 1){  
       slope <- function(x, y) {
         ratio <- sd(x)/sd(y)
-        reg <- mcr:::mc.deming(y, x, ratio)
-        return(c(round(reg$b0,2),round(reg$b1,2)))
+        if (!is.na(ratio) & ratio > 0){
+          reg <- mcr:::mc.deming(y, x, ratio)
+          # return the evaluation of the ratio condition as third value in numeric vector for conttroling downstream processing
+          return(c(round(reg$b0,2), round(reg$b1,2), !is.na(ratio) & ratio > 0))
+        }
+        # if ratio condition is not met then assign NA to returned vector so that NULL condition does not throw error below
+        return(as.numeric(c(NA, NA, NA)))
       }
       
       sub_data <- subset(plot_data, !is.na(eval(parse(text = yaxis_var))) &
                            !is.na(eval(parse(text = xaxis_var)))) %>%
         group_by_(.dots = c(trt_group, visit)) %>%
-        filter(n() > 1) %>%
-        mutate(intercept = slope(eval(parse(text = yaxis_var)),
-                                 eval(parse(text = xaxis_var)))[1]) %>%
+        mutate(intercept =  slope(eval(parse(text = yaxis_var)),
+                                  eval(parse(text = xaxis_var)))[1]) %>%
         mutate(slope = slope(eval(parse(text = yaxis_var)),
                              eval(parse(text = xaxis_var)))[2]) %>%
-        mutate(corr = cor(eval(parse(text = yaxis_var)),
-                          eval(parse(text = xaxis_var)),
-                          method = "spearman",
-                          use = 'complete.obs'))
-      
+        mutate(corr = ifelse(((slope(eval(parse(text = yaxis_var)),
+                                          eval(parse(text = xaxis_var))))[3]), 
+                             cor(eval(parse(text = yaxis_var)),
+                                 eval(parse(text = xaxis_var)),
+                                 method = "spearman",
+                                 use = 'complete.obs'),
+                             NA))
+        
         plot1 <- plot1 +
-          geom_abline(data = sub_data,
-                      aes_string(intercept = 'intercept',
-                                 slope = 'slope',
-                                 color = trt_group)) +
-          geom_text(data = sub_data, aes(x = -Inf,
-                                         y = Inf,
-                                         hjust = 0,
-                                         vjust = 1,
-                                         label = paste0('y=',round(intercept,2),
-                                                        '+',
-                                                        round(slope,2),
-                                                        'X', "\n",
-                                                        'cor=',
-                                                        round(corr,2)),
-                                         color = eval(parse(text = trt_group))),
-                    size = reg_text_size) +
-          labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
-    }
-    } 
-  
+        geom_abline(data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by to create annotations
+                    aes_string(intercept = 'intercept',
+                               slope = 'slope',
+                               color = trt_group)) +
+        geom_text(data = filter(sub_data, row_number() == 1), 
+                  aes( x = -Inf,
+                       y = Inf,
+                       hjust = 0,
+                       vjust = 1,
+                       label = ifelse(!is.na(intercept) & !is.na(slope) & !is.na(corr),
+                       sprintf("y=%.2f+%.2fX\ncor=%.2f", intercept, slope, corr),
+                       paste0("Insufficient Data For Regression")),
+                       color = eval(parse(text = trt_group))),
+                       size = reg_text_size) +
+                       labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
+      }
+ 
   # Add abline
     if (yaxis_var %in% c('AVAL', 'AVALL2', 'BASE2', 'BASE2L2', 'BASE', 'BASEL2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
     
@@ -200,16 +184,6 @@ yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
     
     if (yaxis_var %in% c('PCHG2', 'PCHG')) {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
     
-  # Dynamic x-axis range
-  if (!is.null(xmin_scale) & !is.null(xmax_scale)) {
-    plot1 <- plot1 + xlim(xmin_scale, xmax_scale) 
-  }
-
-  # Dynamic y-axis range
-  if (!is.null(ymin_scale) & !is.null(ymax_scale)) {
-    plot1 <- plot1 + ylim(ymin_scale, ymax_scale) 
-  }
-  
   # Format font size
   if (!is.null(font_size)){
     plot1 <- plot1 +
