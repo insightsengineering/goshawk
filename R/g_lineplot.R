@@ -19,6 +19,7 @@
 #' @param hline numeric value represnting intercept of horizontal line.
 #' @param roate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
+#' @param dodge control position dodge
 #' 
 #' @import ggplot2
 #' @import dplyr
@@ -94,7 +95,8 @@ g_lineplot <- function(label = 'Line Plot',
                        median = FALSE,
                        hline = NULL,
                        rotate_xlab = FALSE,
-                       font_size = 12) {
+                       font_size = 12,
+                       dodge = 0.4) {
   
   ## Pre-process data
   if(!is.null(trt_group_level)){
@@ -126,7 +128,7 @@ g_lineplot <- function(label = 'Line Plot',
   colnames(sum_data)[1:2] <- c(time,trt_group)
 
   ## Base plot
-  pd <- position_dodge(0.4)
+  pd <- position_dodge(dodge)
 
   if (median) {
     line <- 'median'
