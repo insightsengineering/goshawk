@@ -94,7 +94,8 @@ g_lineplot <- function(label = 'Line Plot',
                        median = FALSE,
                        hline = NULL,
                        rotate_xlab = FALSE,
-                       font_size = 12) {
+                       font_size = 12,
+                       dodge = 0.4) {
   
   ## Pre-process data
   if(!is.null(trt_group_level)){
@@ -126,7 +127,7 @@ g_lineplot <- function(label = 'Line Plot',
   colnames(sum_data)[1:2] <- c(time,trt_group)
 
   ## Base plot
-  pd <- position_dodge(0.4)
+  pd <- position_dodge(dodge)
 
   if (median) {
     line <- 'median'
