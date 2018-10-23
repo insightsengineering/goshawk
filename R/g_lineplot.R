@@ -19,6 +19,7 @@
 #' @param hline numeric value represnting intercept of horizontal line.
 #' @param roate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
+#' @param dodge control position dodge
 #' 
 #' @import ggplot2
 #' @import dplyr
