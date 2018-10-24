@@ -8,7 +8,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
   biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
   unit_var = "AVALU", ymin = NA, ymax = NA, trt_group,
   trt_group_level = NULL, time, time_level = NULL, color_manual = NULL,
-  median = FALSE, hline = NULL, rotate_xlab = FALSE, font_size = 12)
+  median = FALSE, hline = NULL, rotate_xlab = FALSE, font_size = 12,
+  dodge = 0.4)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -38,6 +39,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 \item{hline}{numeric value represnting intercept of horizontal line.}
 
 \item{font_size}{control font size for title, x-axis, y-axis and legend font.}
+
+\item{dodge}{control position dodge}
 
 \item{biomaker}{biomarker name to be analyzed.}
 

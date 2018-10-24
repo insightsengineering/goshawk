@@ -19,6 +19,7 @@
 #' @param hline numeric value represnting intercept of horizontal line.
 #' @param roate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
+#' @param dodge control position dodge
 #' 
 #' @import ggplot2
 #' @import dplyr
@@ -94,7 +95,8 @@ g_lineplot <- function(label = 'Line Plot',
                        median = FALSE,
                        hline = NULL,
                        rotate_xlab = FALSE,
-                       font_size = 12) {
+                       font_size = 12,
+                       dodge = 0.4) {
   
   ## Pre-process data
   if(!is.null(trt_group_level)){
@@ -126,7 +128,7 @@ g_lineplot <- function(label = 'Line Plot',
   colnames(sum_data)[1:2] <- c(time,trt_group)
 
   ## Base plot
-  pd <- position_dodge(0.4)
+  pd <- position_dodge(dodge)
 
   if (median) {
     line <- 'median'
@@ -159,7 +161,9 @@ g_lineplot <- function(label = 'Line Plot',
     theme_bw() +
     scale_y_continuous(limits = c(ymin, ymax)) +
     ggtitle(gtitle) +
-    labs(caption = paste("The output plot can display mean and median of input value.\nFor mean, the error bar denotes 95% confidence interval.\nFor median, the error bar denotes median-25% quartile to median+75% quartile.")) +
+    labs(caption = paste("The output plot can display mean and median of input value.
+                         For mean, the error bar denotes 95% confidence interval.
+                         For median, the bar denotes the first to third quartile.")) +
     xlab(time) + 
     ylab(gylab)+
     theme(legend.position = "bottom",

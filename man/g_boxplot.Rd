@@ -5,11 +5,11 @@
 \title{Function to generate a boxplot
 Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualization}
 \usage{
-g_boxplot(data, biomarker, value_var, trt_group, loq_flag = NULL,
-  unit = NULL, timepoint = NULL, color_manual = NULL,
+g_boxplot(data, biomarker, value_var, trt_group, xaxis_var = NULL,
+  loq_flag = NULL, unit = NULL, timepoint = NULL, color_manual = NULL,
   shape_manual = NULL, box = TRUE, logscale = FALSE, ymax_scale = NULL,
   ymin_scale = NULL, dot_size = 2, alpha = 1, font_size = NULL,
-  facet = NULL)
+  armlabel = NULL, facet = NULL)
 }
 \arguments{
 \item{data}{data frame with variables which will be displayed in the plot.}
@@ -20,6 +20,8 @@ g_boxplot(data, biomarker, value_var, trt_group, loq_flag = NULL,
 Y-axis e.g. AVAL.}
 
 \item{trt_group}{name of variable representing treatment trt_group e.g. ARM.}
+
+\item{xaxis_var}{variable used to group the data on the x-axis.}
 
 \item{loq_flag}{name of variable containing LOQ flag e.g. LBLOQFL.}
 
@@ -42,6 +44,11 @@ Y-axis e.g. AVAL.}
 \item{alpha}{transparency for the points (0 = transparent, 1 = opaque)}
 
 \item{font_size}{point size of tex to use.  NULL is use default size}
+
+\item{armlabel}{header for the treatment symbols in the legend.  If not specified
+then the label attribute for \code{trt_group} will be used.  If there is
+no label attribute for \code{trt_group}, then the name of the parameter (
+in title case) will be used.}
 
 \item{facet}{variable to facet the plot by, or "None" if no faceting
 required.}
@@ -125,7 +132,8 @@ g_boxplot(albplot
           , unit = "U/L"
           #, color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
           , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
-          , facet = "AVISITCD"
+          , facet = "ARM"
+          , xaxis_var = "AVISIT"
           , alpha = 0.5
           , logscale = FALSE
 )
@@ -141,10 +149,8 @@ g_boxplot(albplot
           , biomarker = "CRP"
           , value_var = "AVAL"
           , trt_group = "ARM"
-          , loq_flag = "LOQFL"
-          , unit = NULL
-          , color_manual = color_manual
-          , shape_manual = shape_manual
+          , xaxis_var = "AVISIT"
+          , facet = "ARM"
 )
 
 }
