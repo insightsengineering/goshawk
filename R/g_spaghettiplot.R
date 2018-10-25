@@ -137,7 +137,7 @@ g_spaghettiplot <- function(data,
   # Format x-label
   if (rotate_xlab){
     plot <- plot +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
   
   # Add manual color
