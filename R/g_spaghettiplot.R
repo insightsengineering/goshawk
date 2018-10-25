@@ -130,7 +130,7 @@ g_spaghettiplot <- function(data,
   # Add group mean
   if (group_mean){
     plot <- plot +
-      stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1, linetype = "Group Mean"), color = "green")+
+      stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1, linetype = "Group Mean"), color = "#ffbb52")+
       scale_linetype_manual(name = "", label = 'Group Mean', values = c(1))
   }
   
