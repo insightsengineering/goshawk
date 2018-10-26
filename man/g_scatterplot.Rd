@@ -4,7 +4,7 @@
 \alias{g_scatterplot}
 \title{Function to create a scatter plot.}
 \usage{
-g_scatterplot(label = "Scatter Plot", data = ALB, param_var = "PARAMCD",
+g_scatterplot(label = "Scatter Plot", data, param_var = "PARAMCD",
   param = "CRP", xaxis_var = "BASE", yaxis_var = "AVAL",
   trt_group = "ARM", visit = "AVISITCD", loq_flag_var = "LOQFL",
   unit = "AVALU", color_manual = NULL, shape_manual = NULL,
