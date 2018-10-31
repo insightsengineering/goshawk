@@ -34,6 +34,7 @@
 #'    then the label attribute for \code{trt_group} will be used.  If there is
 #'    no label attribute for \code{trt_group}, then the name of the parameter (
 #'    in title case) will be used.
+#' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param alpha transparency for the points (0 = transparent, 1 = opaque)
 #'   
@@ -130,6 +131,7 @@
 #'           , trt_group = "ARM"
 #'           , xaxis_var = "AVISIT"
 #'           , facet = "ARM"
+#'           ,rotate_xlab = TRUE
 #' )
 #' 
 #'}
@@ -151,6 +153,7 @@ g_boxplot <- function(data,
                       ymin_scale = NULL,
                       dot_size = 2,
                       alpha = 1.0,
+                      rotate_xlab = FALSE,
                       font_size = NULL,
                       armlabel = NULL,
                       facet = NULL) { 
@@ -249,6 +252,11 @@ g_boxplot <- function(data,
             strip.text.y = element_text(size = font_size))
   }
   
+  # Format x-label
+  if (rotate_xlab){
+    plot1 <- plot1 +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  }
   
   return(plot1)
   

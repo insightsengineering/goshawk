@@ -4,7 +4,7 @@
 \alias{g_density_distribution_plot}
 \title{Function to create a density distribution plot.}
 \usage{
-g_density_distribution_plot(label = "Density Distribution Plot", data = ALB,
+g_density_distribution_plot(label = "Density Distribution Plot", data,
   param_var = "PARAMCD", param = "CRP", xaxis_var = "AVAL",
   trt_group = "ARM", unit = "AVALU", color_manual = NULL,
   facet_var = "AVISITCD", hline = NULL, rotate_xlab = FALSE,

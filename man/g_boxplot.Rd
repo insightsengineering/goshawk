@@ -8,8 +8,8 @@ Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualiz
 g_boxplot(data, biomarker, value_var, trt_group, xaxis_var = NULL,
   loq_flag = NULL, unit = NULL, timepoint = NULL, color_manual = NULL,
   shape_manual = NULL, box = TRUE, logscale = FALSE, ymax_scale = NULL,
-  ymin_scale = NULL, dot_size = 2, alpha = 1, font_size = NULL,
-  armlabel = NULL, facet = NULL)
+  ymin_scale = NULL, dot_size = 2, alpha = 1, rotate_xlab = FALSE,
+  font_size = NULL, armlabel = NULL, facet = NULL)
 }
 \arguments{
 \item{data}{data frame with variables which will be displayed in the plot.}
@@ -42,6 +42,8 @@ Y-axis e.g. AVAL.}
 \item{ymin_scale}{minimum value for the Y axis}
 
 \item{alpha}{transparency for the points (0 = transparent, 1 = opaque)}
+
+\item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
 \item{font_size}{point size of tex to use.  NULL is use default size}
 
@@ -151,6 +153,7 @@ g_boxplot(albplot
           , trt_group = "ARM"
           , xaxis_var = "AVISIT"
           , facet = "ARM"
+          ,rotate_xlab = TRUE
 )
 
 }

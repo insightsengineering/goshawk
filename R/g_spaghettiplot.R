@@ -52,7 +52,7 @@
 #' 
 #' ANL$ARM <- factor(ANL$ARM)
 #' ANL$VISIT <- factor(ANL$VISIT)
-#'
+#' 
 #' g_spaghettiplot(data = ANL,
 #'                 subj_id = 'USUBJID',
 #'                 biomarker_var = 'PARAMCD',
@@ -127,10 +127,17 @@ g_spaghettiplot <- function(data,
     ylab(gylab) + 
     theme(plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5))
   
+  # Add group mean
+  if (group_mean){
+    plot <- plot +
+      stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1, linetype = "Group Mean"), color = "#ffbb52")+
+      scale_linetype_manual(name = "", label = 'Group Mean', values = c(1))
+  }
+  
   # Format x-label
   if (rotate_xlab){
     plot <- plot +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
   
   # Add manual color
@@ -157,12 +164,6 @@ g_spaghettiplot <- function(data,
             legend.text = element_text(size = font_size),
             strip.text.x = element_text(size = font_size),
             strip.text.y = element_text(size = font_size))
-  }
-  
-  # Add group mean
-  if (group_mean){
-    plot <- plot +
-      stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1), color = 'green')
   }
   
   plot

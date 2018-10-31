@@ -174,7 +174,7 @@ g_lineplot <- function(label = 'Line Plot',
   # Format x-label
   if (rotate_xlab){
     plot1 <- plot1 +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
 
   # Add manual color

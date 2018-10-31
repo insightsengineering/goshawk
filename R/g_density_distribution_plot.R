@@ -55,7 +55,7 @@
 #' 
 
 g_density_distribution_plot <- function(label = 'Density Distribution Plot',
-                                data = ALB,
+                                data,
                                 param_var = "PARAMCD",
                                 param = "CRP",
                                 xaxis_var = "AVAL",

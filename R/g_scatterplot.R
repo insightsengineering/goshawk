@@ -69,7 +69,7 @@
 #' 
 
 g_scatterplot <- function(label = 'Scatter Plot',
-                          data = ALB,
+                          data,
                           param_var = 'PARAMCD',
                           param = "CRP",
                           xaxis_var = 'BASE',
