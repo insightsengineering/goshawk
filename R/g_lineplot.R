@@ -159,7 +159,7 @@ g_lineplot <- function(label = 'Line Plot',
                   width=0.4,
                   position = pd) +
     theme_bw() +
-    scale_y_continuous(limits = c(ymin, ymax)) +
+    coord_cartesian(ylim = c(ymin, ymax)) +
     ggtitle(gtitle) +
     labs(caption = paste("The output plot can display mean and median of input value.
                          For mean, the error bar denotes 95% confidence interval.

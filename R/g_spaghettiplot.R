@@ -121,7 +121,7 @@ g_spaghettiplot <- function(data,
     geom_line(size=0.4) +
     facet_wrap(trt_group, ncol = facet_ncol) + 
     theme_bw() +
-    scale_y_continuous(limits = c(ymin, ymax)) +
+    coord_cartesian(ylim = c(ymin, ymax)) +
     ggtitle(gtitle) +
     xlab(time) + 
     ylab(gylab) + 
