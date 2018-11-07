@@ -34,6 +34,8 @@
 #'    then the label attribute for \code{trt_group} will be used.  If there is
 #'    no label attribute for \code{trt_group}, then the name of the parameter (
 #'    in title case) will be used.
+#' @param facet_ncol number of facets per row.  NULL = Use the default for facet_wrap
+#' @param hline y-axis value to position a horizontal line.  NULL = No line
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param alpha transparency for the points (0 = transparent, 1 = opaque)
@@ -112,6 +114,7 @@
 #'           , unit = "U/L"
 #'           #, color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
 #'           , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
+#'           , hline = NULL
 #'           , facet = "ARM"
 #'           , xaxis_var = "AVISIT"
 #'           , alpha = 0.5
@@ -153,6 +156,8 @@ g_boxplot <- function(data,
                       ymin_scale = NULL,
                       dot_size = 2,
                       alpha = 1.0,
+                      facet_ncol = NULL, 
+                      hline = NULL,
                       rotate_xlab = FALSE,
                       font_size = NULL,
                       armlabel = NULL,
@@ -192,6 +197,12 @@ g_boxplot <- function(data,
                    outlier.shape = NA) 
   } 
   
+  # Add horizontal line
+  if (!is.null(hline) & !is.na(hline)){
+    plot1 <- plot1 +
+      geom_hline(yintercept = hline, color="red", linetype="dashed", size=0.5)
+  }
+
   plot1 <- plot1 +
     geom_jitter(data = data,
                 aes_string( x = xaxis_var,
@@ -234,8 +245,13 @@ g_boxplot <- function(data,
   #Add facetting.
   if (!is.null(facet) ){
     if (facet != "None" & facet %in% names(data)) {
-      plot1 <- plot1 +
-        facet_wrap(as.formula(paste0('~',facet)))
+      if (!is.null(facet_ncol) & !is.na(facet_ncol) & facet_ncol >= 1){
+        plot1 <- plot1 +
+          facet_wrap(as.formula(paste0('~',facet)), ncol = round(facet_ncol))
+      } else {
+        plot1 <- plot1 +
+          facet_wrap(as.formula(paste0('~',facet)))
+      }
     }
   }
   
