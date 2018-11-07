@@ -13,12 +13,12 @@
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
-#' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor
+#' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
 #' @param color_manual vector of colors.
 #' @param median boolean whether to display median results.
 #' @param hline numeric value represnting intercept of horizontal line.
-#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waive()
-#' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default value is waive()
+#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().
+#' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().
 #' @param roate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge
@@ -117,11 +117,13 @@ g_lineplot <- function(label = 'Line Plot',
     xtype <- 'continuous'
   }
   
-  if(!is.null(time_level)){
-    data[[time]] <- factor(data[[time]],
-                                levels = time_level)
-  } else {
-    data[[time]] <- factor(data[[time]])
+  if(xtype == 'discrete'){
+    if(!is.null(time_level)){
+      data[[time]] <- factor(data[[time]],
+                             levels = time_level)
+    } else {
+      data[[time]] <- factor(data[[time]])
+    }
   }
   
   ## Summary statistics
@@ -138,8 +140,6 @@ g_lineplot <- function(label = 'Line Plot',
               quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE))
   colnames(sum_data)[1:2] <- c(time,trt_group)
   
-  if(xtype == 'continuous') sum_data[[time]] <- as.numeric(as.character(sum_data[[time]]))
-
   ## Base plot
   pd <- position_dodge(dodge)
 
