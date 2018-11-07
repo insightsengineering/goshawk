@@ -12,12 +12,14 @@
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
-#' @param time_level vector that can be used to define the factor level of time.
+#' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
 #' @param color_manual vector of colors.
 #' @param ymin y-axis lower limit.
 #' @param ymax y-axis upper limit.
 #' @param facet_ncol number of facets per row.
 #' @param hline numeric value represnting intercept of horizontal line.
+#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().
+#' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().
 #' @param roate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' 
@@ -39,11 +41,12 @@
 #' 
 #' ANL <- expand.grid(
 #'   USUBJID = paste0("p-",1:100),
-#'   VISIT = paste0("visit ", 1:10),
+#'   VISITN = c(1, 4:10),
 #'   ARM = c("ARM A", "ARM B", "ARM C"),
 #'   PARAMCD = c("CRP", "IGG", "IGM"),
 #'   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 #' )
+#' ANL$VISIT <- paste0("visit ", ANL$VISITN)
 #' ANL$AVAL <- rnorm(nrow(ANL))
 #' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 #' ANL$CHG[ANL$VISIT == "visit 1"] <- NA
@@ -82,6 +85,7 @@ g_spaghettiplot <- function(data,
                             ymax = NA,
                             facet_ncol = 2,
                             hline = NULL,
+                            xtick = waiver(), xlabel = xtick,
                             rotate_xlab = FALSE,
                             font_size = 12,
                             group_mean = FALSE){
@@ -94,11 +98,19 @@ g_spaghettiplot <- function(data,
     data[[trt_group]] <- factor(data[[trt_group]])
   }
   
-  if(!is.null(time_level)){
-    data[[time]] <- factor(data[[time]],
-                           levels = time_level)
+  if(is.factor(data[[time]]) | is.character(data[[time]])){
+    xtype <- 'discrete'
   } else {
-    data[[time]] <- factor(data[[time]])
+    xtype <- 'continuous'
+  }
+  
+  if(xtype == 'discrete'){
+    if(!is.null(time_level)){
+      data[[time]] <- factor(data[[time]],
+                             levels = time_level)
+    } else {
+      data[[time]] <- factor(data[[time]])
+    }
   }
   
 
@@ -121,11 +133,15 @@ g_spaghettiplot <- function(data,
     geom_line(size=0.4) +
     facet_wrap(trt_group, ncol = facet_ncol) + 
     theme_bw() +
-    coord_cartesian(ylim = c(ymin, ymax)) +
     ggtitle(gtitle) +
     xlab(time) + 
     ylab(gylab) + 
     theme(plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5))
+  
+  # Apply y-axis zoom range
+  if(!is.na(ymin) & !is.na(ymax)){
+    plot <- plot + coord_cartesian(ylim = c(ymin, ymax))
+  }
   
   # Add group mean
   if (group_mean){
@@ -135,6 +151,11 @@ g_spaghettiplot <- function(data,
   }
   
   # Format x-label
+  if(xtype == 'continuous') {
+    plot <- plot + 
+      scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
+  }
+  
   if (rotate_xlab){
     plot <- plot +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
