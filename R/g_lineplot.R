@@ -183,7 +183,7 @@ g_lineplot <- function(label = 'Line Plot',
           axis.title.y = element_text(margin = margin(r = 20)))
  
   # Apply y-axis zoom range
-  if(!is.na(ymin) & !is.na(ymax)){
+  if(all(!is.na(c(ymin, ymax)))){
     plot1 <- plot1 + coord_cartesian(ylim = c(ymin, ymax))
   }
   

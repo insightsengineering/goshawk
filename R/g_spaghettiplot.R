@@ -81,8 +81,7 @@ g_spaghettiplot <- function(data,
                             time,
                             time_level = NULL,
                             color_manual = NULL,
-                            ymin = NA,
-                            ymax = NA,
+                            ymin = NA, ymax = NA,
                             facet_ncol = 2,
                             hline = NULL,
                             xtick = waiver(), xlabel = xtick,
@@ -139,7 +138,7 @@ g_spaghettiplot <- function(data,
     theme(plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5))
   
   # Apply y-axis zoom range
-  if(!is.na(ymin) & !is.na(ymax)){
+  if(all(!is.na(c(ymin, ymax)))){
     plot <- plot + coord_cartesian(ylim = c(ymin, ymax))
   }
   
