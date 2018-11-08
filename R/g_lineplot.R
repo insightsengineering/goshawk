@@ -15,6 +15,7 @@
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
 #' @param color_manual vector of colors.
+#' @param ylim numeric vector to define y-axis range.
 #' @param median boolean whether to display median results.
 #' @param hline numeric value represnting intercept of horizontal line.
 #' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().
@@ -89,7 +90,7 @@ g_lineplot <- function(label = 'Line Plot',
                        biomarker,
                        value_var = 'AVAL',
                        unit_var = 'AVALU',
-                       ymin = NA, ymax = NA,
+                       ylim = NULL,
                        trt_group,
                        trt_group_level = NULL,
                        time,
@@ -183,8 +184,8 @@ g_lineplot <- function(label = 'Line Plot',
           axis.title.y = element_text(margin = margin(r = 20)))
  
   # Apply y-axis zoom range
-  if(all(!is.na(c(ymin, ymax)))){
-    plot1 <- plot1 + coord_cartesian(ylim = c(ymin, ymax))
+  if(!is.null(ylim)){
+    plot1 <- plot1 + coord_cartesian(ylim = ylim)
   }
   
   # Format x-label

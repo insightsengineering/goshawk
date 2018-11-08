@@ -14,8 +14,7 @@
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
 #' @param color_manual vector of colors.
-#' @param ymin y-axis lower limit.
-#' @param ymax y-axis upper limit.
+#' @param ylim numeric vector to define y-axis range.
 #' @param facet_ncol number of facets per row.
 #' @param hline numeric value represnting intercept of horizontal line.
 #' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().
@@ -81,7 +80,7 @@ g_spaghettiplot <- function(data,
                             time,
                             time_level = NULL,
                             color_manual = NULL,
-                            ymin = NA, ymax = NA,
+                            ylim = NULL,
                             facet_ncol = 2,
                             hline = NULL,
                             xtick = waiver(), xlabel = xtick,
@@ -138,8 +137,8 @@ g_spaghettiplot <- function(data,
     theme(plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5))
   
   # Apply y-axis zoom range
-  if(all(!is.na(c(ymin, ymax)))){
-    plot <- plot + coord_cartesian(ylim = c(ymin, ymax))
+  if(!is.null(ylim)){
+    plot <- plot + coord_cartesian(ylim = ylim)
   }
   
   # Add group mean
