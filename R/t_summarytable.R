@@ -58,7 +58,9 @@ t_summarytable <- function(data,
               Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
               PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
               PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
-              ) 
+              ) %>%
+    select(param_var, trt_group, visit_var, n:PctLOQ, TRTORD) %>%
+    ungroup()
   
   # by combined ARM table
   sum_data_combined_arm <- table_data %>%
@@ -74,11 +76,12 @@ t_summarytable <- function(data,
               PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
               MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
     ) %>% # additional use of max function identifies maximum treatment order across all visits.
-    mutate(ARM = "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) 
+    mutate(ARM = "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
+    select(param_var, trt_group, visit_var, n:PctLOQ, TRTORD) %>%
+    ungroup()
   
   # combine the two data sets and apply some formatting. Note that R coerces ARM into character since it is a factor and character
   sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
-    ungroup() %>% # need to ungroup to drop previously identified grouping variables
     select(Biomarker = param_var, Treatment = trt_group, Visit = visit_var, n:PctLOQ, TRTORD) %>% # reorder variables
     arrange(Biomarker, Visit, TRTORD) %>% # drop variable
     select(-TRTORD)
