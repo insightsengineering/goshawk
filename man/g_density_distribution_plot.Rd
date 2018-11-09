@@ -6,9 +6,9 @@
 \usage{
 g_density_distribution_plot(label = "Density Distribution Plot", data,
   param_var = "PARAMCD", param = "CRP", xaxis_var = "AVAL",
-  trt_group = "ARM", unit = "AVALU", color_manual = NULL,
-  facet_var = "AVISITCD", hline = NULL, rotate_xlab = FALSE,
-  font_size = 12, line_size = 2)
+  trt_group = "ARM", unit = "AVALU", xmin = NA, xmax = NA,
+  color_manual = NULL, facet_var = "AVISITCD", hline = NULL,
+  facet_ncol = 2, rotate_xlab = FALSE, font_size = 12, line_size = 2)
 }
 \arguments{
 \item{label}{text string used to identify plot.}
@@ -25,11 +25,17 @@ g_density_distribution_plot(label = "Density Distribution Plot", data,
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
+\item{xmin}{x-axis lower zoom limit.}
+
+\item{xmax}{x-axis upper zoom limit.}
+
 \item{color_manual}{vector of colors applied to treatment values.}
 
 \item{facet_var}{variable to use for facetting.}
 
 \item{hline}{y-axis value to position a horizontal line.}
+
+\item{facet_ncol}{number of facets per row.}
 
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
@@ -58,10 +64,13 @@ plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
            param = param,
            xaxis_var = 'AVAL',
            trt_group = 'ARM',
+           xmin = 0,
+           xmax = 200,
            unit = 'AVALU',
            color_manual = color_manual,
            facet_var = 'AVISITCD',
            hline = NULL,
+           facet_ncol = 2,
            rotate_xlab = FALSE,
            font_size = 10,
            line_size = .5)

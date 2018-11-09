@@ -9,9 +9,12 @@
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
+#' @param xmin x-axis lower zoom limit.
+#' @param xmax x-axis upper zoom limit.
 #' @param color_manual vector of colors applied to treatment values.
 #' @param facet_var variable to use for facetting.
 #' @param hline y-axis value to position a horizontal line.
+#' @param facet_ncol number of facets per row.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param line_size plot line thickness.
@@ -42,10 +45,13 @@
 #'            param = param,
 #'            xaxis_var = 'AVAL',
 #'            trt_group = 'ARM',
+#'            xmin = 0,
+#'            xmax = 200,
 #'            unit = 'AVALU',
 #'            color_manual = color_manual,
 #'            facet_var = 'AVISITCD',
 #'            hline = NULL,
+#'            facet_ncol = 2,
 #'            rotate_xlab = FALSE,
 #'            font_size = 10,
 #'            line_size = .5)
@@ -61,9 +67,12 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
                                 xaxis_var = "AVAL",
                                 trt_group = "ARM",
                                 unit = "AVALU",
+                                xmin = NA,
+                                xmax = NA,
                                 color_manual = NULL,
                                 facet_var = "AVISITCD",
                                 hline = NULL,
+                                facet_ncol = 2,
                                 rotate_xlab = FALSE,
                                 font_size = 12,
                                 line_size = 2){
@@ -87,7 +96,8 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
     geom_density(aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
     geom_density(aes(x = eval(parse(text = xaxis_var)), linetype = 'Comb.'), color = '#ffbb52', size = line_size, ) + 
     scale_linetype_manual(name = "Combined Dose", values = c(Comb.="solid", per_dose="solid")) +
-    facet_wrap(as.formula(paste0('~', facet_var))) +
+    coord_cartesian(xlim = c(xmin, xmax)) +
+    facet_wrap(as.formula(paste0('~', facet_var)), ncol = facet_ncol) +
     theme_bw() +
     ggtitle(ggtitleLabel) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
