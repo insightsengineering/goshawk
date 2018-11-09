@@ -13,10 +13,13 @@
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
-#' @param time_level vector that can be used to define the factor level of time.
+#' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
 #' @param color_manual vector of colors.
+#' @param ylim numeric vector to define y-axis range.
 #' @param median boolean whether to display median results.
 #' @param hline numeric value represnting intercept of horizontal line.
+#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().
+#' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().
 #' @param roate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge
@@ -51,11 +54,12 @@
 #'
 #' ANL <- expand.grid(
 #'   USUBJID = paste0("p-",1:100),
-#'   VISIT = paste0("visit ", 1:10),
+#'   VISITN = c(1, 4:10),
 #'   ARM = c("ARM A", "ARM B", "ARM C"),
 #'   PARAMCD = c("CRP", "IGG", "IGM"),
 #'   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 #' )
+#' ANL$VISIT <- paste0("visit ", ANL$VISITN)
 #' ANL$AVAL <- rnorm(nrow(ANL))
 #' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 #' ANL$CHG[ANL$VISIT == "visit 1"] <- NA
@@ -86,7 +90,7 @@ g_lineplot <- function(label = 'Line Plot',
                        biomarker,
                        value_var = 'AVAL',
                        unit_var = 'AVALU',
-                       ymin = NA, ymax = NA,
+                       ylim = NULL,
                        trt_group,
                        trt_group_level = NULL,
                        time,
@@ -94,6 +98,8 @@ g_lineplot <- function(label = 'Line Plot',
                        color_manual = NULL,
                        median = FALSE,
                        hline = NULL,
+                       xtick = waiver(),
+                       xlabel = xtick,
                        rotate_xlab = FALSE,
                        font_size = 12,
                        dodge = 0.4) {
@@ -106,11 +112,19 @@ g_lineplot <- function(label = 'Line Plot',
     data[[trt_group]] <- factor(data[[trt_group]])
   }
   
-  if(!is.null(time_level)){
-    data[[time]] <- factor(data[[time]],
-                                levels = time_level)
+  if(is.factor(data[[time]]) | is.character(data[[time]])){
+    xtype <- 'discrete'
   } else {
-    data[[time]] <- factor(data[[time]])
+    xtype <- 'continuous'
+  }
+  
+  if(xtype == 'discrete'){
+    if(!is.null(time_level)){
+      data[[time]] <- factor(data[[time]],
+                             levels = time_level)
+    } else {
+      data[[time]] <- factor(data[[time]])
+    }
   }
   
   ## Summary statistics
@@ -126,7 +140,7 @@ g_lineplot <- function(label = 'Line Plot',
               quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
               quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE))
   colnames(sum_data)[1:2] <- c(time,trt_group)
-
+  
   ## Base plot
   pd <- position_dodge(dodge)
 
@@ -156,10 +170,9 @@ g_lineplot <- function(label = 'Line Plot',
     geom_line(position = pd) +
     geom_errorbar(aes_string(ymin = down_limit,
                              ymax = up_limit),
-                  width=0.4,
+                  width=0.9,
                   position = pd) +
     theme_bw() +
-    scale_y_continuous(limits = c(ymin, ymax)) +
     ggtitle(gtitle) +
     labs(caption = paste("The output plot can display mean and median of input value.
                          For mean, the error bar denotes 95% confidence interval.
@@ -169,9 +182,18 @@ g_lineplot <- function(label = 'Line Plot',
     theme(legend.position = "bottom",
           plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5),
           axis.title.y = element_text(margin = margin(r = 20)))
-    
-
+ 
+  # Apply y-axis zoom range
+  if(!is.null(ylim)){
+    plot1 <- plot1 + coord_cartesian(ylim = ylim)
+  }
+  
   # Format x-label
+  if(xtype == 'continuous') {
+    plot1 <- plot1 + 
+      scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
+  }
+  
   if (rotate_xlab){
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -208,12 +230,12 @@ g_lineplot <- function(label = 'Line Plot',
   x <- unique(sum_data[[time]])
   
   tbl <- ggplot(sum_data, aes_string(x = time, y = trt_group, label = 'count')) +
-    geom_text(size = 3.5) +
+    geom_text(size = 4.5) +
     ggtitle("Number of observations") + 
     theme_minimal() +
     scale_y_discrete(labels = function(x = sum_data[[trt_group]]) str_wrap(x, width = 12)) + 
-    scale_x_discrete(limits = x)+
     theme(panel.grid.major = element_blank(), legend.position = "none",
+          panel.grid.minor = element_blank(),
           panel.border = element_blank(), axis.text.x =  element_blank(),
           axis.ticks =  element_blank(),
           axis.title.x=element_blank(),
