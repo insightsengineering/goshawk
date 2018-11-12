@@ -7,7 +7,8 @@
 g_scatterplot(label = "Scatter Plot", data, param_var = "PARAMCD",
   param = "CRP", xaxis_var = "BASE", yaxis_var = "AVAL",
   trt_group = "ARM", visit = "AVISITCD", loq_flag_var = "LOQFL",
-  unit = "AVALU", color_manual = NULL, shape_manual = NULL,
+  unit = "AVALU", xmin = NA, xmax = NA, ymin = NA, ymax = NA,
+  color_manual = NULL, shape_manual = NULL, facet_ncol = 2,
   facet = FALSE, facet_var = "ARM", reg_line = FALSE, hline = NULL,
   rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
   reg_text_size = 3)
@@ -33,9 +34,19 @@ g_scatterplot(label = "Scatter Plot", data, param_var = "PARAMCD",
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
+\item{xmin}{x-axis lower zoom limit.}
+
+\item{xmax}{x-axis upper zoom limit.}
+
+\item{ymin}{y-axis lower zoom limit.}
+
+\item{ymax}{y-axis upper zoom limit.}
+
 \item{color_manual}{vector of colors applied to treatment values.}
 
 \item{shape_manual}{vector of symbols applied to LOQ values.}
+
+\item{facet_ncol}{number of facets per row.}
 
 \item{facet}{set layout to use treatment facetting.}
 
@@ -77,11 +88,16 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            visit = 'AVISITCD',
            loq_flag_var = 'LOQFL',
            unit = 'AVALU',
+           xmin = 0,
+           xmax = 200,
+           ymin = 0,
+           ymax = 200,
            color_manual = color_manual,
            shape_manual = shape_manual,
-           facet = TRUE,
+           facet_ncol = 4,
+           facet = FALSE,
            facet_var = "ARM",
-           reg_line = TRUE,
+           reg_line = FALSE,
            hline = NULL,
            rotate_xlab = FALSE,
            font_size = 14,

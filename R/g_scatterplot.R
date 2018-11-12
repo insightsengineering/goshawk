@@ -12,8 +12,13 @@
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LBLOQFL.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
+#' @param xmin x-axis lower zoom limit.
+#' @param xmax x-axis upper zoom limit.
+#' @param ymin y-axis lower zoom limit.
+#' @param ymax y-axis upper zoom limit.
 #' @param color_manual vector of colors applied to treatment values.
 #' @param shape_manual vector of symbols applied to LOQ values.
+#' @param facet_ncol number of facets per row.
 #' @param facet set layout to use treatment facetting.
 #' @param facet_var variable to use for facetting beyond visit.
 #' @param reg_line include regression line and annotations for slope and coefficient in visualization. Use with facet = TRUE.
@@ -53,11 +58,16 @@
 #'            visit = 'AVISITCD',
 #'            loq_flag_var = 'LOQFL',
 #'            unit = 'AVALU',
+#'            xmin = 0,
+#'            xmax = 200,
+#'            ymin = 0,
+#'            ymax = 200,
 #'            color_manual = color_manual,
 #'            shape_manual = shape_manual,
-#'            facet = TRUE,
+#'            facet_ncol = 4,
+#'            facet = FALSE,
 #'            facet_var = "ARM",
-#'            reg_line = TRUE,
+#'            reg_line = FALSE,
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
 #'            font_size = 14,
@@ -78,8 +88,13 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           visit = "AVISITCD",
                           loq_flag_var = "LOQFL",
                           unit = "AVALU",
+                          xmin = NA,
+                          xmax = NA,
+                          ymin = NA,
+                          ymax = NA,
                           color_manual = NULL,
                           shape_manual = NULL,
+                          facet_ncol = 2,
                           facet = FALSE,
                           facet_var = "ARM",
                           reg_line = FALSE,
@@ -117,7 +132,8 @@ yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
                               y = yaxis_var,
                               color = trt_group)) +
     geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
-    facet_wrap(as.formula(paste0('~', visit))) +
+    coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
+    facet_wrap(as.formula(paste0('~', visit)), ncol = facet_ncol) +
     theme_bw() +
     ggtitle(ggtitleLabel) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
