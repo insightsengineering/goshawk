@@ -197,10 +197,16 @@ g_boxplot <- function(data,
                    outlier.shape = NA) 
   } 
   
+  # Extend is.infinite to include zero length objects.
+  is_finite <- function(x){
+    if(length(x) == 0) return(FALSE)
+    return(is.finite(x))
+  }
+  
   # Add horizontal line
-  if (!is.null(hline) & !is.na(hline)){
-    plot1 <- plot1 +
-      geom_hline(yintercept = hline, color="red", linetype="dashed", size=0.5)
+  if (is_finite(hline)) {
+      plot1 <- plot1 +
+        geom_hline(yintercept = hline, color="red", linetype="dashed", size=0.5)
   }
 
   plot1 <- plot1 +
@@ -245,7 +251,9 @@ g_boxplot <- function(data,
   #Add facetting.
   if (!is.null(facet) ){
     if (facet != "None" & facet %in% names(data)) {
-      if (!is.null(facet_ncol) & !is.na(facet_ncol) & facet_ncol >= 1){
+      if (!is_finite(facet_ncol)) facet_ncol <- 0
+      
+      if (facet_ncol >= 1){
         plot1 <- plot1 +
           facet_wrap(as.formula(paste0('~',facet)), ncol = round(facet_ncol))
       } else {
@@ -256,7 +264,7 @@ g_boxplot <- function(data,
   }
   
   # Format font size
-  if (!is.null(font_size)){
+  if (is_finite(font_size)){
     plot1 <- plot1 +
       theme(axis.title.x = element_text(size = font_size),
             axis.text.x  = element_text(size = font_size),
