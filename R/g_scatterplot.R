@@ -10,7 +10,7 @@
 #' @param yaxis_var name of variable containing biomarker results displayed on Y-axise.g. AVAL.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
-#' @param loq_flag_var name of variable containing LOQ flag e.g. LBLOQFL.
+#' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
 #' @param xmin x-axis lower zoom limit.
 #' @param xmax x-axis upper zoom limit.

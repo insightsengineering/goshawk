@@ -15,10 +15,10 @@
 #'
 #' @param data data frame with variables which will be displayed in the plot.
 #' @param biomarker biomarker to visualize e.g. IGG.
-#' @param value_var name of variable containing biomarker results displayed on
+#' @param yaxis_var name of variable containing biomarker results displayed on
 #'   Y-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment trt_group e.g. ARM.
-#' @param loq_flag  name of variable containing LOQ flag e.g. LBLOQFL.
+#' @param loq_flag  name of variable containing LOQ flag e.g. LOQFL.
 #' @param unit biomarker unit label e.g. (U/L)
 #' @param timepoint text to include on the plot title
 #' @param color_manual vector of colour for trt_group
@@ -30,10 +30,9 @@
 #' @param facet variable to facet the plot by, or "None" if no faceting
 #'   required. 
 #' @param xaxis_var variable used to group the data on the x-axis.
-#' @param armlabel header for the treatment symbols in the legend.  If not specified
-#'    then the label attribute for \code{trt_group} will be used.  If there is
-#'    no label attribute for \code{trt_group}, then the name of the parameter (
-#'    in title case) will be used.
+#' @param armlabel label for the treatment symbols in the legend.
+#'        If not specified then the label attribute for trt_group will be used. 
+#'        If there is no label attribute for trt_group, then the name of the parameter (in title case) will be used.
 #' @param facet_ncol number of facets per row.  NULL = Use the default for facet_wrap
 #' @param hline y-axis value to position a horizontal line.  NULL = No line
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
@@ -107,7 +106,7 @@
 #' 
 #' g_boxplot(albplot
 #'           , biomarker = "IGA"
-#'           , value_var = "AVAL"
+#'           , yaxis_var = "AVAL"
 #'           , trt_group = "ARM"
 #'           , loq_flag = 'LOQFL'
 #'           , timepoint = "over time"
@@ -130,7 +129,7 @@
 #' 
 #' g_boxplot(albplot
 #'           , biomarker = "CRP"
-#'           , value_var = "AVAL"
+#'           , yaxis_var = "AVAL"
 #'           , trt_group = "ARM"
 #'           , xaxis_var = "AVISIT"
 #'           , facet = "ARM"
@@ -142,10 +141,10 @@
 #'
 g_boxplot <- function(data,
                       biomarker,
-                      value_var,
+                      yaxis_var,
                       trt_group,
                       xaxis_var = NULL,
-                      loq_flag = NULL,
+                      loq_flag = "LOQFL",
                       unit = NULL,
                       timepoint = NULL,
                       color_manual = NULL,
@@ -164,9 +163,9 @@ g_boxplot <- function(data,
                       facet = NULL) { 
   
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
-  yAxisLabel <- ifelse(is.null(unit), paste(data$PARAM, value_var, "Values"), 
-                       ifelse(unit == "", paste(data$PARAM, value_var, "Values"), 
-                              paste0(data$PARAM, " (", unit, ") ", value_var, " Values"))
+  yAxisLabel <- ifelse(is.null(unit), paste(data$PARAM, yaxis_var, "Values"), 
+                       ifelse(unit == "", paste(data$PARAM, yaxis_var, "Values"), 
+                              paste0(data$PARAM, " (", unit, ") ", yaxis_var, " Values"))
   )
   
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
@@ -191,7 +190,7 @@ g_boxplot <- function(data,
     plot1 <- plot1 +
       geom_boxplot(data = data,
                    aes_string( x = xaxis_var,
-                               y = value_var,
+                               y = yaxis_var,
                                color = trt_group,
                                fill = NULL),
                    outlier.shape = NA) 
@@ -212,7 +211,7 @@ g_boxplot <- function(data,
   plot1 <- plot1 +
     geom_jitter(data = data,
                 aes_string( x = xaxis_var,
-                            y = value_var,
+                            y = yaxis_var,
                             color = trt_group,
                             shape = loq_flag),
                 alpha = alpha,
