@@ -2,12 +2,11 @@
 #' 
 #' This function is rendered by teal.goshawk module
 #'
-#'
 #' @param label text string to be displayed as plot label.
 #' @param data data frame with variables to be summarized and generate statistics which will display in the plot.
 #' @param biomarker_var name of variable containing biomarker names.
 #' @param biomarker_var_label name of variable containing biomarker labels.
-#' @param biomaker biomarker name to be analyzed. 
+#' @param biomarker biomarker name to be analyzed. 
 #' @param value_var name of variable containing biomarker results.
 #' @param unit_var name of variable containing biomarker result unit.
 #' @param trt_group name of variable representing treatment group.
@@ -20,7 +19,7 @@
 #' @param hline numeric value represnting intercept of horizontal line.
 #' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().
-#' @param roate_xlab boolean whether to rotate x-axis labels.
+#' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge
 #' 
@@ -80,8 +79,6 @@
 #'            median = FALSE,
 #'            hline = NULL,
 #'            rotate_xlab = FALSE)
-
-
 
 g_lineplot <- function(label = 'Line Plot',
                        data,

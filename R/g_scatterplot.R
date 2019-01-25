@@ -28,7 +28,6 @@
 #' @param dot_size plot dot size.
 #' @param reg_text_size font size control for regression line annotations.
 #' 
-#' @import DescTools
 #' @import dplyr
 #' @import ggplot2
 #' @import mcr

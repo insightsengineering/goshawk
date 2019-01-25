@@ -37,7 +37,8 @@
 #' @param hline y-axis value to position a horizontal line.  NULL = No line
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size point size of tex to use.  NULL is use default size
-#' @param alpha transparency for the points (0 = transparent, 1 = opaque)
+#' @param dot_size plot dot size.
+#' @param alpha dot transparency (0 = transparent, 1 = opaque)
 #'   
 #' @import ggplot2
 #' @import dplyr
@@ -47,9 +48,6 @@
 #' @author Balazs Toth
 #' @author Jeff Tomlinson (tomlinsj) jeffrey.tomlinson@roche.com
 #'
-#' @details provide additional information as needed. perhaps link to
-#'   specification file.\url{http://rstudio.com}
-#'   
 #' @return \code{ggplot} object
 #'
 #' @export

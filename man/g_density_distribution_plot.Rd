@@ -46,9 +46,6 @@ g_density_distribution_plot(label = "Density Distribution Plot", data,
 \description{
 Default plot displays overall density facetted by visit with treatment arms and combined treatment overlaid.
 }
-\details{
-None
-}
 \examples{
 
 \dontrun{
@@ -57,9 +54,10 @@ None
 
 param <- c('CRP')
 color_manual <-  c('Placebo' = "#000000", '150mg QD' = "#3498DB", '200mg BID' = "#E74C3C")
+ALBsub <- ALB \%>\% subset(AVISITCDN ==24)
 
 plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
-           data = ALB,
+           data = ALBsub,
            param_var = 'PARAMCD',
            param = param,
            xaxis_var = 'AVAL',

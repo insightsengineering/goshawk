@@ -30,7 +30,7 @@ g_scatterplot(label = "Scatter Plot", data, param_var = "PARAMCD",
 
 \item{visit}{name of variable containing nominal visits e.g. AVISITCD.}
 
-\item{loq_flag_var}{name of variable containing LOQ flag e.g. LBLOQFL.}
+\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 

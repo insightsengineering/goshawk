@@ -21,6 +21,8 @@ t_summarytable(data, trt_group, param_var, param, xaxis_var,
 \item{visit_var}{name of variable containing visit values e.g. AVISITCD.}
 
 \item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
+
+\item{...}{additional options}
 }
 \description{
 Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, visit,

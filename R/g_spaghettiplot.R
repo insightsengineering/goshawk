@@ -2,31 +2,31 @@
 #' 
 #' This function is rendered by teal.goshawk module
 #'
-#'
 #' @param data data frame with variables to be summarized and generate statistics which will display in the plot.
 #' @param subj_id unique subject id variable name.
 #' @param biomarker_var name of variable containing biomarker names.
 #' @param biomarker_var_label name of variable containing biomarker labels.
-#' @param biomaker biomarker name to be analyzed. 
+#' @param biomarker biomarker name to be analyzed. 
 #' @param value_var name of variable containing biomarker results.
+#' @param unit_var name of variable containing biomarker units.
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
 #' @param color_manual vector of colors.
 #' @param ylim numeric vector to define y-axis range.
+#' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
 #' @param hline numeric value represnting intercept of horizontal line.
 #' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().
-#' @param roate_xlab boolean whether to rotate x-axis labels.
+#' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
+#' @param group_stats control group mean or median overlay.
 #' 
 #' @import ggplot2
 #'
 #' @author Wenyi Liu (wenyi.liu@roche.com)
-#'
-#' @details 
 #'
 #' @return \code{ggplot} object
 #'
@@ -63,10 +63,12 @@
 #'                 trt_group = 'ARM',
 #'                 time = 'VISIT',
 #'                 color_manual = c("ARM A" = "#000000", "ARM B" = "#3498DB", "ARM C" = "#E74C3C"),
+#'                 alpha = .02,
 #'                 hline = NULL,
 #'                 rotate_xlab = FALSE,
-#'                 group_mean = TRUE)
-
+#'                 group_stats = "median"
+#'                 )
+#'                                  
 
 g_spaghettiplot <- function(data,
                             subj_id = 'USUBJID',
@@ -81,12 +83,13 @@ g_spaghettiplot <- function(data,
                             time_level = NULL,
                             color_manual = NULL,
                             ylim = NULL,
+                            alpha = 1.0,
                             facet_ncol = 2,
                             hline = NULL,
                             xtick = waiver(), xlabel = xtick,
                             rotate_xlab = FALSE,
                             font_size = 12,
-                            group_mean = FALSE){
+                            group_stats = "NONE"){
   
   ## Pre-process data
   if(!is.null(trt_group_level)){
@@ -111,7 +114,6 @@ g_spaghettiplot <- function(data,
     }
   }
   
-
   # Plot
   for.plot <- data[data[[biomarker_var]] %in% biomarker,]
   
@@ -128,7 +130,7 @@ g_spaghettiplot <- function(data,
   plot <- ggplot(data = for.plot, 
                  aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
     geom_point(size=0.8) +
-    geom_line(size=0.4) +
+    geom_line(size=0.4, alpha = alpha) +
     facet_wrap(trt_group, ncol = facet_ncol) + 
     theme_bw() +
     ggtitle(gtitle) +
@@ -140,12 +142,18 @@ g_spaghettiplot <- function(data,
   if(!is.null(ylim)){
     plot <- plot + coord_cartesian(ylim = ylim)
   }
-  
-  # Add group mean
-  if (group_mean){
-    plot <- plot +
-      stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1, linetype = "Group Mean"), color = "#ffbb52")+
-      scale_linetype_manual(name = "", label = 'Group Mean', values = c(1))
+
+  # add group statistics
+  if (group_stats != "NONE"){
+    if (group_stats == "MEAN"){
+      plot <- plot +
+        stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1, linetype = "Group Mean"), color = "#ffbb52")+
+        scale_linetype_manual(name = "", label = 'Group Mean', values = c(1))
+    } else{
+        plot <- plot +
+          stat_summary(fun.y=median, geom="line", lwd=1, aes(group = 1, linetype = "Group Median"), color = "#ffbb52")+
+          scale_linetype_manual(name = "", label = 'Group Median', values = c(1))
+    }
   }
   
   # Format x-label
@@ -188,5 +196,3 @@ g_spaghettiplot <- function(data,
   plot
   
 }
-
-

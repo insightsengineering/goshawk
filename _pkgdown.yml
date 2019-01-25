@@ -1,0 +1,25 @@
+url: https://pages.github.roche.com/Rpackages/goshawk
+
+template:
+  params:
+    bootswatch: cerulean
+
+navbar:
+  right:
+    - icon: fa-github
+      href: https://github.roche.com/Rpackages/goshawk
+
+development:
+  mode: devel
+
+reference:
+
+  - title: Modules
+    desc: These modules render the longitudinal visualizations and descriptive summary table
+    contents:
+      - g_boxplot
+      - g_density_distribution_plot
+      - g_lineplot
+      - g_scatterplot
+      - g_spaghettiplot
+      - t_summarytable

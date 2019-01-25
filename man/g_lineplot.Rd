@@ -6,10 +6,10 @@
 \usage{
 g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
   biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
-  unit_var = "AVALU", ymin = NA, ymax = NA, trt_group,
-  trt_group_level = NULL, time, time_level = NULL, color_manual = NULL,
-  median = FALSE, hline = NULL, rotate_xlab = FALSE, font_size = 12,
-  dodge = 0.4)
+  unit_var = "AVALU", ylim = NULL, trt_group, trt_group_level = NULL,
+  time, time_level = NULL, color_manual = NULL, median = FALSE,
+  hline = NULL, xtick = waiver(), xlabel = xtick, rotate_xlab = FALSE,
+  font_size = 12, dodge = 0.4)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -20,9 +20,13 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 
 \item{biomarker_var_label}{name of variable containing biomarker labels.}
 
+\item{biomarker}{biomarker name to be analyzed.}
+
 \item{value_var}{name of variable containing biomarker results.}
 
 \item{unit_var}{name of variable containing biomarker result unit.}
+
+\item{ylim}{numeric vector to define y-axis range.}
 
 \item{trt_group}{name of variable representing treatment group.}
 
@@ -30,7 +34,7 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 
 \item{time}{name of vairable containing visit names.}
 
-\item{time_level}{vector that can be used to define the factor level of time.}
+\item{time_level}{vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.}
 
 \item{color_manual}{vector of colors.}
 
@@ -38,13 +42,15 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 
 \item{hline}{numeric value represnting intercept of horizontal line.}
 
+\item{xtick}{numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().}
+
+\item{xlabel}{vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().}
+
+\item{rotate_xlab}{boolean whether to rotate x-axis labels.}
+
 \item{font_size}{control font size for title, x-axis, y-axis and legend font.}
 
 \item{dodge}{control position dodge}
-
-\item{biomaker}{biomarker name to be analyzed.}
-
-\item{roate_xlab}{boolean whether to rotate x-axis labels.}
 }
 \value{
 \code{ggplot} object
@@ -68,11 +74,12 @@ library(stringr)
 
 ANL <- expand.grid(
   USUBJID = paste0("p-",1:100),
-  VISIT = paste0("visit ", 1:10),
+  VISITN = c(1, 4:10),
   ARM = c("ARM A", "ARM B", "ARM C"),
   PARAMCD = c("CRP", "IGG", "IGM"),
   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 )
+ANL$VISIT <- paste0("visit ", ANL$VISITN)
 ANL$AVAL <- rnorm(nrow(ANL))
 ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 ANL$CHG[ANL$VISIT == "visit 1"] <- NA

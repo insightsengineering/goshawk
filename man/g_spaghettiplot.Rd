@@ -7,9 +7,9 @@
 g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
   biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
   unit_var = "AVALU", trt_group, trt_group_level = NULL, time,
-  time_level = NULL, color_manual = NULL, ymin = NA, ymax = NA,
-  facet_ncol = 2, hline = NULL, rotate_xlab = FALSE, font_size = 12,
-  group_mean = FALSE)
+  time_level = NULL, color_manual = NULL, ylim = NULL, alpha = 1,
+  facet_ncol = 2, hline = NULL, xtick = waiver(), xlabel = xtick,
+  rotate_xlab = FALSE, font_size = 12, group_stats = "NONE")
 }
 \arguments{
 \item{data}{data frame with variables to be summarized and generate statistics which will display in the plot.}
@@ -20,7 +20,11 @@ g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
 
 \item{biomarker_var_label}{name of variable containing biomarker labels.}
 
+\item{biomarker}{biomarker name to be analyzed.}
+
 \item{value_var}{name of variable containing biomarker results.}
+
+\item{unit_var}{name of variable containing biomarker units.}
 
 \item{trt_group}{name of variable representing treatment group.}
 
@@ -28,32 +32,33 @@ g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
 
 \item{time}{name of vairable containing visit names.}
 
-\item{time_level}{vector that can be used to define the factor level of time.}
+\item{time_level}{vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.}
 
 \item{color_manual}{vector of colors.}
 
-\item{ymin}{y-axis lower limit.}
+\item{ylim}{numeric vector to define y-axis range.}
 
-\item{ymax}{y-axis upper limit.}
+\item{alpha}{subject line transparency (0 = transparent, 1 = opaque)}
 
 \item{facet_ncol}{number of facets per row.}
 
 \item{hline}{numeric value represnting intercept of horizontal line.}
 
+\item{xtick}{numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().}
+
+\item{xlabel}{vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().}
+
+\item{rotate_xlab}{boolean whether to rotate x-axis labels.}
+
 \item{font_size}{control font size for title, x-axis, y-axis and legend font.}
 
-\item{biomaker}{biomarker name to be analyzed.}
-
-\item{roate_xlab}{boolean whether to rotate x-axis labels.}
+\item{group_stats}{control group mean or median overlay.}
 }
 \value{
 \code{ggplot} object
 }
 \description{
 This function is rendered by teal.goshawk module
-}
-\details{
-
 }
 \examples{
 
@@ -63,11 +68,12 @@ library(dplyr)
 
 ANL <- expand.grid(
   USUBJID = paste0("p-",1:100),
-  VISIT = paste0("visit ", 1:10),
+  VISITN = c(1, 4:10),
   ARM = c("ARM A", "ARM B", "ARM C"),
   PARAMCD = c("CRP", "IGG", "IGM"),
   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 )
+ANL$VISIT <- paste0("visit ", ANL$VISITN)
 ANL$AVAL <- rnorm(nrow(ANL))
 ANL$CHG <- rnorm(nrow(ANL), 2, 2)
 ANL$CHG[ANL$VISIT == "visit 1"] <- NA
@@ -85,9 +91,12 @@ g_spaghettiplot(data = ANL,
                 trt_group = 'ARM',
                 time = 'VISIT',
                 color_manual = c("ARM A" = "#000000", "ARM B" = "#3498DB", "ARM C" = "#E74C3C"),
+                alpha = .02,
                 hline = NULL,
                 rotate_xlab = FALSE,
-                group_mean = TRUE)
+                group_stats = "median"
+                )
+                                 
 }
 \author{
 Wenyi Liu (wenyi.liu@roche.com)

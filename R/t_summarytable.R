@@ -10,6 +10,7 @@
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
 #' @param visit_var name of variable containing visit values e.g. AVISITCD.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
+#' @param ... additional options
 #'
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
