@@ -20,11 +20,9 @@
 #' @param trt_group name of variable representing treatment trt_group e.g. ARM.
 #' @param loq_flag  name of variable containing LOQ flag e.g. LOQFL.
 #' @param unit biomarker unit label e.g. (U/L)
-#' @param timepoint text to include on the plot title
 #' @param color_manual vector of colour for trt_group
 #' @param shape_manual vector of shapes (used with log_flag)
 #' @param box add boxes to the plot (boolean)
-#' @param logscale use a log scale for the Y axis (boolean)
 #' @param ymin_scale minimum value for the Y axis
 #' @param ymax_scale maximum value for the Y axis
 #' @param facet variable to facet the plot by, or "None" if no faceting
@@ -56,86 +54,26 @@
 #'
 #'\dontrun{
 #' library(random.cdisc.data)
-#' library(dplyr)
-#' library(goshawk)
-#' 
-#' # Example data for 100 patients from 3 treatment groups
-#' ASL <- radam('ASL', start_with = list(
-#'   STUDYID = "XX99999",
-#'   USUBJID = paste0("XX99999-999-",1:100),
-#'   ITTFL = 'Y',
-#'   SEX = c("M", "F"),
-#'   ARM = paste("ARM", LETTERS[1:3])
-#' ))
-#' 
-#' # Create an example ALB dataset from the 100 patient, with 6 visits with 3 
-#' # parameters for each subject.  
-#' ALB <- expand.grid(USUBJID = ASL$USUBJID
-#'               , AVISIT = c("BASELINE",  paste0("VISIT ", 1:5))
-#'               , PARAMCD = c("CRP", "IGA", "IGG")
-#'               , stringsAsFactors = FALSE
-#'     ) 
-#'     
-#' ALB <- ALB %>%
-#'   mutate( AVAL = rnorm(nrow(ALB), mean = 50, sd = 8) )
-#' 
-#' ALB <- ALB %>% 
-#'   left_join(ALB %>% 
-#'               filter(AVISIT == "BASELINE") %>% 
-#'               select(USUBJID, PARAMCD, BASE = AVAL)
-#'             , by = c("USUBJID", "PARAMCD")) %>% 
-#'   left_join(ASL, by = "USUBJID") %>% 
-#'   mutate(CHG = AVAL - BASE, PCHG = 100 * CHG/BASE) %>% 
-#'   mutate(LOQFL = ifelse(AVAL < 32, "Y", "N"))
+#' ADSL <- radsl(N = 100, seed = 1)
+#' ADLB <- radlb(ADSL, seed = 2)
+#' ADLB <- ADLB %>% subset(PARAMCD == "CRP")
 #' 
 #' # Example 1.
-#' 
-#' # Plot boxplots for IGA by Treatment (ARM) faceted by AVISIT, to display a
-#' # boxplot for each visit.
-#' # Specific colors are given for each treatment group.
-#' # Values that are flagged by LOQFL are given a different symbol.
-#' # Log scale for the Y axis.
-#' # Points are plot with a transparency
-#' 
-#' # ALB is a VAD or ADAM format dataset, subsetted for the appropriate population.
-#' # Select the parameter of interest to plot.
-#' albplot <- ALB %>%
-#'   filter(PARAMCD == "IGA")
-#' 
-#' g_boxplot(albplot
-#'           , biomarker = "IGA"
-#'           , yaxis_var = "AVAL"
-#'           , trt_group = "ARM"
-#'           , loq_flag = 'LOQFL'
-#'           , timepoint = "over time"
-#'           , unit = "U/L"
-#'           #, color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
-#'           , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
-#'           , hline = NULL
-#'           , facet = "ARM"
-#'           , xaxis_var = "AVISIT"
-#'           , alpha = 0.5
-#'           , logscale = FALSE
-#' )
-#' 
-#' 
-#' # Example 2
-#' #
-#' # A plot using mostly default values. 
-#' albplot <- ALB %>%
-#'   filter(PARAMCD == "CRP" & AVISIT == "BASELINE")
-#' 
-#' g_boxplot(albplot
+#' g_boxplot(ADLB
 #'           , biomarker = "CRP"
 #'           , yaxis_var = "AVAL"
 #'           , trt_group = "ARM"
-#'           , xaxis_var = "AVISIT"
-#'           , facet = "ARM"
-#'           ,rotate_xlab = TRUE
+#'           , loq_flag = "LOQFL"
+#'           , unit = "AVALU"
+#'           , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
+#'           , hline = NULL
+#'           , facet = "AVISIT"
+#'           , xaxis_var = "STUDYID"
+#'           , alpha = 0.5
+#'           , rotate_xlab = TRUE
 #' )
 #' 
 #'}
-#'
 #'
 g_boxplot <- function(data,
                       biomarker,
@@ -144,11 +82,9 @@ g_boxplot <- function(data,
                       xaxis_var = NULL,
                       loq_flag = "LOQFL",
                       unit = NULL,
-                      timepoint = NULL,
                       color_manual = NULL,
                       shape_manual = NULL,
                       box = TRUE,
-                      logscale = FALSE,
                       ymax_scale = NULL,
                       ymin_scale = NULL,
                       dot_size = 2,
@@ -158,14 +94,15 @@ g_boxplot <- function(data,
                       rotate_xlab = FALSE,
                       font_size = NULL,
                       armlabel = NULL,
-                      facet = NULL) { 
+                      facet = NULL                      
+                      ) { 
   
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
   yAxisLabel <- ifelse(is.null(unit), paste(data$PARAM, yaxis_var, "Values"), 
                        ifelse(unit == "", paste(data$PARAM, yaxis_var, "Values"), 
                               paste0(data$PARAM, " (", unit, ") ", yaxis_var, " Values"))
   )
-  
+
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
   ggtitleLabel <- ifelse(is.null(unit), paste(data$PARAM, "Distribution by Treatment @ Visits"), 
                          ifelse(unit == "", paste(data$PARAM, "Distribution by Treatment @ Visits"), 
@@ -189,7 +126,6 @@ g_boxplot <- function(data,
       geom_boxplot(data = data,
                    aes_string( x = xaxis_var,
                                y = yaxis_var,
-                               color = trt_group,
                                fill = NULL),
                    outlier.shape = NA) 
   } 
@@ -238,15 +174,9 @@ g_boxplot <- function(data,
   if (!is.null(ymin_scale) & !is.null(ymax_scale)) {
     plot1 <- plot1 + coord_cartesian(ylim = c(ymin_scale, ymax_scale)) 
   }
-  
-  #Adjust scale to log
-  if (logscale){
-    plot1 <- plot1 +
-      coord_trans( y = "log10")
-  }
-  
-  #Add facetting.
-  if (!is.null(facet) ){
+
+  # Add facetting.
+  if (!is.null(facet)){
     if (facet != "None" & facet %in% names(data)) {
       if (!is_finite(facet_ncol)) facet_ncol <- 0
       
