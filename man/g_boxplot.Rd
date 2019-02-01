@@ -6,11 +6,11 @@
 Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualization}
 \usage{
 g_boxplot(data, biomarker, yaxis_var, trt_group, xaxis_var = NULL,
-  loq_flag = "LOQFL", unit = NULL, timepoint = NULL,
-  color_manual = NULL, shape_manual = NULL, box = TRUE,
-  logscale = FALSE, ymax_scale = NULL, ymin_scale = NULL, dot_size = 2,
-  alpha = 1, facet_ncol = NULL, hline = NULL, rotate_xlab = FALSE,
-  font_size = NULL, armlabel = NULL, facet = NULL)
+  loq_flag = "LOQFL", unit = NULL, color_manual = NULL,
+  shape_manual = NULL, box = TRUE, ymax_scale = NULL,
+  ymin_scale = NULL, dot_size = 2, alpha = 1, facet_ncol = NULL,
+  hline = NULL, rotate_xlab = FALSE, font_size = NULL,
+  armlabel = NULL, facet = NULL)
 }
 \arguments{
 \item{data}{data frame with variables which will be displayed in the plot.}
@@ -28,15 +28,11 @@ Y-axis e.g. AVAL.}
 
 \item{unit}{biomarker unit label e.g. (U/L)}
 
-\item{timepoint}{text to include on the plot title}
-
 \item{color_manual}{vector of colour for trt_group}
 
 \item{shape_manual}{vector of shapes (used with log_flag)}
 
 \item{box}{add boxes to the plot (boolean)}
-
-\item{logscale}{use a log scale for the Y axis (boolean)}
 
 \item{ymax_scale}{maximum value for the Y axis}
 
@@ -81,86 +77,26 @@ midhinge, range, mid-range, and trimean.
 
 \dontrun{
 library(random.cdisc.data)
-library(dplyr)
-library(goshawk)
-
-# Example data for 100 patients from 3 treatment groups
-ASL <- radam('ASL', start_with = list(
-  STUDYID = "XX99999",
-  USUBJID = paste0("XX99999-999-",1:100),
-  ITTFL = 'Y',
-  SEX = c("M", "F"),
-  ARM = paste("ARM", LETTERS[1:3])
-))
-
-# Create an example ALB dataset from the 100 patient, with 6 visits with 3 
-# parameters for each subject.  
-ALB <- expand.grid(USUBJID = ASL$USUBJID
-              , AVISIT = c("BASELINE",  paste0("VISIT ", 1:5))
-              , PARAMCD = c("CRP", "IGA", "IGG")
-              , stringsAsFactors = FALSE
-    ) 
-    
-ALB <- ALB \%>\%
-  mutate( AVAL = rnorm(nrow(ALB), mean = 50, sd = 8) )
-
-ALB <- ALB \%>\% 
-  left_join(ALB \%>\% 
-              filter(AVISIT == "BASELINE") \%>\% 
-              select(USUBJID, PARAMCD, BASE = AVAL)
-            , by = c("USUBJID", "PARAMCD")) \%>\% 
-  left_join(ASL, by = "USUBJID") \%>\% 
-  mutate(CHG = AVAL - BASE, PCHG = 100 * CHG/BASE) \%>\% 
-  mutate(LOQFL = ifelse(AVAL < 32, "Y", "N"))
+ADSL <- radsl(N = 100, seed = 1)
+ADLB <- radlb(ADSL, seed = 2)
+ADLB <- ADLB \%>\% subset(PARAMCD == "CRP")
 
 # Example 1.
-
-# Plot boxplots for IGA by Treatment (ARM) faceted by AVISIT, to display a
-# boxplot for each visit.
-# Specific colors are given for each treatment group.
-# Values that are flagged by LOQFL are given a different symbol.
-# Log scale for the Y axis.
-# Points are plot with a transparency
-
-# ALB is a VAD or ADAM format dataset, subsetted for the appropriate population.
-# Select the parameter of interest to plot.
-albplot <- ALB \%>\%
-  filter(PARAMCD == "IGA")
-
-g_boxplot(albplot
-          , biomarker = "IGA"
-          , yaxis_var = "AVAL"
-          , trt_group = "ARM"
-          , loq_flag = 'LOQFL'
-          , timepoint = "over time"
-          , unit = "U/L"
-          #, color_manual = c('ARM A' = "#1F78B4", 'ARM B' = "#33A02C", 'ARM C' = "#601010")
-          , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
-          , hline = NULL
-          , facet = "ARM"
-          , xaxis_var = "AVISIT"
-          , alpha = 0.5
-          , logscale = FALSE
-)
-
-
-# Example 2
-#
-# A plot using mostly default values. 
-albplot <- ALB \%>\%
-  filter(PARAMCD == "CRP" & AVISIT == "BASELINE")
-
-g_boxplot(albplot
+g_boxplot(ADLB
           , biomarker = "CRP"
           , yaxis_var = "AVAL"
           , trt_group = "ARM"
-          , xaxis_var = "AVISIT"
-          , facet = "ARM"
-          ,rotate_xlab = TRUE
+          , loq_flag = "LOQFL"
+          , unit = "AVALU"
+          , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
+          , hline = NULL
+          , facet = "AVISIT"
+          , xaxis_var = "STUDYID"
+          , alpha = 0.5
+          , rotate_xlab = TRUE
 )
 
 }
-
 
 }
 \author{
