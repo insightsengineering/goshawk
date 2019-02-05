@@ -7,10 +7,9 @@ Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualiz
 \usage{
 g_boxplot(data, biomarker, yaxis_var, trt_group, xaxis_var = NULL,
   loq_flag = "LOQFL", unit = NULL, color_manual = NULL,
-  shape_manual = NULL, box = TRUE, ymax_scale = NULL,
-  ymin_scale = NULL, dot_size = 2, alpha = 1, facet_ncol = NULL,
-  hline = NULL, rotate_xlab = FALSE, font_size = NULL,
-  armlabel = NULL, facet = NULL)
+  shape_manual = NULL, box = TRUE, ymax_scale = NULL, ymin_scale = NULL,
+  dot_size = 2, alpha = 1, facet_ncol = NULL, hline = NULL,
+  rotate_xlab = FALSE, font_size = NULL, armlabel = NULL, facet = NULL)
 }
 \arguments{
 \item{data}{data frame with variables which will be displayed in the plot.}

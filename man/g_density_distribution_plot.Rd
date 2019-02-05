@@ -8,8 +8,7 @@ g_density_distribution_plot(label = "Density Distribution Plot", data,
   param_var = "PARAMCD", param = "CRP", xaxis_var = "AVAL",
   trt_group = "ARM", unit = "AVALU", xmin = NA, xmax = NA,
   color_manual = NULL, facet_var = "AVISITCD", hline = NULL,
-  facet_ncol = 2, rotate_xlab = FALSE, font_size = 12,
-  line_size = 2)
+  facet_ncol = 2, rotate_xlab = FALSE, font_size = 12, line_size = 2)
 }
 \arguments{
 \item{label}{text string used to identify plot.}

@@ -4,14 +4,13 @@
 \alias{g_correlationplot}
 \title{Function to create a correlation plot.}
 \usage{
-g_correlationplot(label = "Correlation Plot", data,
-  param_var = "PARAMCD", xaxis_param = "CRP", xaxis_var = "BASE",
-  yaxis_param = "IGG", yaxis_var = "AVAL", trt_group = "ARM",
-  visit = "AVISITCD", loq_flag_var = "LOQFL", unit = "AVALU",
-  xmin = NA, xmax = NA, ymin = NA, ymax = NA,
-  color_manual = NULL, shape_manual = NULL, facet_ncol = 2,
-  facet = FALSE, facet_var = "ARM", reg_line = FALSE, hline = NULL,
-  rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
+g_correlationplot(label = "Correlation Plot", data, param_var = "PARAMCD",
+  xaxis_param = "CRP", xaxis_var = "BASE", yaxis_param = "IGG",
+  yaxis_var = "AVAL", trt_group = "ARM", visit = "AVISITCD",
+  loq_flag_var = "LOQFL", unit = "AVALU", xmin = NA, xmax = NA,
+  ymin = NA, ymax = NA, color_manual = NULL, shape_manual = NULL,
+  facet_ncol = 2, facet = FALSE, facet_var = "ARM", reg_line = FALSE,
+  hline = NULL, rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
   reg_text_size = 3)
 }
 \arguments{
