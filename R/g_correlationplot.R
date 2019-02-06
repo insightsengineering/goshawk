@@ -32,6 +32,7 @@
 #' @import dplyr
 #' @import ggplot2
 #' @import mcr
+#' @import tidyr
 #' 
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
@@ -54,9 +55,9 @@
 #'            data = ALB,
 #'            param_var = 'PARAMCD', 
 #'            xaxis_param = xaxis_param,
-#'            xaxis_var = 'BASE',
+#'            xaxis_var = 'AVAL',
 #'            yaxis_param = yaxis_param,
-#'            yaxis_var = 'AVAL',
+#'            yaxis_var = 'BASE',
 #'            trt_group = 'ARM',
 #'            visit = 'AVISITCD',
 #'            loq_flag_var = 'LOQFL',
@@ -64,7 +65,7 @@
 #'            xmin = 0,
 #'            xmax = 200,
 #'            ymin = 0,
-#'            ymax = 200,
+#'            ymax = 2000,
 #'            color_manual = color_manual,
 #'            shape_manual = shape_manual,
 #'            facet_ncol = 4,
@@ -109,8 +110,8 @@ g_correlationplot <- function(label = 'Correlation Plot',
                               reg_text_size = 3){
 
 # create correlation plot over time pairwise per treatment arm 
-plot_data <- data %>%
-  filter(eval(parse(text = param_var)) == xaxis_param | eval(parse(text = param_var)) == yaxis_param)
+plot_data <<- data %>%
+  filter(eval(parse(text = param_var)) == xaxis_param | eval(parse(text = param_var)) == yaxis_param) 
 
 param_lookup <- unique(plot_data[c("PARAMCD", "PARAM")])
 unit_lookup <- unique(plot_data[c("PARAMCD", "AVALU")])
@@ -144,12 +145,35 @@ yaxisLabel <- ifelse(is.null(unit), paste(yparam, yaxis_var, "Values"),
                             paste0(yparam," (", yunit,") ", yaxis_var, " Values"))
 )
 
-# create plot foundation
-  plot1 <- ggplot2::ggplot(data = plot_data,
-                   aes_string(x = xaxis_var,
-                              y = yaxis_var,
+plot_data_no_attribs <- plot_data %>% 
+  mutate_all(~`attributes<-`(., NULL))
+
+# given the 2 param and 2 analysis vars we need to transform the data
+plot_data_t1 <<- plot_data_no_attribs %>% gather(ANLVARS, ANLVALS, xaxis_var, yaxis_var, LOQFL) %>% 
+  mutate(ANL.PARAM = ifelse(ANLVARS == "LOQFL", paste0(ANLVARS, "_", PARAMCD), paste0(ANLVARS, ".", PARAMCD))) %>%
+  select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
+  spread(ANL.PARAM, ANLVALS)
+
+# assign the values of the analysis variable in the transformed data to shorter variable names to use in code below
+xvar <- paste0(xaxis_var, ".", xaxis_param)
+yvar <- paste0(yaxis_var, ".", yaxis_param)
+xloqfl <- paste0("LOQFL_", xaxis_param)
+yloqfl <- paste0("LOQFL_", yaxis_param)
+
+# the transformed analysis value variables are character and need to be converetd to numeric for ggplot
+# remove records where either of the analysis variables are NA since they will not appear on the plot and 
+# will ensure that LOQFL = NA level is removed
+plot_data_t2 <<- plot_data_t1 %>%
+  subset(!is.na(.[[xvar]]) & !is.na(.[[yvar]])) %>% 
+  mutate_at(vars(contains(".")), as.numeric) %>% 
+  mutate(LOQFL_COMB = ifelse(.[[xloqfl]] == "Y" | .[[yloqfl]] == "Y", "Y", "N"))
+
+  # create plot foundation
+  plot1 <- ggplot2::ggplot(data = plot_data_t2,
+                   aes_string(x = xvar,
+                              y = yvar,
                               color = trt_group)) +
-    geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
+    geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
     facet_wrap(as.formula(paste0('~', visit)), ncol = facet_ncol) +
     theme_bw() +
@@ -178,21 +202,21 @@ yaxisLabel <- ifelse(is.null(unit), paste(yparam, yaxis_var, "Values"),
         return(as.numeric(c(NA, NA, NA)))
       }
       
-      sub_data <- subset(plot_data, !is.na(eval(parse(text = yaxis_var))) &
-                           !is.na(eval(parse(text = xaxis_var)))) %>%
+      sub_data <- subset(plot_data_t2, !is.na(eval(parse(text = yvar))) &
+                           !is.na(eval(parse(text = xvar)))) %>%
         group_by_(.dots = c(trt_group, visit)) %>%
-        mutate(intercept =  slope(eval(parse(text = yaxis_var)),
-                                  eval(parse(text = xaxis_var)))[1]) %>%
-        mutate(slope = slope(eval(parse(text = yaxis_var)),
-                             eval(parse(text = xaxis_var)))[2]) %>%
-        mutate(corr = ifelse(((slope(eval(parse(text = yaxis_var)),
-                                          eval(parse(text = xaxis_var))))[3]), 
-                             cor(eval(parse(text = yaxis_var)),
-                                 eval(parse(text = xaxis_var)),
+        mutate(intercept =  slope(eval(parse(text = yvar)),
+                                  eval(parse(text = xvar)))[1]) %>%
+        mutate(slope = slope(eval(parse(text = yvar)),
+                             eval(parse(text = xvar)))[2]) %>%
+        mutate(corr = ifelse(((slope(eval(parse(text = yvar)),
+                                     eval(parse(text = xvar))))[3]),
+                             cor(eval(parse(text = yvar)),
+                                 eval(parse(text = xvar)),
                                  method = "spearman",
                                  use = 'complete.obs'),
                              NA))
-        
+
         plot1 <- plot1 +
         geom_abline(data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by to create annotations
                     aes_string(intercept = 'intercept',
@@ -246,7 +270,8 @@ yaxisLabel <- ifelse(is.null(unit), paste(yparam, yaxis_var, "Values"),
   # Format dot size
   if (!is.null(dot_size)){
     plot1 <- plot1 +
-      geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
+      geom_point(aes_string(shape = "LOQFL_COMB"))
+      #geom_point(aes_string(shape = sprintf("LOQFL_%s == 'Y' | LOQFL_%s == 'Y'", xaxis_param, yaxis_param)), size = dot_size, na.rm = TRUE)
   }
   
   # Format x-label
