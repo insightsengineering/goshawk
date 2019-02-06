@@ -145,11 +145,12 @@ yaxisLabel <- ifelse(is.null(unit), paste(yparam, yaxis_var, "Values"),
                             paste0(yparam," (", yunit,") ", yaxis_var, " Values"))
 )
 
-plot_data_no_attribs <- plot_data %>% 
-  mutate_all(~`attributes<-`(., NULL))
+# remove attributes does not work
+# plot_data_no_attribs <- plot_data %>% 
+#   mutate_all(~`attributes<-`(., NULL))
 
 # given the 2 param and 2 analysis vars we need to transform the data
-plot_data_t1 <<- plot_data_no_attribs %>% gather(ANLVARS, ANLVALS, xaxis_var, yaxis_var, LOQFL) %>% 
+plot_data_t1 <<- plot_data %>% gather(ANLVARS, ANLVALS, xaxis_var, yaxis_var, LOQFL) %>% 
   mutate(ANL.PARAM = ifelse(ANLVARS == "LOQFL", paste0(ANLVARS, "_", PARAMCD), paste0(ANLVARS, ".", PARAMCD))) %>%
   select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
   spread(ANL.PARAM, ANLVALS)
