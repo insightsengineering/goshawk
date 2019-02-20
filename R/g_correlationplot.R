@@ -52,20 +52,25 @@
 #' yaxis_param <- c("ADIGG") 
 #' 
 #' plot1 <- g_correlationplot(label = 'Correlation Plot',
-#'            data = ALB,
-#'            param_var = 'PARAMCD', 
+#'            data = plot_data_t2,
+#'            param_var = "PARAMCD", 
 #'            xaxis_param = xaxis_param,
-#'            xaxis_var = 'AVAL',
+#'            xaxis_var = "AVAL",
+#'            xvar = "AVAL.CRP",
 #'            yaxis_param = yaxis_param,
-#'            yaxis_var = 'BASE',
-#'            trt_group = 'ARM',
-#'            visit = 'AVISITCD',
-#'            loq_flag_var = 'LOQFL',
-#'            unit = 'AVALU',
+#'            yaxis_var = "BASE",
+#'            yvar = "BASE.ADIGG",
+#'            trt_group = "ARM",
+#'            visit = "AVISITCD",
+#'            loq_flag_var = "LOQFL",
+#'            unit = "AVALU",
 #'            xmin = 0,
 #'            xmax = 200,
 #'            ymin = 0,
 #'            ymax = 2000,
+#'            title_text = "Test",
+#'            xaxis_lab = "Test x",
+#'            yaxis_lab = "Test y",
 #'            color_manual = color_manual,
 #'            shape_manual = shape_manual,
 #'            facet_ncol = 4,
@@ -87,8 +92,10 @@ g_correlationplot <- function(label = 'Correlation Plot',
                               param_var = 'PARAMCD',
                               xaxis_param = "CRP",
                               xaxis_var = 'BASE',
+                              xvar = xvar,
                               yaxis_param = "IGG",
                               yaxis_var = 'AVAL',
+                              yvar = yvar,
                               trt_group = "ARM",
                               visit = "AVISITCD",
                               loq_flag_var = "LOQFL",
@@ -97,6 +104,9 @@ g_correlationplot <- function(label = 'Correlation Plot',
                               xmax = NA,
                               ymin = NA,
                               ymax = NA,
+                              title_text = title_text,
+                              xaxis_lab = xaxis_lab,
+                              yaxis_lab = yaxis_lab,
                               color_manual = NULL,
                               shape_manual = NULL,
                               facet_ncol = 2,
@@ -110,67 +120,68 @@ g_correlationplot <- function(label = 'Correlation Plot',
                               reg_text_size = 3){
 
 # create correlation plot over time pairwise per treatment arm 
-plot_data <<- data %>%
-  filter(eval(parse(text = param_var)) == xaxis_param | eval(parse(text = param_var)) == yaxis_param) 
+plot_data <- data
+# %>%
+#   filter(eval(parse(text = param_var)) == xaxis_param | eval(parse(text = param_var)) == yaxis_param) 
 
-param_lookup <- unique(plot_data[c("PARAMCD", "PARAM")])
-unit_lookup <- unique(plot_data[c("PARAMCD", "AVALU")])
-lookups <- inner_join(param_lookup, unit_lookup, by=c("PARAMCD"))
-
-xparam_meta <- lookups %>% 
-  filter(PARAMCD == xaxis_param)
-xparam <- xparam_meta$PARAM
-xunit <- xparam_meta$AVALU
-
-yparam_meta <- lookups %>% 
-  filter(PARAMCD == yaxis_param)
-yparam <- yparam_meta$PARAM
-yunit <- yparam_meta$AVALU
-
-# setup the ggtitle label.  Combine the biomarker and the units (if available)
-ggtitleLabel <- ifelse(is.null(unit), paste(xparam, "and", yparam, "@ Visits"), 
-                       ifelse(plot_data[[unit]] == "", paste(xparam, "and", yparam, "@ Visits"), 
-                              paste0(xparam, " (", xunit,") and ", yparam,  " (", yunit,") @ Visits"))
-)
-
-# setup the x-axis label.  Combine the biomarker and the units (if available)
-xaxisLabel <- ifelse(is.null(unit), paste(xparam, xaxis_var, "Values"), 
-                     ifelse(plot_data[[unit]] == "", paste(xparam, xaxis_var, "Values"), 
-                            paste0(xparam," (", xunit, ") ", xaxis_var, " Values"))
-)
-
-# setup the y-axis label.  Combine the biomarker and the units (if available)
-yaxisLabel <- ifelse(is.null(unit), paste(yparam, yaxis_var, "Values"), 
-                     ifelse(plot_data[[unit]] == "", paste(yparam, yaxis_var, "Values"), 
-                            paste0(yparam," (", yunit,") ", yaxis_var, " Values"))
-)
+# param_lookup <- unique(plot_data[c("PARAMCD", "PARAM")])
+# unit_lookup <- unique(plot_data[c("PARAMCD", "AVALU")])
+# lookups <- inner_join(param_lookup, unit_lookup, by=c("PARAMCD"))
+# 
+# xparam_meta <- lookups %>% 
+#   filter(PARAMCD == xaxis_param)
+# xparam <- xparam_meta$PARAM
+# xunit <- xparam_meta$AVALU
+# 
+# yparam_meta <- lookups %>% 
+#   filter(PARAMCD == yaxis_param)
+# yparam <- yparam_meta$PARAM
+# yunit <- yparam_meta$AVALU
+# 
+# # setup the ggtitle label.  Combine the biomarker and the units (if available)
+# ggtitleLabel <- ifelse(is.null(unit), paste(xparam, "and", yparam, "@ Visits"), 
+#                        ifelse(plot_data[[unit]] == "", paste(xparam, "and", yparam, "@ Visits"), 
+#                               paste0(xparam, " (", xunit,") and ", yparam,  " (", yunit,") @ Visits"))
+# )
+# 
+# # setup the x-axis label.  Combine the biomarker and the units (if available)
+# xaxisLabel <- ifelse(is.null(unit), paste(xparam, xaxis_var, "Values"), 
+#                      ifelse(plot_data[[unit]] == "", paste(xparam, xaxis_var, "Values"), 
+#                             paste0(xparam," (", xunit, ") ", xaxis_var, " Values"))
+# )
+# 
+# # setup the y-axis label.  Combine the biomarker and the units (if available)
+# yaxisLabel <- ifelse(is.null(unit), paste(yparam, yaxis_var, "Values"), 
+#                      ifelse(plot_data[[unit]] == "", paste(yparam, yaxis_var, "Values"), 
+#                             paste0(yparam," (", yunit,") ", yaxis_var, " Values"))
+# )
 
 # remove attributes does not work
 # plot_data_no_attribs <- plot_data %>% 
 #   mutate_all(~`attributes<-`(., NULL))
 
-# given the 2 param and 2 analysis vars we need to transform the data
-plot_data_t1 <<- plot_data %>% gather(ANLVARS, ANLVALS, xaxis_var, yaxis_var, LOQFL) %>% 
-  mutate(ANL.PARAM = ifelse(ANLVARS == "LOQFL", paste0(ANLVARS, "_", PARAMCD), paste0(ANLVARS, ".", PARAMCD))) %>%
-  select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
-  spread(ANL.PARAM, ANLVALS)
-
-# assign the values of the analysis variable in the transformed data to shorter variable names to use in code below
-xvar <- paste0(xaxis_var, ".", xaxis_param)
-yvar <- paste0(yaxis_var, ".", yaxis_param)
-xloqfl <- paste0("LOQFL_", xaxis_param)
-yloqfl <- paste0("LOQFL_", yaxis_param)
-
-# the transformed analysis value variables are character and need to be converetd to numeric for ggplot
-# remove records where either of the analysis variables are NA since they will not appear on the plot and 
-# will ensure that LOQFL = NA level is removed
-plot_data_t2 <<- plot_data_t1 %>%
-  subset(!is.na(.[[xvar]]) & !is.na(.[[yvar]])) %>% 
-  mutate_at(vars(contains(".")), as.numeric) %>% 
-  mutate(LOQFL_COMB = ifelse(.[[xloqfl]] == "Y" | .[[yloqfl]] == "Y", "Y", "N"))
+# # given the 2 param and 2 analysis vars we need to transform the data
+# plot_data_t1 <- plot_data %>% gather(ANLVARS, ANLVALS, xaxis_var, yaxis_var, LOQFL) %>% 
+#   mutate(ANL.PARAM = ifelse(ANLVARS == "LOQFL", paste0(ANLVARS, "_", PARAMCD), paste0(ANLVARS, ".", PARAMCD))) %>%
+#   select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
+#   spread(ANL.PARAM, ANLVALS)
+# 
+# # assign the values of the analysis variable in the transformed data to shorter variable names to use in code below
+# xvar <- paste0(xaxis_var, ".", xaxis_param)
+# yvar <- paste0(yaxis_var, ".", yaxis_param)
+# xloqfl <- paste0("LOQFL_", xaxis_param)
+# yloqfl <- paste0("LOQFL_", yaxis_param)
+# 
+# # the transformed analysis value variables are character and need to be converetd to numeric for ggplot
+# # remove records where either of the analysis variables are NA since they will not appear on the plot and 
+# # will ensure that LOQFL = NA level is removed
+# plot_data_t2 <- plot_data_t1 %>%
+#   subset(!is.na(.[[xvar]]) & !is.na(.[[yvar]])) %>% 
+#   mutate_at(vars(contains(".")), as.numeric) %>% 
+#   mutate(LOQFL_COMB = ifelse(.[[xloqfl]] == "Y" | .[[yloqfl]] == "Y", "Y", "N"))
 
   # create plot foundation
-  plot1 <- ggplot2::ggplot(data = plot_data_t2,
+  plot1 <- ggplot2::ggplot(data = plot_data,
                    aes_string(x = xvar,
                               y = yvar,
                               color = trt_group)) +
@@ -178,10 +189,10 @@ plot_data_t2 <<- plot_data_t1 %>%
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
     facet_wrap(as.formula(paste0('~', visit)), ncol = facet_ncol) +
     theme_bw() +
-    ggtitle(ggtitleLabel) +
+    ggtitle(title_text) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
-    xlab(xaxisLabel) +
-    ylab(yaxisLabel)
+    xlab(xaxis_lab) +
+    ylab(yaxis_lab)
     
     
 # add grid faceting to foundation 
@@ -203,7 +214,7 @@ plot_data_t2 <<- plot_data_t1 %>%
         return(as.numeric(c(NA, NA, NA)))
       }
       
-      sub_data <- subset(plot_data_t2, !is.na(eval(parse(text = yvar))) &
+      sub_data <- subset(plot_data, !is.na(eval(parse(text = yvar))) &
                            !is.na(eval(parse(text = xvar)))) %>%
         group_by_(.dots = c(trt_group, visit)) %>%
         mutate(intercept =  slope(eval(parse(text = yvar)),
@@ -236,12 +247,12 @@ plot_data_t2 <<- plot_data_t1 %>%
                        labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
       }
  
-  # Add abline
-    if (yaxis_var %in% c('AVAL', 'AVALL2', 'BASE2', 'BASE2L2', 'BASE', 'BASEL2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
-    
-    if (yaxis_var %in% c('CHG2', 'CHG')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)}
-    
-    if (yaxis_var %in% c('PCHG2', 'PCHG')) {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
+  # # Add abline
+  #   if (yaxis_var %in% c('AVAL', 'AVALL2', 'BASE2', 'BASE2L2', 'BASE', 'BASEL2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
+  #   
+  #   if (yaxis_var %in% c('CHG2', 'CHG')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)}
+  #   
+  #   if (yaxis_var %in% c('PCHG2', 'PCHG')) {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
     
   # Format font size
   if (!is.null(font_size)){
@@ -271,7 +282,7 @@ plot_data_t2 <<- plot_data_t1 %>%
   # Format dot size
   if (!is.null(dot_size)){
     plot1 <- plot1 +
-      geom_point(aes_string(shape = "LOQFL_COMB"))
+      geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
       #geom_point(aes_string(shape = sprintf("LOQFL_%s == 'Y' | LOQFL_%s == 'Y'", xaxis_param, yaxis_param)), size = dot_size, na.rm = TRUE)
   }
   
