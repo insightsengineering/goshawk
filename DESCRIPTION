@@ -4,8 +4,8 @@ Title: I2ON biomarker plot and summary table functions
 Version: 0.1.0
 Authors@R: c(
   person("Nick", "Paszty", email = "nick.paszty@gene.com", role = c("aut", "cre")),
-  person("Jeffrey", "Tomlinson", email = "tomlinson.jeffrey@roche.com", role = c("aut")),
   person("Wenyi", "Liu", email = "liu.wenyi@roche.com", role = c("aut")),
+  person("Jeffrey", "Tomlinson", email = "tomlinson.jeffrey@roche.com", role = c("aut")),
   person("Bali", "Toth", email = "toth.balazs@gene.com", role = c("aut"))
   )
 Description: Functions that plot and summarize biomarkers of interest. Visualizations
