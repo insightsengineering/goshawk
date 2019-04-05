@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -76,7 +76,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.roche.com/Rpackages/goshawk">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -103,8 +108,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-modules" class="hasAnchor"><a href="#section-modules" class="anchor"></a>Modules</h2>
+          <p class="section-desc"><p>These functions produce longitudinal visualizations and an accompanying descriptive summary table.</p></p>
         </th>
       </tr>
       <tr>
@@ -112,8 +117,13 @@
         <td>
           <p><code><a href="g_boxplot.html">g_boxplot()</a></code> </p>
         </td>
-        <td><p>Function to generate a boxplot
-Output rendered by teal.goshawk module <code>g_boxplot</code> returns boxplot visualization</p></td>
+        <td><p>Function to create a boxplot.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="g_correlationplot.html">g_correlationplot()</a></code> </p>
+        </td>
+        <td><p>Function to create a correlation plot.</p></td>
       </tr><tr>
         
         <td>
@@ -125,7 +135,7 @@ Output rendered by teal.goshawk module <code>g_boxplot</code> returns boxplot vi
         <td>
           <p><code><a href="g_lineplot.html">g_lineplot()</a></code> </p>
         </td>
-        <td><p>Line plot of summary statistics over time</p></td>
+        <td><p>Function to create line plot of summary statistics over time.</p></td>
       </tr><tr>
         
         <td>
@@ -137,13 +147,13 @@ Output rendered by teal.goshawk module <code>g_boxplot</code> returns boxplot vi
         <td>
           <p><code><a href="g_spaghettiplot.html">g_spaghettiplot()</a></code> </p>
         </td>
-        <td><p>Spaghetti plot</p></td>
+        <td><p>Function to create a spaghetti plot.</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="t_summarytable.html">t_summarytable()</a></code> </p>
         </td>
-        <td><p>Function to create a table of descriptive summary statistics to accompany plots</p></td>
+        <td><p>Function to create a table of descriptive summary statistics to accompany plots.</p></td>
       </tr>
     </tbody>
     </table>
@@ -152,7 +162,7 @@ Output rendered by teal.goshawk module <code>g_boxplot</code> returns boxplot vi
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-modules">Modules</a></li>
     </ul>
   </div>
 </div>
