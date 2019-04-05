@@ -43,9 +43,36 @@
 #'
 #'\dontrun{
 #' # Example using ADaM structure analysis dataset.
-#' # ALB refers to biomarker data stored in expected laboratory structure.
 #' 
-#' param <- c('ADIGG') # FOR TESTING: woud come from teal.goshawk.tm_g_scatterplot.R
+#' # original ARM value = dose value
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+#' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
+#' # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
+#' shape_manual <-  c("N"  = 1, "Y"  = 2, "NA" = 0)
+#' 
+#' library(dplyr)
+#' library(ggplot2)
+#' library(random.cdisc.data)
+#' library(stringr)
+#' 
+#' ASL <- radsl(N = 20, seed = 1)
+#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+#' ALB <- ALB %>% 
+#' mutate(AVISITCD = case_when(
+#' AVISIT == "SCREENING" ~ "SCR",
+#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
+#' stop=str_locate(AVISIT, "DAY")-1))),
+#' TRUE ~ as.character(NA))) %>%
+#' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
+#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) %>%
+#' # use ARMCD values to order treatment in visualization legend
+#' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+#' ifelse(grepl("B", ARMCD), 2,
+#' ifelse(grepl("A", ARMCD), 3, NA)))) %>%
+#' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
+#' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
+#'
+#' param <- c('CRP')
 #' 
 #' plot1 <- g_scatterplot(label = 'Scatter Plot',
 #'            data = ALB,
@@ -102,34 +129,34 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           font_size = 12,
                           dot_size = NULL,
                           reg_text_size = 3){
-
-# create scatter plot over time pairwise per treatment arm 
-plot_data <- data %>%
-  filter(eval(parse(text = param_var)) == param)
-
-# Setup the ggtitle label.  Combine the biomarker and the units (if available)
-ggtitleLabel <- ifelse(is.null(unit), paste0(plot_data$PARAM, "@ Visits"), 
-                       ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, "@ Visits"), 
-                              paste0(plot_data$PARAM," (", plot_data[[unit]],") @ Visits"))
-)
-
-# Setup the x-axis label.  Combine the biomarker and the units (if available)
-xaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, xaxis_var, "Values"), 
-                     ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, xaxis_var, "Values"), 
-                            paste0(plot_data$PARAM," (", plot_data[[unit]],") ", xaxis_var, " Values"))
-)
-
-# Setup the y-axis label.  Combine the biomarker and the units (if available)
-yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"), 
-                     ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, yaxis_var, "Values"), 
-                            paste0(plot_data$PARAM," (", plot_data[[unit]],") ", yaxis_var, " Values"))
-)
-
-# create plot foundation
+  
+  # create scatter plot over time pairwise per treatment arm 
+  plot_data <- data %>%
+    filter(eval(parse(text = param_var)) == param)
+  
+  # Setup the ggtitle label.  Combine the biomarker and the units (if available)
+  ggtitleLabel <- ifelse(is.null(unit), paste0(plot_data$PARAM, "@ Visits"), 
+                         ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, "@ Visits"), 
+                                paste0(plot_data$PARAM," (", plot_data[[unit]],") @ Visits"))
+  )
+  
+  # Setup the x-axis label.  Combine the biomarker and the units (if available)
+  xaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, xaxis_var, "Values"), 
+                       ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, xaxis_var, "Values"), 
+                              paste0(plot_data$PARAM," (", plot_data[[unit]],") ", xaxis_var, " Values"))
+  )
+  
+  # Setup the y-axis label.  Combine the biomarker and the units (if available)
+  yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"), 
+                       ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, yaxis_var, "Values"), 
+                              paste0(plot_data$PARAM," (", plot_data[[unit]],") ", yaxis_var, " Values"))
+  )
+  
+  # create plot foundation
   plot1 <- ggplot2::ggplot(data = plot_data,
-                   aes_string(x = xaxis_var,
-                              y = yaxis_var,
-                              color = trt_group)) +
+                           aes_string(x = xaxis_var,
+                                      y = yaxis_var,
+                                      color = trt_group)) +
     geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
     facet_wrap(as.formula(paste0('~', visit)), ncol = facet_ncol) +
@@ -138,67 +165,67 @@ yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(xaxisLabel) +
     ylab(yaxisLabel)
-    
-    
-# add grid faceting to foundation 
-    if (facet){
-      plot1 <- plot1 +
-        facet_grid(as.formula(paste0(facet_var ,' ~ ', visit)))
+  
+  
+  # add grid faceting to foundation 
+  if (facet){
+    plot1 <- plot1 +
+      facet_grid(as.formula(paste0(facet_var ,' ~ ', visit)))
+  }
+  
+  # add regression line
+  if (reg_line){
+    slope <- function(x, y) {
+      ratio <- sd(x)/sd(y)
+      if (!is.na(ratio) & ratio > 0){
+        reg <- mcr:::mc.deming(y, x, ratio)
+        # return the evaluation of the ratio condition as third value in numeric vector for conttroling downstream processing
+        return(c(round(reg$b0,2), round(reg$b1,2), !is.na(ratio) & ratio > 0))
+      }
+      # if ratio condition is not met then assign NA to returned vector so that NULL condition does not throw error below
+      return(as.numeric(c(NA, NA, NA)))
     }
-
-# add regression line
-    if (reg_line){
-      slope <- function(x, y) {
-        ratio <- sd(x)/sd(y)
-        if (!is.na(ratio) & ratio > 0){
-          reg <- mcr:::mc.deming(y, x, ratio)
-          # return the evaluation of the ratio condition as third value in numeric vector for conttroling downstream processing
-          return(c(round(reg$b0,2), round(reg$b1,2), !is.na(ratio) & ratio > 0))
-        }
-        # if ratio condition is not met then assign NA to returned vector so that NULL condition does not throw error below
-        return(as.numeric(c(NA, NA, NA)))
-      }
-      
-      sub_data <- subset(plot_data, !is.na(eval(parse(text = yaxis_var))) &
-                           !is.na(eval(parse(text = xaxis_var)))) %>%
-        group_by_(.dots = c(trt_group, visit)) %>%
-        mutate(intercept =  slope(eval(parse(text = yaxis_var)),
-                                  eval(parse(text = xaxis_var)))[1]) %>%
-        mutate(slope = slope(eval(parse(text = yaxis_var)),
-                             eval(parse(text = xaxis_var)))[2]) %>%
-        mutate(corr = ifelse(((slope(eval(parse(text = yaxis_var)),
-                                          eval(parse(text = xaxis_var))))[3]), 
-                             cor(eval(parse(text = yaxis_var)),
-                                 eval(parse(text = xaxis_var)),
-                                 method = "spearman",
-                                 use = 'complete.obs'),
-                             NA))
-        
-        plot1 <- plot1 +
-        geom_abline(data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by to create annotations
-                    aes_string(intercept = 'intercept',
-                               slope = 'slope',
-                               color = trt_group)) +
-        geom_text(data = filter(sub_data, row_number() == 1), 
-                  aes( x = -Inf,
-                       y = Inf,
-                       hjust = 0,
-                       vjust = 1,
-                       label = ifelse(!is.na(intercept) & !is.na(slope) & !is.na(corr),
-                       sprintf("y=%.2f+%.2fX\ncor=%.2f", intercept, slope, corr),
-                       paste0("Insufficient Data For Regression")),
-                       color = eval(parse(text = trt_group))),
-                       size = reg_text_size) +
-                       labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
-      }
- 
+    
+    sub_data <- subset(plot_data, !is.na(eval(parse(text = yaxis_var))) &
+                         !is.na(eval(parse(text = xaxis_var)))) %>%
+      group_by_(.dots = c(trt_group, visit)) %>%
+      mutate(intercept =  slope(eval(parse(text = yaxis_var)),
+                                eval(parse(text = xaxis_var)))[1]) %>%
+      mutate(slope = slope(eval(parse(text = yaxis_var)),
+                           eval(parse(text = xaxis_var)))[2]) %>%
+      mutate(corr = ifelse(((slope(eval(parse(text = yaxis_var)),
+                                   eval(parse(text = xaxis_var))))[3]), 
+                           cor(eval(parse(text = yaxis_var)),
+                               eval(parse(text = xaxis_var)),
+                               method = "spearman",
+                               use = 'complete.obs'),
+                           NA))
+    
+    plot1 <- plot1 +
+      geom_abline(data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by to create annotations
+                  aes_string(intercept = 'intercept',
+                             slope = 'slope',
+                             color = trt_group)) +
+      geom_text(data = filter(sub_data, row_number() == 1), 
+                aes( x = -Inf,
+                     y = Inf,
+                     hjust = 0,
+                     vjust = 1,
+                     label = ifelse(!is.na(intercept) & !is.na(slope) & !is.na(corr),
+                                    sprintf("y=%.2f+%.2fX\ncor=%.2f", intercept, slope, corr),
+                                    paste0("Insufficient Data For Regression")),
+                     color = eval(parse(text = trt_group))),
+                size = reg_text_size) +
+      labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
+  }
+  
   # Add abline
-    if (yaxis_var %in% c('AVAL', 'AVALL2', 'BASE2', 'BASE2L2', 'BASE', 'BASEL2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
-    
-    if (yaxis_var %in% c('CHG2', 'CHG')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)}
-    
-    if (yaxis_var %in% c('PCHG2', 'PCHG')) {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
-    
+  if (yaxis_var %in% c('AVAL', 'AVALL2', 'BASE2', 'BASE2L2', 'BASE', 'BASEL2')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}
+  
+  if (yaxis_var %in% c('CHG2', 'CHG')) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)}
+  
+  if (yaxis_var %in% c('PCHG2', 'PCHG')) {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
+  
   # Format font size
   if (!is.null(font_size)){
     plot1 <- plot1 +
@@ -211,7 +238,7 @@ yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
             strip.text.x = element_text(size = font_size),
             strip.text.y = element_text(size = font_size))
   }
-
+  
   # Format treatment color
   if (!is.null(color_manual)){
     plot1 <- plot1 +

@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_spaghettiplot.R
 \name{g_spaghettiplot}
 \alias{g_spaghettiplot}
-\title{Spaghetti plot}
+\title{Function to create a spaghetti plot.}
 \usage{
 g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
   biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
@@ -62,6 +62,7 @@ This function is rendered by teal.goshawk module
 }
 \examples{
 
+\dontrun{
 # EXAMPLE:
 
 library(dplyr)
@@ -96,7 +97,9 @@ g_spaghettiplot(data = ANL,
                 rotate_xlab = FALSE,
                 group_stats = "median"
                 )
-                                 
+
+}
+
 }
 \author{
 Wenyi Liu (wenyi.liu@roche.com)

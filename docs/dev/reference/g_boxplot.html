@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function to generate a boxplot
-Output rendered by teal.goshawk module <code>g_boxplot</code> returns boxplot visualization — g_boxplot • goshawk</title>
+<title>Function to create a boxplot. — g_boxplot • goshawk</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -31,8 +30,7 @@ Output rendered by teal.goshawk module <code>g_boxplot</code> returns boxplot vi
 
 
 
-<meta property="og:title" content="Function to generate a boxplot
-Output rendered by teal.goshawk module <code>g_boxplot</code> returns boxplot visualization — g_boxplot" />
+<meta property="og:title" content="Function to create a boxplot. — g_boxplot" />
 
 <meta property="og:description" content="A box plot is a method for graphically depicting groups of numerical data
 through their quartiles. Box plots may also have lines extending vertically
@@ -109,8 +107,7 @@ midhinge, range, mid-range, and trimean." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function to generate a boxplot
-Output rendered by teal.goshawk module <code>g_boxplot</code> returns boxplot visualization</h1>
+    <h1>Function to create a boxplot.</h1>
     
     <div class="hidden name"><code>g_boxplot.Rd</code></div>
     </div>
@@ -235,8 +232,8 @@ required.</p></td>
     <pre class="examples"><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
-<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'>radsl</span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>ADLB</span> <span class='kw'>&lt;-</span> <span class='fu'>radlb</span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>ADLB</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radlb'>radlb</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='no'>ADLB</span> <span class='kw'>&lt;-</span> <span class='no'>ADLB</span> <span class='kw'>%&gt;%</span> <span class='fu'>subset</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"CRP"</span>)
 
 <span class='co'># Example 1.</span>

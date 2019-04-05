@@ -15,7 +15,7 @@ development:
 reference:
 
   - title: Modules
-    desc: These modules render the longitudinal visualizations and descriptive summary table
+    desc: These functions produce longitudinal visualizations and an accompanying descriptive summary table.
     contents:
       - g_boxplot
       - g_correlationplot

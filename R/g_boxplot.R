@@ -1,5 +1,4 @@
-#' Function to generate a boxplot
-#' Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualization
+#' Function to create a boxplot.
 #'
 #' A box plot is a method for graphically depicting groups of numerical data
 #' through their quartiles. Box plots may also have lines extending vertically
@@ -95,14 +94,14 @@ g_boxplot <- function(data,
                       font_size = NULL,
                       armlabel = NULL,
                       facet = NULL                      
-                      ) { 
+) { 
   
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
   yAxisLabel <- ifelse(is.null(unit), paste(data$PARAM, yaxis_var, "Values"), 
                        ifelse(unit == "", paste(data$PARAM, yaxis_var, "Values"), 
                               paste0(data$PARAM, " (", unit, ") ", yaxis_var, " Values"))
   )
-
+  
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
   ggtitleLabel <- ifelse(is.null(unit), paste(data$PARAM, "Distribution by Treatment @ Visits"), 
                          ifelse(unit == "", paste(data$PARAM, "Distribution by Treatment @ Visits"), 
@@ -138,10 +137,10 @@ g_boxplot <- function(data,
   
   # Add horizontal line
   if (is_finite(hline)) {
-      plot1 <- plot1 +
-        geom_hline(yintercept = hline, color="red", linetype="dashed", size=0.5)
+    plot1 <- plot1 +
+      geom_hline(yintercept = hline, color="red", linetype="dashed", size=0.5)
   }
-
+  
   plot1 <- plot1 +
     geom_jitter(data = data,
                 aes_string( x = xaxis_var,
@@ -155,7 +154,7 @@ g_boxplot <- function(data,
     theme_bw() +
     ggtitle(ggtitleLabel) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5))
-
+  
   # Colors supplied?  Use color_manual, otherwise default ggplot coloring.  
   if (!is.null(color_manual)) {
     cols <- color_manual
@@ -174,7 +173,7 @@ g_boxplot <- function(data,
   if (!is.null(ymin_scale) & !is.null(ymax_scale)) {
     plot1 <- plot1 + coord_cartesian(ylim = c(ymin_scale, ymax_scale)) 
   }
-
+  
   # Add facetting.
   if (!is.null(facet)){
     if (facet != "None" & facet %in% names(data)) {

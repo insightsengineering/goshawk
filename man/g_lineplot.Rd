@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_lineplot.R
 \name{g_lineplot}
 \alias{g_lineplot}
-\title{Line plot of summary statistics over time}
+\title{Function to create line plot of summary statistics over time.}
 \usage{
 g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
   biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
@@ -56,7 +56,7 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 \code{ggplot} object
 }
 \description{
-This function is rendered by teal.goshawk module
+Function to create line plot of summary statistics over time.
 }
 \details{
 Currently, the output plot can display mean and median of input value. For mean, the error bar denotes
@@ -64,6 +64,7 @@ Currently, the output plot can display mean and median of input value. For mean,
 }
 \examples{
 
+\dontrun{
 # EXAMPLE:
 
 library(dplyr)
@@ -100,6 +101,9 @@ g_lineplot(label = 'Line Plot',
            median = FALSE,
            hline = NULL,
            rotate_xlab = FALSE)
+           
+}
+
 }
 \author{
 Balazs Toth (toth.balazs@gene.com)

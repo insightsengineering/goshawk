@@ -1,7 +1,5 @@
-#' Line plot of summary statistics over time
+#' Function to create line plot of summary statistics over time.
 #' 
-#' This function is rendered by teal.goshawk module
-#'
 #' @param label text string to be displayed as plot label.
 #' @param data data frame with variables to be summarized and generate statistics which will display in the plot.
 #' @param biomarker_var name of variable containing biomarker names.
@@ -43,6 +41,7 @@
 #'
 #' @examples
 #' 
+#'\dontrun{
 #' # EXAMPLE:
 #' 
 #' library(dplyr)
@@ -79,6 +78,9 @@
 #'            median = FALSE,
 #'            hline = NULL,
 #'            rotate_xlab = FALSE)
+#'            
+#'}
+#'
 
 g_lineplot <- function(label = 'Line Plot',
                        data,

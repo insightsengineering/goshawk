@@ -1,9 +1,9 @@
 # goshawk
 
-Teal.goshawk function package
+Longitudinal biomarker visualizations functions. These can be used stand alone or with the teal.goshawk package.
 
 
-# Install Development Version
+# Install Instructions
 
 ```r
 devtools::install_github(
@@ -11,12 +11,4 @@ devtools::install_github(
   host = "https://github.roche.com/api/v3",
   upgrade_dependencies = FALSE
 )
-```
-
-# Development
-
-To build the documentation website use:
-
-```r
-pkgdown::build_site()
 ```

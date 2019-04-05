@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_summarytable.R
 \name{t_summarytable}
 \alias{t_summarytable}
-\title{Function to create a table of descriptive summary statistics to accompany plots}
+\title{Function to create a table of descriptive summary statistics to accompany plots.}
 \usage{
 t_summarytable(data, trt_group, param_var, param, xaxis_var,
   visit_var = "AVISITCD", loq_flag_var = "LOQFL", ...)

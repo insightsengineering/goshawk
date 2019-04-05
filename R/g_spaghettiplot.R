@@ -1,4 +1,4 @@
-#' Spaghetti plot
+#' Function to create a spaghetti plot.
 #' 
 #' This function is rendered by teal.goshawk module
 #'
@@ -33,7 +33,8 @@
 #' @export
 #'
 #' @examples
-#' 
+#'
+#'\dontrun{
 #' # EXAMPLE:
 #'
 #' library(dplyr)
@@ -68,7 +69,9 @@
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median"
 #'                 )
-#'                                  
+#'
+#'}
+#'
 
 g_spaghettiplot <- function(data,
                             subj_id = 'USUBJID',
@@ -142,7 +145,7 @@ g_spaghettiplot <- function(data,
   if(!is.null(ylim)){
     plot <- plot + coord_cartesian(ylim = ylim)
   }
-
+  
   # add group statistics
   if (group_stats != "NONE"){
     if (group_stats == "MEAN"){
@@ -150,9 +153,9 @@ g_spaghettiplot <- function(data,
         stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1, linetype = "Group Mean"), color = "#ffbb52")+
         scale_linetype_manual(name = "", label = 'Group Mean', values = c(1))
     } else{
-        plot <- plot +
-          stat_summary(fun.y=median, geom="line", lwd=1, aes(group = 1, linetype = "Group Median"), color = "#ffbb52")+
-          scale_linetype_manual(name = "", label = 'Group Median', values = c(1))
+      plot <- plot +
+        stat_summary(fun.y=median, geom="line", lwd=1, aes(group = 1, linetype = "Group Median"), color = "#ffbb52")+
+        scale_linetype_manual(name = "", label = 'Group Median', values = c(1))
     }
   }
   

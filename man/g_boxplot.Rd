@@ -2,8 +2,7 @@
 % Please edit documentation in R/g_boxplot.R
 \name{g_boxplot}
 \alias{g_boxplot}
-\title{Function to generate a boxplot
-Output rendered by teal.goshawk module \code{g_boxplot} returns boxplot visualization}
+\title{Function to create a boxplot.}
 \usage{
 g_boxplot(data, biomarker, yaxis_var, trt_group, xaxis_var = NULL,
   loq_flag = "LOQFL", unit = NULL, color_manual = NULL,
