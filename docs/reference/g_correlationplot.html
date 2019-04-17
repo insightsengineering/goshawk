@@ -118,7 +118,7 @@ symbol attributed LOQ values.</p>
   <span class='kw'>title_text</span> <span class='kw'>=</span> <span class='no'>title_text</span>, <span class='kw'>xaxis_lab</span> <span class='kw'>=</span> <span class='no'>xaxis_lab</span>, <span class='kw'>yaxis_lab</span> <span class='kw'>=</span> <span class='no'>yaxis_lab</span>,
   <span class='kw'>color_manual</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape_manual</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet_ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>facet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>, <span class='kw'>reg_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>dot_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>vline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>dot_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>reg_text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -233,6 +233,10 @@ symbol attributed LOQ values.</p>
       <td><p>y-axis value to position a horizontal line.</p></td>
     </tr>
     <tr>
+      <th>vline</th>
+      <td><p>x-axis value to position a vertical line.</p></td>
+    </tr>
+    <tr>
       <th>rotate_xlab</th>
       <td><p>45 degree rotation of x-axis label values.</p></td>
     </tr>
@@ -270,6 +274,7 @@ symbol attributed LOQ values.</p>
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'>library</span>(<span class='no'>stringr</span>)
+<span class='fu'>library</span>(<span class='no'>tidyr</span>)
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>ALB</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radlb'>radlb</a></span>(<span class='no'>ASL</span>, <span class='kw'>visit_format</span> <span class='kw'>=</span> <span class='st'>"WEEK"</span>, <span class='kw'>n_assessments</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
@@ -289,10 +294,10 @@ symbol attributed LOQ values.</p>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ARM</span>) <span class='kw'>%&gt;%</span> <span class='fu'>reorder</span>(<span class='no'>TRTORD</span>))
 
 <span class='co'># given the 2 param and 2 analysis vars we need to transform the data</span>
-<span class='no'>plot_data_t1</span> <span class='kw'>&lt;-</span> <span class='no'>ALB</span> <span class='kw'>%&gt;%</span> <span class='fu'>gather</span>(<span class='no'>ANLVARS</span>, <span class='no'>ANLVALS</span>, <span class='no'>BASE2</span>, <span class='no'>BASE</span>, <span class='no'>AVAL</span>, <span class='no'>BASE</span>, <span class='no'>LOQFL</span>) <span class='kw'>%&gt;%</span>
+<span class='no'>plot_data_t1</span> <span class='kw'>&lt;-</span> <span class='no'>ALB</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span>(<span class='no'>ANLVARS</span>, <span class='no'>ANLVALS</span>, <span class='no'>BASE2</span>, <span class='no'>BASE</span>, <span class='no'>AVAL</span>, <span class='no'>BASE</span>, <span class='no'>LOQFL</span>) <span class='kw'>%&gt;%</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ANL.PARAM</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='no'>ANLVARS</span> <span class='kw'>==</span> <span class='st'>"LOQFL"</span>, <span class='fu'>paste0</span>(<span class='no'>ANLVARS</span>, <span class='st'>"_"</span>, <span class='no'>PARAMCD</span>), <span class='fu'>paste0</span>(<span class='no'>ANLVARS</span>, <span class='st'>"."</span>, <span class='no'>PARAMCD</span>))) <span class='kw'>%&gt;%</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>USUBJID</span>, <span class='no'>ARM</span>, <span class='no'>ARMCD</span>, <span class='no'>AVISITN</span>, <span class='no'>AVISITCD</span>, <span class='no'>ANL.PARAM</span>, <span class='no'>ANLVALS</span>) <span class='kw'>%&gt;%</span>
-<span class='fu'>spread</span>(<span class='no'>ANL.PARAM</span>, <span class='no'>ANLVALS</span>)
+<span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span>(<span class='no'>ANL.PARAM</span>, <span class='no'>ANLVALS</span>)
 <span class='co'># the transformed analysis value variables are character and need to be converted to numeric for ggplot</span>
 <span class='co'># remove records where either of the analysis variables are NA since they will not appear on the plot and</span>
 <span class='co'># will ensure that LOQFL = NA level is removed</span>
@@ -331,6 +336,7 @@ symbol attributed LOQ values.</p>
            <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>,
            <span class='kw'>reg_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>hline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+           <span class='kw'>vline</span> <span class='kw'>=</span> <span class='fl'>.5</span>,
            <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>14</span>,
            <span class='kw'>dot_size</span> <span class='kw'>=</span> <span class='fl'>2</span>,

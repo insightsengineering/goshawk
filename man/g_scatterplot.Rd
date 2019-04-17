@@ -10,7 +10,7 @@ g_scatterplot(label = "Scatter Plot", data, param_var = "PARAMCD",
   unit = "AVALU", xmin = NA, xmax = NA, ymin = NA, ymax = NA,
   color_manual = NULL, shape_manual = NULL, facet_ncol = 2,
   facet = FALSE, facet_var = "ARM", reg_line = FALSE, hline = NULL,
-  rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
+  vline = NULL, rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
   reg_text_size = 3)
 }
 \arguments{
@@ -55,6 +55,8 @@ g_scatterplot(label = "Scatter Plot", data, param_var = "PARAMCD",
 \item{reg_line}{include regression line and annotations for slope and coefficient in visualization. Use with facet = TRUE.}
 
 \item{hline}{y-axis value to position a horizontal line.}
+
+\item{vline}{x-axis value to position a vertical line.}
 
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
@@ -126,6 +128,7 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            facet_var = "ARM",
            reg_line = FALSE,
            hline = NULL,
+           vline = .5,
            rotate_xlab = FALSE,
            font_size = 14,
            dot_size = 2,

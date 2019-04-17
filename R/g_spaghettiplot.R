@@ -128,6 +128,20 @@ g_spaghettiplot <- function(data,
   gtitle <- paste0(biomarker1, unit1, value_var, ' Values by Treatment @ Visits')
   gylab <- paste0(biomarker1, ' ', value_var, ' Values')
   
+  # re-establish treatment variable label
+  if (trt_group == "ARM"){
+    attributes(for.plot$ARM)$label <- "Planned Arm"
+  } else {
+    attributes(for.plot$ACTARM)$label <- "Actual Arm"
+  }
+  
+  # Setup legend label
+  if(is.null(attr(for.plot[[trt_group]], "label"))){
+    trtLabel <- "Dose"
+  } else {
+    trtLabel <- attr(for.plot[[trt_group]], "label")
+  }
+  
   title <- list("AVAL" = "Analysis Value", "CHG" = "Change from Baseline")
   
   plot <- ggplot(data = for.plot, 
@@ -173,7 +187,7 @@ g_spaghettiplot <- function(data,
   # Add manual color
   if (!is.null(color_manual)){
     plot <- plot +
-      scale_color_manual(values = color_manual, name = 'Dose')
+      scale_color_manual(values = color_manual, name = trtLabel)
   }
   
   #Add horizontal line

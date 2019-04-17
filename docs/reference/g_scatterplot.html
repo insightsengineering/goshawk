@@ -114,7 +114,7 @@
   <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"AVALU"</span>, <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ymin</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ymax</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
   <span class='kw'>color_manual</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape_manual</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet_ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>facet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>, <span class='kw'>reg_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>dot_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>vline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>dot_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>reg_text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -205,6 +205,10 @@
       <td><p>y-axis value to position a horizontal line.</p></td>
     </tr>
     <tr>
+      <th>vline</th>
+      <td><p>x-axis value to position a vertical line.</p></td>
+    </tr>
+    <tr>
       <th>rotate_xlab</th>
       <td><p>45 degree rotation of x-axis label values.</p></td>
     </tr>
@@ -283,6 +287,7 @@
            <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>,
            <span class='kw'>reg_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>hline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+           <span class='kw'>vline</span> <span class='kw'>=</span> <span class='fl'>.5</span>,
            <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>14</span>,
            <span class='kw'>dot_size</span> <span class='kw'>=</span> <span class='fl'>2</span>,

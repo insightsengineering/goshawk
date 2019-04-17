@@ -113,6 +113,13 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
                               paste0(plot_data$PARAM," (", plot_data[[unit]],") ", xaxis_var, " Values"))
   )
   
+  # Setup legend label
+  if(is.null(attr(data[[trt_group]], "label"))){
+    trtLabel <- "Dose"
+  } else {
+    trtLabel <- attr(data[[trt_group]], "label")
+  }
+  
   plot1 <- ggplot(plot_data) +
     geom_density(aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
     geom_density(aes(x = eval(parse(text = xaxis_var)), linetype = 'Comb.'), color = '#ffbb52', size = line_size) + 
@@ -125,10 +132,10 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
     xlab(paste(xaxisLabel)) +
     ylab(paste("Density"))
   
-  # Format treatment color
+  # Format treatment color and label legend
   if (!is.null(color_manual)){
     plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = 'Dose')
+      scale_color_manual(values = color_manual, name = trtLabel)
   }
   
   # Add horizontal line

@@ -96,6 +96,13 @@ g_boxplot <- function(data,
                       facet = NULL                      
 ) { 
   
+  # re-establish treatment variable label
+  if (trt_group == "ARM"){
+    attributes(data$ARM)$label <- "Planned Arm"
+  } else {
+    attributes(data$ACTARM)$label <- "Actual Arm"
+  }
+  
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
   yAxisLabel <- ifelse(is.null(unit), paste(data$PARAM, yaxis_var, "Values"), 
                        ifelse(unit == "", paste(data$PARAM, yaxis_var, "Values"), 

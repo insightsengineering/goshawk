@@ -30,6 +30,7 @@
 #' @param facet_var variable to use for facetting beyond visit.
 #' @param reg_line include regression line and annotations for slope and coefficient. Use with facet = TRUE.
 #' @param hline y-axis value to position a horizontal line.
+#' @param vline x-axis value to position a vertical line.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param dot_size plot dot size.
@@ -61,6 +62,7 @@
 #' library(ggplot2)
 #' library(random.cdisc.data)
 #' library(stringr)
+#' library(tidyr)
 #' 
 #' ASL <- radsl(N = 20, seed = 1)
 #' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
@@ -122,6 +124,7 @@
 #'            facet_var = "ARM",
 #'            reg_line = FALSE,
 #'            hline = NULL,
+#'            vline = .5,
 #'            rotate_xlab = FALSE,
 #'            font_size = 14,
 #'            dot_size = 2,
@@ -158,6 +161,7 @@ g_correlationplot <- function(label = 'Correlation Plot',
                               facet_var = "ARM",
                               reg_line = FALSE,
                               hline = NULL,
+                              vline = NULL,
                               rotate_xlab = FALSE,
                               font_size = 12,
                               dot_size = NULL,
@@ -165,6 +169,13 @@ g_correlationplot <- function(label = 'Correlation Plot',
   
   # create correlation plot over time pairwise per treatment arm 
   plot_data <- data
+  
+  # Setup legend label
+  if(is.null(attr(data[[trt_group]], "label"))){
+    trtLabel <- "Dose"
+  } else {
+    trtLabel <- attr(data[[trt_group]], "label")
+  }
   
   # create plot foundation - titles and axes labels are defined in teal.goshawk.tm_g_correlationplot.R
   plot1 <- ggplot2::ggplot(data = plot_data,
@@ -249,7 +260,7 @@ g_correlationplot <- function(label = 'Correlation Plot',
   # Format treatment color
   if (!is.null(color_manual)){
     plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = 'Dose')
+      scale_color_manual(values = color_manual, name = trtLabel)
   }
   
   # Format LOQ flag symbol shape
@@ -276,6 +287,12 @@ g_correlationplot <- function(label = 'Correlation Plot',
       geom_hline(aes(yintercept = hline), color="red", linetype="dashed", size=0.5)
   }
   
+  # Add vertical line
+  if (!is.null(vline)){
+    plot1 <- plot1 +
+      geom_vline(aes(xintercept = vline), color="red", linetype="dashed", size=0.5)
+  }
+
   plot1
   
 }

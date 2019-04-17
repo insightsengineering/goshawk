@@ -12,7 +12,7 @@ g_correlationplot(label = "Correlation Plot", data, param_var = "PARAMCD",
   title_text = title_text, xaxis_lab = xaxis_lab, yaxis_lab = yaxis_lab,
   color_manual = NULL, shape_manual = NULL, facet_ncol = 2,
   facet = FALSE, facet_var = "ARM", reg_line = FALSE, hline = NULL,
-  rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
+  vline = NULL, rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
   reg_text_size = 3)
 }
 \arguments{
@@ -70,6 +70,8 @@ g_correlationplot(label = "Correlation Plot", data, param_var = "PARAMCD",
 
 \item{hline}{y-axis value to position a horizontal line.}
 
+\item{vline}{x-axis value to position a vertical line.}
+
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
 \item{font_size}{font size control for title, x-axis label, y-axis label and legend.}
@@ -100,6 +102,7 @@ library(dplyr)
 library(ggplot2)
 library(random.cdisc.data)
 library(stringr)
+library(tidyr)
 
 ASL <- radsl(N = 20, seed = 1)
 ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
@@ -161,6 +164,7 @@ plot1 <- g_correlationplot(label = 'Correlation Plot',
            facet_var = "ARM",
            reg_line = FALSE,
            hline = NULL,
+           vline = .5,
            rotate_xlab = FALSE,
            font_size = 14,
            dot_size = 2,

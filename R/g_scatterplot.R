@@ -23,6 +23,7 @@
 #' @param facet_var variable to use for facetting beyond visit.
 #' @param reg_line include regression line and annotations for slope and coefficient in visualization. Use with facet = TRUE.
 #' @param hline y-axis value to position a horizontal line.
+#' @param vline x-axis value to position a vertical line.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param dot_size plot dot size.
@@ -95,6 +96,7 @@
 #'            facet_var = "ARM",
 #'            reg_line = FALSE,
 #'            hline = NULL,
+#'            vline = .5,
 #'            rotate_xlab = FALSE,
 #'            font_size = 14,
 #'            dot_size = 2,
@@ -125,6 +127,7 @@ g_scatterplot <- function(label = 'Scatter Plot',
                           facet_var = "ARM",
                           reg_line = FALSE,
                           hline = NULL,
+                          vline = NULL,
                           rotate_xlab = FALSE,
                           font_size = 12,
                           dot_size = NULL,
@@ -151,6 +154,13 @@ g_scatterplot <- function(label = 'Scatter Plot',
                        ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, yaxis_var, "Values"), 
                               paste0(plot_data$PARAM," (", plot_data[[unit]],") ", yaxis_var, " Values"))
   )
+  
+  # Setup legend label
+  if(is.null(attr(data[[trt_group]], "label"))){
+    trtLabel <- "Dose"
+  } else {
+    trtLabel <- attr(data[[trt_group]], "label")
+  }
   
   # create plot foundation
   plot1 <- ggplot2::ggplot(data = plot_data,
@@ -242,7 +252,7 @@ g_scatterplot <- function(label = 'Scatter Plot',
   # Format treatment color
   if (!is.null(color_manual)){
     plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = 'Dose')
+      scale_color_manual(values = color_manual, name = trtLabel)
   }
   
   # Format LOQ flag symbol shape
@@ -269,6 +279,12 @@ g_scatterplot <- function(label = 'Scatter Plot',
       geom_hline(aes(yintercept = hline), color="red", linetype="dashed", size=0.5)
   }
   
-  plot1
+  # Add vertical line
+  if (!is.null(vline)){
+    plot1 <- plot1 +
+      geom_vline(aes(xintercept = vline), color="red", linetype="dashed", size=0.5)
+  }
+
+    plot1
   
 }

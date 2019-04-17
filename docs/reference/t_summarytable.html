@@ -159,13 +159,39 @@ n, meand, median, sd, min, max, <!-- %missing values, % LOQ values. --></p>
     <pre class="examples"><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># Example using ADaM structure analysis dataset.</span>
-<span class='co'># ALB refers to biomarker data stored in expected laboratory structure.</span>
 
-<span class='fu'>t_summarytable</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ALB</span>,
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+<span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
+<span class='fu'>library</span>(<span class='no'>stringr</span>)
+
+<span class='co'># original ARM value = dose value</span>
+<span class='no'>arm_mapping</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='st'>"A: Drug X"</span> <span class='kw'>=</span> <span class='st'>"150mg QD"</span>, <span class='st'>"B: Placebo"</span> <span class='kw'>=</span> <span class='st'>"Placebo"</span>, <span class='st'>"C: Combination"</span> <span class='kw'>=</span> <span class='st'>"Combination"</span>)
+
+<span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>ALB</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radlb'>radlb</a></span>(<span class='no'>ASL</span>, <span class='kw'>visit_format</span> <span class='kw'>=</span> <span class='st'>"WEEK"</span>, <span class='kw'>n_assessments</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>ALB</span> <span class='kw'>&lt;-</span> <span class='no'>ALB</span> <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>AVISITCD</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span>(
+<span class='no'>AVISIT</span> <span class='kw'>==</span> <span class='st'>"SCREENING"</span> ~ <span class='st'>"SCR"</span>,
+<span class='no'>AVISIT</span> <span class='kw'>==</span> <span class='st'>"BASELINE"</span> ~ <span class='st'>"BL"</span>, <span class='fu'>grepl</span>(<span class='st'>"WEEK"</span>, <span class='no'>AVISIT</span>) ~ <span class='fu'>paste</span>(<span class='st'>"W"</span>,<span class='fu'>trimws</span>(<span class='fu'>substr</span>(<span class='no'>AVISIT</span>, <span class='kw'>start</span><span class='kw'>=</span><span class='fl'>6</span>,
+<span class='kw'>stop</span><span class='kw'>=</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_locate.html'>str_locate</a></span>(<span class='no'>AVISIT</span>, <span class='st'>"DAY"</span>)-<span class='fl'>1</span>))),
+<span class='fl'>TRUE</span> ~ <span class='fu'>as.character</span>(<span class='fl'>NA</span>))) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>AVISITCDN</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span>(<span class='no'>AVISITCD</span> <span class='kw'>==</span> <span class='st'>"SCR"</span> ~ -<span class='fl'>2</span>,
+<span class='no'>AVISITCD</span> <span class='kw'>==</span> <span class='st'>"BL"</span> ~ <span class='fl'>0</span>, <span class='fu'>grepl</span>(<span class='st'>"W"</span>, <span class='no'>AVISITCD</span>) ~ <span class='fu'>as.numeric</span>(<span class='fu'>gsub</span>(<span class='st'>"\\D+"</span>, <span class='st'>""</span>, <span class='no'>AVISITCD</span>)), <span class='fl'>TRUE</span> ~ <span class='fu'>as.numeric</span>(<span class='fl'>NA</span>))) <span class='kw'>%&gt;%</span>
+<span class='co'># use ARMCD values to order treatment in visualization legend</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>TRTORD</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='fu'>grepl</span>(<span class='st'>"C"</span>, <span class='no'>ARMCD</span>), <span class='fl'>1</span>,
+<span class='fu'>ifelse</span>(<span class='fu'>grepl</span>(<span class='st'>"B"</span>, <span class='no'>ARMCD</span>), <span class='fl'>2</span>,
+<span class='fu'>ifelse</span>(<span class='fu'>grepl</span>(<span class='st'>"A"</span>, <span class='no'>ARMCD</span>), <span class='fl'>3</span>, <span class='fl'>NA</span>)))) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>as.character</span>(<span class='no'>arm_mapping</span>[<span class='fu'>match</span>(<span class='no'>ARM</span>, <span class='fu'>names</span>(<span class='no'>arm_mapping</span>))])) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ARM</span>) <span class='kw'>%&gt;%</span> <span class='fu'>reorder</span>(<span class='no'>TRTORD</span>))
+
+<span class='no'>param</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'CRP'</span>)
+
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_summarytable</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ALB</span>,
                <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>'ARM'</span>,
                <span class='kw'>param_var</span> <span class='kw'>=</span> <span class='st'>'PARAMCD'</span>,
                <span class='kw'>param</span> <span class='kw'>=</span> <span class='no'>param</span>,
-               <span class='kw'>xaxis_var</span> <span class='kw'>=</span> <span class='st'>'BASE'</span>,
+               <span class='kw'>xaxis_var</span> <span class='kw'>=</span> <span class='st'>'AVAL'</span>,
                <span class='kw'>visit_var</span> <span class='kw'>=</span> <span class='st'>'AVISITCD'</span>,
                <span class='kw'>loq_flag_var</span> <span class='kw'>=</span> <span class='st'>'LOQFL'</span>)
 

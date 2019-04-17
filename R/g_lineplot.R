@@ -160,6 +160,20 @@ g_lineplot <- function(label = 'Line Plot',
   gtitle <- paste0(biomarker1, unit1, str_to_title(line), ' by Treatment @ Visits')
   gylab <- paste0(biomarker1, ' ', str_to_title(line), ' of ', value_var, ' Values')
   
+  # re-establish treatment variable label
+  if (trt_group == "ARM"){
+    attributes(sum_data$ARM)$label <- "Planned Arm"
+  } else {
+    attributes(sum_data$ACTARM)$label <- "Actual Arm"
+  }
+  
+  # Setup legend label
+  if(is.null(attr(sum_data[[trt_group]], "label"))){
+    trtLabel <- "Dose"
+  } else {
+    trtLabel <- attr(sum_data[[trt_group]], "label")
+  }
+  
   plot1 <-  ggplot(data = sum_data,
                    aes_string(x = time,
                               y = line,
@@ -201,7 +215,7 @@ g_lineplot <- function(label = 'Line Plot',
   # Add manual color
   if (!is.null(color_manual)){
     plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = 'Dose')
+      scale_color_manual(values = color_manual, name = trtLabel)
   }
 
   #Add horizontal line
@@ -256,5 +270,3 @@ g_lineplot <- function(label = 'Line Plot',
                           list(heights=c(18,length(unique(sum_data[[trt_group]]))))))
  
 }
-
-

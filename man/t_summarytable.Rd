@@ -35,13 +35,39 @@ provide additional information as needed. link to specification file \url{http:/
 
 \dontrun{
 # Example using ADaM structure analysis dataset.
-# ALB refers to biomarker data stored in expected laboratory structure.
 
-t_summarytable(data = ALB,
+library(dplyr)
+library(ggplot2)
+library(random.cdisc.data)
+library(stringr)
+
+# original ARM value = dose value
+arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+
+ASL <- radsl(N = 20, seed = 1)
+ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+ALB <- ALB \%>\% 
+mutate(AVISITCD = case_when(
+AVISIT == "SCREENING" ~ "SCR",
+AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
+stop=str_locate(AVISIT, "DAY")-1))),
+TRUE ~ as.character(NA))) \%>\%
+mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
+AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) \%>\%
+# use ARMCD values to order treatment in visualization legend
+mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+ifelse(grepl("B", ARMCD), 2,
+ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
+mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
+mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
+
+param <- c('CRP')
+
+tbl <- t_summarytable(data = ALB,
                trt_group = 'ARM',
                param_var = 'PARAMCD',
                param = param,
-               xaxis_var = 'BASE',
+               xaxis_var = 'AVAL',
                visit_var = 'AVISITCD',
                loq_flag_var = 'LOQFL')
 
