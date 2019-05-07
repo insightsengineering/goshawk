@@ -73,7 +73,7 @@
 #' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
 #'
-#' param <- c('CRP')
+#' param <- c('ALT')
 #' 
 #' plot1 <- g_scatterplot(label = 'Scatter Plot',
 #'            data = ALB,
@@ -91,8 +91,8 @@
 #'            ymax = 200,
 #'            color_manual = color_manual,
 #'            shape_manual = shape_manual,
-#'            facet_ncol = 4,
-#'            facet = FALSE,
+#'            facet_ncol = 2,
+#'            facet = TRUE,
 #'            facet_var = "ARM",
 #'            reg_line = FALSE,
 #'            hline = NULL,
