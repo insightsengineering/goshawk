@@ -50,7 +50,7 @@ g_scatterplot(label = "Scatter Plot", data, param_var = "PARAMCD",
 
 \item{facet}{set layout to use treatment facetting.}
 
-\item{facet_var}{variable to use for facetting beyond visit.}
+\item{facet_var}{variable to use for treatment facetting.}
 
 \item{reg_line}{include regression line and annotations for slope and coefficient in visualization. Use with facet = TRUE.}
 

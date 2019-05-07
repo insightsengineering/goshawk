@@ -20,7 +20,7 @@
 #' @param shape_manual vector of symbols applied to LOQ values.
 #' @param facet_ncol number of facets per row.
 #' @param facet set layout to use treatment facetting.
-#' @param facet_var variable to use for facetting beyond visit.
+#' @param facet_var variable to use for treatment facetting.
 #' @param reg_line include regression line and annotations for slope and coefficient in visualization. Use with facet = TRUE.
 #' @param hline y-axis value to position a horizontal line.
 #' @param vline x-axis value to position a vertical line.
