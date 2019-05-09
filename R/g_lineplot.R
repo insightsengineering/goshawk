@@ -9,6 +9,7 @@
 #' @param unit_var name of variable containing biomarker result unit.
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
+#' @param lty Name of variable to determine line type of plot. 
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
 #' @param color_manual vector of colors.
@@ -54,6 +55,7 @@
 #'   USUBJID = paste0("p-",1:100),
 #'   VISITN = c(1, 4:10),
 #'   ARM = c("ARM A", "ARM B", "ARM C"),
+#'   SEX = c("M", "F"),
 #'   PARAMCD = c("CRP", "IGG", "IGM"),
 #'   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 #' )
@@ -73,6 +75,7 @@
 #'            biomarker = 'CRP',
 #'            value_var = 'AVAL',
 #'            trt_group = 'ARM',
+#'            lty = "SEX",
 #'            time = 'VISIT',
 #'            color_manual = NULL,
 #'            median = FALSE,
@@ -92,6 +95,7 @@ g_lineplot <- function(label = 'Line Plot',
                        ylim = NULL,
                        trt_group,
                        trt_group_level = NULL,
+                       lty = NULL,
                        time,
                        time_level = NULL,
                        color_manual = NULL,
@@ -126,11 +130,12 @@ g_lineplot <- function(label = 'Line Plot',
     }
   }
   
+  groupings <- c(time, trt_group, lty)
+  
   ## Summary statistics
   sum_data <- data %>%
     filter(eval(parse(text = biomarker_var)) == biomarker) %>%
-    group_by(eval(parse(text = time)),
-             eval(parse(text = trt_group))) %>%
+    group_by_at(groupings) %>%
     summarise(count = sum(!is.na(eval(parse(text = value_var)))),
               mean = mean(eval(parse(text = value_var)),na.rm = TRUE),
               CIup = mean(eval(parse(text = value_var)),na.rm = TRUE) + 1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE)/sqrt(n()),
@@ -138,7 +143,10 @@ g_lineplot <- function(label = 'Line Plot',
               median = median(eval(parse(text = value_var)),na.rm = TRUE),
               quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
               quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE))
-  colnames(sum_data)[1:2] <- c(time,trt_group)
+
+  
+  sum_data$int <- new_interaction(trt_group = sum_data[[trt_group]],
+                                  lty = sum_data[[lty]], sep = " ")
   
   ## Base plot
   pd <- position_dodge(dodge)
@@ -178,7 +186,8 @@ g_lineplot <- function(label = 'Line Plot',
                    aes_string(x = time,
                               y = line,
                               color = trt_group,
-                              group = trt_group)) +
+                              group  = "int",
+                              linetype = lty)) +
     geom_point(position = pd) +
     geom_line(position = pd) +
     geom_errorbar(aes_string(ymin = down_limit,
@@ -221,7 +230,7 @@ g_lineplot <- function(label = 'Line Plot',
   #Add horizontal line
   if (!is.null(hline)){
     plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color="red", linetype="dashed", size=0.5)
+      geom_hline(aes(yintercept = hline), color="red", size=0.5)
   }
   
   # Format font size
@@ -237,16 +246,17 @@ g_lineplot <- function(label = 'Line Plot',
 
   
   ## number of obs table
-  sum_data[[trt_group]] <- factor(sum_data[[trt_group]],
-                                  levels = rev(levels(sum_data[[trt_group]])))
-  arm <- as.vector(unique(sum_data[[trt_group]]))
-  x <- unique(sum_data[[time]])
+  sum_data[["int"]] <- factor(sum_data[["int"]],
+                                  levels = rev(levels(sum_data[["int"]])))
   
-  tbl <- ggplot(sum_data, aes_string(x = time, y = trt_group, label = 'count')) +
+  labels <- str_wrap(sum_data[["int"]], 12)
+  lines <- sum(str_count(unique(labels), "\n")) + length(unique(labels))
+  
+  tbl <- ggplot(sum_data, aes_string(x = time, y = "int", label = 'count')) +
     geom_text(size = 4.5) +
     ggtitle("Number of observations") + 
     theme_minimal() +
-    scale_y_discrete(labels = function(x = sum_data[[trt_group]]) str_wrap(x, width = 12)) + 
+    scale_y_discrete(labels = labels ) + 
     theme(panel.grid.major = element_blank(), legend.position = "none",
           panel.grid.minor = element_blank(),
           panel.border = element_blank(), axis.text.x =  element_blank(),
@@ -267,6 +277,21 @@ g_lineplot <- function(label = 'Line Plot',
   grid.newpage()
   do.call(grid.arrange, c(glist.aligned, 
                           list(ncol=1), 
-                          list(heights=c(18,length(unique(sum_data[[trt_group]]))))))
+                          list(heights=c(18,lines))))
  
+}
+
+
+new_interaction <- function(..., drop = FALSE, sep = ".", lex.order = FALSE){
+  args <- list(...)
+  for (i in 1:length(args)){
+    if (is.null(args[[i]])){
+      args[[i]] <- NULL
+    }
+  }
+  if (length(args) == 1){
+    return(paste0(names(args), ":", args[[1]]))
+  }
+  args <- mapply(function(n,val) paste0(n, ":", val), names(args), args, SIMPLIFY = FALSE)
+  interaction(args, drop = drop, sep = sep, lex.order = lex.order)
 }
