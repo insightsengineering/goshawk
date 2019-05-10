@@ -297,6 +297,12 @@ g_lineplot <- function(label = 'Line Plot',
           axis.text.y = element_text(size=font_size),
           plot.title = element_text(face = "bold", size=font_size))
   
+  if(!combined){
+    tbl <- tbl + scale_x_discrete(breaks = unique(sum_data[[time]]),
+                                  labels = str_wrap(unique(sum_data[[time]]), 12),
+                                  position = "top")+
+      theme(axis.text.x = element_text(size=font_size))
+  }
   glist <- lapply(list(plot=plot1, text=tbl), ggplotGrob)
   leftmar <- do.call(unit.pmax, lapply(glist, "[[", "widths"))
   glist.aligned <- lapply(glist, function(x) {
