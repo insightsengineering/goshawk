@@ -75,7 +75,7 @@
 #'            biomarker = 'CRP',
 #'            value_var = 'AVAL',
 #'            trt_group = 'ARM',
-#'           # lty = "SEX",
+#'            lty = "SEX",
 #'            time = 'VISIT',
 #'            color_manual = NULL,
 #'            median = FALSE,

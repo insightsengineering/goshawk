@@ -7,9 +7,9 @@
 g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
   biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
   unit_var = "AVALU", ylim = NULL, trt_group, trt_group_level = NULL,
-  time, time_level = NULL, color_manual = NULL, median = FALSE,
-  hline = NULL, xtick = waiver(), xlabel = xtick, rotate_xlab = FALSE,
-  font_size = 12, dodge = 0.4)
+  lty = NULL, time, time_level = NULL, color_manual = NULL,
+  median = FALSE, hline = NULL, xtick = waiver(), xlabel = xtick,
+  rotate_xlab = FALSE, font_size = 12, dodge = 0.4)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -31,6 +31,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 \item{trt_group}{name of variable representing treatment group.}
 
 \item{trt_group_level}{vector that can be used to define the factor level of trt_group.}
+
+\item{lty}{Name of variable to determine line type of plot.}
 
 \item{time}{name of vairable containing visit names.}
 
@@ -77,6 +79,7 @@ ANL <- expand.grid(
   USUBJID = paste0("p-",1:100),
   VISITN = c(1, 4:10),
   ARM = c("ARM A", "ARM B", "ARM C"),
+  SEX = c("M", "F"),
   PARAMCD = c("CRP", "IGG", "IGM"),
   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 )
@@ -96,6 +99,7 @@ g_lineplot(label = 'Line Plot',
            biomarker = 'CRP',
            value_var = 'AVAL',
            trt_group = 'ARM',
+           lty = "SEX",
            time = 'VISIT',
            color_manual = NULL,
            median = FALSE,
