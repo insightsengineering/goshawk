@@ -21,6 +21,7 @@
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge
+#' @param combined Combine the table and graph into one plot, or return as seperate plots?
 #' 
 #' @import ggplot2
 #' @import dplyr
@@ -105,7 +106,8 @@ g_lineplot <- function(label = 'Line Plot',
                        xlabel = xtick,
                        rotate_xlab = FALSE,
                        font_size = 12,
-                       dodge = 0.4) {
+                       dodge = 0.4,
+                       combined = TRUE) {
   
   ## Pre-process data
   if(!is.null(trt_group_level)){
@@ -303,10 +305,19 @@ g_lineplot <- function(label = 'Line Plot',
   })
   
   #Plot the two grobs using grid.arrange
-  grid.newpage()
-  do.call(grid.arrange, c(glist.aligned, 
-                          list(ncol=1), 
-                          list(heights=c(18,lines))))
+  if (combined){
+    grid.newpage()
+    do.call(grid.arrange, c(glist.aligned, 
+                            list(ncol=1), 
+                            list(heights=c(18,lines))))
+  }else{
+    return(list(
+      plot = plot1,
+      table = tbl
+    ))
+  }
+
+
  
 }
 

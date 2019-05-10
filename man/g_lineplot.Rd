@@ -9,7 +9,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
   unit_var = "AVALU", ylim = NULL, trt_group, trt_group_level = NULL,
   lty = NULL, time, time_level = NULL, color_manual = NULL,
   median = FALSE, hline = NULL, xtick = waiver(), xlabel = xtick,
-  rotate_xlab = FALSE, font_size = 12, dodge = 0.4)
+  rotate_xlab = FALSE, font_size = 12, dodge = 0.4,
+  combined = TRUE)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -53,6 +54,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 \item{font_size}{control font size for title, x-axis, y-axis and legend font.}
 
 \item{dodge}{control position dodge}
+
+\item{combined}{Combine the table and graph into one plot, or return as seperate plots?}
 }
 \value{
 \code{ggplot} object
