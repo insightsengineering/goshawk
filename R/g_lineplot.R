@@ -75,7 +75,7 @@
 #'            biomarker = 'CRP',
 #'            value_var = 'AVAL',
 #'            trt_group = 'ARM',
-#'            lty = "SEX",
+#'           # lty = "SEX",
 #'            time = 'VISIT',
 #'            color_manual = NULL,
 #'            median = FALSE,
@@ -145,8 +145,16 @@ g_lineplot <- function(label = 'Line Plot',
               quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE))
 
   
-  sum_data$int <- new_interaction(trt_group = sum_data[[trt_group]],
-                                  lty = sum_data[[lty]], sep = " ")
+  listin <- list()
+  listin[[trt_group]] <- sum_data[[trt_group]]
+  if(!is.null(lty)){
+    listin[[lty]] <- sum_data[[lty]]
+  }
+  
+  
+  int <- unique_name("int", names(sum_data))
+  
+  sum_data[[int]] <- new_interaction(listin, sep = " ")
   
   ## Base plot
   pd <- position_dodge(dodge)
@@ -160,11 +168,23 @@ g_lineplot <- function(label = 'Line Plot',
     up_limit <- 'CIup'
     down_limit <- 'CIdown'
   }
-
-  unit <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[unit_var]])
-  unit1 <- ifelse(is.na(unit) | unit == "", " ", paste0(' (', unit, ') '))
   
-  biomarker1 <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[biomarker_var_label]]) 
+  filtered_data <- data %>% 
+    filter_at(biomarker_var, any_vars(.==biomarker))
+  
+  unit <- filtered_data %>% 
+    pull(unit_var) %>% 
+    unique()
+  
+  unit1 <- ifelse(is.na(unit) | unit == "",
+                  " ",
+                  paste0(' (', unit, ') '))
+  
+  biomarker1 <- filtered_data %>% 
+    pull(biomarker_var_label) %>% 
+    unique() 
+    
+  
   gtitle <- paste0(biomarker1, unit1, str_to_title(line), ' by Treatment @ Visits')
   gylab <- paste0(biomarker1, ' ', str_to_title(line), ' of ', value_var, ' Values')
   
@@ -182,12 +202,22 @@ g_lineplot <- function(label = 'Line Plot',
     trtLabel <- attr(sum_data[[trt_group]], "label")
   }
   
-  plot1 <-  ggplot(data = sum_data,
-                   aes_string(x = time,
-                              y = line,
-                              color = trt_group,
-                              group  = "int",
-                              linetype = lty)) +
+  if (is.null(lty)){
+    plot1 <-  ggplot(data = sum_data,
+                     aes_string(x = time,
+                                y = line,
+                                color = trt_group,
+                                group  = int))
+  }else{
+    plot1 <-  ggplot(data = sum_data,
+                     aes_string(x = time,
+                                y = line,
+                                color = trt_group,
+                                group  = int,
+                                linetype = lty))
+  }
+  
+  plot1 <-  plot1 +
     geom_point(position = pd) +
     geom_line(position = pd) +
     geom_errorbar(aes_string(ymin = down_limit,
@@ -246,13 +276,12 @@ g_lineplot <- function(label = 'Line Plot',
 
   
   ## number of obs table
-  sum_data[["int"]] <- factor(sum_data[["int"]],
-                                  levels = rev(levels(sum_data[["int"]])))
+  sum_data[[int]] <- factor(sum_data[[int]])
   
-  labels <- str_wrap(sum_data[["int"]], 12)
+  labels <- str_wrap(sum_data[[int]], 12)
   lines <- sum(str_count(unique(labels), "\n")) + length(unique(labels))
   
-  tbl <- ggplot(sum_data, aes_string(x = time, y = "int", label = 'count')) +
+  tbl <- ggplot(sum_data, aes_string(x = time, y = int, label = 'count')) +
     geom_text(size = 4.5) +
     ggtitle("Number of observations") + 
     theme_minimal() +
@@ -282,8 +311,7 @@ g_lineplot <- function(label = 'Line Plot',
 }
 
 
-new_interaction <- function(..., drop = FALSE, sep = ".", lex.order = FALSE){
-  args <- list(...)
+new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE){
   for (i in 1:length(args)){
     if (is.null(args[[i]])){
       args[[i]] <- NULL
@@ -294,4 +322,11 @@ new_interaction <- function(..., drop = FALSE, sep = ".", lex.order = FALSE){
   }
   args <- mapply(function(n,val) paste0(n, ":", val), names(args), args, SIMPLIFY = FALSE)
   interaction(args, drop = drop, sep = sep, lex.order = lex.order)
+}
+
+unique_name <- function(newname, old_names){
+  if (newname %in% old_names){
+    unique_name(paste0(newname,"1"))
+  }
+  newname
 }
