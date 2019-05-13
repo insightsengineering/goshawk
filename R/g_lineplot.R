@@ -157,6 +157,7 @@ g_lineplot <- function(label = 'Line Plot',
   int <- unique_name("int", names(sum_data))
   
   sum_data[[int]] <- new_interaction(listin, sep = " ")
+  sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
   
   ## Base plot
   pd <- position_dodge(dodge)
@@ -209,14 +210,34 @@ g_lineplot <- function(label = 'Line Plot',
                      aes_string(x = time,
                                 y = line,
                                 color = trt_group,
-                                group  = int))
+                                group  = int)) + theme_bw() 
+    # Add manual color
+    if (!is.null(color_manual)){
+      plot1 <- plot1 +
+        scale_color_manual(values = color_manual, name = trtLabel)
+    }
+      
   }else{
     plot1 <-  ggplot(data = sum_data,
                      aes_string(x = time,
                                 y = line,
-                                color = trt_group,
+                                color = int,
                                 group  = int,
-                                linetype = lty))
+                                linetype = int)) + theme_bw() 
+    ncol <- nlevels(sum_data[[trt_group]])
+    nlty <- nlevels(sum_data[[lty]])
+    # Add manual color
+    if (!is.null(color_manual)){
+      plot1 <- plot1 +
+        scale_color_manual(" ",values = rep(color_manual, nlty))
+    }else{
+      colors <- gg_color_hue(ncol)
+      plot1 <- plot1 +
+        scale_color_manual(" ",values = rep(colors, nlty))
+    }
+    plot1 <- plot1 + scale_linetype_manual(" ",
+      values = rep(1:nlty, each = ncol) )+
+      theme(legend.key.size=unit(1, "cm"))
   }
   
   plot1 <-  plot1 +
@@ -226,16 +247,16 @@ g_lineplot <- function(label = 'Line Plot',
                              ymax = up_limit),
                   width=0.9,
                   position = pd) +
-    theme_bw() +
     ggtitle(gtitle) +
     labs(caption = paste("The output plot can display mean and median of input value.
                          For mean, the error bar denotes 95% confidence interval.
                          For median, the bar denotes the first to third quartile.")) +
     xlab(time) + 
     ylab(gylab)+
-    theme(legend.position = "bottom",
+    theme(legend.position = "bottom", legend.direction = "horizontal", 
           plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5),
-          axis.title.y = element_text(margin = margin(r = 20)))
+          axis.title.y = element_text(margin = margin(r = 20)))+
+    guides(color=guide_legend(byrow=TRUE))
  
   # Apply y-axis zoom range
   if(!is.null(ylim)){
@@ -253,11 +274,7 @@ g_lineplot <- function(label = 'Line Plot',
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
 
-  # Add manual color
-  if (!is.null(color_manual)){
-    plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = trtLabel)
-  }
+
 
   #Add horizontal line
   if (!is.null(hline)){
@@ -346,4 +363,10 @@ unique_name <- function(newname, old_names){
     unique_name(paste0(newname,"1"))
   }
   newname
+}
+
+
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
 }
