@@ -148,9 +148,6 @@ g_lineplot <- function(label = 'Line Plot',
   
   whichNOTnas <- complete.cases(sum_data)
   
-  sum_data <- sum_data[whichNOTnas,]
-
-  
   listin <- list()
   listin[[trt_group]] <- sum_data[[trt_group]]
   if(!is.null(lty)){
@@ -162,6 +159,14 @@ g_lineplot <- function(label = 'Line Plot',
   
   sum_data[[int]] <- new_interaction(listin, sep = " ")
   sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
+  
+  nas <- sum_data[!whichNOTnas,]
+  remove <- nas[[int]]
+  
+  whichNOTnas <- which(!sum_data[[int]] %in% remove)
+  
+  sum_data <- sum_data[whichNOTnas,]
+  
   
   ## Base plot
   pd <- position_dodge(dodge)
