@@ -145,7 +145,7 @@ g_lineplot <- function(label = 'Line Plot',
               median = median(eval(parse(text = value_var)),na.rm = TRUE),
               quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
               quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE)) %>% 
-    filter_all(any(is.na(.)))
+    filter_all(any_vars(is.na(.)))
 
   
   listin <- list()
