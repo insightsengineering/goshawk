@@ -160,10 +160,12 @@ g_lineplot <- function(label = 'Line Plot',
   sum_data[[int]] <- new_interaction(listin, sep = " ")
   sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
   
-  nas <- sum_data[!whichNOTnas,]
-  remove <- nas[[int]]
-  
-  whichNOTnas <- which(!sum_data[[int]] %in% remove)
+  if(nrow(sum_data)!=sum(whichNOTnas)){
+    nas <- sum_data[!whichNOTnas,]
+    remove <- nas[[int]]
+    whichNOTnas <- which(!sum_data[[int]] %in% remove)
+  }
+
   
   sum_data <- sum_data[whichNOTnas,]
   
