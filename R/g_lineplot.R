@@ -144,7 +144,8 @@ g_lineplot <- function(label = 'Line Plot',
               CIdown = mean(eval(parse(text = value_var)),na.rm = TRUE) - 1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE)/sqrt(n()),
               median = median(eval(parse(text = value_var)),na.rm = TRUE),
               quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
-              quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE))
+              quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE)) %>% 
+    filter_all(any(is.na(.)))
 
   
   listin <- list()
