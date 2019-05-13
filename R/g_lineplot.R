@@ -144,8 +144,11 @@ g_lineplot <- function(label = 'Line Plot',
               CIdown = mean(eval(parse(text = value_var)),na.rm = TRUE) - 1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE)/sqrt(n()),
               median = median(eval(parse(text = value_var)),na.rm = TRUE),
               quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
-              quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE)) %>% 
-    filter_all(all_vars(!is.na(.)))
+              quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE))
+  
+  whichNOTnas <- complete.cases(sum_data)
+  
+  sum_data <- sum_data[whichNOTnas,]
 
   
   listin <- list()
@@ -214,8 +217,9 @@ g_lineplot <- function(label = 'Line Plot',
                                 group  = int)) + theme_bw() 
     # Add manual color
     if (!is.null(color_manual)){
+      vals <- color_manual[whichNOTnas] 
       plot1 <- plot1 +
-        scale_color_manual(values = color_manual, name = trtLabel)
+        scale_color_manual(values = vals, name = trtLabel)
     }
       
   }else{
@@ -229,15 +233,20 @@ g_lineplot <- function(label = 'Line Plot',
     nlty <- nlevels(as.factor(sum_data[[lty]]))
     # Add manual color
     if (!is.null(color_manual)){
+      vals <- rep(color_manual, nlty)[whichNOTnas] 
+      
       plot1 <- plot1 +
-        scale_color_manual(" ",values = rep(color_manual, nlty))
+        scale_color_manual(" ",values = vals)
     }else{
       colors <- gg_color_hue(ncol)
+      vals <- rep(colors, nlty)[whichNOTnas] 
       plot1 <- plot1 +
-        scale_color_manual(" ",values = rep(colors, nlty))
+        scale_color_manual(" ",values = vals)
     }
+    vals <- rep(1:nlty, each = ncol)[whichNOTnas] 
+    
     plot1 <- plot1 + scale_linetype_manual(" ",
-      values = rep(1:nlty, each = ncol) )+
+      values = vals )+
       theme(legend.key.size=unit(1, "cm"))
   }
   
