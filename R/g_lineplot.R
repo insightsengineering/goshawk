@@ -224,8 +224,8 @@ g_lineplot <- function(label = 'Line Plot',
                                 color = int,
                                 group  = int,
                                 linetype = int)) + theme_bw() 
-    ncol <- nlevels(sum_data[[trt_group]])
-    nlty <- nlevels(sum_data[[lty]])
+    ncol <- nlevels(as.factor(sum_data[[trt_group]]))
+    nlty <- nlevels(as.factor(sum_data[[lty]]))
     # Add manual color
     if (!is.null(color_manual)){
       plot1 <- plot1 +
