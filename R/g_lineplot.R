@@ -160,9 +160,10 @@ g_lineplot <- function(label = 'Line Plot',
   sum_data[[int]] <- new_interaction(listin, sep = " ")
   sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
   
+  remove <- rep(F, length(unique(int)))
   if(nrow(sum_data)!=sum(whichNOTnas)){
     nas <- sum_data[!whichNOTnas,]
-    remove <- nas[[int]]
+    remove <- sort(unique(nas[[int]]))
     whichNOTnas <- which(!sum_data[[int]] %in% remove)
   }
 
@@ -224,7 +225,7 @@ g_lineplot <- function(label = 'Line Plot',
                                 group  = int)) + theme_bw() 
     # Add manual color
     if (!is.null(color_manual)){
-      vals <- color_manual[whichNOTnas] 
+      vals <- color_manual[!remove] 
       plot1 <- plot1 +
         scale_color_manual(values = vals, name = trtLabel)
     }
@@ -240,17 +241,17 @@ g_lineplot <- function(label = 'Line Plot',
     nlty <- nlevels(as.factor(sum_data[[lty]]))
     # Add manual color
     if (!is.null(color_manual)){
-      vals <- rep(color_manual, nlty)[whichNOTnas] 
+      vals <- rep(color_manual, nlty)[remove] 
       
       plot1 <- plot1 +
         scale_color_manual(" ",values = vals)
     }else{
       colors <- gg_color_hue(ncol)
-      vals <- rep(colors, nlty)[whichNOTnas] 
+      vals <- rep(colors, nlty)[!remove] 
       plot1 <- plot1 +
         scale_color_manual(" ",values = vals)
     }
-    vals <- rep(1:nlty, each = ncol)[whichNOTnas] 
+    vals <- rep(1:nlty, each = ncol)[!remove] 
     
     plot1 <- plot1 + scale_linetype_manual(" ",
       values = vals )+
