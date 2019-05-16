@@ -236,7 +236,7 @@ g_lineplot <- function(label = 'Line Plot',
       vals <- rep(color_manual, nlty)
       
       plot1 <- plot1 +
-        scale_color_manual(" ",values = vals)
+        scale_color_manual(" ",values = as.character(vals))
     }else{
       colors <- gg_color_hue(ncol)
       vals <- rep(colors, nlty)
