@@ -146,7 +146,6 @@ g_lineplot <- function(label = 'Line Plot',
               quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
               quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE))
   
-  whichNOTnas <- complete.cases(sum_data)
   
   listin <- list()
   listin[[trt_group]] <- sum_data[[trt_group]]
@@ -159,16 +158,9 @@ g_lineplot <- function(label = 'Line Plot',
   
   sum_data[[int]] <- new_interaction(listin, sep = " ")
   sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
-  
-  remove <- rep(F, length(unique(int)))
-  if(nrow(sum_data)!=sum(whichNOTnas)){
-    nas <- sum_data[!whichNOTnas,]
-    remove <- sort(unique(nas[[int]]))
-    whichNOTnas <- which(!sum_data[[int]] %in% remove)
-  }
 
-  
-  sum_data <- sum_data[whichNOTnas,]
+
+  unfiltered_data <- sum_data
   
   
   ## Base plot
@@ -225,7 +217,7 @@ g_lineplot <- function(label = 'Line Plot',
                                 group  = int)) + theme_bw() 
     # Add manual color
     if (!is.null(color_manual)){
-      vals <- color_manual[!remove] 
+      vals <- color_manual
       plot1 <- plot1 +
         scale_color_manual(values = vals, name = trtLabel)
     }
@@ -237,21 +229,21 @@ g_lineplot <- function(label = 'Line Plot',
                                 color = int,
                                 group  = int,
                                 linetype = int)) + theme_bw() 
-    ncol <- nlevels(as.factor(sum_data[[trt_group]]))
-    nlty <- nlevels(as.factor(sum_data[[lty]]))
+    ncol <- nlevels(as.factor(unfiltered_data[[trt_group]]))
+    nlty <- nlevels(as.factor(unfiltered_data[[lty]]))
     # Add manual color
     if (!is.null(color_manual)){
-      vals <- rep(color_manual, nlty)[remove] 
+      vals <- rep(color_manual, nlty)
       
       plot1 <- plot1 +
         scale_color_manual(" ",values = vals)
     }else{
       colors <- gg_color_hue(ncol)
-      vals <- rep(colors, nlty)[!remove] 
+      vals <- rep(colors, nlty)
       plot1 <- plot1 +
         scale_color_manual(" ",values = vals)
     }
-    vals <- rep(1:nlty, each = ncol)[!remove] 
+    vals <- rep(1:nlty, each = ncol)
     
     plot1 <- plot1 + scale_linetype_manual(" ",
       values = vals )+
