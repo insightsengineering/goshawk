@@ -157,6 +157,7 @@ g_lineplot <- function(label = 'Line Plot',
   int <- unique_name("int", names(sum_data))
   
   sum_data[[int]] <- new_interaction(listin, sep = " ")
+  sum_data[[int]] <- str_wrap(sum_data[[int]], 12)
   sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
 
 
