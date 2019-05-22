@@ -235,8 +235,9 @@ g_lineplot <- function(label = 'Line Plot',
     ncol <- nlevels(as.factor(unfiltered_data[[trt_group]]))
     nlty <- nlevels(as.factor(unfiltered_data[[lty]]))
     # Add manual color
+    
     if (!is.null(color_manual)){
-      vals <- rep(color_manual, nlty)
+      vals <- rep(color_manual, rep(nlty, ncol))
       
       plot1 <- plot1 +
         scale_color_manual(" ",values = as.character(vals))
