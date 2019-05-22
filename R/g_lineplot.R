@@ -55,7 +55,7 @@
 #' ANL <- expand.grid(
 #'   USUBJID = paste0("p-",1:100),
 #'   VISITN = c(1, 4:10),
-#'   ARM = c("ARM A", "ARM B", "ARM C"),
+#'   ARM = c("ARM A", "ARM B", "ARM C", "ARM D", "ARM E"),
 #'   SEX = c("M", "F"),
 #'   PARAMCD = c("CRP", "IGG", "IGM"),
 #'   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
@@ -144,7 +144,8 @@ g_lineplot <- function(label = 'Line Plot',
               CIdown = mean(eval(parse(text = value_var)),na.rm = TRUE) - 1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE)/sqrt(n()),
               median = median(eval(parse(text = value_var)),na.rm = TRUE),
               quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
-              quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE))
+              quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE)) %>% 
+    arrange_at(c(trt_group, lty))
   
   
   listin <- list()
@@ -218,6 +219,7 @@ g_lineplot <- function(label = 'Line Plot',
                                 group  = int)) + theme_bw() 
     # Add manual color
     if (!is.null(color_manual)){
+      
       vals <- color_manual
       plot1 <- plot1 +
         scale_color_manual(values = vals, name = trtLabel)
@@ -240,11 +242,11 @@ g_lineplot <- function(label = 'Line Plot',
         scale_color_manual(" ",values = as.character(vals))
     }else{
       colors <- gg_color_hue(ncol)
-      vals <- rep(colors, nlty)
+      vals <- rep(colors, rep(nlty, ncol))
       plot1 <- plot1 +
         scale_color_manual(" ",values = vals)
     }
-    vals <- rep(1:nlty, each = ncol)
+    vals <- rep(1:nlty, ncol)
     
     plot1 <- plot1 + scale_linetype_manual(" ",
       values = vals )+
