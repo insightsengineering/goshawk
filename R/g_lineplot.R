@@ -363,7 +363,7 @@ g_lineplot <- function(label = 'Line Plot',
     grid.newpage()
     do.call(grid.arrange, c(glist.aligned, 
                             list(ncol=1), 
-                            list(heights=c(lines*7,lines))))
+                            list(heights=c(lines*3,lines))))
   }else{
     return(list(
       plot = plot1,
