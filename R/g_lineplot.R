@@ -363,7 +363,7 @@ g_lineplot <- function(label = 'Line Plot',
     grid.newpage()
     do.call(grid.arrange, c(glist.aligned, 
                             list(ncol=1), 
-                            list(heights=c(18,lines))))
+                            list(heights=c(lines*3,lines))))
   }else{
     return(list(
       plot = plot1,
@@ -391,7 +391,7 @@ new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE){
 
 unique_name <- function(newname, old_names){
   if (newname %in% old_names){
-    unique_name(paste0(newname,"1"))
+    unique_name(paste0(newname,"1"), old_names)
   }
   newname
 }
