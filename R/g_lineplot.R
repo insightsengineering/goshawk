@@ -9,7 +9,7 @@
 #' @param unit_var name of variable containing biomarker result unit.
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
-#' @param lty Name of variable to determine line type of plot. 
+#' @param shape Name of variable to determine shape of points. Allows splitting by two levels 
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
 #' @param color_manual vector of colors.
@@ -55,7 +55,7 @@
 #' ANL <- expand.grid(
 #'   USUBJID = paste0("p-",1:100),
 #'   VISITN = c(1, 4:10),
-#'   ARM = c("ARM A", "ARM B", "ARM C", "ARM D", "ARM E"),
+#'   ARM = c("ARM A", "ARM B", "ARM C"),
 #'   SEX = c("M", "F"),
 #'   PARAMCD = c("CRP", "IGG", "IGM"),
 #'   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
@@ -76,7 +76,7 @@
 #'            biomarker = 'CRP',
 #'            value_var = 'AVAL',
 #'            trt_group = 'ARM',
-#'            lty = "SEX",
+#'            shape = "SEX",
 #'            time = 'VISIT',
 #'            color_manual = NULL,
 #'            median = FALSE,
@@ -96,7 +96,7 @@ g_lineplot <- function(label = 'Line Plot',
                        ylim = NULL,
                        trt_group,
                        trt_group_level = NULL,
-                       lty = NULL,
+                       shape = NULL,
                        time,
                        time_level = NULL,
                        color_manual = NULL,
@@ -132,7 +132,7 @@ g_lineplot <- function(label = 'Line Plot',
     }
   }
   
-  groupings <- c(time, trt_group, lty)
+  groupings <- c(time, trt_group, shape)
   
   ## Summary statistics
   sum_data <- data %>%
@@ -145,13 +145,13 @@ g_lineplot <- function(label = 'Line Plot',
               median = median(eval(parse(text = value_var)),na.rm = TRUE),
               quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
               quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE)) %>% 
-    arrange_at(c(trt_group, lty))
+    arrange_at(c(trt_group, shape))
   
   
   listin <- list()
   listin[[trt_group]] <- sum_data[[trt_group]]
-  if(!is.null(lty)){
-    listin[[lty]] <- sum_data[[lty]]
+  if(!is.null(shape)){
+    listin[[shape]] <- sum_data[[shape]]
   }
   
   
@@ -211,12 +211,13 @@ g_lineplot <- function(label = 'Line Plot',
     trtLabel <- attr(sum_data[[trt_group]], "label")
   }
   
-  if (is.null(lty)){
+  if (is.null(shape)){
     plot1 <-  ggplot(data = sum_data,
                      aes_string(x = time,
                                 y = line,
                                 color = trt_group,
-                                group  = int)) + theme_bw() 
+                                group  = int)) + theme_bw()  +
+      geom_point(position = pd)
     # Add manual color
     if (!is.null(color_manual)){
       
@@ -226,36 +227,52 @@ g_lineplot <- function(label = 'Line Plot',
     }
       
   }else{
+    
+    ncol <- nlevels(as.factor(unfiltered_data[[trt_group]]))
+    nshape <- nlevels(as.factor(unfiltered_data[[shape]]))
+    
     plot1 <-  ggplot(data = sum_data,
                      aes_string(x = time,
                                 y = line,
                                 color = int,
                                 group  = int,
-                                linetype = int)) + theme_bw() 
-    ncol <- nlevels(as.factor(unfiltered_data[[trt_group]]))
-    nlty <- nlevels(as.factor(unfiltered_data[[lty]]))
+                                shape = int)) + theme_bw()
+
+
     # Add manual color
     
     if (!is.null(color_manual)){
-      vals <- rep(color_manual, rep(nlty, ncol))
+      vals <- rep(color_manual, rep(nshape, ncol))
       
       plot1 <- plot1 +
         scale_color_manual(" ",values = as.character(vals))
     }else{
       colors <- gg_color_hue(ncol)
-      vals <- rep(colors, rep(nlty, ncol))
+      vals <- rep(colors, rep(nshape, ncol))
       plot1 <- plot1 +
         scale_color_manual(" ",values = vals)
     }
-    vals <- rep(1:nlty, ncol)
+    shapes <- c(15, 16, 17, 18, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+                0, 1, 2)
     
-    plot1 <- plot1 + scale_linetype_manual(" ",
+    if (nshape>length(shapes)){
+      warning("Number of available shapes exceeded, values will cycle!")
+    }
+    
+    select <- (1:nshape)%%(length(shapes))
+    select <- ifelse(select==0, length(shapes), select)
+    
+    selected_shapes <- shapes[select]
+    
+    vals <- rep(selected_shapes, ncol)
+    
+    plot1 <- plot1 + scale_shape_manual(" ",
       values = vals )+
-      theme(legend.key.size=unit(1, "cm"))
+      theme(legend.key.size=unit(1, "cm")) +
+      geom_point(position = pd, size =3)
   }
   
   plot1 <-  plot1 +
-    geom_point(position = pd) +
     geom_line(position = pd) +
     geom_errorbar(aes_string(ymin = down_limit,
                              ymax = up_limit),

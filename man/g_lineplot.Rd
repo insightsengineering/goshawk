@@ -7,7 +7,7 @@
 g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
   biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
   unit_var = "AVALU", ylim = NULL, trt_group, trt_group_level = NULL,
-  lty = NULL, time, time_level = NULL, color_manual = NULL,
+  shape = NULL, time, time_level = NULL, color_manual = NULL,
   median = FALSE, hline = NULL, xtick = waiver(), xlabel = xtick,
   rotate_xlab = FALSE, font_size = 12, dodge = 0.4,
   combined = TRUE)
@@ -33,7 +33,7 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 
 \item{trt_group_level}{vector that can be used to define the factor level of trt_group.}
 
-\item{lty}{Name of variable to determine line type of plot.}
+\item{shape}{Name of variable to determine shape of points. Allows splitting by two levels}
 
 \item{time}{name of vairable containing visit names.}
 
@@ -102,7 +102,7 @@ g_lineplot(label = 'Line Plot',
            biomarker = 'CRP',
            value_var = 'AVAL',
            trt_group = 'ARM',
-           lty = "SEX",
+           shape = "SEX",
            time = 'VISIT',
            color_manual = NULL,
            median = FALSE,
