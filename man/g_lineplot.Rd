@@ -10,7 +10,7 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
   shape = NULL, time, time_level = NULL, color_manual = NULL,
   median = FALSE, hline = NULL, xtick = waiver(), xlabel = xtick,
   rotate_xlab = FALSE, font_size = 12, dodge = 0.4,
-  combined = TRUE)
+  plot_height = 989, combined = TRUE)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -55,6 +55,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 
 \item{dodge}{control position dodge}
 
+\item{plot_height}{Height of produced plot. 989 pixels by default}
+
 \item{combined}{Combine the table and graph into one plot, or return as seperate plots?}
 }
 \value{
@@ -95,6 +97,7 @@ ANL$AVALU <- 'mg'
 
 ANL$ARM <- factor(ANL$ARM)
 ANL$VISIT <- factor(ANL$VISIT)
+ANL <- ANL[-115,]
 
 g_lineplot(label = 'Line Plot',
            data = ANL,

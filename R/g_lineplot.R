@@ -21,6 +21,7 @@
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge
+#' @param plot_height Height of produced plot. 989 pixels by default
 #' @param combined Combine the table and graph into one plot, or return as seperate plots?
 #' 
 #' @import ggplot2
@@ -30,6 +31,7 @@
 #' @importFrom stringr str_to_title
 #' @importFrom gridExtra grid.arrange
 #' @importFrom grid unit.pmax
+#' @importFrom cowplot plot_grid
 #'
 #' @author Balazs Toth (toth.balazs@gene.com)
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -69,6 +71,7 @@
 #' 
 #' ANL$ARM <- factor(ANL$ARM)
 #' ANL$VISIT <- factor(ANL$VISIT)
+#' ANL <- ANL[-115,]
 #' 
 #' g_lineplot(label = 'Line Plot',
 #'            data = ANL,
@@ -107,6 +110,7 @@ g_lineplot <- function(label = 'Line Plot',
                        rotate_xlab = FALSE,
                        font_size = 12,
                        dodge = 0.4,
+                       plot_height = 989,
                        combined = TRUE) {
   
   ## Pre-process data
@@ -324,18 +328,23 @@ g_lineplot <- function(label = 'Line Plot',
             legend.text = element_text(size = font_size))
   }
 
-  
-  ## number of obs table
-  sum_data[[int]] <- factor(sum_data[[int]])
-  
-  labels <- str_wrap(sum_data[[int]], 12)
+  labels <- rev(levels(sum_data[[int]]))
   lines <- sum(str_count(unique(labels), "\n")) + length(unique(labels))
+  
+  minline <- 24
+  tabletotal <- lines*minline
+  
+  plotsize <- plot_height - tabletotal
+  
+  if(plotsize <= 100){
+    stop("plot height is not sufficient to display!")
+  }
   
   tbl <- ggplot(sum_data, aes_string(x = time, y = int, label = 'count')) +
     geom_text(size = 4.5) +
     ggtitle("Number of observations") + 
     theme_minimal() +
-    scale_y_discrete(labels = labels ) + 
+    scale_y_discrete(labels = labels) + 
     theme(panel.grid.major = element_blank(), legend.position = "none",
           panel.grid.minor = element_blank(),
           panel.border = element_blank(), axis.text.x =  element_blank(),
@@ -360,10 +369,13 @@ g_lineplot <- function(label = 'Line Plot',
   
   #Plot the two grobs using grid.arrange
   if (combined){
-    grid.newpage()
-    do.call(grid.arrange, c(glist.aligned, 
-                            list(ncol=1), 
-                            list(heights=c(lines*3,lines))))
+    # grid.newpage()
+    
+    plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
+    
+    # do.call(grid.arrange, c(glist.aligned, 
+    #                         list(ncol=1), 
+    #                         list(heights=c(plotsize,tabletotal))))
   }else{
     return(list(
       plot = plot1,
