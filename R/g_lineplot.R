@@ -327,9 +327,9 @@ g_lineplot <- function(label = 'Line Plot',
   }
 
   labels <- rev(levels(sum_data[[int]]))
-  lines <- sum(str_count(unique(labels), "\n")) + length(unique(labels))
+  lines <- sum(str_count(unique(labels), "\n")) * 1/4 + length(unique(labels))
   
-  minline <- 24
+  minline <- 36
   tabletotal <- lines*minline
   
   plotsize <- plot_height - tabletotal
