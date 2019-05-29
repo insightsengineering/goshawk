@@ -22,7 +22,6 @@
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge
 #' @param plot_height Height of produced plot. 989 pixels by default
-#' @param combined Combine the table and graph into one plot, or return as seperate plots?
 #' 
 #' @import ggplot2
 #' @import dplyr
@@ -110,8 +109,7 @@ g_lineplot <- function(label = 'Line Plot',
                        rotate_xlab = FALSE,
                        font_size = 12,
                        dodge = 0.4,
-                       plot_height = 989,
-                       combined = TRUE) {
+                       plot_height = 989) {
   
   ## Pre-process data
   if(!is.null(trt_group_level)){
@@ -336,7 +334,7 @@ g_lineplot <- function(label = 'Line Plot',
   
   plotsize <- plot_height - tabletotal
   
-  if(plotsize <= 100){
+  if(plotsize <= 250){
     stop("plot height is not sufficient to display!")
   }
   
@@ -354,34 +352,12 @@ g_lineplot <- function(label = 'Line Plot',
           axis.text.y = element_text(size=font_size),
           plot.title = element_text(face = "bold", size=font_size))
   
-  if(!combined){
-    tbl <- tbl + scale_x_discrete(breaks = unique(sum_data[[time]]),
-                                  labels = str_wrap(unique(sum_data[[time]]), 12),
-                                  position = "top")+
-      theme(axis.text.x = element_text(size=font_size))
-  }
-  glist <- lapply(list(plot=plot1, text=tbl), ggplotGrob)
-  leftmar <- do.call(unit.pmax, lapply(glist, "[[", "widths"))
-  glist.aligned <- lapply(glist, function(x) {
-    x$widths <- leftmar
-    x
-  })
+
   
-  #Plot the two grobs using grid.arrange
-  if (combined){
-    # grid.newpage()
+  #Plot the two grobs using plot_grid
+ 
     
     plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
-    
-    # do.call(grid.arrange, c(glist.aligned, 
-    #                         list(ncol=1), 
-    #                         list(heights=c(plotsize,tabletotal))))
-  }else{
-    return(list(
-      plot = plot1,
-      table = tbl
-    ))
-  }
 
 
  
