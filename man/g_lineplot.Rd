@@ -7,9 +7,10 @@
 g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
   biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
   unit_var = "AVALU", ylim = NULL, trt_group, trt_group_level = NULL,
-  time, time_level = NULL, color_manual = NULL, median = FALSE,
-  hline = NULL, xtick = waiver(), xlabel = xtick, rotate_xlab = FALSE,
-  font_size = 12, dodge = 0.4)
+  shape = NULL, time, time_level = NULL, color_manual = NULL,
+  median = FALSE, hline = NULL, xtick = waiver(), xlabel = xtick,
+  rotate_xlab = FALSE, font_size = 12, dodge = 0.4,
+  plot_height = 989)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}
@@ -32,6 +33,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 
 \item{trt_group_level}{vector that can be used to define the factor level of trt_group.}
 
+\item{shape}{Name of variable to determine shape of points. Allows splitting by two levels}
+
 \item{time}{name of vairable containing visit names.}
 
 \item{time_level}{vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.}
@@ -51,6 +54,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 \item{font_size}{control font size for title, x-axis, y-axis and legend font.}
 
 \item{dodge}{control position dodge}
+
+\item{plot_height}{Height of produced plot. 989 pixels by default}
 }
 \value{
 \code{ggplot} object
@@ -77,6 +82,7 @@ ANL <- expand.grid(
   USUBJID = paste0("p-",1:100),
   VISITN = c(1, 4:10),
   ARM = c("ARM A", "ARM B", "ARM C"),
+  SEX = c("M", "F"),
   PARAMCD = c("CRP", "IGG", "IGM"),
   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 )
@@ -89,6 +95,7 @@ ANL$AVALU <- 'mg'
 
 ANL$ARM <- factor(ANL$ARM)
 ANL$VISIT <- factor(ANL$VISIT)
+ANL <- ANL[-115,]
 
 g_lineplot(label = 'Line Plot',
            data = ANL,
@@ -96,6 +103,7 @@ g_lineplot(label = 'Line Plot',
            biomarker = 'CRP',
            value_var = 'AVAL',
            trt_group = 'ARM',
+           shape = "SEX",
            time = 'VISIT',
            color_manual = NULL,
            median = FALSE,
