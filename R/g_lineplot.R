@@ -20,8 +20,8 @@
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
-#' @param dodge control position dodge
-#' @param plot_height Height of produced plot. 989 pixels by default
+#' @param dodge control position dodge.
+#' @param plot_height height of produced plot. 989 pixels by default.
 #' 
 #' @import ggplot2
 #' @import dplyr

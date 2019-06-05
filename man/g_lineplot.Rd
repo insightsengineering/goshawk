@@ -53,9 +53,9 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 
 \item{font_size}{control font size for title, x-axis, y-axis and legend font.}
 
-\item{dodge}{control position dodge}
+\item{dodge}{control position dodge.}
 
-\item{plot_height}{Height of produced plot. 989 pixels by default}
+\item{plot_height}{height of produced plot. 989 pixels by default.}
 }
 \value{
 \code{ggplot} object
