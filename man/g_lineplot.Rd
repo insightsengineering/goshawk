@@ -33,7 +33,7 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 
 \item{trt_group_level}{vector that can be used to define the factor level of trt_group.}
 
-\item{shape}{Name of variable to determine shape of points. Allows splitting by two levels}
+\item{shape}{categorical variable whose levels are used to split the plot lines.}
 
 \item{time}{name of vairable containing visit names.}
 
@@ -83,6 +83,7 @@ ANL <- expand.grid(
   VISITN = c(1, 4:10),
   ARM = c("ARM A", "ARM B", "ARM C"),
   SEX = c("M", "F"),
+  RACE = c("Caucasian", "Hispanic", "Asian"),
   PARAMCD = c("CRP", "IGG", "IGM"),
   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 )
@@ -103,7 +104,7 @@ g_lineplot(label = 'Line Plot',
            biomarker = 'CRP',
            value_var = 'AVAL',
            trt_group = 'ARM',
-           shape = "SEX",
+           shape = "RACE",
            time = 'VISIT',
            color_manual = NULL,
            median = FALSE,

@@ -9,7 +9,7 @@
 #' @param unit_var name of variable containing biomarker result unit.
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
-#' @param shape Name of variable to determine shape of points. Allows splitting by two levels 
+#' @param shape categorical variable whose levels are used to split the plot lines.   
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
 #' @param color_manual vector of colors.
@@ -58,6 +58,7 @@
 #'   VISITN = c(1, 4:10),
 #'   ARM = c("ARM A", "ARM B", "ARM C"),
 #'   SEX = c("M", "F"),
+#'   RACE = c("Caucasian", "Hispanic", "Asian"),
 #'   PARAMCD = c("CRP", "IGG", "IGM"),
 #'   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
 #' )
@@ -78,7 +79,7 @@
 #'            biomarker = 'CRP',
 #'            value_var = 'AVAL',
 #'            trt_group = 'ARM',
-#'            shape = "SEX",
+#'            shape = "RACE",
 #'            time = 'VISIT',
 #'            color_manual = NULL,
 #'            median = FALSE,

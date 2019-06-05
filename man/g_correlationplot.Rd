@@ -3,29 +3,30 @@
 %   R/g_correlationplot_outcome.R
 \name{g_correlationplot}
 \alias{g_correlationplot}
-\alias{g_correlationplot}
 \title{Function to create a correlation plot.}
 \usage{
-g_correlationplot(label = "Correlation Plot", data, param_var = "PARAMCD",
-  xaxis_param = "CRP", xaxis_var = "BASE", xvar = xvar,
-  yaxis_param = "IGG", yaxis_var = "AVAL", yvar = yvar,
-  trt_group = "ARM", visit = "AVISITCD", loq_flag_var = "LOQFL",
-  unit = "AVALU", xmin = NA, xmax = NA, ymin = NA, ymax = NA,
-  title_text = title_text, xaxis_lab = xaxis_lab, yaxis_lab = yaxis_lab,
-  color_manual = NULL, shape_manual = NULL, facet_ncol = 2,
-  facet = FALSE, facet_var = "ARM", reg_line = FALSE, hline = NULL,
-  vline = NULL, rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
+g_correlationplot(label = "Correlation Plot", data,
+  param_var = "PARAMCD", xaxis_param = "CRP", xaxis_var = "BASE",
+  xvar = xvar, yaxis_param = "IGG", yaxis_var = "AVAL",
+  yvar = yvar, trt_group = "ARM", visit = "AVISITCD",
+  loq_flag_var = "LOQFL", unit = "AVALU", xmin = NA, xmax = NA,
+  ymin = NA, ymax = NA, title_text = title_text,
+  xaxis_lab = xaxis_lab, yaxis_lab = yaxis_lab, color_manual = NULL,
+  shape_manual = NULL, facet_ncol = 2, facet = FALSE,
+  facet_var = "ARM", reg_line = FALSE, hline = NULL, vline = NULL,
+  rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
   reg_text_size = 3)
 
-g_correlationplot(label = "Correlation Plot", data, param_var = "PARAMCD",
-  xaxis_param = "CRP", xaxis_var = "BASE", xvar = xvar,
-  yaxis_param = "IGG", yaxis_var = "AVAL", yvar = yvar,
-  trt_group = "ARM", visit = "AVISITCD", loq_flag_var = "LOQFL",
-  unit = "AVALU", xmin = NA, xmax = NA, ymin = NA, ymax = NA,
-  title_text = title_text, xaxis_lab = xaxis_lab, yaxis_lab = yaxis_lab,
-  color_manual = NULL, shape_manual = NULL, facet_ncol = 2,
-  facet = FALSE, facet_var = "ARM", reg_line = FALSE, hline = NULL,
-  vline = NULL, rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
+g_correlationplot(label = "Correlation Plot", data,
+  param_var = "PARAMCD", xaxis_param = "CRP", xaxis_var = "BASE",
+  xvar = xvar, yaxis_param = "IGG", yaxis_var = "AVAL",
+  yvar = yvar, trt_group = "ARM", visit = "AVISITCD",
+  loq_flag_var = "LOQFL", unit = "AVALU", xmin = NA, xmax = NA,
+  ymin = NA, ymax = NA, title_text = title_text,
+  xaxis_lab = xaxis_lab, yaxis_lab = yaxis_lab, color_manual = NULL,
+  shape_manual = NULL, facet_ncol = 2, facet = FALSE,
+  facet_var = "ARM", reg_line = FALSE, hline = NULL, vline = NULL,
+  rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
   reg_text_size = 3)
 }
 \arguments{

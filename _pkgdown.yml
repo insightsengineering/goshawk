@@ -10,7 +10,7 @@ navbar:
       href: https://github.roche.com/Rpackages/goshawk
 
 #development:
-#  mode: devel
+  mode: devel
 
 reference:
 

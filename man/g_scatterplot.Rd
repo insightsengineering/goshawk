@@ -10,8 +10,8 @@ g_scatterplot(label = "Scatter Plot", data, param_var = "PARAMCD",
   unit = "AVALU", xmin = NA, xmax = NA, ymin = NA, ymax = NA,
   color_manual = NULL, shape_manual = NULL, facet_ncol = 2,
   facet = FALSE, facet_var = "ARM", reg_line = FALSE, hline = NULL,
-  vline = NULL, rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
-  reg_text_size = 3)
+  vline = NULL, rotate_xlab = FALSE, font_size = 12,
+  dot_size = NULL, reg_text_size = 3)
 }
 \arguments{
 \item{label}{text string to used to identify plot.}
@@ -105,7 +105,7 @@ ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
 mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
 mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
 
-param <- c('CRP')
+param <- c('ALT')
 
 plot1 <- g_scatterplot(label = 'Scatter Plot',
            data = ALB,
@@ -123,8 +123,8 @@ plot1 <- g_scatterplot(label = 'Scatter Plot',
            ymax = 200,
            color_manual = color_manual,
            shape_manual = shape_manual,
-           facet_ncol = 4,
-           facet = FALSE,
+           facet_ncol = 2,
+           facet = TRUE,
            facet_var = "ARM",
            reg_line = FALSE,
            hline = NULL,
