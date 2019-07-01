@@ -85,7 +85,7 @@
 #'            median = FALSE,
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
-#'            plot_height = 200)
+#'            plot_height = 2000)
 #'            
 #'}
 #'
