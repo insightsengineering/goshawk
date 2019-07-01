@@ -337,7 +337,7 @@ g_lineplot <- function(label = 'Line Plot',
   plotsize <- plot_height - tabletotal
   
   if(plotsize <= 250){
-    message("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the 
+    stop("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the 
     plot height using the Plot Aesthetic Settings.")
   }
   
