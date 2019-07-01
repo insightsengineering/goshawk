@@ -84,7 +84,8 @@
 #'            color_manual = NULL,
 #'            median = FALSE,
 #'            hline = NULL,
-#'            rotate_xlab = FALSE)
+#'            rotate_xlab = FALSE,
+#'            plot_height = 200)
 #'            
 #'}
 #'
@@ -336,7 +337,8 @@ g_lineplot <- function(label = 'Line Plot',
   plotsize <- plot_height - tabletotal
   
   if(plotsize <= 250){
-    stop("plot height is not sufficient to display!")
+    message("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the 
+    plot height using the Plot Aesthetic Settings.")
   }
   
   tbl <- ggplot(sum_data, aes_string(x = time, y = int, label = 'count')) +
