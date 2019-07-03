@@ -1,4 +1,4 @@
-#' Function to create a density distribution plot.
+#' Function to create a density distribution plot. 
 #' 
 #' Default plot displays overall density facetted by visit with treatment arms and combined 
 #' treatment overlaid.

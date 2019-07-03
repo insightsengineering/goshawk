@@ -1,4 +1,4 @@
-#' Function to create a boxplot.
+#' Function to create a boxplot. 
 #'
 #' A box plot is a method for graphically depicting groups of numerical data
 #' through their quartiles. Box plots may also have lines extending vertically

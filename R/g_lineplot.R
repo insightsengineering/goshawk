@@ -1,4 +1,4 @@
-#' Function to create line plot of summary statistics over time.
+#' Function to create line plot of summary statistics over time. 
 #' 
 #' @param label text string to be displayed as plot label.
 #' @param data data frame with variables to be summarized and generate statistics which will display

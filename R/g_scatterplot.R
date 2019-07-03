@@ -1,4 +1,4 @@
-#' Function to create a scatter plot.
+#' Function to create a scatter plot. 
 #'
 #' Default plot displays scatter facetted by visit with color attributed treatment arms and symbol 
 #' attributed LOQ values.

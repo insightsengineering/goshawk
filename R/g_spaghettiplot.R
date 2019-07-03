@@ -1,4 +1,4 @@
-#' Function to create a spaghetti plot.
+#' Function to create a spaghetti plot. 
 #' 
 #' This function is rendered by teal.goshawk module
 #'

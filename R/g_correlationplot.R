@@ -1,4 +1,4 @@
-#' Function to create a correlation plot.
+#' Function to create a correlation plot. 
 #'
 #' Default plot displays correlation facetted by visit with color attributed treatment arms and 
 #' symbol attributed LOQ values.

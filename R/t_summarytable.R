@@ -1,4 +1,4 @@
-#' Function to create a table of descriptive summary statistics to accompany plots.
+#' Function to create a table of descriptive summary statistics to accompany plots. 
 #' 
 #' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, 
 #' visit,
