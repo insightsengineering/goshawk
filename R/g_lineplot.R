@@ -1,7 +1,8 @@
 #' Function to create line plot of summary statistics over time.
 #' 
 #' @param label text string to be displayed as plot label.
-#' @param data data frame with variables to be summarized and generate statistics which will display in the plot.
+#' @param data data frame with variables to be summarized and generate statistics which will display
+#'  in the plot.
 #' @param biomarker_var name of variable containing biomarker names.
 #' @param biomarker_var_label name of variable containing biomarker labels.
 #' @param biomarker biomarker name to be analyzed. 
@@ -11,13 +12,16 @@
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param shape categorical variable whose levels are used to split the plot lines.   
 #' @param time name of vairable containing visit names.
-#' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
+#' @param time_level vector that can be used to define the factor level of time. Only use it when 
+#' x-axis variable is character or factor.
 #' @param color_manual vector of colors.
 #' @param ylim numeric vector to define y-axis range.
 #' @param median boolean whether to display median results.
 #' @param hline numeric value represnting intercept of horizontal line.
-#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().
-#' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().
+#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. 
+#' Default value is waiver().
+#' @param xlabel vector with same length of xtick to define the label of x-axis tick values. 
+#' Default value is waiver().
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge.
@@ -35,8 +39,10 @@
 #' @author Balazs Toth (toth.balazs@gene.com)
 #' @author Wenyi Liu (wenyi.liu@roche.com)
 #'
-#' @details Currently, the output plot can display mean and median of input value. For mean, the error bar denotes
-#' 95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75% quartile.
+#' @details Currently, the output plot can display mean and median of input value. For mean, the 
+#' error bar denotes
+#' 95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75% 
+#' quartile.
 #'
 #' @return \code{ggplot} object
 #'
@@ -48,7 +54,8 @@
 #' # EXAMPLE:
 #' 
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+#' "C: Combination" = "Combination")
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #' 
 #' library(dplyr)
@@ -65,7 +72,8 @@
 #' stop=str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) %>%
+#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), 
+#' TRUE ~ as.numeric(NA))) %>%
 #' # use ARMCD values to order treatment in visualization legend
 #' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
 #' ifelse(grepl("B", ARMCD), 2,
@@ -166,14 +174,14 @@ g_lineplot <- function(label = 'Line Plot',
   sum_data[[int]] <- new_interaction(listin, sep = " ")
   sum_data[[int]] <- str_wrap(sum_data[[int]], 12)
   sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
-
-
+  
+  
   unfiltered_data <- sum_data
   
   
   ## Base plot
   pd <- position_dodge(dodge)
-
+  
   if (median) {
     line <- 'median'
     up_limit <- 'quant75'
@@ -198,7 +206,7 @@ g_lineplot <- function(label = 'Line Plot',
   biomarker1 <- filtered_data %>% 
     pull(biomarker_var_label) %>% 
     unique() 
-    
+  
   
   gtitle <- paste0(biomarker1, unit1, str_to_title(line), ' by Treatment @ Visits')
   gylab <- paste0(biomarker1, ' ', str_to_title(line), ' of ', value_var, ' Values')
@@ -231,7 +239,7 @@ g_lineplot <- function(label = 'Line Plot',
       plot1 <- plot1 +
         scale_color_manual(values = vals, name = trtLabel)
     }
-      
+    
   }else{
     
     ncol <- nlevels(as.factor(unfiltered_data[[trt_group]]))
@@ -243,8 +251,8 @@ g_lineplot <- function(label = 'Line Plot',
                                 color = int,
                                 group  = int,
                                 shape = int)) + theme_bw()
-
-
+    
+    
     # Add manual color
     
     if (!is.null(color_manual)){
@@ -273,7 +281,7 @@ g_lineplot <- function(label = 'Line Plot',
     vals <- rep(selected_shapes, ncol)
     
     plot1 <- plot1 + scale_shape_manual(" ",
-      values = vals )+
+                                        values = vals )+
       theme(legend.key.size=unit(1, "cm")) +
       geom_point(position = pd, size =3)
   }
@@ -294,7 +302,7 @@ g_lineplot <- function(label = 'Line Plot',
           plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5),
           axis.title.y = element_text(margin = margin(r = 20)))+
     guides(color=guide_legend(byrow=TRUE))
- 
+  
   # Apply y-axis zoom range
   if(!is.null(ylim)){
     plot1 <- plot1 + coord_cartesian(ylim = ylim)
@@ -310,9 +318,9 @@ g_lineplot <- function(label = 'Line Plot',
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
-
-
-
+  
+  
+  
   #Add horizontal line
   if (!is.null(hline)){
     plot1 <- plot1 +
@@ -329,7 +337,7 @@ g_lineplot <- function(label = 'Line Plot',
             legend.title = element_text(size = font_size),
             legend.text = element_text(size = font_size))
   }
-
+  
   labels <- rev(levels(sum_data[[int]]))
   lines <- sum(str_count(unique(labels), "\n")) * 1/2 + length(unique(labels))
   
@@ -357,15 +365,15 @@ g_lineplot <- function(label = 'Line Plot',
           axis.text.y = element_text(size=font_size),
           plot.title = element_text(face = "bold", size=font_size))
   
-
+  
   
   #Plot the two grobs using plot_grid
- 
-    
-    plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
-
-
- 
+  
+  
+  plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
+  
+  
+  
 }
 
 

@@ -1,6 +1,7 @@
 #' Function to create a table of descriptive summary statistics to accompany plots.
 #' 
-#' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, visit,
+#' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, 
+#' visit,
 #' n, meand, median, sd, min, max, %missing values, % LOQ values.
 #'
 #' @param data name of data frame to summarize.
@@ -15,7 +16,8 @@
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
-#' @details provide additional information as needed. link to specification file \url{http://rstudio.com}
+#' @details provide additional information as needed. link to specification file 
+#' \url{http://rstudio.com}
 #'
 #' @export
 #'
@@ -30,7 +32,8 @@
 #' library(stringr)
 #' 
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+#' "C: Combination" = "Combination")
 #' 
 #' ASL <- radsl(N = 20, seed = 1)
 #' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
@@ -41,7 +44,8 @@
 #' stop=str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) %>%
+#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), 
+#' TRUE ~ as.numeric(NA))) %>%
 #' # use ARMCD values to order treatment in visualization legend
 #' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
 #' ifelse(grepl("B", ARMCD), 2,
@@ -85,7 +89,7 @@ t_summarytable <- function(data,
               Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
               PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
               PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
-              ) %>%
+    ) %>%
     select(param_var, trt_group, visit_var, n:PctLOQ, TRTORD) %>%
     ungroup()
   

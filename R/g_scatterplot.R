@@ -1,6 +1,7 @@
 #' Function to create a scatter plot.
 #'
-#' Default plot displays scatter facetted by visit with color attributed treatment arms and symbol attributed LOQ values.
+#' Default plot displays scatter facetted by visit with color attributed treatment arms and symbol 
+#' attributed LOQ values.
 #'
 #' @param label text string to used to identify plot.
 #' @param data ADaM structured analysis laboratory data frame e.g. ALB.  
@@ -21,7 +22,8 @@
 #' @param facet_ncol number of facets per row.
 #' @param facet set layout to use treatment facetting.
 #' @param facet_var variable to use for treatment facetting.
-#' @param reg_line include regression line and annotations for slope and coefficient in visualization. Use with facet = TRUE.
+#' @param reg_line include regression line and annotations for slope and coefficient in 
+#' visualization. Use with facet = TRUE.
 #' @param hline y-axis value to position a horizontal line.
 #' @param vline x-axis value to position a vertical line.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
@@ -46,7 +48,8 @@
 #' # Example using ADaM structure analysis dataset.
 #' 
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+#' "C: Combination" = "Combination")
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #' # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
 #' shape_manual <-  c("N"  = 1, "Y"  = 2, "NA" = 0)
@@ -65,7 +68,8 @@
 #' stop=str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) %>%
+#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), 
+#' TRUE ~ as.numeric(NA))) %>%
 #' # use ARMCD values to order treatment in visualization legend
 #' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
 #' ifelse(grepl("B", ARMCD), 2,
@@ -284,7 +288,7 @@ g_scatterplot <- function(label = 'Scatter Plot',
     plot1 <- plot1 +
       geom_vline(aes(xintercept = vline), color="red", linetype="dashed", size=0.5)
   }
-
-    plot1
+  
+  plot1
   
 }

@@ -2,7 +2,8 @@
 #' 
 #' This function is rendered by teal.goshawk module
 #'
-#' @param data data frame with variables to be summarized and generate statistics which will display in the plot.
+#' @param data data frame with variables to be summarized and generate statistics which will display
+#'  in the plot.
 #' @param subj_id unique subject id variable name.
 #' @param biomarker_var name of variable containing biomarker names.
 #' @param biomarker_var_label name of variable containing biomarker labels.
@@ -12,15 +13,18 @@
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param time name of vairable containing visit names.
-#' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
+#' @param time_level vector that can be used to define the factor level of time. Only use it when 
+#' x-axis variable is character or factor.
 #' @param color_manual vector of colors.
 #' @param color_comb name or hex value for combined treatment color.
 #' @param ylim numeric vector to define y-axis range.
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
 #' @param hline numeric value represnting intercept of horizontal line.
-#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().
-#' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().
+#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. 
+#' Default value is waiver().
+#' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default
+#'  value is waiver().
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
@@ -39,7 +43,8 @@
 #' # EXAMPLE:
 #' 
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+#' "C: Combination" = "Combination")
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #' 
 #' library(dplyr)
@@ -56,7 +61,8 @@
 #' stop=str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) %>%
+#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), 
+#' TRUE ~ as.numeric(NA))) %>%
 #' # use ARMCD values to order treatment in visualization legend
 #' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
 #' ifelse(grepl("B", ARMCD), 2,

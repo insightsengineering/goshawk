@@ -1,6 +1,7 @@
 #' Function to create a density distribution plot.
 #' 
-#' Default plot displays overall density facetted by visit with treatment arms and combined treatment overlaid.
+#' Default plot displays overall density facetted by visit with treatment arms and combined 
+#' treatment overlaid.
 #' 
 #' @param label text string used to identify plot.
 #' @param data ADaM structured analysis laboratory data frame e.g. ALB.  
@@ -34,7 +35,8 @@
 #' # Example using ADaM structure analysis dataset.
 #' 
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+#' "C: Combination" = "Combination")
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #' 
 #' library(dplyr)
@@ -51,7 +53,8 @@
 #' stop=str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) %>%
+#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), 
+#' TRUE ~ as.numeric(NA))) %>%
 #' # use ARMCD values to order treatment in visualization legend
 #' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
 #' ifelse(grepl("B", ARMCD), 2,
