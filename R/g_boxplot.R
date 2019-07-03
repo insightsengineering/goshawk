@@ -29,7 +29,8 @@
 #' @param xaxis_var variable used to group the data on the x-axis.
 #' @param armlabel label for the treatment symbols in the legend.
 #'        If not specified then the label attribute for trt_group will be used. 
-#'        If there is no label attribute for trt_group, then the name of the parameter (in title case) will be used.
+#'        If there is no label attribute for trt_group, then the name of the parameter 
+#'        (in title case) will be used.
 #' @param facet_ncol number of facets per row.  NULL = Use the default for facet_wrap
 #' @param hline y-axis value to position a horizontal line.  NULL = No line
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
@@ -37,8 +38,8 @@
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
 #'   
-#' @import ggplot2
 #' @import dplyr
+#' @import ggplot2
 #' @import grid
 #' @importFrom gridExtra grid.arrange
 #'

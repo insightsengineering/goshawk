@@ -12,6 +12,7 @@
 #' @param xmin x-axis lower zoom limit.
 #' @param xmax x-axis upper zoom limit.
 #' @param color_manual vector of colors applied to treatment values.
+#' @param color_comb name or hex value for combined treatment color.
 #' @param facet_var variable to use for facetting.
 #' @param hline y-axis value to position a horizontal line.
 #' @param facet_ncol number of facets per row.
@@ -70,6 +71,7 @@
 #'            xmax = 200,
 #'            unit = 'AVALU',
 #'            color_manual = color_manual,
+#'            color_comb = "#39ff14",
 #'            facet_var = 'AVISITCD',
 #'            hline = NULL,
 #'            facet_ncol = 2,
@@ -91,6 +93,7 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
                                         xmin = NA,
                                         xmax = NA,
                                         color_manual = NULL,
+                                        color_comb = "#39ff14",
                                         facet_var = "AVISITCD",
                                         hline = NULL,
                                         facet_ncol = 2,
@@ -122,7 +125,7 @@ g_density_distribution_plot <- function(label = 'Density Distribution Plot',
   
   plot1 <- ggplot(plot_data) +
     geom_density(aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
-    geom_density(aes(x = eval(parse(text = xaxis_var)), linetype = 'Comb.'), color = '#ffbb52', size = line_size) + 
+    geom_density(aes(x = eval(parse(text = xaxis_var)), linetype = 'Comb.'), color = color_comb, size = line_size) + 
     scale_linetype_manual(name = "Combined Dose", values = c(Comb.="solid", per_dose="solid")) +
     coord_cartesian(xlim = c(xmin, xmax)) +
     facet_wrap(as.formula(paste0('~', facet_var)), ncol = facet_ncol) +

@@ -14,6 +14,7 @@
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.
 #' @param color_manual vector of colors.
+#' @param color_comb name or hex value for combined treatment color.
 #' @param ylim numeric vector to define y-axis range.
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
@@ -36,34 +37,45 @@
 #'
 #'\dontrun{
 #' # EXAMPLE:
-#'
+#' 
+#' # original ARM value = dose value
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+#' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
+#' 
 #' library(dplyr)
+#' library(ggplot2)
+#' library(random.cdisc.data)
+#' library(stringr)
 #' 
-#' ANL <- expand.grid(
-#'   USUBJID = paste0("p-",1:100),
-#'   VISITN = c(1, 4:10),
-#'   ARM = c("ARM A", "ARM B", "ARM C"),
-#'   PARAMCD = c("CRP", "IGG", "IGM"),
-#'   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
-#' )
-#' ANL$VISIT <- paste0("visit ", ANL$VISITN)
-#' ANL$AVAL <- rnorm(nrow(ANL))
-#' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
-#' ANL$CHG[ANL$VISIT == "visit 1"] <- NA
-#' ANL$PCHG <- ANL$CHG/ANL$AVAL*100
-#' ANL$AVALU <- 'mg'
+#' ASL <- radsl(N = 20, seed = 1)
+#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+#' ALB <- ALB %>% 
+#' mutate(AVISITCD = case_when(
+#' AVISIT == "SCREENING" ~ "SCR",
+#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
+#' stop=str_locate(AVISIT, "DAY")-1))),
+#' TRUE ~ as.character(NA))) %>%
+#' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
+#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) %>%
+#' # use ARMCD values to order treatment in visualization legend
+#' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+#' ifelse(grepl("B", ARMCD), 2,
+#' ifelse(grepl("A", ARMCD), 3, NA)))) %>%
+#' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
+#' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
+#'
+#' param <- c('CRP')
 #' 
-#' ANL$ARM <- factor(ANL$ARM)
-#' ANL$VISIT <- factor(ANL$VISIT)
 #' 
-#' g_spaghettiplot(data = ANL,
+#' g_spaghettiplot(data = ALB,
 #'                 subj_id = 'USUBJID',
 #'                 biomarker_var = 'PARAMCD',
 #'                 biomarker = 'CRP',
 #'                 value_var = 'AVAL',
 #'                 trt_group = 'ARM',
-#'                 time = 'VISIT',
-#'                 color_manual = c("ARM A" = "#000000", "ARM B" = "#3498DB", "ARM C" = "#E74C3C"),
+#'                 time = 'AVISITCD',
+#'                 color_manual = color_manual,
+#'                 color_comb = "#39ff14", 
 #'                 alpha = .02,
 #'                 hline = NULL,
 #'                 rotate_xlab = FALSE,
@@ -85,6 +97,7 @@ g_spaghettiplot <- function(data,
                             time,
                             time_level = NULL,
                             color_manual = NULL,
+                            color_comb = "#39ff14",
                             ylim = NULL,
                             alpha = 1.0,
                             facet_ncol = 2,
@@ -164,11 +177,11 @@ g_spaghettiplot <- function(data,
   if (group_stats != "NONE"){
     if (group_stats == "MEAN"){
       plot <- plot +
-        stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1, linetype = "Group Mean"), color = "#ffbb52")+
+        stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1, linetype = "Group Mean"), color = color_comb)+
         scale_linetype_manual(name = "", label = 'Group Mean', values = c(1))
     } else{
       plot <- plot +
-        stat_summary(fun.y=median, geom="line", lwd=1, aes(group = 1, linetype = "Group Median"), color = "#ffbb52")+
+        stat_summary(fun.y=median, geom="line", lwd=1, aes(group = 1, linetype = "Group Median"), color = color_comb)+
         scale_linetype_manual(name = "", label = 'Group Median', values = c(1))
     }
   }

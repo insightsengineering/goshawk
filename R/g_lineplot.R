@@ -26,11 +26,11 @@
 #' @import ggplot2
 #' @import dplyr
 #' @import grid
-#' @importFrom stringr str_wrap
-#' @importFrom stringr str_to_title
-#' @importFrom gridExtra grid.arrange
-#' @importFrom grid unit.pmax
 #' @importFrom cowplot plot_grid
+#' @importFrom grid unit.pmax
+#' @importFrom gridExtra grid.arrange
+#' @importFrom stringr str_to_title
+#' @importFrom stringr str_wrap
 #'
 #' @author Balazs Toth (toth.balazs@gene.com)
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -47,41 +47,43 @@
 #'\dontrun{
 #' # EXAMPLE:
 #' 
+#' # original ARM value = dose value
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+#' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
+#' 
 #' library(dplyr)
 #' library(ggplot2)
-#' library(gridExtra)
-#' library(grid)
+#' library(random.cdisc.data)
 #' library(stringr)
-#'
-#' ANL <- expand.grid(
-#'   USUBJID = paste0("p-",1:100),
-#'   VISITN = c(1, 4:10),
-#'   ARM = c("ARM A", "ARM B", "ARM C"),
-#'   SEX = c("M", "F"),
-#'   RACE = c("Caucasian", "Hispanic", "Asian"),
-#'   PARAMCD = c("CRP", "IGG", "IGM"),
-#'   PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
-#' )
-#' ANL$VISIT <- paste0("visit ", ANL$VISITN)
-#' ANL$AVAL <- rnorm(nrow(ANL))
-#' ANL$CHG <- rnorm(nrow(ANL), 2, 2)
-#' ANL$CHG[ANL$VISIT == "visit 1"] <- NA
-#' ANL$PCHG <- ANL$CHG/ANL$AVAL*100
-#' ANL$AVALU <- 'mg'
 #' 
-#' ANL$ARM <- factor(ANL$ARM)
-#' ANL$VISIT <- factor(ANL$VISIT)
-#' ANL <- ANL[-115,]
+#' ASL <- radsl(N = 20, seed = 1)
+#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+#' ALB <- ALB %>% 
+#' mutate(AVISITCD = case_when(
+#' AVISIT == "SCREENING" ~ "SCR",
+#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
+#' stop=str_locate(AVISIT, "DAY")-1))),
+#' TRUE ~ as.character(NA))) %>%
+#' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
+#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) %>%
+#' # use ARMCD values to order treatment in visualization legend
+#' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+#' ifelse(grepl("B", ARMCD), 2,
+#' ifelse(grepl("A", ARMCD), 3, NA)))) %>%
+#' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
+#' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
+#'
+#' param <- c('CRP')
 #' 
 #' g_lineplot(label = 'Line Plot',
-#'            data = ANL,
+#'            data = ALB,
 #'            biomarker_var = 'PARAMCD',
 #'            biomarker = 'CRP',
 #'            value_var = 'AVAL',
 #'            trt_group = 'ARM',
 #'            shape = "RACE",
-#'            time = 'VISIT',
-#'            color_manual = NULL,
+#'            time = 'AVISITCD',
+#'            color_manual = color_manual,
 #'            median = FALSE,
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
