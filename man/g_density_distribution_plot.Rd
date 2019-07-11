@@ -7,9 +7,9 @@
 g_density_distribution_plot(label = "Density Distribution Plot", data,
   param_var = "PARAMCD", param = "CRP", xaxis_var = "AVAL",
   trt_group = "ARM", unit = "AVALU", xmin = NA, xmax = NA,
-  color_manual = NULL, facet_var = "AVISITCD", hline = NULL,
-  facet_ncol = 2, rotate_xlab = FALSE, font_size = 12,
-  line_size = 2)
+  color_manual = NULL, color_comb = "#39ff14",
+  facet_var = "AVISITCD", hline = NULL, facet_ncol = 2,
+  rotate_xlab = FALSE, font_size = 12, line_size = 2)
 }
 \arguments{
 \item{label}{text string used to identify plot.}
@@ -32,6 +32,8 @@ g_density_distribution_plot(label = "Density Distribution Plot", data,
 
 \item{color_manual}{vector of colors applied to treatment values.}
 
+\item{color_comb}{name or hex value for combined treatment color.}
+
 \item{facet_var}{variable to use for facetting.}
 
 \item{hline}{y-axis value to position a horizontal line.}
@@ -45,7 +47,8 @@ g_density_distribution_plot(label = "Density Distribution Plot", data,
 \item{line_size}{plot line thickness.}
 }
 \description{
-Default plot displays overall density facetted by visit with treatment arms and combined treatment overlaid.
+Default plot displays overall density facetted by visit with treatment arms and combined 
+treatment overlaid.
 }
 \examples{
 
@@ -53,7 +56,8 @@ Default plot displays overall density facetted by visit with treatment arms and 
 # Example using ADaM structure analysis dataset.
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+"C: Combination" = "Combination")
 color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 
 library(dplyr)
@@ -70,7 +74,8 @@ AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVI
 stop=str_locate(AVISIT, "DAY")-1))),
 TRUE ~ as.character(NA))) \%>\%
 mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) \%>\%
+AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)), 
+TRUE ~ as.numeric(NA))) \%>\%
 # use ARMCD values to order treatment in visualization legend
 mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
 ifelse(grepl("B", ARMCD), 2,
@@ -90,6 +95,7 @@ plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
            xmax = 200,
            unit = 'AVALU',
            color_manual = color_manual,
+           color_comb = "#39ff14",
            facet_var = 'AVISITCD',
            hline = NULL,
            facet_ncol = 2,

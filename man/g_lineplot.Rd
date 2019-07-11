@@ -15,7 +15,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 \arguments{
 \item{label}{text string to be displayed as plot label.}
 
-\item{data}{data frame with variables to be summarized and generate statistics which will display in the plot.}
+\item{data}{data frame with variables to be summarized and generate statistics which will display
+in the plot.}
 
 \item{biomarker_var}{name of variable containing biomarker names.}
 
@@ -37,7 +38,8 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 
 \item{time}{name of vairable containing visit names.}
 
-\item{time_level}{vector that can be used to define the factor level of time. Only use it when x-axis variable is character or factor.}
+\item{time_level}{vector that can be used to define the factor level of time. Only use it when 
+x-axis variable is character or factor.}
 
 \item{color_manual}{vector of colors.}
 
@@ -45,9 +47,11 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 
 \item{hline}{numeric value represnting intercept of horizontal line.}
 
-\item{xtick}{numeric vector to define the tick values of x-axis when x variable is numeric. Default value is waiver().}
+\item{xtick}{numeric vector to define the tick values of x-axis when x variable is numeric. 
+Default value is waiver().}
 
-\item{xlabel}{vector with same length of xtick to define the label of x-axis tick values. Default value is waiver().}
+\item{xlabel}{vector with same length of xtick to define the label of x-axis tick values. 
+Default value is waiver().}
 
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 
@@ -64,52 +68,59 @@ g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
 Function to create line plot of summary statistics over time.
 }
 \details{
-Currently, the output plot can display mean and median of input value. For mean, the error bar denotes
-95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75% quartile.
+Currently, the output plot can display mean and median of input value. For mean, the 
+error bar denotes
+95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75% 
+quartile.
 }
 \examples{
 
 \dontrun{
 # EXAMPLE:
 
+# original ARM value = dose value
+arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+"C: Combination" = "Combination")
+color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
+
 library(dplyr)
 library(ggplot2)
-library(gridExtra)
-library(grid)
+library(random.cdisc.data)
 library(stringr)
 
-ANL <- expand.grid(
-  USUBJID = paste0("p-",1:100),
-  VISITN = c(1, 4:10),
-  ARM = c("ARM A", "ARM B", "ARM C"),
-  SEX = c("M", "F"),
-  RACE = c("Caucasian", "Hispanic", "Asian"),
-  PARAMCD = c("CRP", "IGG", "IGM"),
-  PARAM = c("C-reactive protein", "Immunoglobulin G", "Immunoglobulin M")
-)
-ANL$VISIT <- paste0("visit ", ANL$VISITN)
-ANL$AVAL <- rnorm(nrow(ANL))
-ANL$CHG <- rnorm(nrow(ANL), 2, 2)
-ANL$CHG[ANL$VISIT == "visit 1"] <- NA
-ANL$PCHG <- ANL$CHG/ANL$AVAL*100
-ANL$AVALU <- 'mg'
+ASL <- radsl(N = 20, seed = 1)
+ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+ALB <- ALB \%>\% 
+mutate(AVISITCD = case_when(
+AVISIT == "SCREENING" ~ "SCR",
+AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
+stop=str_locate(AVISIT, "DAY")-1))),
+TRUE ~ as.character(NA))) \%>\%
+mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
+AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)), 
+TRUE ~ as.numeric(NA))) \%>\%
+# use ARMCD values to order treatment in visualization legend
+mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+ifelse(grepl("B", ARMCD), 2,
+ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
+mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
+mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
 
-ANL$ARM <- factor(ANL$ARM)
-ANL$VISIT <- factor(ANL$VISIT)
-ANL <- ANL[-115,]
+param <- c('CRP')
 
 g_lineplot(label = 'Line Plot',
-           data = ANL,
+           data = ALB,
            biomarker_var = 'PARAMCD',
            biomarker = 'CRP',
            value_var = 'AVAL',
            trt_group = 'ARM',
            shape = "RACE",
-           time = 'VISIT',
-           color_manual = NULL,
+           time = 'AVISITCD',
+           color_manual = color_manual,
            median = FALSE,
            hline = NULL,
-           rotate_xlab = FALSE)
+           rotate_xlab = FALSE,
+           plot_height = 2000)
            
 }
 

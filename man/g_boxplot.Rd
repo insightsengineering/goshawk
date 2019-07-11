@@ -51,7 +51,8 @@ Y-axis e.g. AVAL.}
 
 \item{armlabel}{label for the treatment symbols in the legend.
 If not specified then the label attribute for trt_group will be used. 
-If there is no label attribute for trt_group, then the name of the parameter (in title case) will be used.}
+If there is no label attribute for trt_group, then the name of the parameter 
+(in title case) will be used.}
 
 \item{facet}{variable to facet the plot by, or "None" if no faceting
 required.}
@@ -81,18 +82,18 @@ ADLB <- radlb(ADSL, seed = 2)
 ADLB <- ADLB \%>\% subset(PARAMCD == "CRP")
 
 # Example 1.
-g_boxplot(ADLB
-          , biomarker = "CRP"
-          , yaxis_var = "AVAL"
-          , trt_group = "ARM"
-          , loq_flag = "LOQFL"
-          , unit = "AVALU"
-          , shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL)
-          , hline = NULL
-          , facet = "AVISIT"
-          , xaxis_var = "STUDYID"
-          , alpha = 0.5
-          , rotate_xlab = TRUE
+g_boxplot(ADLB,
+          biomarker = "CRP",
+          yaxis_var = "AVAL",
+          trt_group = "ARM",
+          loq_flag = "LOQFL",
+          unit = "AVALU",
+          shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL),
+          hline = NULL,
+          facet = "AVISIT",
+          xaxis_var = "STUDYID",
+          alpha = 0.5,
+          rotate_xlab = TRUE
 )
 
 }

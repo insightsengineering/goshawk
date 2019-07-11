@@ -31,9 +31,8 @@
 #' @param dot_size plot dot size.
 #' @param reg_text_size font size control for regression line annotations.
 #' 
-#' @import dplyr
-#' @import ggplot2
 #' @import mcr
+#' @importFrom stats as.formula cor median quantile sd
 #' 
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
@@ -98,10 +97,10 @@
 #'            facet_ncol = 2,
 #'            facet = TRUE,
 #'            facet_var = "ARM",
-#'            reg_line = FALSE,
+#'            reg_line = TRUE,
 #'            hline = NULL,
 #'            vline = .5,
-#'            rotate_xlab = FALSE,
+#'            rotate_xlab = TRUE,
 #'            font_size = 14,
 #'            dot_size = 2,
 #'            reg_text_size = 3)
@@ -192,7 +191,7 @@ g_scatterplot <- function(label = 'Scatter Plot',
     slope <- function(x, y) {
       ratio <- sd(x)/sd(y)
       if (!is.na(ratio) & ratio > 0){
-        reg <- mcr:::mc.deming(y, x, ratio)
+        reg <- .mcr$mc.deming(y, x, ratio)
         # return the evaluation of the ratio condition as third value in numeric vector for conttroling downstream processing
         return(c(round(reg$b0,2), round(reg$b1,2), !is.na(ratio) & ratio > 0))
       }

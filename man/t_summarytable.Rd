@@ -25,11 +25,13 @@ t_summarytable(data, trt_group, param_var, param, xaxis_var,
 \item{...}{additional options}
 }
 \description{
-Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, visit,
+Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, 
+visit,
 n, meand, median, sd, min, max, %missing values, % LOQ values.
 }
 \details{
-provide additional information as needed. link to specification file \url{http://rstudio.com}
+provide additional information as needed. link to specification file 
+\url{http://rstudio.com}
 }
 \examples{
 
@@ -42,7 +44,8 @@ library(random.cdisc.data)
 library(stringr)
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+"C: Combination" = "Combination")
 
 ASL <- radsl(N = 20, seed = 1)
 ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
@@ -53,7 +56,8 @@ AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVI
 stop=str_locate(AVISIT, "DAY")-1))),
 TRUE ~ as.character(NA))) \%>\%
 mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)), TRUE ~ as.numeric(NA))) \%>\%
+AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)), 
+TRUE ~ as.numeric(NA))) \%>\%
 # use ARMCD values to order treatment in visualization legend
 mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
 ifelse(grepl("B", ARMCD), 2,

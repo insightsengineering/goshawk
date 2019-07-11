@@ -38,9 +38,6 @@
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
 #'   
-#' @import dplyr
-#' @import ggplot2
-#' @import grid
 #' @importFrom gridExtra grid.arrange
 #'
 #' @author Balazs Toth

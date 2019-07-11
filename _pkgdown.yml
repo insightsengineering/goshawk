@@ -24,3 +24,9 @@ reference:
       - g_scatterplot
       - g_spaghettiplot
       - t_summarytable
+
+  - title: Package Build Related
+    desc: These files facilitate package build.
+    contents:
+      - global_variables
+      - goshawk_core_packages

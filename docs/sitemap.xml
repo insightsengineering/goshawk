@@ -4,6 +4,9 @@
     <loc>https://pages.github.roche.com/Rpackages/goshawk/index.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/dot-mcr.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_boxplot.html</loc>
   </url>
   <url>
@@ -20,6 +23,12 @@
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_spaghettiplot.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/global_variables.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/goshawk_core_packages.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/t_summarytable.html</loc>

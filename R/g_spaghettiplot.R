@@ -29,8 +29,6 @@
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
 #' 
-#' @import ggplot2
-#'
 #' @author Wenyi Liu (wenyi.liu@roche.com)
 #'
 #' @return \code{ggplot} object

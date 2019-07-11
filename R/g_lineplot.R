@@ -27,10 +27,8 @@
 #' @param dodge control position dodge.
 #' @param plot_height height of produced plot. 989 pixels by default.
 #' 
-#' @import ggplot2
-#' @import dplyr
-#' @import grid
 #' @importFrom cowplot plot_grid
+#' @importFrom grDevices hcl
 #' @importFrom grid unit.pmax
 #' @importFrom gridExtra grid.arrange
 #' @importFrom stringr str_to_title
