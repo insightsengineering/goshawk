@@ -70,17 +70,19 @@ This function is rendered by teal.goshawk module
 \examples{
 
 \dontrun{
-# EXAMPLE:
+
+# Example using ADaM structure analysis dataset.
+
+library(dplyr)
+library(ggplot2)
+library(goshawk)
+library(random.cdisc.data)
+library(stringr)
 
 # original ARM value = dose value
 arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
 "C: Combination" = "Combination")
 color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
-
-library(dplyr)
-library(ggplot2)
-library(random.cdisc.data)
-library(stringr)
 
 ASL <- radsl(N = 20, seed = 1)
 ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
@@ -101,7 +103,6 @@ mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
 mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
 
 param <- c('CRP')
-
 
 g_spaghettiplot(data = ALB,
                 subj_id = 'USUBJID',

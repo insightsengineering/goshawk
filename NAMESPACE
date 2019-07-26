@@ -2,11 +2,13 @@
 
 export(g_boxplot)
 export(g_correlationplot)
+export(g_correlationplot_av)
 export(g_density_distribution_plot)
 export(g_lineplot)
 export(g_scatterplot)
 export(g_spaghettiplot)
 export(t_summarytable)
+export(t_summarytable_av)
 import(dplyr)
 import(ggplot2)
 import(mcr)

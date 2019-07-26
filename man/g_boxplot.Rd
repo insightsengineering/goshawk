@@ -76,12 +76,17 @@ midhinge, range, mid-range, and trimean.
 \examples{
 
 \dontrun{
+
+# Example using ADaM structure analysis dataset.
+
+library(dplyr)
+library(ggplot2)
+library(goshawk)
 library(random.cdisc.data)
 ADSL <- radsl(N = 100, seed = 1)
 ADLB <- radlb(ADSL, seed = 2)
 ADLB <- ADLB \%>\% subset(PARAMCD == "CRP")
 
-# Example 1.
 g_boxplot(ADLB,
           biomarker = "CRP",
           yaxis_var = "AVAL",

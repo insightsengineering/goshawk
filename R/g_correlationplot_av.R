@@ -1,6 +1,6 @@
-#'Function to create a correlation plot.
+#'Function to create a correlation plot without AVISIT facetting. Presents all data.
 #'
-#'Default plot displays correlation facetted by visit with color attributed treatment arms and
+#'Default plot displays correlation facetted by treatment with color attributed treatment arms and
 #'symbol attributed LOQ values.
 #'
 #'@param label text string to used to identify plot.
@@ -101,7 +101,7 @@
 #' xaxis_param <- c("CRP")
 #' yaxis_param <- c("ALT")
 #'
-#' plot1 <- g_correlationplot(label = 'Correlation Plot',
+#' plot1 <- g_correlationplot_av(label = 'Correlation Plot',
 #'            data = plot_data_t2,
 #'            param_var = "PARAMCD",
 #'            xaxis_param = xaxis_param,
@@ -138,7 +138,7 @@
 #' }
 #' 
 
-g_correlationplot <- function(label = 'Correlation Plot',
+g_correlationplot_av <- function(label = 'Correlation Plot',
                               data,
                               param_var = 'PARAMCD',
                               xaxis_param = "CRP",
@@ -189,7 +189,7 @@ g_correlationplot <- function(label = 'Correlation Plot',
                                       color = trt_group)) +
     geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
-    facet_wrap(as.formula(paste0('~', visit)), ncol = facet_ncol) +
+    facet_wrap(as.formula(paste0('~', trt_group)), ncol = facet_ncol) +
     theme_bw() +
     ggtitle(title_text) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
@@ -200,7 +200,7 @@ g_correlationplot <- function(label = 'Correlation Plot',
   # add grid faceting to foundation 
   if (facet){
     plot1 <- plot1 +
-      facet_grid(as.formula(paste0(facet_var ,' ~ ', visit)))
+      facet_grid(as.formula(paste0(facet_var ,' ~ ', trt_group)))
   }
   
   # add regression line
@@ -220,7 +220,7 @@ g_correlationplot <- function(label = 'Correlation Plot',
     
     sub_data <- subset(plot_data, !is.na(eval(parse(text = yvar))) &
                          !is.na(eval(parse(text = xvar)))) %>%
-      group_by_(.dots = c(trt_group, visit)) %>%
+      group_by_(.dots = c(trt_group)) %>%
       mutate(intercept =  slope(eval(parse(text = yvar)),
                                 eval(parse(text = xvar)))[1]) %>%
       mutate(slope = slope(eval(parse(text = yvar)),

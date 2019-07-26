@@ -77,7 +77,14 @@ Regression uses deming model.
 \examples{
 
 \dontrun{
+
 # Example using ADaM structure analysis dataset.
+
+library(dplyr)
+library(ggplot2)
+library(goshawk)
+library(random.cdisc.data)
+library(stringr)
 
 # original ARM value = dose value
 arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
@@ -85,11 +92,6 @@ arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
 shape_manual <-  c("N"  = 1, "Y"  = 2, "NA" = 0)
-
-library(dplyr)
-library(ggplot2)
-library(random.cdisc.data)
-library(stringr)
 
 ASL <- radsl(N = 20, seed = 1)
 ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)

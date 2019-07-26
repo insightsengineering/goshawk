@@ -1,0 +1,157 @@
+#' Function to create a table of descriptive summary statistics to accompany plots. 
+#' 
+#' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, 
+#' visit,
+#' n, meand, median, sd, min, max, %missing values, % LOQ values.
+#'
+#' @param data name of data frame to summarize.
+#' @param trt_group treatment group variable name e.g. ARM.
+#' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
+#' @param param biomarker to visualize e.g. IGG. 
+#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
+#' @param facet_var name of variable containing visit values e.g. AVISITCD.
+#' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
+#' @param ... additional options
+#'
+#' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
+#' @author Balazs Toth (tothb2)  toth.balazs@gene.com
+#'
+#' @details provide additional information as needed. link to specification file 
+#' \url{http://rstudio.com}
+#'
+#' @export
+#'
+#' @examples
+#'
+#'\dontrun{
+#'
+#' # Example using ADaM structure analysis dataset.
+#' 
+#' library(dplyr)
+#' library(goshawk)
+#' library(random.cdisc.data)
+#' library(stringr)
+#' 
+#' # original ARM value = dose value
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+#' "C: Combination" = "Combination")
+#' 
+#' ASL <- radsl(N = 20, seed = 1)
+#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+#' ALB <- ALB %>% 
+#' mutate(AVISITCD = case_when(
+#' AVISIT == "SCREENING" ~ "SCR",
+#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
+#' stop=str_locate(AVISIT, "DAY")-1))),
+#' TRUE ~ as.character(NA))) %>%
+#' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
+#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), 
+#' TRUE ~ as.numeric(NA))) %>%
+#' # use ARMCD values to order treatment in visualization legend
+#' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+#' ifelse(grepl("B", ARMCD), 2,
+#' ifelse(grepl("A", ARMCD), 3, NA)))) %>%
+#' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
+#' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
+#'
+#' param <- c('ALKPH')
+#' 
+#' tbl <- t_summarytable_av(data = ALB,
+#'                trt_group = 'ACTARM',
+#'                param_var = 'PARAMCD',
+#'                param = param,
+#'                xaxis_var = 'AVAL',
+#'                facet_var = 'ACTARM',
+#'                loq_flag_var = 'LOQFL')
+#'
+#'}
+#'
+
+t_summarytable_av <- function(data,
+                           trt_group,
+                           param_var,
+                           param,
+                           xaxis_var,
+                           facet_var = 'AVISITCD',
+                           loq_flag_var = 'LOQFL', ...){
+  table_data <- data %>%
+    filter(eval(parse(text = param_var)) == param)
+  
+  if (trt_group == facet_var){
+    
+    # by treatment group table
+    sum_data_by_arm <- table_data %>%
+      group_by_(.dots = c(param_var, trt_group, "TRTORD", facet_var)) %>%
+      summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
+                Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
+                PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
+      ) %>%
+      select(param_var, trt_group, facet_var, n:PctLOQ, TRTORD) %>%
+      ungroup()
+    
+    # by combined treatment group table
+    sum_data_combined_arm <- table_data %>%
+      group_by_(.dots = c(param_var)) %>%
+      summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
+                Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
+                PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
+                MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
+      ) %>% # additional use of max function identifies maximum treatment order across all visits.
+      mutate(!!trt_group := "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
+      select(param_var, trt_group, n:PctLOQ, TRTORD) %>%
+      ungroup()
+    
+    sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
+      select(Biomarker = param_var, Treatment = trt_group, n:PctLOQ, TRTORD) %>% # reorder variables
+      arrange(Biomarker, Treatment, TRTORD) %>% # drop variable
+      select(-TRTORD)
+    
+  } else{
+    # by treatment group table
+    sum_data_by_arm <- table_data %>%
+      group_by_(.dots = c(param_var, trt_group, "TRTORD", facet_var)) %>%
+      summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
+                Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
+                PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
+      ) %>%
+      select(param_var, trt_group, facet_var, n:PctLOQ, TRTORD) %>%
+      ungroup()
+    
+    # by combined treatment group table
+    sum_data_combined_arm <- table_data %>%
+      group_by_(.dots = c(param_var, facet_var)) %>%
+      summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
+                Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
+                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
+                PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
+                MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
+      ) %>% # additional use of max function identifies maximum treatment order across all visits.
+      mutate(!!trt_group := "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
+      select(param_var, trt_group, facet_var, n:PctLOQ, TRTORD) %>%
+      ungroup()
+    
+    sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
+      select(Biomarker = param_var, Treatment = trt_group, Facet = facet_var, n:PctLOQ, TRTORD) %>% # reorder variables
+      arrange(Biomarker, Facet, Treatment, TRTORD) %>% # drop variable
+      select(-TRTORD)
+  }
+}

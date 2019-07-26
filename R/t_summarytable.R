@@ -24,10 +24,11 @@
 #' @examples
 #'
 #'\dontrun{
+#'
 #' # Example using ADaM structure analysis dataset.
 #' 
 #' library(dplyr)
-#' library(ggplot2)
+#' library(goshawk)
 #' library(random.cdisc.data)
 #' library(stringr)
 #' 
