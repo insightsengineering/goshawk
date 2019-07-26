@@ -13,6 +13,9 @@
     <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_correlationplot.html</loc>
   </url>
   <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_correlationplot_av.html</loc>
+  </url>
+  <url>
     <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_density_distribution_plot.html</loc>
   </url>
   <url>
@@ -25,12 +28,12 @@
     <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_spaghettiplot.html</loc>
   </url>
   <url>
-    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/global_variables.html</loc>
-  </url>
-  <url>
     <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/goshawk_core_packages.html</loc>
   </url>
   <url>
     <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/t_summarytable.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/t_summarytable_av.html</loc>
   </url>
 </urlset>

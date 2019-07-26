@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function to create a scatter plot. — g_scatterplot • goshawk</title>
+<title>Function to create a correlation plot without AVISIT facetting. Presents all data. — g_correlationplot_av • goshawk</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Function to create a scatter plot. — g_scatterplot" />
+<meta property="og:title" content="Function to create a correlation plot without AVISIT facetting. Presents all data. — g_correlationplot_av" />
 
-<meta property="og:description" content="Default plot displays scatter facetted by visit with color attributed treatment arms and symbol 
-attributed LOQ values." />
+<meta property="og:description" content="Default plot displays correlation facetted by treatment with color attributed treatment arms and
+symbol attributed LOQ values." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -98,26 +98,29 @@ attributed LOQ values." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function to create a scatter plot.</h1>
+    <h1>Function to create a correlation plot without AVISIT facetting. Presents all data.</h1>
     
-    <div class="hidden name"><code>g_scatterplot.Rd</code></div>
+    <div class="hidden name"><code>g_correlationplot_av.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Default plot displays scatter facetted by visit with color attributed treatment arms and symbol 
-attributed LOQ values.</p>
+    <p>Default plot displays correlation facetted by treatment with color attributed treatment arms and
+symbol attributed LOQ values.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>g_scatterplot</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Scatter Plot"</span>, <span class='no'>data</span>, <span class='kw'>param_var</span> <span class='kw'>=</span> <span class='st'>"PARAMCD"</span>,
-  <span class='kw'>param</span> <span class='kw'>=</span> <span class='st'>"CRP"</span>, <span class='kw'>xaxis_var</span> <span class='kw'>=</span> <span class='st'>"BASE"</span>, <span class='kw'>yaxis_var</span> <span class='kw'>=</span> <span class='st'>"AVAL"</span>,
-  <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>, <span class='kw'>visit</span> <span class='kw'>=</span> <span class='st'>"AVISITCD"</span>, <span class='kw'>loq_flag_var</span> <span class='kw'>=</span> <span class='st'>"LOQFL"</span>,
-  <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"AVALU"</span>, <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ymin</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ymax</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>color_manual</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape_manual</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet_ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>facet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>, <span class='kw'>reg_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>vline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-  <span class='kw'>dot_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reg_text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
+    <pre class="usage"><span class='fu'>g_correlationplot_av</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Correlation Plot"</span>, <span class='no'>data</span>,
+  <span class='kw'>param_var</span> <span class='kw'>=</span> <span class='st'>"PARAMCD"</span>, <span class='kw'>xaxis_param</span> <span class='kw'>=</span> <span class='st'>"CRP"</span>, <span class='kw'>xaxis_var</span> <span class='kw'>=</span> <span class='st'>"BASE"</span>,
+  <span class='kw'>xvar</span> <span class='kw'>=</span> <span class='no'>xvar</span>, <span class='kw'>yaxis_param</span> <span class='kw'>=</span> <span class='st'>"IGG"</span>, <span class='kw'>yaxis_var</span> <span class='kw'>=</span> <span class='st'>"AVAL"</span>,
+  <span class='kw'>yvar</span> <span class='kw'>=</span> <span class='no'>yvar</span>, <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>, <span class='kw'>visit</span> <span class='kw'>=</span> <span class='st'>"AVISITCD"</span>,
+  <span class='kw'>loq_flag_var</span> <span class='kw'>=</span> <span class='st'>"LOQFL"</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"AVALU"</span>, <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>ymin</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ymax</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>title_text</span> <span class='kw'>=</span> <span class='no'>title_text</span>,
+  <span class='kw'>xaxis_lab</span> <span class='kw'>=</span> <span class='no'>xaxis_lab</span>, <span class='kw'>yaxis_lab</span> <span class='kw'>=</span> <span class='no'>yaxis_lab</span>, <span class='kw'>color_manual</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shape_manual</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet_ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>facet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>, <span class='kw'>reg_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>vline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>dot_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>reg_text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,16 +138,28 @@ attributed LOQ values.</p>
       <td><p>name of variable containing biomarker codes e.g. PARAMCD.</p></td>
     </tr>
     <tr>
-      <th>param</th>
-      <td><p>biomarker to visualize e.g. IGG.</p></td>
+      <th>xaxis_param</th>
+      <td><p>x-axis biomarker to visualize e.g. IGG.</p></td>
     </tr>
     <tr>
       <th>xaxis_var</th>
       <td><p>name of variable containing biomarker results displayed on X-axis e.g. BASE.</p></td>
     </tr>
     <tr>
+      <th>xvar</th>
+      <td><p>x-axis analysis variable from transposed data set.</p></td>
+    </tr>
+    <tr>
+      <th>yaxis_param</th>
+      <td><p>y-axis biomarker to visualize e.g. IGG.</p></td>
+    </tr>
+    <tr>
       <th>yaxis_var</th>
       <td><p>name of variable containing biomarker results displayed on Y-axise.g. AVAL.</p></td>
+    </tr>
+    <tr>
+      <th>yvar</th>
+      <td><p>y-axis analysis variable from transposed data set.</p></td>
     </tr>
     <tr>
       <th>trt_group</th>
@@ -179,6 +194,18 @@ attributed LOQ values.</p>
       <td><p>y-axis upper zoom limit.</p></td>
     </tr>
     <tr>
+      <th>title_text</th>
+      <td><p>plot title.</p></td>
+    </tr>
+    <tr>
+      <th>xaxis_lab</th>
+      <td><p>x-axis label.</p></td>
+    </tr>
+    <tr>
+      <th>yaxis_lab</th>
+      <td><p>y-axis label.</p></td>
+    </tr>
+    <tr>
       <th>color_manual</th>
       <td><p>vector of colors applied to treatment values.</p></td>
     </tr>
@@ -200,8 +227,8 @@ attributed LOQ values.</p>
     </tr>
     <tr>
       <th>reg_line</th>
-      <td><p>include regression line and annotations for slope and coefficient in 
-visualization. Use with facet = TRUE.</p></td>
+      <td><p>include regression line and annotations for slope and coefficient. Use with facet
+= TRUE.</p></td>
     </tr>
     <tr>
       <th>hline</th>
@@ -244,9 +271,11 @@ visualization. Use with facet = TRUE.</p></td>
 <span class='fu'>library</span>(<span class='no'>goshawk</span>)
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'>library</span>(<span class='no'>stringr</span>)
+<span class='fu'>library</span>(<span class='no'>tidyr</span>)
 
 <span class='co'># original ARM value = dose value</span>
-<span class='no'>arm_mapping</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='st'>"A: Drug X"</span> <span class='kw'>=</span> <span class='st'>"150mg QD"</span>, <span class='st'>"B: Placebo"</span> <span class='kw'>=</span> <span class='st'>"Placebo"</span>,
+<span class='no'>arm_mapping</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='st'>"A: Drug X"</span> <span class='kw'>=</span> <span class='st'>"150mg QD"</span>,
+<span class='st'>"B: Placebo"</span> <span class='kw'>=</span> <span class='st'>"Placebo"</span>,
 <span class='st'>"C: Combination"</span> <span class='kw'>=</span> <span class='st'>"Combination"</span>)
 <span class='no'>color_manual</span> <span class='kw'>&lt;-</span>  <span class='fu'>c</span>(<span class='st'>"150mg QD"</span> <span class='kw'>=</span> <span class='st'>"#000000"</span>, <span class='st'>"Placebo"</span> <span class='kw'>=</span> <span class='st'>"#3498DB"</span>, <span class='st'>"Combination"</span> <span class='kw'>=</span> <span class='st'>"#E74C3C"</span>)
 <span class='co'># assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"</span>
@@ -270,31 +299,53 @@ visualization. Use with facet = TRUE.</p></td>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>as.character</span>(<span class='no'>arm_mapping</span>[<span class='fu'>match</span>(<span class='no'>ARM</span>, <span class='fu'>names</span>(<span class='no'>arm_mapping</span>))])) <span class='kw'>%&gt;%</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ARM</span>) <span class='kw'>%&gt;%</span> <span class='fu'>reorder</span>(<span class='no'>TRTORD</span>))
 
-<span class='no'>param</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'ALT'</span>)
+<span class='co'># given the 2 param and 2 analysis vars we need to transform the data</span>
+<span class='no'>plot_data_t1</span> <span class='kw'>&lt;-</span> <span class='no'>ALB</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span>(<span class='no'>ANLVARS</span>, <span class='no'>ANLVALS</span>, <span class='no'>BASE2</span>, <span class='no'>BASE</span>, <span class='no'>AVAL</span>, <span class='no'>BASE</span>, <span class='no'>LOQFL</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ANL.PARAM</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='no'>ANLVARS</span> <span class='kw'>==</span> <span class='st'>"LOQFL"</span>, <span class='fu'>paste0</span>(<span class='no'>ANLVARS</span>, <span class='st'>"_"</span>, <span class='no'>PARAMCD</span>), <span class='fu'>paste0</span>(<span class='no'>ANLVARS</span>,
+<span class='st'>"."</span>, <span class='no'>PARAMCD</span>))) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>USUBJID</span>, <span class='no'>ARM</span>, <span class='no'>ARMCD</span>, <span class='no'>AVISITN</span>, <span class='no'>AVISITCD</span>, <span class='no'>ANL.PARAM</span>, <span class='no'>ANLVALS</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span>(<span class='no'>ANL.PARAM</span>, <span class='no'>ANLVALS</span>)
+<span class='co'># the transformed analysis value variables are character and need to be converted to numeric for</span>
+<span class='co'># ggplot</span>
+<span class='co'># remove records where either of the analysis variables are NA since they will not appear on the</span>
+<span class='co'># plot and will ensure that LOQFL = NA level is removed</span>
+<span class='no'>plot_data_t2</span> <span class='kw'>&lt;-</span> <span class='no'>plot_data_t1</span> <span class='kw'>%&gt;%</span>
+<span class='fu'>subset</span>(!<span class='fu'>is.na</span>(<span class='no'>BASE.CRP</span>) <span class='kw'>&amp;</span> !<span class='fu'>is.na</span>(<span class='no'>AVAL.ALT</span>)) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise_all.html'>mutate_at</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>contains</a></span>(<span class='st'>"."</span>)), <span class='no'>as.numeric</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>LOQFL_COMB</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='no'>LOQFL_CRP</span> <span class='kw'>==</span> <span class='st'>"Y"</span> <span class='kw'>|</span> <span class='no'>LOQFL_ALT</span> <span class='kw'>==</span> <span class='st'>"Y"</span>, <span class='st'>"Y"</span>, <span class='st'>"N"</span>))
 
-<span class='no'>plot1</span> <span class='kw'>&lt;-</span> <span class='fu'>g_scatterplot</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>'Scatter Plot'</span>,
-           <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ALB</span>,
-           <span class='kw'>param_var</span> <span class='kw'>=</span> <span class='st'>'PARAMCD'</span>,
-           <span class='kw'>param</span> <span class='kw'>=</span> <span class='no'>param</span>,
-           <span class='kw'>xaxis_var</span> <span class='kw'>=</span> <span class='st'>'BASE'</span>,
-           <span class='kw'>yaxis_var</span> <span class='kw'>=</span> <span class='st'>'AVAL'</span>,
-           <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>'ARM'</span>,
-           <span class='kw'>visit</span> <span class='kw'>=</span> <span class='st'>'AVISITCD'</span>,
-           <span class='kw'>loq_flag_var</span> <span class='kw'>=</span> <span class='st'>'LOQFL'</span>,
-           <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>'AVALU'</span>,
+<span class='no'>xaxis_param</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"CRP"</span>)
+<span class='no'>yaxis_param</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"ALT"</span>)
+
+<span class='no'>plot1</span> <span class='kw'>&lt;-</span> <span class='fu'>g_correlationplot_av</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>'Correlation Plot'</span>,
+           <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>plot_data_t2</span>,
+           <span class='kw'>param_var</span> <span class='kw'>=</span> <span class='st'>"PARAMCD"</span>,
+           <span class='kw'>xaxis_param</span> <span class='kw'>=</span> <span class='no'>xaxis_param</span>,
+           <span class='kw'>xaxis_var</span> <span class='kw'>=</span> <span class='st'>"AVAL"</span>,
+           <span class='kw'>xvar</span> <span class='kw'>=</span> <span class='st'>"AVAL.CRP"</span>,
+           <span class='kw'>yaxis_param</span> <span class='kw'>=</span> <span class='no'>yaxis_param</span>,
+           <span class='kw'>yaxis_var</span> <span class='kw'>=</span> <span class='st'>"BASE"</span>,
+           <span class='kw'>yvar</span> <span class='kw'>=</span> <span class='st'>"BASE.ALT"</span>,
+           <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>,
+           <span class='kw'>visit</span> <span class='kw'>=</span> <span class='st'>"AVISITCD"</span>,
+           <span class='kw'>loq_flag_var</span> <span class='kw'>=</span> <span class='st'>"LOQFL"</span>,
+           <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"AVALU"</span>,
            <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='fl'>0</span>,
            <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='fl'>200</span>,
            <span class='kw'>ymin</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-           <span class='kw'>ymax</span> <span class='kw'>=</span> <span class='fl'>200</span>,
+           <span class='kw'>ymax</span> <span class='kw'>=</span> <span class='fl'>2000</span>,
+           <span class='kw'>title_text</span> <span class='kw'>=</span> <span class='st'>"Test"</span>,
+           <span class='kw'>xaxis_lab</span> <span class='kw'>=</span> <span class='st'>"Test x"</span>,
+           <span class='kw'>yaxis_lab</span> <span class='kw'>=</span> <span class='st'>"Test y"</span>,
            <span class='kw'>color_manual</span> <span class='kw'>=</span> <span class='no'>color_manual</span>,
            <span class='kw'>shape_manual</span> <span class='kw'>=</span> <span class='no'>shape_manual</span>,
-           <span class='kw'>facet_ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-           <span class='kw'>facet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+           <span class='kw'>facet_ncol</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+           <span class='kw'>facet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>,
            <span class='kw'>reg_line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
            <span class='kw'>hline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
            <span class='kw'>vline</span> <span class='kw'>=</span> <span class='fl'>.5</span>,
-           <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+           <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>14</span>,
            <span class='kw'>dot_size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
            <span class='kw'>reg_text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>)

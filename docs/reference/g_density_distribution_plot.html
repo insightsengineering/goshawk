@@ -196,15 +196,15 @@ treatment overlaid.</p>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># Example using ADaM structure analysis dataset.</span>
 
-<span class='co'># original ARM value = dose value</span>
-<span class='no'>arm_mapping</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='st'>"A: Drug X"</span> <span class='kw'>=</span> <span class='st'>"150mg QD"</span>, <span class='st'>"B: Placebo"</span> <span class='kw'>=</span> <span class='st'>"Placebo"</span>,
-<span class='st'>"C: Combination"</span> <span class='kw'>=</span> <span class='st'>"Combination"</span>)
-<span class='no'>color_manual</span> <span class='kw'>&lt;-</span>  <span class='fu'>c</span>(<span class='st'>"150mg QD"</span> <span class='kw'>=</span> <span class='st'>"#000000"</span>, <span class='st'>"Placebo"</span> <span class='kw'>=</span> <span class='st'>"#3498DB"</span>, <span class='st'>"Combination"</span> <span class='kw'>=</span> <span class='st'>"#E74C3C"</span>)
-
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'>library</span>(<span class='no'>stringr</span>)
+
+<span class='co'># original ARM value = dose value</span>
+<span class='no'>arm_mapping</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='st'>"A: Drug X"</span> <span class='kw'>=</span> <span class='st'>"150mg QD"</span>, <span class='st'>"B: Placebo"</span> <span class='kw'>=</span> <span class='st'>"Placebo"</span>,
+<span class='st'>"C: Combination"</span> <span class='kw'>=</span> <span class='st'>"Combination"</span>)
+<span class='no'>color_manual</span> <span class='kw'>&lt;-</span>  <span class='fu'>c</span>(<span class='st'>"150mg QD"</span> <span class='kw'>=</span> <span class='st'>"#000000"</span>, <span class='st'>"Placebo"</span> <span class='kw'>=</span> <span class='st'>"#3498DB"</span>, <span class='st'>"Combination"</span> <span class='kw'>=</span> <span class='st'>"#E74C3C"</span>)
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>ALB</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radlb'>radlb</a></span>(<span class='no'>ASL</span>, <span class='kw'>visit_format</span> <span class='kw'>=</span> <span class='st'>"WEEK"</span>, <span class='kw'>n_assessments</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
@@ -237,7 +237,7 @@ treatment overlaid.</p>
            <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>'AVALU'</span>,
            <span class='kw'>color_manual</span> <span class='kw'>=</span> <span class='no'>color_manual</span>,
            <span class='kw'>color_comb</span> <span class='kw'>=</span> <span class='st'>"#39ff14"</span>,
-           <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>'AVISITCD'</span>,
+           <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>"AVISITCD"</span>,
            <span class='kw'>hline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
            <span class='kw'>facet_ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
            <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
