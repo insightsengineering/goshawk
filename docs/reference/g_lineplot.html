@@ -229,8 +229,10 @@ quartile.</p>
     <pre class="examples"><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># Example using ADaM structure analysis dataset.</span>
+
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+<span class='fu'>library</span>(<span class='no'>goshawk</span>)
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
 <span class='fu'>library</span>(<span class='no'>stringr</span>)
 
@@ -240,7 +242,7 @@ quartile.</p>
 <span class='no'>color_manual</span> <span class='kw'>&lt;-</span>  <span class='fu'>c</span>(<span class='st'>"150mg QD"</span> <span class='kw'>=</span> <span class='st'>"#000000"</span>, <span class='st'>"Placebo"</span> <span class='kw'>=</span> <span class='st'>"#3498DB"</span>, <span class='st'>"Combination"</span> <span class='kw'>=</span> <span class='st'>"#E74C3C"</span>)
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>ALB</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radlb'>radlb</a></span>(<span class='no'>ASL</span>, <span class='kw'>visit_format</span> <span class='kw'>=</span> <span class='st'>"WEEK"</span>, <span class='kw'>n_assessments</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>ALB</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radlb'>radlb</a></span>(<span class='no'>ASL</span>, <span class='kw'>visit_format</span> <span class='kw'>=</span> <span class='st'>"WEEK"</span>, <span class='kw'>n_assessments</span> <span class='kw'>=</span> <span class='fl'>7L</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='no'>ALB</span> <span class='kw'>&lt;-</span> <span class='no'>ALB</span> <span class='kw'>%&gt;%</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>AVISITCD</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span>(
 <span class='no'>AVISIT</span> <span class='kw'>==</span> <span class='st'>"SCREENING"</span> ~ <span class='st'>"SCR"</span>,
@@ -257,16 +259,14 @@ quartile.</p>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>as.character</span>(<span class='no'>arm_mapping</span>[<span class='fu'>match</span>(<span class='no'>ARM</span>, <span class='fu'>names</span>(<span class='no'>arm_mapping</span>))])) <span class='kw'>%&gt;%</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ARM</span>) <span class='kw'>%&gt;%</span> <span class='fu'>reorder</span>(<span class='no'>TRTORD</span>))
 
-<span class='no'>param</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'CRP'</span>)
-
-<span class='fu'>g_lineplot</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>'Line Plot'</span>,
+<span class='fu'>g_lineplot</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Line Plot"</span>,
            <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ALB</span>,
-           <span class='kw'>biomarker_var</span> <span class='kw'>=</span> <span class='st'>'PARAMCD'</span>,
-           <span class='kw'>biomarker</span> <span class='kw'>=</span> <span class='st'>'CRP'</span>,
-           <span class='kw'>value_var</span> <span class='kw'>=</span> <span class='st'>'AVAL'</span>,
-           <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>'ARM'</span>,
+           <span class='kw'>biomarker_var</span> <span class='kw'>=</span> <span class='st'>"PARAMCD"</span>,
+           <span class='kw'>biomarker</span> <span class='kw'>=</span> <span class='st'>"CRP"</span>,
+           <span class='kw'>value_var</span> <span class='kw'>=</span> <span class='st'>"AVAL"</span>,
+           <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>,
            <span class='kw'>shape</span> <span class='kw'>=</span> <span class='st'>"RACE"</span>,
-           <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>'AVISITCD'</span>,
+           <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"AVISITCD"</span>,
            <span class='kw'>color_manual</span> <span class='kw'>=</span> <span class='no'>color_manual</span>,
            <span class='kw'>median</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
            <span class='kw'>hline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,

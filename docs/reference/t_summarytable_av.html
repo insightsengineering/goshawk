@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function to create a table of descriptive summary statistics to accompany plots. — t_summarytable_av • goshawk</title>
+<title>Function to create a table of descriptive summary statistics to accompany plots that present all visit data based on analysis day. — t_summarytable_av • goshawk</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Function to create a table of descriptive summary statistics to accompany plots. — t_summarytable_av" />
+<meta property="og:title" content="Function to create a table of descriptive summary statistics to accompany plots that present all visit data based on analysis day. — t_summarytable_av" />
 
 <meta property="og:description" content="Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, 
 visit,
@@ -99,7 +99,7 @@ n, meand, median, sd, min, max, " />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function to create a table of descriptive summary statistics to accompany plots.</h1>
+    <h1>Function to create a table of descriptive summary statistics to accompany plots that present all visit data based on analysis day.</h1>
     
     <div class="hidden name"><code>t_summarytable_av.Rd</code></div>
     </div>
@@ -173,7 +173,7 @@ n, meand, median, sd, min, max, <!-- %missing values, % LOQ values. --></p>
 <span class='st'>"C: Combination"</span> <span class='kw'>=</span> <span class='st'>"Combination"</span>)
 
 <span class='no'>ASL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>ALB</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radlb'>radlb</a></span>(<span class='no'>ASL</span>, <span class='kw'>visit_format</span> <span class='kw'>=</span> <span class='st'>"WEEK"</span>, <span class='kw'>n_assessments</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>ALB</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radlb'>radlb</a></span>(<span class='no'>ASL</span>, <span class='kw'>visit_format</span> <span class='kw'>=</span> <span class='st'>"WEEK"</span>, <span class='kw'>n_assessments</span> <span class='kw'>=</span> <span class='fl'>7L</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='no'>ALB</span> <span class='kw'>&lt;-</span> <span class='no'>ALB</span> <span class='kw'>%&gt;%</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>AVISITCD</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span>(
 <span class='no'>AVISIT</span> <span class='kw'>==</span> <span class='st'>"SCREENING"</span> ~ <span class='st'>"SCR"</span>,
@@ -190,15 +190,14 @@ n, meand, median, sd, min, max, <!-- %missing values, % LOQ values. --></p>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>as.character</span>(<span class='no'>arm_mapping</span>[<span class='fu'>match</span>(<span class='no'>ARM</span>, <span class='fu'>names</span>(<span class='no'>arm_mapping</span>))])) <span class='kw'>%&gt;%</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>ARM</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>ARM</span>) <span class='kw'>%&gt;%</span> <span class='fu'>reorder</span>(<span class='no'>TRTORD</span>))
 
-<span class='no'>param</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'ALKPH'</span>)
-
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='fu'>t_summarytable_av</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ALB</span>,
-               <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>'ACTARM'</span>,
-               <span class='kw'>param_var</span> <span class='kw'>=</span> <span class='st'>'PARAMCD'</span>,
-               <span class='kw'>param</span> <span class='kw'>=</span> <span class='no'>param</span>,
-               <span class='kw'>xaxis_var</span> <span class='kw'>=</span> <span class='st'>'AVAL'</span>,
-               <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>'ACTARM'</span>,
-               <span class='kw'>loq_flag_var</span> <span class='kw'>=</span> <span class='st'>'LOQFL'</span>)
+               <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>"ACTARM"</span>,
+               <span class='kw'>param_var</span> <span class='kw'>=</span> <span class='st'>"PARAMCD"</span>,
+               <span class='kw'>param</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ALKPH"</span>),
+               <span class='kw'>xaxis_var</span> <span class='kw'>=</span> <span class='st'>"AVAL"</span>,
+               <span class='kw'>facet_var</span> <span class='kw'>=</span> <span class='st'>"ACTARM"</span>,
+               <span class='kw'>loq_flag_var</span> <span class='kw'>=</span> <span class='st'>"LOQFL"</span>)
+<span class='no'>tbl</span>
 
 <span class='co'># }</span><div class='input'>
 </div></pre>

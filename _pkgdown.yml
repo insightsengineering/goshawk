@@ -15,18 +15,19 @@ navbar:
 reference:
 
   - title: Modules
-    desc: These functions produce longitudinal visualizations and an accompanying descriptive summary table.
+    desc: These functions produce longitudinal visualizations and in some cases an accompanying descriptive summary table.
     contents:
       - g_boxplot
       - g_correlationplot
+      - g_correlationplot_av
       - g_density_distribution_plot
       - g_lineplot
       - g_scatterplot
       - g_spaghettiplot
       - t_summarytable
+      - t_summarytable_av
 
   - title: Package Build Related
     desc: These files facilitate package build.
     contents:
-      - global_variables
       - goshawk_core_packages

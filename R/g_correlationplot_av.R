@@ -1,4 +1,4 @@
-#'Function to create a correlation plot without AVISIT facetting. Presents all data.
+#'Function to create a correlation plot without visit facetting. Presents all visit data based on analysis day.
 #'
 #'Default plot displays correlation facetted by treatment with color attributed treatment arms and
 #'symbol attributed LOQ values.
@@ -98,16 +98,13 @@
 #' mutate_at(vars(contains(".")), as.numeric) %>%
 #' mutate(LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"))
 #'
-#' xaxis_param <- c("CRP")
-#' yaxis_param <- c("ALT")
-#'
-#' plot1 <- g_correlationplot_av(label = 'Correlation Plot',
+#' g_correlationplot_av(label = "Correlation Plot",
 #'            data = plot_data_t2,
 #'            param_var = "PARAMCD",
-#'            xaxis_param = xaxis_param,
+#'            xaxis_param =  c("CRP"),
 #'            xaxis_var = "AVAL",
 #'            xvar = "AVAL.CRP",
-#'            yaxis_param = yaxis_param,
+#'            yaxis_param = c("ALT"),
 #'            yaxis_var = "BASE",
 #'            yvar = "BASE.ALT",
 #'            trt_group = "ARM",
@@ -133,19 +130,18 @@
 #'            font_size = 14,
 #'            dot_size = 2,
 #'            reg_text_size = 3)
-#' plot1
 #'
 #' }
 #' 
 
-g_correlationplot_av <- function(label = 'Correlation Plot',
+g_correlationplot_av <- function(label = "Correlation Plot",
                               data,
-                              param_var = 'PARAMCD',
+                              param_var = "PARAMCD",
                               xaxis_param = "CRP",
-                              xaxis_var = 'BASE',
+                              xaxis_var = "BASE",
                               xvar = xvar,
                               yaxis_param = "IGG",
-                              yaxis_var = 'AVAL',
+                              yaxis_var = "AVAL",
                               yvar = yvar,
                               trt_group = "ARM",
                               visit = "AVISITCD",

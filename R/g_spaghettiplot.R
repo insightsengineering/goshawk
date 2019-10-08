@@ -53,7 +53,7 @@
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #' 
 #' ASL <- radsl(N = 20, seed = 1)
-#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 #' ALB <- ALB %>% 
 #' mutate(AVISITCD = case_when(
 #' AVISIT == "SCREENING" ~ "SCR",
@@ -70,33 +70,30 @@
 #' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
 #'
-#' param <- c('CRP')
-#' 
 #' g_spaghettiplot(data = ALB,
-#'                 subj_id = 'USUBJID',
-#'                 biomarker_var = 'PARAMCD',
-#'                 biomarker = 'CRP',
-#'                 value_var = 'AVAL',
-#'                 trt_group = 'ARM',
-#'                 time = 'AVISITCD',
+#'                 subj_id = "USUBJID",
+#'                 biomarker_var = "PARAMCD",
+#'                 biomarker = "CRP",
+#'                 value_var = "AVAL",
+#'                 trt_group = "ARM",
+#'                 time = "AVISITCD",
 #'                 color_manual = color_manual,
 #'                 color_comb = "#39ff14", 
 #'                 alpha = .02,
 #'                 hline = NULL,
 #'                 rotate_xlab = FALSE,
-#'                 group_stats = "median"
-#'                 )
+#'                 group_stats = "median")
 #'
 #'}
 #'
 
 g_spaghettiplot <- function(data,
-                            subj_id = 'USUBJID',
-                            biomarker_var = 'PARAMCD',
-                            biomarker_var_label = 'PARAM',
+                            subj_id = "USUBJID",
+                            biomarker_var = "PARAMCD",
+                            biomarker_var_label = "PARAM",
                             biomarker,
-                            value_var = 'AVAL',
-                            unit_var = 'AVALU',
+                            value_var = "AVAL",
+                            unit_var = "AVALU",
                             trt_group,
                             trt_group_level = NULL,
                             time,

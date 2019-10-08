@@ -67,7 +67,7 @@ arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 
 ASL <- radsl(N = 20, seed = 1)
-ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 ALB <- ALB \%>\% 
 mutate(AVISITCD = case_when(
 AVISIT == "SCREENING" ~ "SCR",
@@ -84,17 +84,15 @@ ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
 mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
 mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
 
-param <- c('CRP')
-
-plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
+g_density_distribution_plot(label = "Density Distribution Plot",
            data = ALB,
-           param_var = 'PARAMCD',
-           param = param,
-           xaxis_var = 'AVAL',
-           trt_group = 'ARM',
+           param_var = "PARAMCD",
+           param = c("CRP"),
+           xaxis_var = "AVAL",
+           trt_group = "ARM",
            xmin = 0,
            xmax = 200,
-           unit = 'AVALU',
+           unit = "AVALU",
            color_manual = color_manual,
            color_comb = "#39ff14",
            facet_var = "AVISITCD",
@@ -103,7 +101,6 @@ plot1 <- g_density_distribution_plot(label = 'Density Distribution Plot',
            rotate_xlab = FALSE,
            font_size = 10,
            line_size = .5)
-plot1 
 
 }
 

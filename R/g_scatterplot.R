@@ -60,7 +60,7 @@
 #' shape_manual <-  c("N"  = 1, "Y"  = 2, "NA" = 0)
 #' 
 #' ASL <- radsl(N = 20, seed = 1)
-#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 #' ALB <- ALB %>% 
 #' mutate(AVISITCD = case_when(
 #' AVISIT == "SCREENING" ~ "SCR",
@@ -77,18 +77,16 @@
 #' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
 #'
-#' param <- c('ALT')
-#' 
-#' plot1 <- g_scatterplot(label = 'Scatter Plot',
+#' g_scatterplot(label = "Scatter Plot",
 #'            data = ALB,
-#'            param_var = 'PARAMCD', 
-#'            param = param,
-#'            xaxis_var = 'BASE',
-#'            yaxis_var = 'AVAL',
-#'            trt_group = 'ARM',
-#'            visit = 'AVISITCD',
-#'            loq_flag_var = 'LOQFL',
-#'            unit = 'AVALU',
+#'            param_var = "PARAMCD", 
+#'            param = c("ALT"),
+#'            xaxis_var = "BASE",
+#'            yaxis_var = "AVAL",
+#'            trt_group = "ARM",
+#'            visit = "AVISITCD",
+#'            loq_flag_var = "LOQFL",
+#'            unit = "AVALU",
 #'            xmin = 0,
 #'            xmax = 200,
 #'            ymin = 0,
@@ -105,17 +103,16 @@
 #'            font_size = 14,
 #'            dot_size = 2,
 #'            reg_text_size = 3)
-#' plot1 
 #' 
 #' }
 #' 
 
-g_scatterplot <- function(label = 'Scatter Plot',
+g_scatterplot <- function(label = "Scatter Plot",
                           data,
-                          param_var = 'PARAMCD',
+                          param_var = "PARAMCD",
                           param = "CRP",
-                          xaxis_var = 'BASE',
-                          yaxis_var = 'AVAL',
+                          xaxis_var = "BASE",
+                          yaxis_var = "AVAL",
                           trt_group = "ARM",
                           visit = "AVISITCD",
                           loq_flag_var = "LOQFL",

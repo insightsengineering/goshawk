@@ -37,7 +37,7 @@
 #' "C: Combination" = "Combination")
 #' 
 #' ASL <- radsl(N = 20, seed = 1)
-#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 #' ALB <- ALB %>% 
 #' mutate(AVISITCD = case_when(
 #' AVISIT == "SCREENING" ~ "SCR",
@@ -54,15 +54,14 @@
 #' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
 #'
-#' param <- c('CRP')
-#' 
 #' tbl <- t_summarytable(data = ALB,
-#'                trt_group = 'ARM',
-#'                param_var = 'PARAMCD',
-#'                param = param,
-#'                xaxis_var = 'AVAL',
-#'                visit_var = 'AVISITCD',
-#'                loq_flag_var = 'LOQFL')
+#'                trt_group = "ARM",
+#'                param_var = "PARAMCD",
+#'                param = c("CRP"),
+#'                xaxis_var = "AVAL",
+#'                visit_var = "AVISITCD",
+#'                loq_flag_var = "LOQFL")
+#' tbl
 #'
 #'}
 #'
@@ -72,8 +71,8 @@ t_summarytable <- function(data,
                            param_var,
                            param,
                            xaxis_var,
-                           visit_var = 'AVISITCD',
-                           loq_flag_var = 'LOQFL', ...){
+                           visit_var = "AVISITCD",
+                           loq_flag_var = "LOQFL", ...){
   
   table_data <- data %>%
     filter(eval(parse(text = param_var)) == param)

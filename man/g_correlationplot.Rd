@@ -111,7 +111,7 @@ color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" 
 shape_manual <-  c("N"  = 1, "Y"  = 2, "NA" = 0)
 
 ASL <- radsl(N = 20, seed = 1)
-ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 ALB <- ALB \%>\%
 mutate(AVISITCD = case_when(
 AVISIT == "SCREENING" ~ "SCR",
@@ -143,16 +143,13 @@ subset(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) \%>\%
 mutate_at(vars(contains(".")), as.numeric) \%>\%
 mutate(LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"))
 
-xaxis_param <- c("CRP")
-yaxis_param <- c("ALT")
-
-plot1 <- g_correlationplot(label = 'Correlation Plot',
+g_correlationplot(label = "Correlation Plot",
            data = plot_data_t2,
            param_var = "PARAMCD",
-           xaxis_param = xaxis_param,
+           xaxis_param = c("CRP"),
            xaxis_var = "AVAL",
            xvar = "AVAL.CRP",
-           yaxis_param = yaxis_param,
+           yaxis_param = c("ALT"),
            yaxis_var = "BASE",
            yvar = "BASE.ALT",
            trt_group = "ARM",
@@ -178,7 +175,6 @@ plot1 <- g_correlationplot(label = 'Correlation Plot',
            font_size = 14,
            dot_size = 2,
            reg_text_size = 3)
-plot1
 
 }
 

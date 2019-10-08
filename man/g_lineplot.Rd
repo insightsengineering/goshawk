@@ -76,9 +76,12 @@ quartile.
 \examples{
 
 \dontrun{
+
 # Example using ADaM structure analysis dataset.
+
 library(dplyr)
 library(ggplot2)
+library(goshawk)
 library(random.cdisc.data)
 library(stringr)
 
@@ -88,7 +91,7 @@ arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 
 ASL <- radsl(N = 20, seed = 1)
-ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 ALB <- ALB \%>\% 
 mutate(AVISITCD = case_when(
 AVISIT == "SCREENING" ~ "SCR",
@@ -105,16 +108,14 @@ ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
 mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
 mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
 
-param <- c('CRP')
-
-g_lineplot(label = 'Line Plot',
+g_lineplot(label = "Line Plot",
            data = ALB,
-           biomarker_var = 'PARAMCD',
-           biomarker = 'CRP',
-           value_var = 'AVAL',
-           trt_group = 'ARM',
+           biomarker_var = "PARAMCD",
+           biomarker = "CRP",
+           value_var = "AVAL",
+           trt_group = "ARM",
            shape = "RACE",
-           time = 'AVISITCD',
+           time = "AVISITCD",
            color_manual = color_manual,
            median = FALSE,
            hline = NULL,

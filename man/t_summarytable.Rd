@@ -49,7 +49,7 @@ arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 "C: Combination" = "Combination")
 
 ASL <- radsl(N = 20, seed = 1)
-ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 ALB <- ALB \%>\% 
 mutate(AVISITCD = case_when(
 AVISIT == "SCREENING" ~ "SCR",
@@ -66,15 +66,14 @@ ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
 mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
 mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
 
-param <- c('CRP')
-
 tbl <- t_summarytable(data = ALB,
-               trt_group = 'ARM',
-               param_var = 'PARAMCD',
-               param = param,
-               xaxis_var = 'AVAL',
-               visit_var = 'AVISITCD',
-               loq_flag_var = 'LOQFL')
+               trt_group = "ARM",
+               param_var = "PARAMCD",
+               param = c("CRP"),
+               xaxis_var = "AVAL",
+               visit_var = "AVISITCD",
+               loq_flag_var = "LOQFL")
+tbl
 
 }
 

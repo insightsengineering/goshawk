@@ -239,6 +239,7 @@ required.</p></td>
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
 <span class='fu'>library</span>(<span class='no'>goshawk</span>)
 <span class='fu'>library</span>(<span class='no'>random.cdisc.data</span>)
+
 <span class='no'>ADSL</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radsl'>radsl</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>ADLB</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/random.cdisc.data/topics/radlb'>radlb</a></span>(<span class='no'>ADSL</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='no'>ADLB</span> <span class='kw'>&lt;-</span> <span class='no'>ADLB</span> <span class='kw'>%&gt;%</span> <span class='fu'>subset</span>(<span class='no'>PARAMCD</span> <span class='kw'>==</span> <span class='st'>"CRP"</span>)
@@ -249,13 +250,12 @@ required.</p></td>
           <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>,
           <span class='kw'>loq_flag</span> <span class='kw'>=</span> <span class='st'>"LOQFL"</span>,
           <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"AVALU"</span>,
-          <span class='kw'>shape_manual</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'N'</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='st'>'Y'</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='st'>'NA'</span> <span class='kw'>=</span> <span class='kw'>NULL</span>),
+          <span class='kw'>shape_manual</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"N"</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='st'>"Y"</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='st'>"NA"</span> <span class='kw'>=</span> <span class='kw'>NULL</span>),
           <span class='kw'>hline</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
           <span class='kw'>facet</span> <span class='kw'>=</span> <span class='st'>"AVISIT"</span>,
           <span class='kw'>xaxis_var</span> <span class='kw'>=</span> <span class='st'>"STUDYID"</span>,
           <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-          <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+          <span class='kw'>rotate_xlab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># }</span><div class='input'>
 </div></pre>

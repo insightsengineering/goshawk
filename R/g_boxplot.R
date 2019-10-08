@@ -57,6 +57,7 @@
 #' library(ggplot2)
 #' library(goshawk)
 #' library(random.cdisc.data)
+#' 
 #' ADSL <- radsl(N = 100, seed = 1)
 #' ADLB <- radlb(ADSL, seed = 2)
 #' ADLB <- ADLB %>% subset(PARAMCD == "CRP")
@@ -67,13 +68,12 @@
 #'           trt_group = "ARM",
 #'           loq_flag = "LOQFL",
 #'           unit = "AVALU",
-#'           shape_manual = c('N' = 1, 'Y' = 2, 'NA' = NULL),
+#'           shape_manual = c("N" = 1, "Y" = 2, "NA" = NULL),
 #'           hline = NULL,
 #'           facet = "AVISIT",
 #'           xaxis_var = "STUDYID",
 #'           alpha = 0.5,
-#'           rotate_xlab = TRUE
-#' )
+#'           rotate_xlab = TRUE)
 #' 
 #'}
 #'
@@ -97,7 +97,7 @@ g_boxplot <- function(data,
                       font_size = NULL,
                       armlabel = NULL,
                       facet = NULL                      
-) { 
+) {
   
   # re-establish treatment variable label
   if (trt_group == "ARM"){

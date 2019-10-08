@@ -1,4 +1,4 @@
-#' Function to create a table of descriptive summary statistics to accompany plots. 
+#' Function to create a table of descriptive summary statistics to accompany plots that present all visit data based on analysis day. 
 #' 
 #' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, 
 #' visit,
@@ -37,7 +37,7 @@
 #' "C: Combination" = "Combination")
 #' 
 #' ASL <- radsl(N = 20, seed = 1)
-#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 #' ALB <- ALB %>% 
 #' mutate(AVISITCD = case_when(
 #' AVISIT == "SCREENING" ~ "SCR",
@@ -54,15 +54,14 @@
 #' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
 #'
-#' param <- c('ALKPH')
-#' 
 #' tbl <- t_summarytable_av(data = ALB,
-#'                trt_group = 'ACTARM',
-#'                param_var = 'PARAMCD',
-#'                param = param,
-#'                xaxis_var = 'AVAL',
-#'                facet_var = 'ACTARM',
-#'                loq_flag_var = 'LOQFL')
+#'                trt_group = "ACTARM",
+#'                param_var = "PARAMCD",
+#'                param = c("ALKPH"),
+#'                xaxis_var = "AVAL",
+#'                facet_var = "ACTARM",
+#'                loq_flag_var = "LOQFL")
+#' tbl
 #'
 #'}
 #'
@@ -72,8 +71,8 @@ t_summarytable_av <- function(data,
                            param_var,
                            param,
                            xaxis_var,
-                           facet_var = 'AVISITCD',
-                           loq_flag_var = 'LOQFL', ...){
+                           facet_var = "AVISITCD",
+                           loq_flag_var = "LOQFL", ...){
   table_data <- data %>%
     filter(eval(parse(text = param_var)) == param)
   

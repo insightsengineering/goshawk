@@ -2,7 +2,7 @@
 % Please edit documentation in R/t_summarytable_av.R
 \name{t_summarytable_av}
 \alias{t_summarytable_av}
-\title{Function to create a table of descriptive summary statistics to accompany plots.}
+\title{Function to create a table of descriptive summary statistics to accompany plots that present all visit data based on analysis day.}
 \usage{
 t_summarytable_av(data, trt_group, param_var, param, xaxis_var,
   facet_var = "AVISITCD", loq_flag_var = "LOQFL", ...)
@@ -49,7 +49,7 @@ arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 "C: Combination" = "Combination")
 
 ASL <- radsl(N = 20, seed = 1)
-ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 ALB <- ALB \%>\% 
 mutate(AVISITCD = case_when(
 AVISIT == "SCREENING" ~ "SCR",
@@ -66,15 +66,14 @@ ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
 mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
 mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
 
-param <- c('ALKPH')
-
 tbl <- t_summarytable_av(data = ALB,
-               trt_group = 'ACTARM',
-               param_var = 'PARAMCD',
-               param = param,
-               xaxis_var = 'AVAL',
-               facet_var = 'ACTARM',
-               loq_flag_var = 'LOQFL')
+               trt_group = "ACTARM",
+               param_var = "PARAMCD",
+               param = c("ALKPH"),
+               xaxis_var = "AVAL",
+               facet_var = "ACTARM",
+               loq_flag_var = "LOQFL")
+tbl
 
 }
 
