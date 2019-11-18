@@ -31,8 +31,7 @@
 #' @importFrom grDevices hcl
 #' @importFrom grid unit.pmax
 #' @importFrom gridExtra grid.arrange
-#' @importFrom stringr str_to_title
-#' @importFrom stringr str_wrap
+#' @importFrom stringr str_count str_wrap str_to_title
 #'
 #' @author Balazs Toth (toth.balazs@gene.com)
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -337,7 +336,7 @@ g_lineplot <- function(label = "Line Plot",
   }
   
   labels <- rev(levels(sum_data[[int]]))
-  lines <- sum(str_count(unique(labels), "\n")) * 1/2 + length(unique(labels))
+  lines <- sum(stringr::str_count(unique(labels), "\n")) * 1/2 + length(unique(labels))
   
   minline <- 36
   tabletotal <- lines*minline
