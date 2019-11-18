@@ -151,11 +151,9 @@ g_scatterplot <- function(label = "Scatter Plot",
                                 paste0(plot_data$PARAM, " (", plot_data[[unit]], ") ", yaxis_var, " Values"))
   )
   # Setup legend label
-  if (is.null(attr(data[[trt_group]], "label"))){
-    trt_label <- "Dose"
-  } else {
-    trt_label <- attr(data[[trt_group]], "label")
-  }
+  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")),
+                    "Dose",
+                    attr(data[[trt_group]], "label"))
   # create plot foundation
   plot1 <- ggplot2::ggplot(data = plot_data,
                            aes_string(x = xaxis_var,

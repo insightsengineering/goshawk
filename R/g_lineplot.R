@@ -119,24 +119,15 @@ g_lineplot <- function(label = "Line Plot",
                        dodge = 0.4,
                        plot_height = 989) {
   ## Pre-process data
-  if (!is.null(trt_group_level)){
-    data[[trt_group]] <- factor(data[[trt_group]],
-                                levels = trt_group_level)
-  } else {
-    data[[trt_group]] <- factor(data[[trt_group]])
-  }
-  if (is.factor(data[[time]]) | is.character(data[[time]])){
-    xtype <- "discrete"
-  } else {
-    xtype <- "continuous"
-  }
+  data[[trt_group]] <- `if`(!is.null(trt_group_level),
+                            factor(data[[trt_group]], levels = trt_group_level),
+                            factor(data[[trt_group]]))
+  xtype <- `if`(is.factor(data[[time]]) | is.character(data[[time]]),
+                "discrete", "continuous")
   if (xtype == "discrete"){
-    if (!is.null(time_level)){
-      data[[time]] <- factor(data[[time]],
-                             levels = time_level)
-    } else {
-      data[[time]] <- factor(data[[time]])
-    }
+    data[[time]] <- `if`(!is.null(time_level),
+                         factor(data[[time]], levels = time_level),
+                         factor(data[[time]]))
   }
   groupings <- c(time, trt_group, shape)
   ## Summary statistics
@@ -195,11 +186,9 @@ g_lineplot <- function(label = "Line Plot",
     attributes(sum_data$ACTARM)$label <- "Actual Arm"
   }
   # Setup legend label
-  if (is.null(attr(sum_data[[trt_group]], "label"))){
-    trt_label <- "Dose"
-  } else {
-    trt_label <- attr(sum_data[[trt_group]], "label")
-  }
+  trt_label <- `if`(is.null(attr(sum_data[[trt_group]], "label")),
+                    "Dose",
+                    attr(sum_data[[trt_group]], "label"))
   if (is.null(shape)){
     plot1 <-  ggplot(data = sum_data,
                      aes_string(x = time,

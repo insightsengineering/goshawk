@@ -141,11 +141,9 @@ g_spaghettiplot <- function(data,
     attributes(for.plot$ACTARM)$label <- "Actual Arm"
   }
   # Setup legend label
-  if (is.null(attr(for.plot[[trt_group]], "label"))){
-    trt_label <- "Dose"
-  } else {
-    trt_label <- attr(for.plot[[trt_group]], "label")
-  }
+  trt_label <- `if`(is.null(attr(for.plot[[trt_group]], "label")),
+                    "Dose",
+                    attr(for.plot[[trt_group]], "label"))
   plot <- ggplot(data = for.plot,
                  aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
     geom_point(size = 0.8) +
