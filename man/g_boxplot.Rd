@@ -50,8 +50,8 @@ Y-axis e.g. AVAL.}
 \item{font_size}{point size of tex to use.  NULL is use default size}
 
 \item{armlabel}{label for the treatment symbols in the legend.
-If not specified then the label attribute for trt_group will be used. 
-If there is no label attribute for trt_group, then the name of the parameter 
+If not specified then the label attribute for trt_group will be used.
+If there is no label attribute for trt_group, then the name of the parameter
 (in title case) will be used.}
 
 \item{facet}{variable to facet the plot by, or "None" if no faceting
