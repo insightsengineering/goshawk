@@ -57,15 +57,15 @@
 #' "C: Combination" = "Combination")
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #' # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
-#' shape_manual <-  c("N"  = 1, "Y"  = 2, "NA" = 0)
+#' shape_manual <-  c("N" = 1, "Y" = 2, "NA" = 0)
 #'
 #' ASL <- radsl(N = 20, seed = 1)
 #' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 #' ALB <- ALB %>%
 #' mutate(AVISITCD = case_when(
 #' AVISIT == "SCREENING" ~ "SCR",
-#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start=6,
-#' stop=str_locate(AVISIT, "DAY")-1))),
+#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start = 6,
+#' stop = str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
 #' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
@@ -137,13 +137,13 @@ g_scatterplot <- function(label = "Scatter Plot",
     filter(eval(parse(text = param_var)) == param)
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
   ggtitle_label <- ifelse(is.null(unit), paste0(plot_data$PARAM, "@ Visits"),
-                         ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, "@ Visits"),
-                                paste0(plot_data$PARAM, " (", plot_data[[unit]], ") @ Visits"))
+                          ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, "@ Visits"),
+                                 paste0(plot_data$PARAM, " (", plot_data[[unit]], ") @ Visits"))
   )
   # Setup the x-axis label.  Combine the biomarker and the units (if available)
   x_axis_label <- ifelse(is.null(unit), paste(plot_data$PARAM, xaxis_var, "Values"),
-                       ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, xaxis_var, "Values"),
-                              paste0(plot_data$PARAM, " (", plot_data[[unit]], ") ", xaxis_var, " Values"))
+                         ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, xaxis_var, "Values"),
+                                paste0(plot_data$PARAM, " (", plot_data[[unit]], ") ", xaxis_var, " Values"))
   )
   # Setup the y-axis label.  Combine the biomarker and the units (if available)
   yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
@@ -189,8 +189,8 @@ g_scatterplot <- function(label = "Scatter Plot",
     sub_data <- subset(plot_data, !is.na(eval(parse(text = yaxis_var))) &
                          !is.na(eval(parse(text = xaxis_var)))) %>%
       group_by_(.dots = c(trt_group, visit)) %>%
-      mutate(intercept =  slope(eval(parse(text = yaxis_var)),
-                                eval(parse(text = xaxis_var)))[1]) %>%
+      mutate(intercept = slope(eval(parse(text = yaxis_var)),
+                               eval(parse(text = xaxis_var)))[1]) %>%
       mutate(slope = slope(eval(parse(text = yaxis_var)),
                            eval(parse(text = xaxis_var)))[2]) %>%
       mutate(corr = ifelse(((slope(eval(parse(text = yaxis_var)),
@@ -211,15 +211,23 @@ g_scatterplot <- function(label = "Scatter Plot",
                      hjust = 0,
                      vjust = 1,
                      label = ifelse(!is.na(intercept) & !is.na(slope) & !is.na(corr),
-                                    sprintf("y=%.2f+%.2fX\ncor=%.2f", intercept, slope, corr),
+                                    sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
                                     paste0("Insufficient Data For Regression")),
                      color = eval(parse(text = trt_group))),
                 size = reg_text_size) +
       labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
   }
   # Add abline
-  if (yaxis_var %in% c("AVAL", "AVALL2", "BASE2", "BASE2L2", "BASE", "BASEL2")) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)}  if (yaxis_var %in% c("CHG2", "CHG")) {plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)}
-  if (yaxis_var %in% c("PCHG2", "PCHG")) {plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)}
+  if (yaxis_var %in% c("AVAL", "AVALL2", "BASE2", "BASE2L2", "BASE", "BASEL2")) {
+    plot1 <- plot1 + 
+      geom_abline(intercept = 0, slope = 1)
+  }  
+  if (yaxis_var %in% c("CHG2", "CHG")) {
+    plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)
+  }
+  if (yaxis_var %in% c("PCHG2", "PCHG")) {
+    plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)
+  }
   # Format font size
   if (!is.null(font_size)){
     plot1 <- plot1 +
@@ -255,12 +263,12 @@ g_scatterplot <- function(label = "Scatter Plot",
   # Add horizontal line
   if (!is.null(hline)){
     plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color="red", linetype="dashed", size=0.5)
+      geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
   # Add vertical line
   if (!is.null(vline)){
     plot1 <- plot1 +
-      geom_vline(aes(xintercept = vline), color="red", linetype="dashed", size=0.5)
+      geom_vline(aes(xintercept = vline), color = "red", linetype = "dashed", size = 0.5)
   }
   plot1
 }

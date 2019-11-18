@@ -67,8 +67,8 @@
 #' ALB <- ALB %>%
 #' mutate(AVISITCD = case_when(
 #' AVISIT == "SCREENING" ~ "SCR",
-#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start=6,
-#' stop=str_locate(AVISIT, "DAY")-1))),
+#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start = 6,
+#' stop = str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
 #' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
@@ -145,8 +145,10 @@ g_lineplot <- function(label = "Line Plot",
     group_by_at(groupings) %>%
     summarise(count = sum(!is.na(eval(parse(text = value_var)))),
               mean = mean(eval(parse(text = value_var)), na.rm = TRUE),
-              CIup = mean(eval(parse(text = value_var)), na.rm = TRUE) + 1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE)/sqrt(n()),
-              CIdown = mean(eval(parse(text = value_var)), na.rm = TRUE) - 1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE)/sqrt(n()),
+              CIup = mean(eval(parse(text = value_var)), na.rm = TRUE) +
+                1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE) / sqrt(n()),
+              CIdown = mean(eval(parse(text = value_var)), na.rm = TRUE) -
+                1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE) / sqrt(n()),
               median = median(eval(parse(text = value_var)), na.rm = TRUE),
               quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
               quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE)) %>%
@@ -173,7 +175,7 @@ g_lineplot <- function(label = "Line Plot",
     down_limit <- "CIdown"
   }
   filtered_data <- data %>%
-    filter_at(biomarker_var, any_vars(.==biomarker))
+    filter_at(biomarker_var, any_vars(. == iomarker))
   unit <- filtered_data %>%
     pull(unit_var) %>%
     unique()
@@ -202,7 +204,7 @@ g_lineplot <- function(label = "Line Plot",
                      aes_string(x = time,
                                 y = line,
                                 color = trt_group,
-                                group  = int)) + theme_bw()  +
+                                group = int)) + theme_bw() +
       geom_point(position = pd)
     # Add manual color
     if (!is.null(color_manual)){
@@ -217,7 +219,7 @@ g_lineplot <- function(label = "Line Plot",
                      aes_string(x = time,
                                 y = line,
                                 color = int,
-                                group  = int,
+                                group = int,
                                 shape = int)) + theme_bw()
     # Add manual color
     if (!is.null(color_manual)){
@@ -232,33 +234,33 @@ g_lineplot <- function(label = "Line Plot",
     }
     shapes <- c(15, 16, 17, 18, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                 0, 1, 2)
-    if (nshape>length(shapes)){
+    if (nshape > length(shapes)){
       warning("Number of available shapes exceeded, values will cycle!")
     }
-    select <- (1:nshape)%%(length(shapes))
-    select <- ifelse(select==0, length(shapes), select)
+    select <- (1:nshape) %% (length(shapes))
+    select <- ifelse(select == 0, length(shapes), select)
     selected_shapes <- shapes[select]
     vals <- rep(selected_shapes, ncol)
-    plot1 <- plot1 + scale_shape_manual(" ",
-                                        values = vals )+
-      theme(legend.key.size=unit(1, "cm")) +
-      geom_point(position = pd, size =3)
+    plot1 <- plot1 + scale_shape_manual(" ", values = vals) +
+      theme(legend.key.size = unit(1, "cm")) +
+      geom_point(position = pd, size = 3)
   }
   plot1 <-  plot1 +
     geom_line(position = pd) +
     geom_errorbar(aes_string(ymin = down_limit,
                              ymax = up_limit),
-                  width=0.9,
+                  width = 0.9,
                   position = pd) +
     ggtitle(gtitle) +
-    labs(caption = paste("The output plot can display mean and median of input value.                         For mean, the error bar denotes 95% confidence interval.
-                         For median, the bar denotes the first to third quartile.")) +
+    labs(caption = paste("The output plot can display mean and median of input value.",
+                         "For mean, the error bar denotes 95% confidence interval.",
+                         "For median, the bar denotes the first to third quartile.")) +
     xlab(time) +
-    ylab(gylab)+
+    ylab(gylab) +
     theme(legend.position = "bottom", legend.direction = "horizontal",
-          plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5),
-          axis.title.y = element_text(margin = margin(r = 20)))+
-    guides(color=guide_legend(byrow=TRUE))
+          plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5),
+          axis.title.y = element_text(margin = margin(r = 20))) +
+    guides(color = guide_legend(byrow = TRUE))
   # Apply y-axis zoom range
   if (!is.null(ylim)){
     plot1 <- plot1 + coord_cartesian(ylim = ylim)
@@ -275,7 +277,7 @@ g_lineplot <- function(label = "Line Plot",
   #Add horizontal line
   if (!is.null(hline)){
     plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color="red", size=0.5)
+      geom_hline(aes(yintercept = hline), color = "red", size = 0.5)
   }
   # Format font size
   if (!is.null(font_size)){
@@ -288,9 +290,9 @@ g_lineplot <- function(label = "Line Plot",
             legend.text = element_text(size = font_size))
   }
   labels <- rev(levels(sum_data[[int]]))
-  lines <- sum(stringr::str_count(unique(labels), "\n")) * 1/2 + length(unique(labels))
+  lines <- sum(stringr::str_count(unique(labels), "\n")) / 2 + length(unique(labels))
   minline <- 36
-  tabletotal <- lines*minline
+  tabletotal <- lines * minline
   plotsize <- plot_height - tabletotal
   if (plotsize <= 250){
     stop("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the
@@ -303,16 +305,16 @@ g_lineplot <- function(label = "Line Plot",
     scale_y_discrete(labels = labels) +
     theme(panel.grid.major = element_blank(), legend.position = "none",
           panel.grid.minor = element_blank(),
-          panel.border = element_blank(), axis.text.x =  element_blank(),
-          axis.ticks =  element_blank(),
-          axis.title.x=element_blank(),
+          panel.border = element_blank(), axis.text.x = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title.x = element_blank(),
           axis.title.y = element_blank(),
-          axis.text.y = element_text(size=font_size),
-          plot.title = element_text(face = "bold", size=font_size))
+          axis.text.y = element_text(size = font_size),
+          plot.title = element_text(face = "bold", size = font_size))
   #Plot the two grobs using plot_grid
   plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
 }
-new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE){
+new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { #nolint
   for (i in 1:length(args)){
     if (is.null(args[[i]])){
       args[[i]] <- NULL
@@ -331,5 +333,6 @@ unique_name <- function(newname, old_names){
   newname
 }
 gg_color_hue <- function(n) {
-  hues = seq(15, 375, length = n + 1)
-  hcl(h = hues, l = 65, c = 100)[1:n]}
+  hues <- seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}

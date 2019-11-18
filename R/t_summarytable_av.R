@@ -41,8 +41,8 @@
 #' ALB <- ALB %>%
 #' mutate(AVISITCD = case_when(
 #' AVISIT == "SCREENING" ~ "SCR",
-#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start=6,
-#' stop=str_locate(AVISIT, "DAY")-1))),
+#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start = 6,
+#' stop = str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
 #' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
@@ -85,7 +85,7 @@ t_summarytable_av <- function(data,
                 Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
-                PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
+                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
       ) %>%
       select(param_var, trt_group, facet_var, n:PctLOQ, TRTORD) %>%
       ungroup()
@@ -99,7 +99,7 @@ t_summarytable_av <- function(data,
                 Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
-                PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
+                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
                 MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
       ) %>% # additional use of max function identifies maximum treatment order across all visits.
       mutate(!!trt_group := "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
@@ -120,7 +120,7 @@ t_summarytable_av <- function(data,
                 Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
-                PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
+                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
       ) %>%
       select(param_var, trt_group, facet_var, n:PctLOQ, TRTORD) %>%
       ungroup()
@@ -134,7 +134,7 @@ t_summarytable_av <- function(data,
                 Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
-                PctLOQ =  round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
+                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
                 MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
       ) %>% # additional use of max function identifies maximum treatment order across all visits.
       mutate(!!trt_group := "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop

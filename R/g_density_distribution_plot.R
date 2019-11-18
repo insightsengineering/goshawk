@@ -47,8 +47,8 @@
 #' ALB <- ALB %>%
 #' mutate(AVISITCD = case_when(
 #' AVISIT == "SCREENING" ~ "SCR",
-#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start=6,
-#' stop=str_locate(AVISIT, "DAY")-1))),
+#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start = 6,
+#' stop = str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
 #' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
@@ -123,7 +123,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   plot1 <- ggplot(plot_data) +
     geom_density(aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
     geom_density(aes(x = eval(parse(text = xaxis_var)), linetype = "Comb."), color = color_comb, size = line_size) +
-    scale_linetype_manual(name = "Combined Dose", values = c(Comb.="solid", per_dose="solid")) +
+    scale_linetype_manual(name = "Combined Dose", values = c(Comb. = "solid", per_dose = "solid")) +
     coord_cartesian(xlim = c(xmin, xmax)) +
     facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol) +
     theme_bw() +
@@ -139,7 +139,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   # Add horizontal line
   if (!is.null(hline)){
     plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color="red", linetype="dashed", size=0.5)
+      geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
   # Format font size
   if (!is.null(font_size)){

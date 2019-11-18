@@ -57,8 +57,8 @@
 #' ALB <- ALB %>%
 #' mutate(AVISITCD = case_when(
 #' AVISIT == "SCREENING" ~ "SCR",
-#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start=6,
-#' stop=str_locate(AVISIT, "DAY")-1))),
+#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start = 6,
+#' stop = str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
 #' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
@@ -149,14 +149,14 @@ g_spaghettiplot <- function(data,
   title <- list("AVAL" = "Analysis Value", "CHG" = "Change from Baseline")
   plot <- ggplot(data = for.plot,
                  aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
-    geom_point(size=0.8) +
-    geom_line(size=0.4, alpha = alpha) +
+    geom_point(size = 0.8) +
+    geom_line(size = 0.4, alpha = alpha) +
     facet_wrap(trt_group, ncol = facet_ncol) +
     theme_bw() +
     ggtitle(gtitle) +
     xlab(time) +
     ylab(gylab) +
-    theme(plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5))
+    theme(plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5))
   # Apply y-axis zoom range
   if (!is.null(ylim)){
     plot <- plot + coord_cartesian(ylim = ylim)
@@ -165,11 +165,11 @@ g_spaghettiplot <- function(data,
   if (group_stats != "NONE"){
     if (group_stats == "MEAN"){
       plot <- plot +
-        stat_summary(fun.y=mean, geom="line", lwd=1, aes(group = 1, linetype = "Group Mean"), color = color_comb)+
+        stat_summary(fun.y = mean, geom = "line", lwd = 1, aes(group = 1, linetype = "Group Mean"), color = color_comb) +
         scale_linetype_manual(name = "", label = "Group Mean", values = c(1))
     } else{
       plot <- plot +
-        stat_summary(fun.y=median, geom="line", lwd=1, aes(group = 1, linetype = "Group Median"), color = color_comb)+
+        stat_summary(fun.y = median, geom = "line", lwd = 1, aes(group = 1, linetype = "Group Median"), color = color_comb) +
         scale_linetype_manual(name = "", label = "Group Median", values = c(1))
     }
   }
@@ -190,12 +190,12 @@ g_spaghettiplot <- function(data,
   #Add horizontal line
   if (!is.null(hline)){
     plot <- plot +
-      geom_hline(aes(yintercept = hline), color="red", linetype="dashed", size=0.5)
+      geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
   # Format font size
   if (!is.null(font_size)){
     plot <- plot +
-      theme(plot.title = element_text(size=font_size, margin = margin()),
+      theme(plot.title = element_text(size = font_size, margin = margin()),
             axis.title.x = element_text(size = font_size),
             axis.text.x = element_text(size = font_size),
             axis.title.y = element_text(size = font_size),
