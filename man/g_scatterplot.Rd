@@ -52,7 +52,7 @@ g_scatterplot(label = "Scatter Plot", data, param_var = "PARAMCD",
 
 \item{facet_var}{variable to use for treatment facetting.}
 
-\item{reg_line}{include regression line and annotations for slope and coefficient in 
+\item{reg_line}{include regression line and annotations for slope and coefficient in
 visualization. Use with facet = TRUE.}
 
 \item{hline}{y-axis value to position a horizontal line.}
@@ -68,7 +68,7 @@ visualization. Use with facet = TRUE.}
 \item{reg_text_size}{font size control for regression line annotations.}
 }
 \description{
-Default plot displays scatter facetted by visit with color attributed treatment arms and symbol 
+Default plot displays scatter facetted by visit with color attributed treatment arms and symbol
 attributed LOQ values.
 }
 \details{
@@ -87,22 +87,22 @@ library(random.cdisc.data)
 library(stringr)
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 "C: Combination" = "Combination")
 color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
-shape_manual <-  c("N"  = 1, "Y"  = 2, "NA" = 0)
+shape_manual <-  c("N" = 1, "Y" = 2, "NA" = 0)
 
 ASL <- radsl(N = 20, seed = 1)
 ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
-ALB <- ALB \%>\% 
+ALB <- ALB \%>\%
 mutate(AVISITCD = case_when(
 AVISIT == "SCREENING" ~ "SCR",
-AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
-stop=str_locate(AVISIT, "DAY")-1))),
+AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start = 6,
+stop = str_locate(AVISIT, "DAY")-1))),
 TRUE ~ as.character(NA))) \%>\%
 mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)), 
+AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
 TRUE ~ as.numeric(NA))) \%>\%
 # use ARMCD values to order treatment in visualization legend
 mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
@@ -113,7 +113,7 @@ mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
 
 g_scatterplot(label = "Scatter Plot",
            data = ALB,
-           param_var = "PARAMCD", 
+           param_var = "PARAMCD",
            param = c("ALT"),
            xaxis_var = "BASE",
            yaxis_var = "AVAL",

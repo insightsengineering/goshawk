@@ -47,7 +47,7 @@ g_density_distribution_plot(label = "Density Distribution Plot", data,
 \item{line_size}{plot line thickness.}
 }
 \description{
-Default plot displays overall density facetted by visit with treatment arms and combined 
+Default plot displays overall density facetted by visit with treatment arms and combined
 treatment overlaid.
 }
 \examples{
@@ -62,20 +62,20 @@ library(random.cdisc.data)
 library(stringr)
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 "C: Combination" = "Combination")
 color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 
 ASL <- radsl(N = 20, seed = 1)
 ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
-ALB <- ALB \%>\% 
+ALB <- ALB \%>\%
 mutate(AVISITCD = case_when(
 AVISIT == "SCREENING" ~ "SCR",
-AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
-stop=str_locate(AVISIT, "DAY")-1))),
+AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start = 6,
+stop = str_locate(AVISIT, "DAY")-1))),
 TRUE ~ as.character(NA))) \%>\%
 mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)), 
+AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
 TRUE ~ as.numeric(NA))) \%>\%
 # use ARMCD values to order treatment in visualization legend
 mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,

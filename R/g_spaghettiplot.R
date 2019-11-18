@@ -128,7 +128,7 @@ g_spaghettiplot <- function(data,
     }
   }
   # Plot
-  for.plot <- data[data[[biomarker_var]] %in% biomarker,]
+  for.plot <- data[data[[biomarker_var]] %in% biomarker, ]
   unit <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[unit_var]])
   unit1 <- ifelse(is.na(unit) | unit == "", " ", paste0(" (", unit, ") "))
   biomarker1 <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[biomarker_var_label]])
@@ -146,7 +146,6 @@ g_spaghettiplot <- function(data,
   } else {
     trt_label <- attr(for.plot[[trt_group]], "label")
   }
-  title <- list("AVAL" = "Analysis Value", "CHG" = "Change from Baseline")
   plot <- ggplot(data = for.plot,
                  aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
     geom_point(size = 0.8) +
@@ -165,11 +164,13 @@ g_spaghettiplot <- function(data,
   if (group_stats != "NONE"){
     if (group_stats == "MEAN"){
       plot <- plot +
-        stat_summary(fun.y = mean, geom = "line", lwd = 1, aes(group = 1, linetype = "Group Mean"), color = color_comb) +
+        stat_summary(aes(group = 1, linetype = "Group Mean"),
+                     fun.y = mean, geom = "line", lwd = 1, color = color_comb) +
         scale_linetype_manual(name = "", label = "Group Mean", values = c(1))
     } else{
       plot <- plot +
-        stat_summary(fun.y = median, geom = "line", lwd = 1, aes(group = 1, linetype = "Group Median"), color = color_comb) +
+        stat_summary(aes(group = 1, linetype = "Group Median"),
+                     fun.y = median, geom = "line", lwd = 1, color = color_comb) +
         scale_linetype_manual(name = "", label = "Group Median", values = c(1))
     }
   }

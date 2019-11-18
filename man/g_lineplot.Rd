@@ -38,7 +38,7 @@ in the plot.}
 
 \item{time}{name of vairable containing visit names.}
 
-\item{time_level}{vector that can be used to define the factor level of time. Only use it when 
+\item{time_level}{vector that can be used to define the factor level of time. Only use it when
 x-axis variable is character or factor.}
 
 \item{color_manual}{vector of colors.}
@@ -47,10 +47,10 @@ x-axis variable is character or factor.}
 
 \item{hline}{numeric value represnting intercept of horizontal line.}
 
-\item{xtick}{numeric vector to define the tick values of x-axis when x variable is numeric. 
+\item{xtick}{numeric vector to define the tick values of x-axis when x variable is numeric.
 Default value is waiver().}
 
-\item{xlabel}{vector with same length of xtick to define the label of x-axis tick values. 
+\item{xlabel}{vector with same length of xtick to define the label of x-axis tick values.
 Default value is waiver().}
 
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
@@ -68,9 +68,9 @@ Default value is waiver().}
 Function to create line plot of summary statistics over time.
 }
 \details{
-Currently, the output plot can display mean and median of input value. For mean, the 
+Currently, the output plot can display mean and median of input value. For mean, the
 error bar denotes
-95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75% 
+95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75%
 quartile.
 }
 \examples{
@@ -86,20 +86,20 @@ library(random.cdisc.data)
 library(stringr)
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 "C: Combination" = "Combination")
 color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 
 ASL <- radsl(N = 20, seed = 1)
 ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
-ALB <- ALB \%>\% 
+ALB <- ALB \%>\%
 mutate(AVISITCD = case_when(
 AVISIT == "SCREENING" ~ "SCR",
-AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
-stop=str_locate(AVISIT, "DAY")-1))),
+AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start = 6,
+stop = str_locate(AVISIT, "DAY")-1))),
 TRUE ~ as.character(NA))) \%>\%
 mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)), 
+AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
 TRUE ~ as.numeric(NA))) \%>\%
 # use ARMCD values to order treatment in visualization legend
 mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
@@ -121,7 +121,7 @@ g_lineplot(label = "Line Plot",
            hline = NULL,
            rotate_xlab = FALSE,
            plot_height = 2000)
-           
+
 }
 
 }

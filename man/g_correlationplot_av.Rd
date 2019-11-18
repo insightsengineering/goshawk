@@ -67,8 +67,8 @@ g_correlationplot_av(label = "Correlation Plot", data,
 
 \item{facet_var}{variable to use for treatment facetting.}
 
-\item{reg_line}{include regression line and annotations for slope and coefficient. Use with facet
-= TRUE.}
+\item{reg_line}{include regression line and annotations for slope and coefficient.
+Use with facet = TRUE.}
 
 \item{hline}{y-axis value to position a horizontal line.}
 

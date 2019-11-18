@@ -256,8 +256,8 @@ g_correlationplot <- function(label = "Correlation Plot",
           hjust = 0,
           vjust = 1,
           label = ~ ifelse(!is.na(intercept) & !is.na(slope) & !is.na(corr),
-            sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
-            paste0("Insufficient Data For Regression")
+                           sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
+                           paste0("Insufficient Data For Regression")
           ),
           color = sym(trt_group)
         ),

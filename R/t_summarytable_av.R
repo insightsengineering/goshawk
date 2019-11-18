@@ -1,8 +1,9 @@
-#' Function to create a table of descriptive summary statistics to accompany plots that present all visit data based on analysis day.
+#' Function to create a table of descriptive summary statistics to accompany plots
+#' that present all visit data based on analysis day.
 #'
-#' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment,
-#' visit,
-#' n, meand, median, sd, min, max, %missing values, % LOQ values.
+#' Output descriptive summary statistics table as a data frame.
+#' Includes biomarker, treatment, visit, n, meand, median, sd, min, max,
+#' %missing values, % LOQ values.
 #'
 #' @param data name of data frame to summarize.
 #' @param trt_group treatment group variable name e.g. ARM.
@@ -66,12 +67,12 @@
 #'}
 #'
 t_summarytable_av <- function(data,
-                           trt_group,
-                           param_var,
-                           param,
-                           xaxis_var,
-                           facet_var = "AVISITCD",
-                           loq_flag_var = "LOQFL", ...){
+                              trt_group,
+                              param_var,
+                              param,
+                              xaxis_var,
+                              facet_var = "AVISITCD",
+                              loq_flag_var = "LOQFL", ...){
   table_data <- data %>%
     filter(eval(parse(text = param_var)) == param)
   if (trt_group == facet_var){
@@ -84,8 +85,12 @@ t_summarytable_av <- function(data,
                 StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
-                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
+                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var)))) /
+                                  length(eval(parse(text = xaxis_var))),
+                                digits = 2),
+                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == "Y", na.rm = TRUE) /
+                                 length(eval(parse(text = loq_flag_var))),
+                               digits = 2)
       ) %>%
       select(param_var, trt_group, facet_var, n:PctLOQ, TRTORD) %>%
       ungroup()
@@ -98,8 +103,12 @@ t_summarytable_av <- function(data,
                 StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
-                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
+                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var)))) /
+                                  length(eval(parse(text = xaxis_var))),
+                                digits = 2),
+                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == "Y", na.rm = TRUE) /
+                                 length(eval(parse(text = loq_flag_var))),
+                               digits = 2),
                 MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
       ) %>% # additional use of max function identifies maximum treatment order across all visits.
       mutate(!!trt_group := "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
@@ -119,8 +128,12 @@ t_summarytable_av <- function(data,
                 StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
-                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
+                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var)))) /
+                                  length(eval(parse(text = xaxis_var))),
+                                digits = 2),
+                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == "Y", na.rm = TRUE) /
+                                 length(eval(parse(text = loq_flag_var))),
+                               digits = 2)
       ) %>%
       select(param_var, trt_group, facet_var, n:PctLOQ, TRTORD) %>%
       ungroup()
@@ -133,8 +146,12 @@ t_summarytable_av <- function(data,
                 StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
                 Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
-                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
+                PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var)))) /
+                                  length(eval(parse(text = xaxis_var))),
+                                digits = 2),
+                PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == "Y", na.rm = TRUE) /
+                                 length(eval(parse(text = loq_flag_var))),
+                               digits = 2),
                 MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
       ) %>% # additional use of max function identifies maximum treatment order across all visits.
       mutate(!!trt_group := "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop

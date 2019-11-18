@@ -84,8 +84,12 @@ t_summarytable <- function(data,
               StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
               Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
               Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
-              PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2)
+              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var)))) /
+                                length(eval(parse(text = xaxis_var))),
+                              digits = 2),
+              PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == "Y", na.rm = TRUE) /
+                               length(eval(parse(text = loq_flag_var))),
+                             digits = 2)
     ) %>%
     select(param_var, trt_group, visit_var, n:PctLOQ, TRTORD) %>%
     ungroup()
@@ -99,8 +103,12 @@ t_summarytable <- function(data,
               StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
               Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
               Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var))))/length(eval(parse(text = xaxis_var))), digits = 2),
-              PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == 'Y', na.rm = TRUE)/length(eval(parse(text = loq_flag_var))), digits = 2),
+              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var)))) /
+                                length(eval(parse(text = xaxis_var))),
+                              digits = 2),
+              PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == "Y", na.rm = TRUE) /
+                               length(eval(parse(text = loq_flag_var))),
+                             digits = 2),
               MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
     ) %>% # additional use of max function identifies maximum treatment order across all visits.
     mutate(!!trt_group := "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop

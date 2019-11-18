@@ -146,9 +146,9 @@ g_scatterplot <- function(label = "Scatter Plot",
                                 paste0(plot_data$PARAM, " (", plot_data[[unit]], ") ", xaxis_var, " Values"))
   )
   # Setup the y-axis label.  Combine the biomarker and the units (if available)
-  yaxisLabel <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
-                       ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, yaxis_var, "Values"),
-                              paste0(plot_data$PARAM, " (", plot_data[[unit]], ") ", yaxis_var, " Values"))
+  y_axis_label <- ifelse(is.null(unit), paste(plot_data$PARAM, yaxis_var, "Values"),
+                         ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, yaxis_var, "Values"),
+                                paste0(plot_data$PARAM, " (", plot_data[[unit]], ") ", yaxis_var, " Values"))
   )
   # Setup legend label
   if (is.null(attr(data[[trt_group]], "label"))){
@@ -168,22 +168,24 @@ g_scatterplot <- function(label = "Scatter Plot",
     ggtitle(ggtitle_label) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(x_axis_label) +
-    ylab(yaxisLabel)
+    ylab(y_axis_label)
   # add grid faceting to foundation
   if (facet){
     plot1 <- plot1 +
-      facet_grid(as.formula(paste0(facet_var , " ~ ", visit)))
+      facet_grid(as.formula(paste0(facet_var, " ~ ", visit)))
   }
   # add regression line
   if (reg_line){
     slope <- function(x, y) {
-      ratio <- sd(x)/sd(y)
-      if (!is.na(ratio) & ratio > 0){
+      ratio <- sd(x) / sd(y)
+      if (!is.na(ratio) & ratio > 0) {
         reg <- mcr:::mc.deming(y, x, ratio)
-        # return the evaluation of the ratio condition as third value in numeric vector for conttroling downstream processing
+        # return the evaluation of the ratio condition as third value in numeric vector
+        # for conttroling downstream processing
         return(c(round(reg$b0, 2), round(reg$b1, 2), !is.na(ratio) & ratio > 0))
       }
-      # if ratio condition is not met then assign NA to returned vector so that NULL condition does not throw error below
+      # if ratio condition is not met then assign NA to returned vector
+      # so that NULL condition does not throw error below
       return(as.numeric(c(NA, NA, NA)))
     }
     sub_data <- subset(plot_data, !is.na(eval(parse(text = yaxis_var))) &
@@ -201,27 +203,28 @@ g_scatterplot <- function(label = "Scatter Plot",
                                use = "complete.obs"),
                            NA))
     plot1 <- plot1 +
-      geom_abline(data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by to create annotations
+      geom_abline(data = filter(sub_data, row_number() == 1),
+                  # only need to return 1 row within group_by to create annotations
                   aes_string(intercept = "intercept",
                              slope = "slope",
                              color = trt_group)) +
       geom_text(data = filter(sub_data, row_number() == 1),
-                aes( x = -Inf,
-                     y = Inf,
-                     hjust = 0,
-                     vjust = 1,
-                     label = ifelse(!is.na(intercept) & !is.na(slope) & !is.na(corr),
-                                    sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
-                                    paste0("Insufficient Data For Regression")),
-                     color = eval(parse(text = trt_group))),
+                aes(x = -Inf,
+                    y = Inf,
+                    hjust = 0,
+                    vjust = 1,
+                    label = ifelse(!is.na(intercept) & !is.na(slope) & !is.na(corr),
+                                   sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
+                                   paste0("Insufficient Data For Regression")),
+                    color = eval(parse(text = trt_group))),
                 size = reg_text_size) +
       labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
   }
   # Add abline
   if (yaxis_var %in% c("AVAL", "AVALL2", "BASE2", "BASE2L2", "BASE", "BASEL2")) {
-    plot1 <- plot1 + 
+    plot1 <- plot1 +
       geom_abline(intercept = 0, slope = 1)
-  }  
+  }
   if (yaxis_var %in% c("CHG2", "CHG")) {
     plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)
   }
