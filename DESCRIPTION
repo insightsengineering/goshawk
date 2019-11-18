@@ -21,6 +21,7 @@ Imports:
     grid, 
     gridExtra, 
     mcr, 
+    rlang,
     stringr
 Suggests: 
     testthat

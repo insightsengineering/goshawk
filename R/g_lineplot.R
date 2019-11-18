@@ -174,8 +174,9 @@ g_lineplot <- function(label = "Line Plot",
     up_limit <- "CIup"
     down_limit <- "CIdown"
   }
+  . <- "" # hack to pass package check
   filtered_data <- data %>%
-    filter_at(biomarker_var, any_vars(. == iomarker))
+    filter_at(biomarker_var, any_vars(. == biomarker))
   unit <- filtered_data %>%
     pull(unit_var) %>%
     unique()

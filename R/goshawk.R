@@ -9,5 +9,6 @@
 #'
 NULL
 
+#' @importFrom rlang .data :=
 #' @importFrom utils getFromNamespace
-mc.deming <- getFromNamespace("mc.deming", "mcr")
+mc.deming <- getFromNamespace("mc.deming", "mcr") #nolint

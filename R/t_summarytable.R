@@ -91,7 +91,7 @@ t_summarytable <- function(data,
                                length(eval(parse(text = loq_flag_var))),
                              digits = 2)
     ) %>%
-    select(param_var, trt_group, visit_var, n:PctLOQ, TRTORD) %>%
+    select(.data$param_var, .data$trt_group, .data$visit_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
     ungroup()
   # by combined treatment group table
   sum_data_combined_arm <- table_data %>%
@@ -109,15 +109,16 @@ t_summarytable <- function(data,
               PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == "Y", na.rm = TRUE) /
                                length(eval(parse(text = loq_flag_var))),
                              digits = 2),
-              MAXTRTORDVIS = max(TRTORD) # identifies the maximum treatment order within visits
+              MAXTRTORDVIS = max(.data$TRTORD) # identifies the maximum treatment order within visits
     ) %>% # additional use of max function identifies maximum treatment order across all visits.
-    mutate(!!trt_group := "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
-    select(param_var, trt_group, visit_var, n:PctLOQ, TRTORD) %>%
+    mutate(!!trt_group := "Comb.", TRTORD = max(.data$MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
+    select(.data$param_var, .data$trt_group, .data$visit_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
     ungroup()
   # combine the two data sets and apply some formatting. Note that R coerces treatment group into character since it is
   # a factor and character
   sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
-    select(Biomarker = param_var, Treatment = trt_group, Visit = visit_var, n:PctLOQ, TRTORD) %>% # reorder variables
-    arrange(Biomarker, Visit, TRTORD) %>% # drop variable
-    select(-TRTORD)
+    select(Biomarker = .data$param_var, Treatment = .data$trt_group, Visit = .data$visit_var,
+           .data$n:.data$PctLOQ, .data$TRTORD) %>% # reorder variables
+    arrange(.data$Biomarker, .data$Visit, .data$TRTORD) %>% # drop variable
+    select(-.data$TRTORD)
 }
