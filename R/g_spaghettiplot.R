@@ -129,9 +129,9 @@ g_spaghettiplot <- function(data,
   }
   # Plot
   for.plot <- data[data[[biomarker_var]] %in% biomarker, ]
-  unit <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[unit_var]])
+  unit <- unique(filter(data, !!sym(biomarker_var) == biomarker)[[unit_var]])
   unit1 <- ifelse(is.na(unit) | unit == "", " ", paste0(" (", unit, ") "))
-  biomarker1 <- unique(filter(data, eval(parse(text = biomarker_var)) == biomarker)[[biomarker_var_label]])
+  biomarker1 <- unique(filter(data, !!sym(biomarker_var) == biomarker)[[biomarker_var_label]])
   gtitle <- paste0(biomarker1, unit1, value_var, " Values by Treatment @ Visits")
   gylab <- paste0(biomarker1, " ", value_var, " Values")
   # re-establish treatment variable label

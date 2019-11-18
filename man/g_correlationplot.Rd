@@ -151,7 +151,7 @@ plot_data_t1 <- ALB \%>\%
 # remove records where either of the analysis variables are NA since they will not appear on the
 # plot and will ensure that LOQFL = NA level is removed
 plot_data_t2 <- plot_data_t1 \%>\%
-  subset(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) \%>\%
+  filter(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) \%>\%
   mutate_at(vars(contains(".")), as.numeric) \%>\%
   mutate(LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"))
 

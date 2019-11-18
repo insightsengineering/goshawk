@@ -134,7 +134,7 @@ g_scatterplot <- function(label = "Scatter Plot",
                           reg_text_size = 3){
   # create scatter plot over time pairwise per treatment arm
   plot_data <- data %>%
-    filter(eval(parse(text = param_var)) == param)
+    filter(!!sym(param_var) == param)
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
   ggtitle_label <- ifelse(is.null(unit), paste0(plot_data$PARAM, "@ Visits"),
                           ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, "@ Visits"),
@@ -188,17 +188,17 @@ g_scatterplot <- function(label = "Scatter Plot",
       # so that NULL condition does not throw error below
       return(as.numeric(c(NA, NA, NA)))
     }
-    sub_data <- subset(plot_data, !is.na(eval(parse(text = yaxis_var))) &
-                         !is.na(eval(parse(text = xaxis_var)))) %>%
+    sub_data <- filter(plot_data, !is.na(!!sym(yaxis_var)) &
+                         !is.na(!!sym(xaxis_var))) %>%
       group_by_(.dots = c(trt_group, visit)) %>%
-      mutate(intercept = slope(eval(parse(text = yaxis_var)),
-                               eval(parse(text = xaxis_var)))[1]) %>%
-      mutate(slope = slope(eval(parse(text = yaxis_var)),
-                           eval(parse(text = xaxis_var)))[2]) %>%
-      mutate(corr = ifelse(((slope(eval(parse(text = yaxis_var)),
-                                   eval(parse(text = xaxis_var))))[3]),
-                           cor(eval(parse(text = yaxis_var)),
-                               eval(parse(text = xaxis_var)),
+      mutate(intercept = slope(!!sym(yaxis_var),
+                               !!sym(xaxis_var))[1]) %>%
+      mutate(slope = slope(!!sym(yaxis_var),
+                           !!sym(xaxis_var))[2]) %>%
+      mutate(corr = ifelse(((slope(!!sym(yaxis_var),
+                                   !!sym(xaxis_var)))[3]),
+                           cor(!!sym(yaxis_var),
+                               !!sym(xaxis_var),
                                method = "spearman",
                                use = "complete.obs"),
                            NA))
@@ -216,7 +216,7 @@ g_scatterplot <- function(label = "Scatter Plot",
                     label = ifelse(!is.na(.data$intercept) & !is.na(.data$slope) & !is.na(.data$corr),
                                    sprintf("y = %.2f+%.2fX\ncor = %.2f", .data$intercept, .data$slope, .data$corr),
                                    paste0("Insufficient Data For Regression")),
-                    color = eval(parse(text = trt_group))),
+                    color = !!sym(trt_group)),
                 size = reg_text_size) +
       labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
   }

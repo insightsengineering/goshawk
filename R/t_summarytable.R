@@ -73,41 +73,41 @@ t_summarytable <- function(data,
                            visit_var = "AVISITCD",
                            loq_flag_var = "LOQFL", ...){
   table_data <- data %>%
-    filter(eval(parse(text = param_var)) == param)
+    filter(!!sym(param_var) == param)
   # by treatment group table
   sum_data_by_arm <- table_data %>%
-    filter(eval(parse(text = param_var)) == param) %>%
+    filter(!!sym(param_var) == param) %>%
     group_by_(.dots = c(param_var, trt_group, "TRTORD", visit_var)) %>%
-    summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
-              Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var)))) /
-                                length(eval(parse(text = xaxis_var))),
+    summarise(n = sum(!is.na(!!sym(xaxis_var))),
+              Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+              Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+              StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+              Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+              Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+              PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) /
+                                length(!!sym(xaxis_var)),
                               digits = 2),
-              PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == "Y", na.rm = TRUE) /
-                               length(eval(parse(text = loq_flag_var))),
+              PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) /
+                               length(!!sym(loq_flag_var)),
                              digits = 2)
     ) %>%
     select(param_var, trt_group, visit_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
     ungroup()
   # by combined treatment group table
   sum_data_combined_arm <- table_data %>%
-    filter(eval(parse(text = param_var)) == param) %>%
+    filter(!!sym(param_var) == param) %>%
     group_by_(.dots = c(param_var, visit_var)) %>%
-    summarise(n = sum(!is.na(eval(parse(text = xaxis_var)))),
-              Mean = round(mean(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              Median = round(median(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              StdDev = round(sd(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              Min = round(min(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              Max = round(max(eval(parse(text = xaxis_var)), na.rm = TRUE), digits = 2),
-              PctMiss = round(100 * sum(is.na(eval(parse(text = xaxis_var)))) /
-                                length(eval(parse(text = xaxis_var))),
+    summarise(n = sum(!is.na(!!sym(xaxis_var))),
+              Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+              Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+              StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+              Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+              Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+              PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) /
+                                length(!!sym(xaxis_var)),
                               digits = 2),
-              PctLOQ = round(100 * sum(eval(parse(text = loq_flag_var)) == "Y", na.rm = TRUE) /
-                               length(eval(parse(text = loq_flag_var))),
+              PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) /
+                               length(!!sym(loq_flag_var)),
                              digits = 2),
               MAXTRTORDVIS = max(.data$TRTORD) # identifies the maximum treatment order within visits
     ) %>% # additional use of max function identifies maximum treatment order across all visits.

@@ -106,7 +106,7 @@
 #' # remove records where either of the analysis variables are NA since they will not appear on the
 #' # plot and will ensure that LOQFL = NA level is removed
 #' plot_data_t2 <- plot_data_t1 %>%
-#'   subset(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) %>%
+#'   filter(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) %>%
 #'   mutate_at(vars(contains(".")), as.numeric) %>%
 #'   mutate(LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"))
 #'
@@ -223,18 +223,18 @@ g_correlationplot <- function(label = "Correlation Plot",
       # error below
       return(as.numeric(c(NA, NA, NA)))
     }
-    sub_data <- subset(
+    sub_data <- filter(
       plot_data,
-      !is.na(eval(parse(text = yvar))) & !is.na(eval(parse(text = xvar)))
+      !is.na(!!sym(yvar)) & !is.na(!!sym(xvar))
     ) %>%
       group_by_(.dots = c(trt_group, visit)) %>%
-      mutate(intercept = slope(eval(parse(text = yvar)), eval(parse(text = xvar)))[1]) %>%
-      mutate(slope = slope(eval(parse(text = yvar)), eval(parse(text = xvar)))[2]) %>%
+      mutate(intercept = slope(!!sym(yvar), !!sym(xvar))[1]) %>%
+      mutate(slope = slope(!!sym(yvar), !!sym(xvar))[2]) %>%
       mutate(
-        corr = ifelse(slope(eval(parse(text = yvar)),
-                            eval(parse(text = xvar)))[3],
-                      cor(eval(parse(text = yvar)),
-                          eval(parse(text = xvar)),
+        corr = ifelse(slope(!!sym(yvar),
+                            !!sym(xvar))[3],
+                      cor(!!sym(yvar),
+                          !!sym(xvar),
                           method = "spearman",
                           use = "complete.obs"),
                       NA

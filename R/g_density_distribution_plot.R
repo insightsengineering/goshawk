@@ -98,7 +98,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         font_size = 12,
                                         line_size = 2){
   plot_data <- data %>%
-    filter(eval(parse(text = param_var)) == param)
+    filter(!!sym(param_var) == param)
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
   ggtitle_label <- ifelse(is.null(unit),
                           paste(plot_data$PARAM,
@@ -122,7 +122,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   }
   plot1 <- ggplot(plot_data) +
     geom_density(aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
-    geom_density(aes(x = eval(parse(text = xaxis_var)), linetype = "Comb."), color = color_comb, size = line_size) +
+    geom_density(aes(x = !!sym(xaxis_var), linetype = "Comb."), color = color_comb, size = line_size) +
     scale_linetype_manual(name = "Combined Dose", values = c(Comb. = "solid", per_dose = "solid")) +
     coord_cartesian(xlim = c(xmin, xmax)) +
     facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol) +

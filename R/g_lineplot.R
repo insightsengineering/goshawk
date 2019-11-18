@@ -141,17 +141,17 @@ g_lineplot <- function(label = "Line Plot",
   groupings <- c(time, trt_group, shape)
   ## Summary statistics
   sum_data <- data %>%
-    filter(eval(parse(text = biomarker_var)) == biomarker) %>%
+    filter(!!sym(biomarker_var) == biomarker) %>%
     group_by_at(groupings) %>%
-    summarise(count = sum(!is.na(eval(parse(text = value_var)))),
-              mean = mean(eval(parse(text = value_var)), na.rm = TRUE),
-              CIup = mean(eval(parse(text = value_var)), na.rm = TRUE) +
-                1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE) / sqrt(n()),
-              CIdown = mean(eval(parse(text = value_var)), na.rm = TRUE) -
-                1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE) / sqrt(n()),
-              median = median(eval(parse(text = value_var)), na.rm = TRUE),
-              quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
-              quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE)) %>%
+    summarise(count = sum(!is.na(!!sym(value_var))),
+              mean = mean(!!sym(value_var), na.rm = TRUE),
+              CIup = mean(!!sym(value_var), na.rm = TRUE) +
+                1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
+              CIdown = mean(!!sym(value_var), na.rm = TRUE) -
+                1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
+              median = median(!!sym(value_var), na.rm = TRUE),
+              quant25 = quantile(!!sym(value_var), 0.25, na.rm = TRUE),
+              quant75 = quantile(!!sym(value_var), 0.75, na.rm = TRUE)) %>%
     arrange_at(c(trt_group, shape))
   listin <- list()
   listin[[trt_group]] <- sum_data[[trt_group]]
