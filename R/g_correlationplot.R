@@ -214,7 +214,7 @@ g_correlationplot <- function(label = "Correlation Plot",
     slope <- function(x, y) {
       ratio <- sd(x) / sd(y)
       if (!is.na(ratio) & ratio > 0) {
-        reg <- mcr:::mc.deming(y, x, ratio)
+        reg <- mc.deming(y, x, ratio)
         # return the evaluation of the ratio condition as third value in numeric vector to control
         # downstream processing
         return(c(round(reg$b0, 2), round(reg$b1, 2), !is.na(ratio) & ratio > 0))
