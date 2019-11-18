@@ -79,14 +79,11 @@ midhinge, range, mid-range, and trimean.
 
 # Example using ADaM structure analysis dataset.
 
-library(dplyr)
-library(ggplot2)
-library(goshawk)
 library(random.cdisc.data)
 
-ADSL <- radsl(N = 100, seed = 1)
-ADLB <- radlb(ADSL, seed = 2)
-ADLB <- ADLB \%>\% subset(PARAMCD == "CRP")
+ADSL <- cadsl
+ADLB <- cadlb
+ADLB <- ADLB \%>\% filter(PARAMCD == "CRP")
 
 g_boxplot(ADLB,
           biomarker = "CRP",

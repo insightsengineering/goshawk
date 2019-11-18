@@ -95,9 +95,6 @@ Regression uses deming model.
 
 # Example using ADaM structure analysis dataset.
 
-library(dplyr)
-library(ggplot2)
-library(goshawk)
 library(random.cdisc.data)
 library(stringr)
 library(tidyr)
@@ -112,38 +109,43 @@ color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" =
 # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
 shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 
-ASL <- radsl(N = 20, seed = 1)
-ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
+ASL <- cadsl
+ALB <- cadlb
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",
-    AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT,
-      start = 6,
-      stop = str_locate(AVISIT, "DAY") - 1
-    ))),
-    TRUE ~ as.character(NA)
-  )) \%>\%
+    AVISIT == "BASELINE" ~ "BL", 
+    grepl("WEEK", AVISIT) ~ 
+      paste(
+        "W", 
+        trimws(
+          substr(
+            AVISIT, 
+            start = 6, 
+            stop = str_locate(AVISIT, "DAY") - 1
+          )
+        )
+      ),
+    TRUE ~ NA_character_)) \%>\%
   mutate(AVISITCDN = case_when(
     AVISITCD == "SCR" ~ -2,
-    AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
-    TRUE ~ as.numeric(NA)
-  )) \%>\%
+    AVISITCD == "BL" ~ 0, 
+    grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
+    TRUE ~ NA_real_)) \%>\%
   # use ARMCD values to order treatment in visualization legend
   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
     ifelse(grepl("B", ARMCD), 2,
-      ifelse(grepl("A", ARMCD), 3, NA)
-    )
-  )) \%>\%
+      ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
-  mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
+  mutate(ARM = factor(ARM) \%>\% 
+  reorder(TRTORD))
 
 # given the 2 param and 2 analysis vars we need to transform the data
 plot_data_t1 <- ALB \%>\%
   gather(ANLVARS, ANLVALS, BASE2, BASE, AVAL, BASE, LOQFL) \%>\%
-  mutate(ANL.PARAM = ifelse(ANLVARS == "LOQFL", paste0(ANLVARS, "_", PARAMCD), paste0(
-    ANLVARS,
-    ".", PARAMCD
-  ))) \%>\%
+  mutate(ANL.PARAM = ifelse(ANLVARS == "LOQFL", 
+                            paste0(ANLVARS, "_", PARAMCD), 
+                            paste0(ANLVARS, ".", PARAMCD))) \%>\%
   select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) \%>\%
   spread(ANL.PARAM, ANLVALS)
 # the transformed analysis value variables are character and need to be converted to numeric for

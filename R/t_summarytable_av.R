@@ -28,8 +28,6 @@
 #'
 #' # Example using ADaM structure analysis dataset.
 #'
-#' library(dplyr)
-#' library(goshawk)
 #' library(random.cdisc.data)
 #' library(stringr)
 #'
@@ -37,23 +35,36 @@
 #' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 #' "C: Combination" = "Combination")
 #'
-#' ASL <- radsl(N = 20, seed = 1)
-#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
+#' ASL <- cadsl
+#' ALB <- cadlb
 #' ALB <- ALB %>%
-#' mutate(AVISITCD = case_when(
-#' AVISIT == "SCREENING" ~ "SCR",
-#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start = 6,
-#' stop = str_locate(AVISIT, "DAY")-1))),
-#' TRUE ~ as.character(NA))) %>%
-#' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
-#' TRUE ~ as.numeric(NA))) %>%
-#' # use ARMCD values to order treatment in visualization legend
-#' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
-#' ifelse(grepl("B", ARMCD), 2,
-#' ifelse(grepl("A", ARMCD), 3, NA)))) %>%
-#' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
-#' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
+#'   mutate(AVISITCD = case_when(
+#'     AVISIT == "SCREENING" ~ "SCR",
+#'     AVISIT == "BASELINE" ~ "BL", 
+#'     grepl("WEEK", AVISIT) ~ 
+#'       paste(
+#'         "W", 
+#'         trimws(
+#'           substr(
+#'             AVISIT,
+#'             start = 6,
+#'             stop = str_locate(AVISIT, "DAY") - 1
+#'           )
+#'         )
+#'       ),
+#'     TRUE ~ NA_character_)) %>%
+#'   mutate(AVISITCDN = case_when(
+#'     AVISITCD == "SCR" ~ -2,
+#'     AVISITCD == "BL" ~ 0, 
+#'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
+#'     TRUE ~ NA_real_)) %>%
+#'   # use ARMCD values to order treatment in visualization legend
+#'   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+#'     ifelse(grepl("B", ARMCD), 2,
+#'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
+#'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
+#'   mutate(ARM = factor(ARM) %>% 
+#'   reorder(TRTORD))
 #'
 #' tbl <- t_summarytable_av(data = ALB,
 #'                trt_group = "ACTARM",
