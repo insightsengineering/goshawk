@@ -178,17 +178,14 @@ g_correlationplot <- function(label = "Correlation Plot",
                               font_size = 12,
                               dot_size = NULL,
                               reg_text_size = 3) {
-
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
-
   # Setup legend label
   if (is.null(attr(data[[trt_group]], "label"))) {
-    trtLabel <- "Dose"
+    trt_label <- "Dose"
   } else {
-    trtLabel <- attr(data[[trt_group]], "label")
+    trt_label <- attr(data[[trt_group]], "label")
   }
-
   # create plot foundation - titles and axes labels are defined in
   # teal.goshawk.tm_g_correlationplot.R
   plot1 <- ggplot2::ggplot(
@@ -201,26 +198,23 @@ g_correlationplot <- function(label = "Correlation Plot",
   ) +
     geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
-    facet_wrap(as.formula(paste0("~", visit)), ncol = facet_ncol) +
+    facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol) +
     theme_bw() +
     ggtitle(title_text) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(xaxis_lab) +
     ylab(yaxis_lab)
-
-
   # add grid faceting to foundation
   if (facet) {
     plot1 <- plot1 +
       facet_grid(as.formula(paste0(facet_var, " ~ ", visit)))
   }
-
   # add regression line
   if (reg_line) {
     slope <- function(x, y) {
       ratio <- sd(x) / sd(y)
       if (!is.na(ratio) & ratio > 0) {
-        reg <- .mcr$mc.deming(y, x, ratio)
+        reg <- mcr:::mc.deming(y, x, ratio)
         # return the evaluation of the ratio condition as third value in numeric vector to control
         # downstream processing
         return(c(round(reg$b0, 2), round(reg$b1, 2), !is.na(ratio) & ratio > 0))
@@ -229,20 +223,22 @@ g_correlationplot <- function(label = "Correlation Plot",
       # error below
       return(as.numeric(c(NA, NA, NA)))
     }
-
     sub_data <- subset(
-      plot_data, 
+      plot_data,
       !is.na(eval(parse(text = yvar))) & !is.na(eval(parse(text = xvar)))
     ) %>%
       group_by_(.dots = c(trt_group, visit)) %>%
       mutate(intercept = slope(eval(parse(text = yvar)), eval(parse(text = xvar)))[1]) %>%
       mutate(slope = slope(eval(parse(text = yvar)), eval(parse(text = xvar)))[2]) %>%
       mutate(
-        corr = ifelse(slope(eval(parse(text = yvar)), eval(parse(text = xvar)))[3],
-                      cor(eval(parse(text = yvar)), eval(parse(text = xvar)), method = "spearman", use = "complete.obs"),
+        corr = ifelse(slope(eval(parse(text = yvar)),
+                            eval(parse(text = xvar)))[3],
+                      cor(eval(parse(text = yvar)),
+                          eval(parse(text = xvar)),
+                          method = "spearman",
+                          use = "complete.obs"),
                       NA
-                      ))
-
+        ))
     plot1 <- plot1 +
       geom_abline(
         data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by
@@ -269,7 +265,6 @@ g_correlationplot <- function(label = "Correlation Plot",
       ) +
       labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
   }
-
   # Format font size
   if (!is.null(font_size)) {
     plot1 <- plot1 +
@@ -284,42 +279,35 @@ g_correlationplot <- function(label = "Correlation Plot",
         strip.text.y = element_text(size = font_size)
       )
   }
-
   # Format treatment color
   if (!is.null(color_manual)) {
     plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = trtLabel)
+      scale_color_manual(values = color_manual, name = trt_label)
   }
-
   # Format LOQ flag symbol shape
   if (!is.null(shape_manual)) {
     plot1 <- plot1 +
       scale_shape_manual(values = shape_manual, name = "LOQ")
   }
-
   # Format dot size
   if (!is.null(dot_size)) {
     plot1 <- plot1 +
       geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
   }
-
   # Format x-label
   if (rotate_xlab) {
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
-
   # Add horizontal line
   if (!is.null(hline)) {
     plot1 <- plot1 +
       geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
-
   # Add vertical line
   if (!is.null(vline)) {
     plot1 <- plot1 +
       geom_vline(aes(xintercept = vline), color = "red", linetype = "dashed", size = 0.5)
   }
-
   plot1
 }

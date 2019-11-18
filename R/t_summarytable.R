@@ -1,13 +1,13 @@
-#' Function to create a table of descriptive summary statistics to accompany plots. 
-#' 
-#' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment, 
+#' Function to create a table of descriptive summary statistics to accompany plots.
+#'
+#' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment,
 #' visit,
 #' n, meand, median, sd, min, max, %missing values, % LOQ values.
 #'
 #' @param data name of data frame to summarize.
 #' @param trt_group treatment group variable name e.g. ARM.
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
-#' @param param biomarker to visualize e.g. IGG. 
+#' @param param biomarker to visualize e.g. IGG.
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
 #' @param visit_var name of variable containing visit values e.g. AVISITCD.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
@@ -16,7 +16,7 @@
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
-#' @details provide additional information as needed. link to specification file 
+#' @details provide additional information as needed. link to specification file
 #' \url{http://rstudio.com}
 #'
 #' @export
@@ -26,26 +26,26 @@
 #'\dontrun{
 #'
 #' # Example using ADaM structure analysis dataset.
-#' 
+#'
 #' library(dplyr)
 #' library(goshawk)
 #' library(random.cdisc.data)
 #' library(stringr)
-#' 
+#'
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 #' "C: Combination" = "Combination")
-#' 
+#'
 #' ASL <- radsl(N = 20, seed = 1)
 #' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
-#' ALB <- ALB %>% 
+#' ALB <- ALB %>%
 #' mutate(AVISITCD = case_when(
 #' AVISIT == "SCREENING" ~ "SCR",
-#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
+#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W", trimws(substr(AVISIT, start=6,
 #' stop=str_locate(AVISIT, "DAY")-1))),
 #' TRUE ~ as.character(NA))) %>%
 #' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), 
+#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
 #' TRUE ~ as.numeric(NA))) %>%
 #' # use ARMCD values to order treatment in visualization legend
 #' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
@@ -65,7 +65,6 @@
 #'
 #'}
 #'
-
 t_summarytable <- function(data,
                            trt_group,
                            param_var,
@@ -73,10 +72,8 @@ t_summarytable <- function(data,
                            xaxis_var,
                            visit_var = "AVISITCD",
                            loq_flag_var = "LOQFL", ...){
-  
   table_data <- data %>%
     filter(eval(parse(text = param_var)) == param)
-  
   # by treatment group table
   sum_data_by_arm <- table_data %>%
     filter(eval(parse(text = param_var)) == param) %>%
@@ -92,7 +89,6 @@ t_summarytable <- function(data,
     ) %>%
     select(param_var, trt_group, visit_var, n:PctLOQ, TRTORD) %>%
     ungroup()
-  
   # by combined treatment group table
   sum_data_combined_arm <- table_data %>%
     filter(eval(parse(text = param_var)) == param) %>%
@@ -110,7 +106,6 @@ t_summarytable <- function(data,
     mutate(!!trt_group := "Comb.", TRTORD = max(MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
     select(param_var, trt_group, visit_var, n:PctLOQ, TRTORD) %>%
     ungroup()
-  
   # combine the two data sets and apply some formatting. Note that R coerces treatment group into character since it is
   # a factor and character
   sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate

@@ -184,9 +184,9 @@ g_correlationplot_av <- function(label = "Correlation Plot",
 
   # Setup legend label
   if (is.null(attr(data[[trt_group]], "label"))) {
-    trtLabel <- "Dose"
+    trt_label <- "Dose"
   } else {
-    trtLabel <- attr(data[[trt_group]], "label")
+    trt_label <- attr(data[[trt_group]], "label")
   }
 
   # create plot foundation - titles and axes labels are defined in
@@ -201,7 +201,7 @@ g_correlationplot_av <- function(label = "Correlation Plot",
   ) +
     geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
-    facet_wrap(as.formula(paste0("~", trt_group)), ncol = facet_ncol) +
+    facet_wrap(as.formula(paste0(" ~ ", trt_group)), ncol = facet_ncol) +
     theme_bw() +
     ggtitle(title_text) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
@@ -220,7 +220,7 @@ g_correlationplot_av <- function(label = "Correlation Plot",
     slope <- function(x, y) {
       ratio <- sd(x) / sd(y)
       if (!is.na(ratio) & ratio > 0) {
-        reg <- .mcr$mc.deming(y, x, ratio)
+        reg <- mcr:::mc.deming(y, x, ratio)
         # return the evaluation of the ratio condition as third value in numeric vector to control
         # downstream processing
         return(c(round(reg$b0, 2), round(reg$b1, 2), !is.na(ratio) & ratio > 0))
@@ -235,10 +235,14 @@ g_correlationplot_av <- function(label = "Correlation Plot",
       group_by_(.dots = c(trt_group)) %>%
       mutate(intercept = slope(eval(parse(text = yvar)), eval(parse(text = xvar)))[1]) %>%
       mutate(slope = slope(eval(parse(text = yvar)), eval(parse(text = xvar)))[2]) %>%
-      mutate(corr = ifelse(slope(eval(parse(text = yvar)), eval(parse(text = xvar)))[3],
-                           cor(eval(parse(text = yvar)), eval(parse(text = xvar)), method = "spearman", use = "complete.obs"),
+      mutate(corr = ifelse(slope(eval(parse(text = yvar)),
+                                 eval(parse(text = xvar)))[3],
+                           cor(eval(parse(text = yvar)),
+                               eval(parse(text = xvar)),
+                               method = "spearman",
+                               use = "complete.obs"),
                            NA
-                           ))
+      ))
 
     plot1 <- plot1 +
       geom_abline(
@@ -285,7 +289,7 @@ g_correlationplot_av <- function(label = "Correlation Plot",
   # Format treatment color
   if (!is.null(color_manual)) {
     plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = trtLabel)
+      scale_color_manual(values = color_manual, name = trt_label)
   }
 
   # Format LOQ flag symbol shape

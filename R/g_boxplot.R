@@ -177,10 +177,10 @@ g_boxplot <- function(data,
       if (!is_finite(facet_ncol)) facet_ncol <- 0
       if (facet_ncol >= 1){
         plot1 <- plot1 +
-          facet_wrap(as.formula(paste0("~", facet)), ncol = round(facet_ncol))
+          facet_wrap(as.formula(paste0(" ~ ", facet)), ncol = round(facet_ncol))
       } else {
         plot1 <- plot1 +
-          facet_wrap(as.formula(paste0("~", facet)))
+          facet_wrap(as.formula(paste0(" ~ ", facet)))
       }
     }
   }
