@@ -222,8 +222,7 @@ g_scatterplot <- function(label = "Scatter Plot",
   }
   # Add abline
   if (yaxis_var %in% c("AVAL", "AVALL2", "BASE2", "BASE2L2", "BASE", "BASEL2")) {
-    plot1 <- plot1 +
-      geom_abline(intercept = 0, slope = 1)
+    plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)
   }
   if (yaxis_var %in% c("CHG2", "CHG")) {
     plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)

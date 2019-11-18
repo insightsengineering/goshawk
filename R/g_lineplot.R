@@ -233,8 +233,7 @@ g_lineplot <- function(label = "Line Plot",
       plot1 <- plot1 +
         scale_color_manual(" ", values = vals)
     }
-    shapes <- c(15, 16, 17, 18, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                0, 1, 2)
+    shapes <- c(15:18, 3:14, 0:2)
     if (nshape > length(shapes)){
       warning("Number of available shapes exceeded, values will cycle!")
     }
@@ -242,7 +241,8 @@ g_lineplot <- function(label = "Line Plot",
     select <- ifelse(select == 0, length(shapes), select)
     selected_shapes <- shapes[select]
     vals <- rep(selected_shapes, ncol)
-    plot1 <- plot1 + scale_shape_manual(" ", values = vals) +
+    plot1 <- plot1 +
+      scale_shape_manual(" ", values = vals) +
       theme(legend.key.size = unit(1, "cm")) +
       geom_point(position = pd, size = 3)
   }
@@ -264,7 +264,8 @@ g_lineplot <- function(label = "Line Plot",
     guides(color = guide_legend(byrow = TRUE))
   # Apply y-axis zoom range
   if (!is.null(ylim)){
-    plot1 <- plot1 + coord_cartesian(ylim = ylim)
+    plot1 <- plot1 +
+      coord_cartesian(ylim = ylim)
   }
   # Format x-label
   if (xtype == "continuous") {
