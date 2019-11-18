@@ -92,7 +92,7 @@ t_summarytable_av <- function(data,
                                  length(eval(parse(text = loq_flag_var))),
                                digits = 2)
       ) %>%
-      select(.data$param_var, .data$trt_group, .data$facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
     # by combined treatment group table
     sum_data_combined_arm <- table_data %>%
@@ -113,10 +113,10 @@ t_summarytable_av <- function(data,
       ) %>% # additional use of max function identifies maximum treatment order across all visits.
       mutate(!!trt_group := "Comb.",
              TRTORD = max(.data$MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
-      select(.data$param_var, .data$trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      select(param_var, trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
     sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
-      select(Biomarker = .data$param_var, Treatment = .data$trt_group,
+      select(Biomarker = param_var, Treatment = trt_group,
              .data$n:.data$PctLOQ, .data$TRTORD) %>% # reorder variables
       arrange(.data$Biomarker, .data$Treatment, .data$TRTORD) %>% # drop variable
       select(-.data$TRTORD)
@@ -137,7 +137,7 @@ t_summarytable_av <- function(data,
                                  length(eval(parse(text = loq_flag_var))),
                                digits = 2)
       ) %>%
-      select(.data$param_var, .data$trt_group, .data$facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
     # by combined treatment group table
     sum_data_combined_arm <- table_data %>%
@@ -158,10 +158,10 @@ t_summarytable_av <- function(data,
       ) %>% # additional use of max function identifies maximum treatment order across all visits.
       mutate(!!trt_group := "Comb.",
              TRTORD = max(.data$MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
-      select(.data$param_var, .data$trt_group, .data$facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
     sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
-      select(Biomarker = .data$param_var, Treatment = .data$trt_group, Facet = .data$facet_var,
+      select(Biomarker = param_var, Treatment = trt_group, Facet = facet_var,
              .data$n:.data$PctLOQ, .data$TRTORD) %>% # reorder variables
       arrange(.data$Biomarker, .data$Facet, .data$Treatment, .data$TRTORD) %>% # drop variable
       select(-.data$TRTORD)

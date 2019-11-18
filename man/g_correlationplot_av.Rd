@@ -113,7 +113,7 @@ color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" =
 shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 
 ASL <- radsl(N = 20, seed = 1)
-ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",
