@@ -45,10 +45,10 @@
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
-#'     AVISIT == "BASELINE" ~ "BL", 
-#'     grepl("WEEK", AVISIT) ~ 
+#'     AVISIT == "BASELINE" ~ "BL",
+#'     grepl("WEEK", AVISIT) ~
 #'       paste(
-#'         "W", 
+#'         "W",
 #'         trimws(
 #'           substr(
 #'             AVISIT,
@@ -60,7 +60,7 @@
 #'     TRUE ~ NA_character_)) %>%
 #'   mutate(AVISITCDN = case_when(
 #'     AVISITCD == "SCR" ~ -2,
-#'     AVISITCD == "BL" ~ 0, 
+#'     AVISITCD == "BL" ~ 0,
 #'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
 #'     TRUE ~ NA_real_)) %>%
 #'   # use ARMCD values to order treatment in visualization legend
@@ -68,7 +68,7 @@
 #'     ifelse(grepl("B", ARMCD), 2,
 #'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
-#'   mutate(ARM = factor(ARM) %>% 
+#'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
 #'
 #' g_density_distribution_plot(label = "Density Distribution Plot",
@@ -107,7 +107,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         facet_ncol = 2,
                                         rotate_xlab = FALSE,
                                         font_size = 12,
-                                        line_size = 2){
+                                        line_size = 2) {
   plot_data <- data %>%
     filter(!!sym(param_var) == param)
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
@@ -141,17 +141,17 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
     xlab(paste(x_axis_label)) +
     ylab(paste("Density"))
   # Format treatment color and label legend
-  if (!is.null(color_manual)){
+  if (!is.null(color_manual)) {
     plot1 <- plot1 +
       scale_color_manual(values = color_manual, name = trt_label)
   }
   # Add horizontal line
-  if (!is.null(hline)){
+  if (!is.null(hline)) {
     plot1 <- plot1 +
       geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
   # Format font size
-  if (!is.null(font_size)){
+  if (!is.null(font_size)) {
     plot1 <- plot1 +
       theme(axis.title.x = element_text(size = font_size),
             axis.text.x = element_text(size = font_size),
@@ -163,7 +163,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
             strip.text.y = element_text(size = font_size))
   }
   # Format x-label
-  if (rotate_xlab){
+  if (rotate_xlab) {
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }

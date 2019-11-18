@@ -95,10 +95,10 @@ ALB <- cadlb
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",
-    AVISIT == "BASELINE" ~ "BL", 
-    grepl("WEEK", AVISIT) ~ 
+    AVISIT == "BASELINE" ~ "BL",
+    grepl("WEEK", AVISIT) ~
       paste(
-        "W", 
+        "W",
         trimws(
           substr(
             AVISIT,
@@ -110,7 +110,7 @@ ALB <- ALB \%>\%
     TRUE ~ NA_character_)) \%>\%
   mutate(AVISITCDN = case_when(
     AVISITCD == "SCR" ~ -2,
-    AVISITCD == "BL" ~ 0, 
+    AVISITCD == "BL" ~ 0,
     grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
     TRUE ~ NA_real_)) \%>\%
   # use ARMCD values to order treatment in visualization legend
@@ -118,7 +118,7 @@ ALB <- ALB \%>\%
     ifelse(grepl("B", ARMCD), 2,
       ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
-  mutate(ARM = factor(ARM) \%>\% 
+  mutate(ARM = factor(ARM) \%>\%
   reorder(TRTORD))
 
 g_scatterplot(label = "Scatter Plot",

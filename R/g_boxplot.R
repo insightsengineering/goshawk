@@ -96,7 +96,7 @@ g_boxplot <- function(data,
                       facet = NULL
 ) {
   # re-establish treatment variable label
-  if (trt_group == "ARM"){
+  if (trt_group == "ARM") {
     attributes(data$ARM)$label <- "Planned Arm"
   } else {
     attributes(data$ACTARM)$label <- "Actual Arm"
@@ -130,7 +130,7 @@ g_boxplot <- function(data,
                    outlier.shape = NA)
   }
   # Extend is.infinite to include zero length objects.
-  is_finite <- function(x){
+  is_finite <- function(x) {
     if (length(x) == 0) return(FALSE)
     return(is.finite(x))
   }
@@ -169,10 +169,10 @@ g_boxplot <- function(data,
     plot1 <- plot1 + coord_cartesian(ylim = c(ymin_scale, ymax_scale))
   }
   # Add facetting.
-  if (!is.null(facet)){
+  if (!is.null(facet)) {
     if (facet != "None" & facet %in% names(data)) {
       if (!is_finite(facet_ncol)) facet_ncol <- 0
-      if (facet_ncol >= 1){
+      if (facet_ncol >= 1) {
         plot1 <- plot1 +
           facet_wrap(as.formula(paste0(" ~ ", facet)), ncol = round(facet_ncol))
       } else {
@@ -182,7 +182,7 @@ g_boxplot <- function(data,
     }
   }
   # Format font size
-  if (is_finite(font_size)){
+  if (is_finite(font_size)) {
     plot1 <- plot1 +
       theme(axis.title.x = element_text(size = font_size),
             axis.text.x = element_text(size = font_size),
@@ -194,7 +194,7 @@ g_boxplot <- function(data,
             strip.text.y = element_text(size = font_size))
   }
   # Format x-label
-  if (rotate_xlab){
+  if (rotate_xlab) {
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }

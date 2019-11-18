@@ -39,10 +39,10 @@
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
-#'     AVISIT == "BASELINE" ~ "BL", 
-#'     grepl("WEEK", AVISIT) ~ 
+#'     AVISIT == "BASELINE" ~ "BL",
+#'     grepl("WEEK", AVISIT) ~
 #'       paste(
-#'         "W", 
+#'         "W",
 #'         trimws(
 #'           substr(
 #'             AVISIT,
@@ -54,7 +54,7 @@
 #'     TRUE ~ NA_character_)) %>%
 #'   mutate(AVISITCDN = case_when(
 #'     AVISITCD == "SCR" ~ -2,
-#'     AVISITCD == "BL" ~ 0, 
+#'     AVISITCD == "BL" ~ 0,
 #'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
 #'     TRUE ~ NA_real_)) %>%
 #'   # use ARMCD values to order treatment in visualization legend
@@ -62,7 +62,7 @@
 #'     ifelse(grepl("B", ARMCD), 2,
 #'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
-#'   mutate(ARM = factor(ARM) %>% 
+#'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
 #'
 #' tbl <- t_summarytable(data = ALB,
@@ -82,7 +82,7 @@ t_summarytable <- function(data,
                            param,
                            xaxis_var,
                            visit_var = "AVISITCD",
-                           loq_flag_var = "LOQFL", ...){
+                           loq_flag_var = "LOQFL", ...) {
   table_data <- data %>%
     filter(!!sym(param_var) == param)
   # by treatment group table

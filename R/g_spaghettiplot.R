@@ -54,10 +54,10 @@
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
-#'     AVISIT == "BASELINE" ~ "BL", 
-#'     grepl("WEEK", AVISIT) ~ 
+#'     AVISIT == "BASELINE" ~ "BL",
+#'     grepl("WEEK", AVISIT) ~
 #'       paste(
-#'         "W", 
+#'         "W",
 #'         trimws(
 #'           substr(
 #'             AVISIT,
@@ -69,7 +69,7 @@
 #'     TRUE ~ NA_character_)) %>%
 #'   mutate(AVISITCDN = case_when(
 #'     AVISITCD == "SCR" ~ -2,
-#'     AVISITCD == "BL" ~ 0, 
+#'     AVISITCD == "BL" ~ 0,
 #'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
 #'     TRUE ~ NA_real_)) %>%
 #'   # use ARMCD values to order treatment in visualization legend
@@ -77,7 +77,7 @@
 #'     ifelse(grepl("B", ARMCD), 2,
 #'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
-#'   mutate(ARM = factor(ARM) %>% 
+#'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
 #'
 #' g_spaghettiplot(data = ALB,
@@ -116,21 +116,21 @@ g_spaghettiplot <- function(data,
                             xtick = waiver(), xlabel = xtick,
                             rotate_xlab = FALSE,
                             font_size = 12,
-                            group_stats = "NONE"){
+                            group_stats = "NONE") {
   ## Pre-process data
-  if (!is.null(trt_group_level)){
+  if (!is.null(trt_group_level)) {
     data[[trt_group]] <- factor(data[[trt_group]],
                                 levels = trt_group_level)
   } else {
     data[[trt_group]] <- factor(data[[trt_group]])
   }
-  if (is.factor(data[[time]]) | is.character(data[[time]])){
+  if (is.factor(data[[time]]) | is.character(data[[time]])) {
     xtype <- "discrete"
   } else {
     xtype <- "continuous"
   }
-  if (xtype == "discrete"){
-    if (!is.null(time_level)){
+  if (xtype == "discrete") {
+    if (!is.null(time_level)) {
       data[[time]] <- factor(data[[time]],
                              levels = time_level)
     } else {
@@ -145,7 +145,7 @@ g_spaghettiplot <- function(data,
   gtitle <- paste0(biomarker1, unit1, value_var, " Values by Treatment @ Visits")
   gylab <- paste0(biomarker1, " ", value_var, " Values")
   # re-establish treatment variable label
-  if (trt_group == "ARM"){
+  if (trt_group == "ARM") {
     attributes(for.plot$ARM)$label <- "Planned Arm"
   } else {
     attributes(for.plot$ACTARM)$label <- "Actual Arm"
@@ -165,12 +165,12 @@ g_spaghettiplot <- function(data,
     ylab(gylab) +
     theme(plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5))
   # Apply y-axis zoom range
-  if (!is.null(ylim)){
+  if (!is.null(ylim)) {
     plot <- plot + coord_cartesian(ylim = ylim)
   }
   # add group statistics
-  if (group_stats != "NONE"){
-    if (group_stats == "MEAN"){
+  if (group_stats != "NONE") {
+    if (group_stats == "MEAN") {
       plot <- plot +
         stat_summary(aes(group = 1, linetype = "Group Mean"),
                      fun.y = mean, geom = "line", lwd = 1, color = color_comb) +
@@ -187,22 +187,22 @@ g_spaghettiplot <- function(data,
     plot <- plot +
       scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
   }
-  if (rotate_xlab){
+  if (rotate_xlab) {
     plot <- plot +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
   # Add manual color
-  if (!is.null(color_manual)){
+  if (!is.null(color_manual)) {
     plot <- plot +
       scale_color_manual(values = color_manual, name = trt_label)
   }
   #Add horizontal line
-  if (!is.null(hline)){
+  if (!is.null(hline)) {
     plot <- plot +
       geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
   # Format font size
-  if (!is.null(font_size)){
+  if (!is.null(font_size)) {
     plot <- plot +
       theme(plot.title = element_text(size = font_size, margin = margin()),
             axis.title.x = element_text(size = font_size),

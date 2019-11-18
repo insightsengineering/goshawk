@@ -64,10 +64,10 @@
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
-#'     AVISIT == "BASELINE" ~ "BL", 
-#'     grepl("WEEK", AVISIT) ~ 
+#'     AVISIT == "BASELINE" ~ "BL",
+#'     grepl("WEEK", AVISIT) ~
 #'       paste(
-#'         "W", 
+#'         "W",
 #'         trimws(
 #'           substr(
 #'             AVISIT,
@@ -79,7 +79,7 @@
 #'     TRUE ~ NA_character_)) %>%
 #'   mutate(AVISITCDN = case_when(
 #'     AVISITCD == "SCR" ~ -2,
-#'     AVISITCD == "BL" ~ 0, 
+#'     AVISITCD == "BL" ~ 0,
 #'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
 #'     TRUE ~ NA_real_)) %>%
 #'   # use ARMCD values to order treatment in visualization legend
@@ -87,7 +87,7 @@
 #'     ifelse(grepl("B", ARMCD), 2,
 #'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
-#'   mutate(ARM = factor(ARM) %>% 
+#'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
 #'
 #' g_lineplot(label = "Line Plot",
@@ -134,7 +134,7 @@ g_lineplot <- function(label = "Line Plot",
                             factor(data[[trt_group]]))
   xtype <- `if`(is.factor(data[[time]]) | is.character(data[[time]]),
                 "discrete", "continuous")
-  if (xtype == "discrete"){
+  if (xtype == "discrete") {
     data[[time]] <- `if`(!is.null(time_level),
                          factor(data[[time]], levels = time_level),
                          factor(data[[time]]))
@@ -156,7 +156,7 @@ g_lineplot <- function(label = "Line Plot",
     arrange_at(c(trt_group, shape))
   listin <- list()
   listin[[trt_group]] <- sum_data[[trt_group]]
-  if (!is.null(shape)){
+  if (!is.null(shape)) {
     listin[[shape]] <- sum_data[[shape]]
   }
   int <- unique_name("int", names(sum_data))
@@ -189,7 +189,7 @@ g_lineplot <- function(label = "Line Plot",
   gtitle <- paste0(biomarker1, unit1, str_to_title(line), " by Treatment @ Visits")
   gylab <- paste0(biomarker1, " ", str_to_title(line), " of ", value_var, " Values")
   # re-establish treatment variable label
-  if (trt_group == "ARM"){
+  if (trt_group == "ARM") {
     attributes(sum_data$ARM)$label <- "Planned Arm"
   } else {
     attributes(sum_data$ACTARM)$label <- "Actual Arm"
@@ -198,7 +198,7 @@ g_lineplot <- function(label = "Line Plot",
   trt_label <- `if`(is.null(attr(sum_data[[trt_group]], "label")),
                     "Dose",
                     attr(sum_data[[trt_group]], "label"))
-  if (is.null(shape)){
+  if (is.null(shape)) {
     plot1 <-  ggplot(data = sum_data,
                      aes_string(x = time,
                                 y = line,
@@ -206,7 +206,7 @@ g_lineplot <- function(label = "Line Plot",
                                 group = int)) + theme_bw() +
       geom_point(position = pd)
     # Add manual color
-    if (!is.null(color_manual)){
+    if (!is.null(color_manual)) {
       vals <- color_manual
       plot1 <- plot1 +
         scale_color_manual(values = vals, name = trt_label)
@@ -221,7 +221,7 @@ g_lineplot <- function(label = "Line Plot",
                                 group = int,
                                 shape = int)) + theme_bw()
     # Add manual color
-    if (!is.null(color_manual)){
+    if (!is.null(color_manual)) {
       vals <- rep(color_manual, rep(nshape, ncol))
       plot1 <- plot1 +
         scale_color_manual(" ", values = as.character(vals))
@@ -232,7 +232,7 @@ g_lineplot <- function(label = "Line Plot",
         scale_color_manual(" ", values = vals)
     }
     shapes <- c(15:18, 3:14, 0:2)
-    if (nshape > length(shapes)){
+    if (nshape > length(shapes)) {
       warning("Number of available shapes exceeded, values will cycle!")
     }
     select <- (1:nshape) %% (length(shapes))
@@ -261,7 +261,7 @@ g_lineplot <- function(label = "Line Plot",
           axis.title.y = element_text(margin = margin(r = 20))) +
     guides(color = guide_legend(byrow = TRUE))
   # Apply y-axis zoom range
-  if (!is.null(ylim)){
+  if (!is.null(ylim)) {
     plot1 <- plot1 +
       coord_cartesian(ylim = ylim)
   }
@@ -270,17 +270,17 @@ g_lineplot <- function(label = "Line Plot",
     plot1 <- plot1 +
       scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
   }
-  if (rotate_xlab){
+  if (rotate_xlab) {
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
   #Add horizontal line
-  if (!is.null(hline)){
+  if (!is.null(hline)) {
     plot1 <- plot1 +
       geom_hline(aes(yintercept = hline), color = "red", size = 0.5)
   }
   # Format font size
-  if (!is.null(font_size)){
+  if (!is.null(font_size)) {
     plot1 <- plot1 +
       theme(axis.title.x = element_text(size = font_size),
             axis.text.x = element_text(size = font_size),
@@ -294,7 +294,7 @@ g_lineplot <- function(label = "Line Plot",
   minline <- 36
   tabletotal <- lines * minline
   plotsize <- plot_height - tabletotal
-  if (plotsize <= 250){
+  if (plotsize <= 250) {
     stop("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the
     plot height using the Plot Aesthetic Settings.")
   }
@@ -315,19 +315,19 @@ g_lineplot <- function(label = "Line Plot",
   plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
 }
 new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { #nolint
-  for (i in 1:length(args)){
-    if (is.null(args[[i]])){
+  for (i in seq_along(args)) {
+    if (is.null(args[[i]])) {
       args[[i]] <- NULL
     }
   }
-  if (length(args) == 1){
+  if (length(args) == 1) {
     return(paste0(names(args), ":", args[[1]]))
   }
   args <- mapply(function(n, val) paste0(n, ":", val), names(args), args, SIMPLIFY = FALSE)
   interaction(args, drop = drop, sep = sep, lex.order = lex.order)
 }
-unique_name <- function(newname, old_names){
-  if (newname %in% old_names){
+unique_name <- function(newname, old_names) {
+  if (newname %in% old_names) {
     unique_name(paste0(newname, "1"), old_names)
   }
   newname

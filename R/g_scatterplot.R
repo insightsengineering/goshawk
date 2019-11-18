@@ -61,10 +61,10 @@
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
-#'     AVISIT == "BASELINE" ~ "BL", 
-#'     grepl("WEEK", AVISIT) ~ 
+#'     AVISIT == "BASELINE" ~ "BL",
+#'     grepl("WEEK", AVISIT) ~
 #'       paste(
-#'         "W", 
+#'         "W",
 #'         trimws(
 #'           substr(
 #'             AVISIT,
@@ -76,7 +76,7 @@
 #'     TRUE ~ NA_character_)) %>%
 #'   mutate(AVISITCDN = case_when(
 #'     AVISITCD == "SCR" ~ -2,
-#'     AVISITCD == "BL" ~ 0, 
+#'     AVISITCD == "BL" ~ 0,
 #'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
 #'     TRUE ~ NA_real_)) %>%
 #'   # use ARMCD values to order treatment in visualization legend
@@ -84,7 +84,7 @@
 #'     ifelse(grepl("B", ARMCD), 2,
 #'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
-#'   mutate(ARM = factor(ARM) %>% 
+#'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
 #'
 #' g_scatterplot(label = "Scatter Plot",
@@ -141,7 +141,7 @@ g_scatterplot <- function(label = "Scatter Plot",
                           rotate_xlab = FALSE,
                           font_size = 12,
                           dot_size = NULL,
-                          reg_text_size = 3){
+                          reg_text_size = 3) {
   # create scatter plot over time pairwise per treatment arm
   plot_data <- data %>%
     filter(!!sym(param_var) == param)
@@ -178,12 +178,12 @@ g_scatterplot <- function(label = "Scatter Plot",
     xlab(x_axis_label) +
     ylab(y_axis_label)
   # add grid faceting to foundation
-  if (facet){
+  if (facet) {
     plot1 <- plot1 +
       facet_grid(as.formula(paste0(facet_var, " ~ ", visit)))
   }
   # add regression line
-  if (reg_line){
+  if (reg_line) {
     slope <- function(x, y) {
       ratio <- sd(x) / sd(y)
       if (!is.na(ratio) & ratio > 0) {
@@ -239,7 +239,7 @@ g_scatterplot <- function(label = "Scatter Plot",
     plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)
   }
   # Format font size
-  if (!is.null(font_size)){
+  if (!is.null(font_size)) {
     plot1 <- plot1 +
       theme(axis.title.x = element_text(size = font_size),
             axis.text.x = element_text(size = font_size),
@@ -251,32 +251,32 @@ g_scatterplot <- function(label = "Scatter Plot",
             strip.text.y = element_text(size = font_size))
   }
   # Format treatment color
-  if (!is.null(color_manual)){
+  if (!is.null(color_manual)) {
     plot1 <- plot1 +
       scale_color_manual(values = color_manual, name = trt_label)
   }
   # Format LOQ flag symbol shape
-  if (!is.null(shape_manual)){
+  if (!is.null(shape_manual)) {
     plot1 <- plot1 +
       scale_shape_manual(values = shape_manual, name = "LOQ")
   }
   # Format dot size
-  if (!is.null(dot_size)){
+  if (!is.null(dot_size)) {
     plot1 <- plot1 +
       geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
   }
   # Format x-label
-  if (rotate_xlab){
+  if (rotate_xlab) {
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
   # Add horizontal line
-  if (!is.null(hline)){
+  if (!is.null(hline)) {
     plot1 <- plot1 +
       geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
   # Add vertical line
-  if (!is.null(vline)){
+  if (!is.null(vline)) {
     plot1 <- plot1 +
       geom_vline(aes(xintercept = vline), color = "red", linetype = "dashed", size = 0.5)
   }
