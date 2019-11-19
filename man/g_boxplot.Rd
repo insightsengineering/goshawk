@@ -50,8 +50,8 @@ Y-axis e.g. AVAL.}
 \item{font_size}{point size of tex to use.  NULL is use default size}
 
 \item{armlabel}{label for the treatment symbols in the legend.
-If not specified then the label attribute for trt_group will be used. 
-If there is no label attribute for trt_group, then the name of the parameter 
+If not specified then the label attribute for trt_group will be used.
+If there is no label attribute for trt_group, then the name of the parameter
 (in title case) will be used.}
 
 \item{facet}{variable to facet the plot by, or "None" if no faceting
@@ -79,14 +79,11 @@ midhinge, range, mid-range, and trimean.
 
 # Example using ADaM structure analysis dataset.
 
-library(dplyr)
-library(ggplot2)
-library(goshawk)
 library(random.cdisc.data)
 
-ADSL <- radsl(N = 100, seed = 1)
-ADLB <- radlb(ADSL, seed = 2)
-ADLB <- ADLB \%>\% subset(PARAMCD == "CRP")
+ADSL <- cadsl
+ADLB <- cadlb
+ADLB <- ADLB \%>\% filter(PARAMCD == "CRP")
 
 g_boxplot(ADLB,
           biomarker = "CRP",

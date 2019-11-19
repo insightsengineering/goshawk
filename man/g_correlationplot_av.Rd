@@ -67,8 +67,8 @@ g_correlationplot_av(label = "Correlation Plot", data,
 
 \item{facet_var}{variable to use for treatment facetting.}
 
-\item{reg_line}{include regression line and annotations for slope and coefficient. Use with facet
-= TRUE.}
+\item{reg_line}{include regression line and annotations for slope and coefficient.
+Use with facet = TRUE.}
 
 \item{hline}{y-axis value to position a horizontal line.}
 
@@ -95,87 +95,102 @@ Regression uses deming model.
 
 # Example using ADaM structure analysis dataset.
 
-library(dplyr)
-library(ggplot2)
-library(goshawk)
 library(random.cdisc.data)
 library(stringr)
 library(tidyr)
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", 
-"B: Placebo" = "Placebo", 
-"C: Combination" = "Combination")
-color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
+arm_mapping <- list(
+  "A: Drug X" = "150mg QD",
+  "B: Placebo" = "Placebo",
+  "C: Combination" = "Combination"
+)
+color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
-shape_manual <-  c("N"  = 1, "Y"  = 2, "NA" = 0)
+shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 
-ASL <- radsl(N = 20, seed = 1)
-ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7, seed = 2)
+ASL <- cadsl
+ALB <- cadlb
 ALB <- ALB \%>\%
-mutate(AVISITCD = case_when(
-AVISIT == "SCREENING" ~ "SCR",
-AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6,
-stop=str_locate(AVISIT, "DAY")-1))),
-TRUE ~ as.character(NA))) \%>\%
-mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
-TRUE ~ as.numeric(NA))) \%>\%
-# use ARMCD values to order treatment in visualization legend
-mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
-ifelse(grepl("B", ARMCD), 2,
-ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
-mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
-mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
+  mutate(AVISITCD = case_when(
+    AVISIT == "SCREENING" ~ "SCR",
+    AVISIT == "BASELINE" ~ "BL",
+    grepl("WEEK", AVISIT) ~
+      paste(
+        "W",
+        trimws(
+          substr(
+            AVISIT,
+            start = 6,
+            stop = str_locate(AVISIT, "DAY") - 1
+          )
+        )
+      ),
+    TRUE ~ NA_character_)) \%>\%
+  mutate(AVISITCDN = case_when(
+    AVISITCD == "SCR" ~ -2,
+    AVISITCD == "BL" ~ 0,
+    grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
+    TRUE ~ NA_real_)) \%>\%
+  # use ARMCD values to order treatment in visualization legend
+  mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+    ifelse(grepl("B", ARMCD), 2,
+      ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
+  mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
+  mutate(ARM = factor(ARM) \%>\%
+  reorder(TRTORD))
 
 # given the 2 param and 2 analysis vars we need to transform the data
-plot_data_t1 <- ALB \%>\% gather(ANLVARS, ANLVALS, BASE2, BASE, AVAL, BASE, LOQFL) \%>\%
-mutate(ANL.PARAM = ifelse(ANLVARS == "LOQFL", paste0(ANLVARS, "_", PARAMCD), paste0(ANLVARS,
-".", PARAMCD))) \%>\%
-select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) \%>\%
-spread(ANL.PARAM, ANLVALS)
+plot_data_t1 <- ALB \%>\%
+  gather(ANLVARS, ANLVALS, BASE2, BASE, AVAL, BASE, LOQFL) \%>\%
+  mutate(ANL.PARAM = ifelse(ANLVARS == "LOQFL",
+                            paste0(ANLVARS, "_", PARAMCD),
+                            paste0(ANLVARS, ".", PARAMCD))) \%>\%
+  select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) \%>\%
+  spread(ANL.PARAM, ANLVALS)
 # the transformed analysis value variables are character and need to be converted to numeric for
 # ggplot
 # remove records where either of the analysis variables are NA since they will not appear on the
 # plot and will ensure that LOQFL = NA level is removed
 plot_data_t2 <- plot_data_t1 \%>\%
-subset(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) \%>\%
-mutate_at(vars(contains(".")), as.numeric) \%>\%
-mutate(LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"))
+  filter(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) \%>\%
+  mutate_at(vars(contains(".")), as.numeric) \%>\%
+  mutate(LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"))
 
-g_correlationplot_av(label = "Correlation Plot",
-           data = plot_data_t2,
-           param_var = "PARAMCD",
-           xaxis_param =  c("CRP"),
-           xaxis_var = "AVAL",
-           xvar = "AVAL.CRP",
-           yaxis_param = c("ALT"),
-           yaxis_var = "BASE",
-           yvar = "BASE.ALT",
-           trt_group = "ARM",
-           visit = "AVISITCD",
-           loq_flag_var = "LOQFL",
-           unit = "AVALU",
-           xmin = 0,
-           xmax = 200,
-           ymin = 0,
-           ymax = 2000,
-           title_text = "Test",
-           xaxis_lab = "Test x",
-           yaxis_lab = "Test y",
-           color_manual = color_manual,
-           shape_manual = shape_manual,
-           facet_ncol = 4,
-           facet = FALSE,
-           facet_var = "ARM",
-           reg_line = TRUE,
-           hline = NULL,
-           vline = .5,
-           rotate_xlab = FALSE,
-           font_size = 14,
-           dot_size = 2,
-           reg_text_size = 3)
-
+g_correlationplot_av(
+  label = "Correlation Plot",
+  data = plot_data_t2,
+  param_var = "PARAMCD",
+  xaxis_param = c("CRP"),
+  xaxis_var = "AVAL",
+  xvar = "AVAL.CRP",
+  yaxis_param = c("ALT"),
+  yaxis_var = "BASE",
+  yvar = "BASE.ALT",
+  trt_group = "ARM",
+  visit = "AVISITCD",
+  loq_flag_var = "LOQFL",
+  unit = "AVALU",
+  xmin = 0,
+  xmax = 200,
+  ymin = 0,
+  ymax = 2000,
+  title_text = "Test",
+  xaxis_lab = "Test x",
+  yaxis_lab = "Test y",
+  color_manual = color_manual,
+  shape_manual = shape_manual,
+  facet_ncol = 4,
+  facet = FALSE,
+  facet_var = "ARM",
+  reg_line = TRUE,
+  hline = NULL,
+  vline = .5,
+  rotate_xlab = FALSE,
+  font_size = 14,
+  dot_size = 2,
+  reg_text_size = 3
+)
 }
 
 }

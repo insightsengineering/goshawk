@@ -13,8 +13,20 @@ Description: Functions that plot and summarize biomarkers of interest. Visualiza
     Data are expected in ADaM structure. Requires analysis subject level (ADSL/ASL) and
     analysis laboratory (ADLB/ALB) data sets. Beyond core variables, Lower Limit of Quantification
     flag variable (LOQFL) is expected with levels 'Y', 'N' or NA.
-Depends: dplyr, ggplot2
-Imports: grid, gridExtra, mcr, stringr, cowplot
+Depends: 
+    dplyr, 
+    ggplot2
+Imports: 
+    cowplot,
+    grid, 
+    gridExtra, 
+    mcr, 
+    rlang,
+    stringr
+Suggests: 
+    random.cdisc.data,
+    test.nest,
+    testthat
 License: GPL-2
 Encoding: UTF-8
 LazyData: true

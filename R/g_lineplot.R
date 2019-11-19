@@ -1,45 +1,44 @@
-#' Function to create line plot of summary statistics over time. 
-#' 
+#' Function to create line plot of summary statistics over time.
+#'
 #' @param label text string to be displayed as plot label.
 #' @param data data frame with variables to be summarized and generate statistics which will display
 #'  in the plot.
 #' @param biomarker_var name of variable containing biomarker names.
 #' @param biomarker_var_label name of variable containing biomarker labels.
-#' @param biomarker biomarker name to be analyzed. 
+#' @param biomarker biomarker name to be analyzed.
 #' @param value_var name of variable containing biomarker results.
 #' @param unit_var name of variable containing biomarker result unit.
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
-#' @param shape categorical variable whose levels are used to split the plot lines.   
+#' @param shape categorical variable whose levels are used to split the plot lines.
 #' @param time name of vairable containing visit names.
-#' @param time_level vector that can be used to define the factor level of time. Only use it when 
+#' @param time_level vector that can be used to define the factor level of time. Only use it when
 #' x-axis variable is character or factor.
 #' @param color_manual vector of colors.
 #' @param ylim numeric vector to define y-axis range.
 #' @param median boolean whether to display median results.
 #' @param hline numeric value represnting intercept of horizontal line.
-#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric. 
+#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric.
 #' Default value is waiver().
-#' @param xlabel vector with same length of xtick to define the label of x-axis tick values. 
+#' @param xlabel vector with same length of xtick to define the label of x-axis tick values.
 #' Default value is waiver().
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge.
 #' @param plot_height height of produced plot. 989 pixels by default.
-#' 
+#'
 #' @importFrom cowplot plot_grid
 #' @importFrom grDevices hcl
 #' @importFrom grid unit.pmax
 #' @importFrom gridExtra grid.arrange
-#' @importFrom stringr str_to_title
-#' @importFrom stringr str_wrap
+#' @importFrom stringr str_count str_wrap str_to_title
 #'
 #' @author Balazs Toth (toth.balazs@gene.com)
 #' @author Wenyi Liu (wenyi.liu@roche.com)
 #'
-#' @details Currently, the output plot can display mean and median of input value. For mean, the 
+#' @details Currently, the output plot can display mean and median of input value. For mean, the
 #' error bar denotes
-#' 95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75% 
+#' 95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75%
 #' quartile.
 #'
 #' @return \code{ggplot} object
@@ -47,40 +46,50 @@
 #' @export
 #'
 #' @examples
-#' 
+#'
 #'\dontrun{
 #'
 #' # Example using ADaM structure analysis dataset.
-#' 
-#' library(dplyr)
-#' library(ggplot2)
-#' library(goshawk)
+#'
 #' library(random.cdisc.data)
 #' library(stringr)
-#' 
+#'
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 #' "C: Combination" = "Combination")
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
-#' 
-#' ASL <- radsl(N = 20, seed = 1)
-#' ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
-#' ALB <- ALB %>% 
-#' mutate(AVISITCD = case_when(
-#' AVISIT == "SCREENING" ~ "SCR",
-#' AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
-#' stop=str_locate(AVISIT, "DAY")-1))),
-#' TRUE ~ as.character(NA))) %>%
-#' mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-#' AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)), 
-#' TRUE ~ as.numeric(NA))) %>%
-#' # use ARMCD values to order treatment in visualization legend
-#' mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
-#' ifelse(grepl("B", ARMCD), 2,
-#' ifelse(grepl("A", ARMCD), 3, NA)))) %>%
-#' mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
-#' mutate(ARM = factor(ARM) %>% reorder(TRTORD))
-#' 
+#'
+#' ASL <- cadsl
+#' ALB <- cadlb
+#' ALB <- ALB %>%
+#'   mutate(AVISITCD = case_when(
+#'     AVISIT == "SCREENING" ~ "SCR",
+#'     AVISIT == "BASELINE" ~ "BL",
+#'     grepl("WEEK", AVISIT) ~
+#'       paste(
+#'         "W",
+#'         trimws(
+#'           substr(
+#'             AVISIT,
+#'             start = 6,
+#'             stop = str_locate(AVISIT, "DAY") - 1
+#'           )
+#'         )
+#'       ),
+#'     TRUE ~ NA_character_)) %>%
+#'   mutate(AVISITCDN = case_when(
+#'     AVISITCD == "SCR" ~ -2,
+#'     AVISITCD == "BL" ~ 0,
+#'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
+#'     TRUE ~ NA_real_)) %>%
+#'   # use ARMCD values to order treatment in visualization legend
+#'   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+#'     ifelse(grepl("B", ARMCD), 2,
+#'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
+#'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
+#'   mutate(ARM = factor(ARM) %>%
+#'   reorder(TRTORD))
+#'
 #' g_lineplot(label = "Line Plot",
 #'            data = ALB,
 #'            biomarker_var = "PARAMCD",
@@ -94,10 +103,9 @@
 #'            hline = NULL,
 #'            rotate_xlab = FALSE,
 #'            plot_height = 2000)
-#'            
+#'
 #'}
 #'
-
 g_lineplot <- function(label = "Line Plot",
                        data,
                        biomarker_var = "PARAMCD",
@@ -120,213 +128,159 @@ g_lineplot <- function(label = "Line Plot",
                        font_size = 12,
                        dodge = 0.4,
                        plot_height = 989) {
-  
   ## Pre-process data
-  if(!is.null(trt_group_level)){
-    data[[trt_group]] <- factor(data[[trt_group]],
-                                levels = trt_group_level)
-  } else {
-    data[[trt_group]] <- factor(data[[trt_group]])
+  data[[trt_group]] <- `if`(!is.null(trt_group_level),
+                            factor(data[[trt_group]], levels = trt_group_level),
+                            factor(data[[trt_group]]))
+  xtype <- `if`(is.factor(data[[time]]) | is.character(data[[time]]),
+                "discrete", "continuous")
+  if (xtype == "discrete") {
+    data[[time]] <- `if`(!is.null(time_level),
+                         factor(data[[time]], levels = time_level),
+                         factor(data[[time]]))
   }
-  
-  if(is.factor(data[[time]]) | is.character(data[[time]])){
-    xtype <- 'discrete'
-  } else {
-    xtype <- 'continuous'
-  }
-  
-  if(xtype == 'discrete'){
-    if(!is.null(time_level)){
-      data[[time]] <- factor(data[[time]],
-                             levels = time_level)
-    } else {
-      data[[time]] <- factor(data[[time]])
-    }
-  }
-  
   groupings <- c(time, trt_group, shape)
-  
   ## Summary statistics
   sum_data <- data %>%
-    filter(eval(parse(text = biomarker_var)) == biomarker) %>%
+    filter(!!sym(biomarker_var) == biomarker) %>%
     group_by_at(groupings) %>%
-    summarise(count = sum(!is.na(eval(parse(text = value_var)))),
-              mean = mean(eval(parse(text = value_var)),na.rm = TRUE),
-              CIup = mean(eval(parse(text = value_var)),na.rm = TRUE) + 1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE)/sqrt(n()),
-              CIdown = mean(eval(parse(text = value_var)),na.rm = TRUE) - 1.96 * sd(eval(parse(text = value_var)), na.rm = TRUE)/sqrt(n()),
-              median = median(eval(parse(text = value_var)),na.rm = TRUE),
-              quant25 = quantile(eval(parse(text = value_var)), 0.25, na.rm = TRUE),
-              quant75 = quantile(eval(parse(text = value_var)), 0.75, na.rm = TRUE)) %>% 
+    summarise(count = sum(!is.na(!!sym(value_var))),
+              mean = mean(!!sym(value_var), na.rm = TRUE),
+              CIup = mean(!!sym(value_var), na.rm = TRUE) +
+                1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
+              CIdown = mean(!!sym(value_var), na.rm = TRUE) -
+                1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
+              median = median(!!sym(value_var), na.rm = TRUE),
+              quant25 = quantile(!!sym(value_var), 0.25, na.rm = TRUE),
+              quant75 = quantile(!!sym(value_var), 0.75, na.rm = TRUE)) %>%
     arrange_at(c(trt_group, shape))
-  
-  
   listin <- list()
   listin[[trt_group]] <- sum_data[[trt_group]]
-  if(!is.null(shape)){
+  if (!is.null(shape)) {
     listin[[shape]] <- sum_data[[shape]]
   }
-  
-  
   int <- unique_name("int", names(sum_data))
-  
   sum_data[[int]] <- new_interaction(listin, sep = " ")
   sum_data[[int]] <- str_wrap(sum_data[[int]], 12)
   sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
-  
-  
   unfiltered_data <- sum_data
-  
-  
   ## Base plot
   pd <- position_dodge(dodge)
-  
   if (median) {
-    line <- 'median'
-    up_limit <- 'quant75'
-    down_limit <- 'quant25'
+    line <- "median"
+    up_limit <- "quant75"
+    down_limit <- "quant25"
   } else {
-    line <- 'mean'
-    up_limit <- 'CIup'
-    down_limit <- 'CIdown'
+    line <- "mean"
+    up_limit <- "CIup"
+    down_limit <- "CIdown"
   }
-  
-  filtered_data <- data %>% 
-    filter_at(biomarker_var, any_vars(.==biomarker))
-  
-  unit <- filtered_data %>% 
-    pull(unit_var) %>% 
+  filtered_data <- data %>%
+    filter(!!sym(biomarker_var) == biomarker)
+  unit <- filtered_data %>%
+    pull(unit_var) %>%
     unique()
-  
   unit1 <- ifelse(is.na(unit) | unit == "",
                   " ",
-                  paste0(' (', unit, ') '))
-  
-  biomarker1 <- filtered_data %>% 
-    pull(biomarker_var_label) %>% 
-    unique() 
-  
-  
-  gtitle <- paste0(biomarker1, unit1, str_to_title(line), ' by Treatment @ Visits')
-  gylab <- paste0(biomarker1, ' ', str_to_title(line), ' of ', value_var, ' Values')
-  
+                  paste0(" (", unit, ") "))
+  biomarker1 <- filtered_data %>%
+    pull(biomarker_var_label) %>%
+    unique()
+  gtitle <- paste0(biomarker1, unit1, str_to_title(line), " by Treatment @ Visits")
+  gylab <- paste0(biomarker1, " ", str_to_title(line), " of ", value_var, " Values")
   # re-establish treatment variable label
-  if (trt_group == "ARM"){
+  if (trt_group == "ARM") {
     attributes(sum_data$ARM)$label <- "Planned Arm"
   } else {
     attributes(sum_data$ACTARM)$label <- "Actual Arm"
   }
-  
   # Setup legend label
-  if(is.null(attr(sum_data[[trt_group]], "label"))){
-    trtLabel <- "Dose"
-  } else {
-    trtLabel <- attr(sum_data[[trt_group]], "label")
-  }
-  
-  if (is.null(shape)){
+  trt_label <- `if`(is.null(attr(sum_data[[trt_group]], "label")),
+                    "Dose",
+                    attr(sum_data[[trt_group]], "label"))
+  if (is.null(shape)) {
     plot1 <-  ggplot(data = sum_data,
                      aes_string(x = time,
                                 y = line,
                                 color = trt_group,
-                                group  = int)) + theme_bw()  +
+                                group = int)) + theme_bw() +
       geom_point(position = pd)
     # Add manual color
-    if (!is.null(color_manual)){
-      
+    if (!is.null(color_manual)) {
       vals <- color_manual
       plot1 <- plot1 +
-        scale_color_manual(values = vals, name = trtLabel)
+        scale_color_manual(values = vals, name = trt_label)
     }
-    
   }else{
-    
     ncol <- nlevels(as.factor(unfiltered_data[[trt_group]]))
     nshape <- nlevels(as.factor(unfiltered_data[[shape]]))
-    
     plot1 <-  ggplot(data = sum_data,
                      aes_string(x = time,
                                 y = line,
                                 color = int,
-                                group  = int,
+                                group = int,
                                 shape = int)) + theme_bw()
-    
-    
     # Add manual color
-    
-    if (!is.null(color_manual)){
+    if (!is.null(color_manual)) {
       vals <- rep(color_manual, rep(nshape, ncol))
-      
       plot1 <- plot1 +
-        scale_color_manual(" ",values = as.character(vals))
+        scale_color_manual(" ", values = as.character(vals))
     }else{
       colors <- gg_color_hue(ncol)
       vals <- rep(colors, rep(nshape, ncol))
       plot1 <- plot1 +
-        scale_color_manual(" ",values = vals)
+        scale_color_manual(" ", values = vals)
     }
-    shapes <- c(15, 16, 17, 18, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                0, 1, 2)
-    
-    if (nshape>length(shapes)){
+    shapes <- c(15:18, 3:14, 0:2)
+    if (nshape > length(shapes)) {
       warning("Number of available shapes exceeded, values will cycle!")
     }
-    
-    select <- (1:nshape)%%(length(shapes))
-    select <- ifelse(select==0, length(shapes), select)
-    
+    select <- (1:nshape) %% (length(shapes))
+    select <- ifelse(select == 0, length(shapes), select)
     selected_shapes <- shapes[select]
-    
     vals <- rep(selected_shapes, ncol)
-    
-    plot1 <- plot1 + scale_shape_manual(" ",
-                                        values = vals )+
-      theme(legend.key.size=unit(1, "cm")) +
-      geom_point(position = pd, size =3)
+    plot1 <- plot1 +
+      scale_shape_manual(" ", values = vals) +
+      theme(legend.key.size = unit(1, "cm")) +
+      geom_point(position = pd, size = 3)
   }
-  
   plot1 <-  plot1 +
     geom_line(position = pd) +
     geom_errorbar(aes_string(ymin = down_limit,
                              ymax = up_limit),
-                  width=0.9,
+                  width = 0.9,
                   position = pd) +
     ggtitle(gtitle) +
-    labs(caption = paste("The output plot can display mean and median of input value.
-                         For mean, the error bar denotes 95% confidence interval.
-                         For median, the bar denotes the first to third quartile.")) +
-    xlab(time) + 
-    ylab(gylab)+
-    theme(legend.position = "bottom", legend.direction = "horizontal", 
-          plot.title = element_text(size=font_size, margin = margin(), hjust = 0.5),
-          axis.title.y = element_text(margin = margin(r = 20)))+
-    guides(color=guide_legend(byrow=TRUE))
-  
+    labs(caption = paste("The output plot can display mean and median of input value.",
+                         "For mean, the error bar denotes 95% confidence interval.",
+                         "For median, the bar denotes the first to third quartile.")) +
+    xlab(time) +
+    ylab(gylab) +
+    theme(legend.position = "bottom", legend.direction = "horizontal",
+          plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5),
+          axis.title.y = element_text(margin = margin(r = 20))) +
+    guides(color = guide_legend(byrow = TRUE))
   # Apply y-axis zoom range
-  if(!is.null(ylim)){
-    plot1 <- plot1 + coord_cartesian(ylim = ylim)
+  if (!is.null(ylim)) {
+    plot1 <- plot1 +
+      coord_cartesian(ylim = ylim)
   }
-  
   # Format x-label
-  if(xtype == 'continuous') {
-    plot1 <- plot1 + 
+  if (xtype == "continuous") {
+    plot1 <- plot1 +
       scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
   }
-  
-  if (rotate_xlab){
+  if (rotate_xlab) {
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
-  
-  
-  
   #Add horizontal line
-  if (!is.null(hline)){
+  if (!is.null(hline)) {
     plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color="red", size=0.5)
+      geom_hline(aes(yintercept = hline), color = "red", size = 0.5)
   }
-  
   # Format font size
-  if (!is.null(font_size)){
+  if (!is.null(font_size)) {
     plot1 <- plot1 +
       theme(axis.title.x = element_text(size = font_size),
             axis.text.x = element_text(size = font_size),
@@ -335,68 +289,50 @@ g_lineplot <- function(label = "Line Plot",
             legend.title = element_text(size = font_size),
             legend.text = element_text(size = font_size))
   }
-  
   labels <- rev(levels(sum_data[[int]]))
-  lines <- sum(str_count(unique(labels), "\n")) * 1/2 + length(unique(labels))
-  
+  lines <- sum(stringr::str_count(unique(labels), "\n")) / 2 + length(unique(labels))
   minline <- 36
-  tabletotal <- lines*minline
-  
+  tabletotal <- lines * minline
   plotsize <- plot_height - tabletotal
-  
-  if(plotsize <= 250){
-    stop("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the 
+  if (plotsize <= 250) {
+    stop("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the
     plot height using the Plot Aesthetic Settings.")
   }
-  
-  tbl <- ggplot(sum_data, aes_string(x = time, y = int, label = 'count')) +
+  tbl <- ggplot(sum_data, aes_string(x = time, y = int, label = "count")) +
     geom_text(size = 4.5) +
-    ggtitle("Number of observations") + 
+    ggtitle("Number of observations") +
     theme_minimal() +
-    scale_y_discrete(labels = labels) + 
+    scale_y_discrete(labels = labels) +
     theme(panel.grid.major = element_blank(), legend.position = "none",
           panel.grid.minor = element_blank(),
-          panel.border = element_blank(), axis.text.x =  element_blank(),
-          axis.ticks =  element_blank(),
-          axis.title.x=element_blank(),
+          panel.border = element_blank(), axis.text.x = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title.x = element_blank(),
           axis.title.y = element_blank(),
-          axis.text.y = element_text(size=font_size),
-          plot.title = element_text(face = "bold", size=font_size))
-  
-  
-  
+          axis.text.y = element_text(size = font_size),
+          plot.title = element_text(face = "bold", size = font_size))
   #Plot the two grobs using plot_grid
-  
-  
   plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
-  
-  
-  
 }
-
-
-new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE){
-  for (i in 1:length(args)){
-    if (is.null(args[[i]])){
+new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { #nolint
+  for (i in seq_along(args)) {
+    if (is.null(args[[i]])) {
       args[[i]] <- NULL
     }
   }
-  if (length(args) == 1){
+  if (length(args) == 1) {
     return(paste0(names(args), ":", args[[1]]))
   }
-  args <- mapply(function(n,val) paste0(n, ":", val), names(args), args, SIMPLIFY = FALSE)
+  args <- mapply(function(n, val) paste0(n, ":", val), names(args), args, SIMPLIFY = FALSE)
   interaction(args, drop = drop, sep = sep, lex.order = lex.order)
 }
-
-unique_name <- function(newname, old_names){
-  if (newname %in% old_names){
-    unique_name(paste0(newname,"1"), old_names)
+unique_name <- function(newname, old_names) {
+  if (newname %in% old_names) {
+    unique_name(paste0(newname, "1"), old_names)
   }
   newname
 }
-
-
 gg_color_hue <- function(n) {
-  hues = seq(15, 375, length = n + 1)
+  hues <- seq(15, 375, length = n + 1)
   hcl(h = hues, l = 65, c = 100)[1:n]
 }
