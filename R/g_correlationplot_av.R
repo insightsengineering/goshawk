@@ -183,11 +183,9 @@ g_correlationplot_av <- function(label = "Correlation Plot",
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
   # Setup legend label
-  if (is.null(attr(data[[trt_group]], "label"))) {
-    trt_label <- "Dose"
-  } else {
-    trt_label <- attr(data[[trt_group]], "label")
-  }
+  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")),
+                    "Dose",
+                    attr(data[[trt_group]], "label"))
   # create plot foundation - titles and axes labels are defined in
   # teal.goshawk.tm_g_correlationplot.R
   plot1 <- ggplot2::ggplot(
