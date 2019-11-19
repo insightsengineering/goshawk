@@ -24,6 +24,8 @@ Imports:
     rlang,
     stringr
 Suggests: 
+    random.cdisc.data,
+    test.nest,
     testthat
 License: GPL-2
 Encoding: UTF-8
