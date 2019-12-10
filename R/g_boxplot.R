@@ -39,6 +39,7 @@
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
 #'
 #' @importFrom gridExtra grid.arrange
+#' @importFrom utils.nest if_null column_annotation_label
 #'
 #' @author Balazs Toth
 #' @author Jeff Tomlinson (tomlinsj) jeffrey.tomlinson@roche.com
@@ -72,8 +73,7 @@
 #'           alpha = 0.5,
 #'           rotate_xlab = TRUE)
 #'
-#'}
-#'
+#' }
 g_boxplot <- function(data,
                       biomarker,
                       yaxis_var,
@@ -111,13 +111,9 @@ g_boxplot <- function(data,
                           ifelse(unit == "", paste(data$PARAM, "Distribution by Treatment @ Visits"),
                                  paste0(data$PARAM, " (", unit, ") Distribution by Treatment @ Visits"))
   )
-  # If supplied, then use armlabel as specified.
-  # otherwise If present, use the label for the trt_group parameter,
-  # otherwise if not then use the name of the parameter (in title case)
-  t_label <- attr(data[, names(data) == trt_group], "label")
-  armlabel <- ifelse(!is.null(armlabel), armlabel,
-                     ifelse(!is.null(t_label), t_label,
-                            gsub("(?<=\\b)([a-z])", "\\U\\1", tolower(trt_group), perl = TRUE)))
+  # use armlabel if supplied, otherwise get arm label from arm column label
+  armlabel <- if_null(armlabel, column_annotation_label(data, trt_group))
+
   # Base plot
   plot1 <-  ggplot()
   # Add boxes if required

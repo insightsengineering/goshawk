@@ -99,7 +99,6 @@ g_boxplot(ADLB,
           rotate_xlab = TRUE)
 
 }
-
 }
 \author{
 Balazs Toth
