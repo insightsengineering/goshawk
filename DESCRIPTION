@@ -22,7 +22,8 @@ Imports:
     gridExtra, 
     mcr, 
     rlang,
-    stringr
+    stringr,
+    utils.nest
 Suggests: 
     random.cdisc.data,
     test.nest,
