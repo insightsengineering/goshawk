@@ -38,6 +38,8 @@
 #'
 #' @details Regression uses deming model.
 #'
+#' @importFrom stats setNames
+#'
 #' @export
 #'
 #' @examples
@@ -197,7 +199,7 @@ g_scatterplot <- function(label = "Scatter Plot",
         # so that NULL condition does not throw error below
         as.numeric(c(NA, NA, NA))
       }
-      
+
       return(as_data_frame(setNames(as.list(res), c("intercept", "slope", "corr"))))
     }
     sub_data <- plot_data %>%
