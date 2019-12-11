@@ -38,6 +38,8 @@
 #'
 #' @details Regression uses deming model.
 #'
+#' @importFrom stats setNames
+#'
 #' @export
 #'
 #' @examples
@@ -186,36 +188,35 @@ g_scatterplot <- function(label = "Scatter Plot",
   if (reg_line) {
     slope <- function(x, y) {
       ratio <- sd(x) / sd(y)
-      if (!is.na(ratio) & ratio > 0) {
+      res <- if (!is.na(ratio) & ratio > 0) {
         reg <- mc.deming(y, x, ratio)
         # return the evaluation of the ratio condition as third value in numeric vector
         # for conttroling downstream processing
-        return(c(round(reg$b0, 2), round(reg$b1, 2), !is.na(ratio) & ratio > 0))
+        c(round(reg$b0, 2), round(reg$b1, 2),
+          ifelse(!is.na(ratio) && ratio > 0, cor(y, x, method = "spearman", use = "complete.obs"), NA_real_))
+      } else {
+        # if ratio condition is not met then assign NA to returned vector
+        # so that NULL condition does not throw error below
+        as.numeric(c(NA, NA, NA))
       }
-      # if ratio condition is not met then assign NA to returned vector
-      # so that NULL condition does not throw error below
-      return(as.numeric(c(NA, NA, NA)))
+
+      return(as_data_frame(setNames(as.list(res), c("intercept", "slope", "corr"))))
     }
-    sub_data <- filter(plot_data, !is.na(!!sym(yaxis_var)) &
-                         !is.na(!!sym(xaxis_var))) %>%
+    sub_data <- plot_data %>%
+      select_(trt_group, visit, xaxis_var, yaxis_var) %>%
+      filter(!is.na(!!sym(yaxis_var)) & !is.na(!!sym(xaxis_var))) %>%
       group_by_(.dots = c(trt_group, visit)) %>%
-      mutate(intercept = slope(!!sym(yaxis_var),
-                               !!sym(xaxis_var))[1]) %>%
-      mutate(slope = slope(!!sym(yaxis_var),
-                           !!sym(xaxis_var))[2]) %>%
-      mutate(corr = ifelse(((slope(!!sym(yaxis_var),
-                                   !!sym(xaxis_var)))[3]),
-                           cor(!!sym(yaxis_var),
-                               !!sym(xaxis_var),
-                               method = "spearman",
-                               use = "complete.obs"),
-                           NA))
+      do(slope(.data[[yaxis_var]], .data[[xaxis_var]]))
+
+    if (!(all(is.na(sub_data$intercept)) && all(is.na(sub_data$slope)))) {
+      plot1 <- plot1 +
+        geom_abline(data = sub_data,
+                    # has to put some neutral values for missings, i.e. big & negative intercept + 0 slope
+                    aes(intercept = vapply(.data$intercept, if_na, numeric(1), -9999),
+                        slope = vapply(.data$slope, if_na, numeric(1), 0),
+                        color = !!sym(trt_group)))
+    }
     plot1 <- plot1 +
-      geom_abline(data = filter(sub_data, row_number() == 1),
-                  # only need to return 1 row within group_by to create annotations
-                  aes_string(intercept = "intercept",
-                             slope = "slope",
-                             color = trt_group)) +
       geom_text(data = filter(sub_data, row_number() == 1),
                 aes(x = -Inf,
                     y = Inf,

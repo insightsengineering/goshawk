@@ -4,8 +4,9 @@
 #'
 #' @name goshawk
 #'
-#' @import ggplot2
 #' @import dplyr
+#' @import ggplot2
+#' @import utils.nest
 #'
 NULL
 
