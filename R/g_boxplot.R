@@ -62,7 +62,7 @@
 #'
 #' g_boxplot(ADLB,
 #'           biomarker = "CRP",
-#'           param_var = "PARAMCD", 
+#'           param_var = "PARAMCD",
 #'           yaxis_var = "AVAL",
 #'           trt_group = "ARM",
 #'           loq_flag = "LOQFL",
@@ -102,17 +102,13 @@ g_boxplot <- function(data,
                    paste("param_var", param_var, "is not in data.")))
   stop_if_not(list(any(data[[param_var]] == biomarker),
                    paste("biomarker", biomarker, "is not found in param_var", param_var, ".")))
-  
   # filter input data
   data <- data %>%
     filter(!!sym(param_var) == biomarker)
-  
   if (!is.null(unit)){
-    
     # check unit is in the dataset
     stop_if_not(list(!is.null(data[[unit]]),
                      paste("unit variable", unit, "is not in data.")))
-    
     # extract the most common unit
     # if there are ties, take the use alphabetic order
     tmp_unit <- data %>%
@@ -122,14 +118,12 @@ g_boxplot <- function(data,
       slice(1) %>%
       select(!!sym(unit)) %>%
       as.character()
-    
-    if(is.factor(data[[unit]])){
+    if (is.factor(data[[unit]])){
       unit <- levels(data[[unit]])[as.numeric(tmp_unit)]
     } else {
       unit <- tmp_unit
     }
   }
-  
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
   y_axis_label <- ifelse(is.null(unit), paste(data$PARAM[1], yaxis_var, "Values"),
                          ifelse(unit == "", paste(data$PARAM[1], yaxis_var, "Values"),
