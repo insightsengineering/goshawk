@@ -125,10 +125,10 @@ g_spaghettiplot <- function(data,
     data[[trt_group]] <- factor(data[[trt_group]])
   }
   # Get label for x-axis
-  gxlab <- `if`(is.null(attr(data[[time]], 'label')),
+  gxlab <- `if`(is.null(attr(data[[time]], "label")),
                 time,
-                attr(data[[time]], 'label'))
-  
+                attr(data[[time]], "label"))
+
   if (is.factor(data[[time]]) | is.character(data[[time]])) {
     xtype <- "discrete"
   } else {
@@ -155,7 +155,7 @@ g_spaghettiplot <- function(data,
   } else {
     attributes(for.plot$ACTARM)$label <- "Actual Arm"
   }
-              
+
   # Setup legend label
   trt_label <- `if`(is.null(attr(for.plot[[trt_group]], "label")),
                     "Dose",
@@ -202,7 +202,7 @@ g_spaghettiplot <- function(data,
     plot <- plot +
       scale_color_manual(values = color_manual, name = trt_label)
   }
-  
+
   #Add horizontal line
   if (!is.null(hline)) {
     plot <- plot +
