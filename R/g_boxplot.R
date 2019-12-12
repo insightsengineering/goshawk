@@ -112,7 +112,7 @@ g_boxplot <- function(data,
                                  paste0(data$PARAM, " (", unit, ") Distribution by Treatment @ Visits"))
   )
   # use armlabel if supplied, otherwise get arm label from arm column label
-  armlabel <- if_null(armlabel, column_annotation_label(data, trt_group))
+  armlabel <- if_null(armlabel, column_annotation_label(data, trt_group, omit_raw_name = TRUE))
 
   # Base plot
   plot1 <-  ggplot()
