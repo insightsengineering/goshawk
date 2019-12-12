@@ -124,6 +124,11 @@ g_spaghettiplot <- function(data,
   } else {
     data[[trt_group]] <- factor(data[[trt_group]])
   }
+  # Get label for x-axis
+  gxlab <- `if`(is.null(attr(data[[time]], 'label')),
+                time,
+                attr(data[[time]], 'label'))
+  
   if (is.factor(data[[time]]) | is.character(data[[time]])) {
     xtype <- "discrete"
   } else {
@@ -150,6 +155,7 @@ g_spaghettiplot <- function(data,
   } else {
     attributes(for.plot$ACTARM)$label <- "Actual Arm"
   }
+              
   # Setup legend label
   trt_label <- `if`(is.null(attr(for.plot[[trt_group]], "label")),
                     "Dose",
@@ -161,7 +167,7 @@ g_spaghettiplot <- function(data,
     facet_wrap(trt_group, ncol = facet_ncol) +
     theme_bw() +
     ggtitle(gtitle) +
-    xlab(time) +
+    xlab(gxlab) +
     ylab(gylab) +
     theme(plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5))
   # Apply y-axis zoom range
@@ -196,6 +202,7 @@ g_spaghettiplot <- function(data,
     plot <- plot +
       scale_color_manual(values = color_manual, name = trt_label)
   }
+  
   #Add horizontal line
   if (!is.null(hline)) {
     plot <- plot +
