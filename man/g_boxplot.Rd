@@ -88,7 +88,7 @@ ADLB <- cadlb
 
 g_boxplot(ADLB,
           biomarker = "CRP",
-          param_var = "PARAMCD", 
+          param_var = "PARAMCD",
           yaxis_var = "AVAL",
           trt_group = "ARM",
           loq_flag = "LOQFL",
@@ -101,7 +101,6 @@ g_boxplot(ADLB,
           rotate_xlab = TRUE)
 
 }
-
 }
 \author{
 Balazs Toth
