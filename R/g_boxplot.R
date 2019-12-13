@@ -14,6 +14,7 @@
 #'
 #' @param data data frame with variables which will be displayed in the plot.
 #' @param biomarker biomarker to visualize e.g. IGG.
+#' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param yaxis_var name of variable containing biomarker results displayed on
 #'   Y-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment trt_group e.g. ARM.
@@ -39,7 +40,7 @@
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
 #'
 #' @importFrom gridExtra grid.arrange
-#' @importFrom utils.nest if_null column_annotation_label
+#' @importFrom utils.nest stop_if_not if_null column_annotation_label
 #'
 #' @author Balazs Toth
 #' @author Jeff Tomlinson (tomlinsj) jeffrey.tomlinson@roche.com
@@ -58,10 +59,10 @@
 #'
 #' ADSL <- cadsl
 #' ADLB <- cadlb
-#' ADLB <- ADLB %>% filter(PARAMCD == "CRP")
 #'
 #' g_boxplot(ADLB,
 #'           biomarker = "CRP",
+#'           param_var = "PARAMCD",
 #'           yaxis_var = "AVAL",
 #'           trt_group = "ARM",
 #'           loq_flag = "LOQFL",
@@ -76,6 +77,7 @@
 #' }
 g_boxplot <- function(data,
                       biomarker,
+                      param_var = "PARAMCD",
                       yaxis_var,
                       trt_group,
                       xaxis_var = NULL,
@@ -95,21 +97,41 @@ g_boxplot <- function(data,
                       armlabel = NULL,
                       facet = NULL
 ) {
-  # re-establish treatment variable label
-  if (trt_group == "ARM") {
-    attributes(data$ARM)$label <- "Planned Arm"
-  } else {
-    attributes(data$ACTARM)$label <- "Actual Arm"
+  stop_if_not(list(!is.null(data[[param_var]]),
+                   paste("param_var", param_var, "is not in data.")))
+  stop_if_not(list(any(data[[param_var]] == biomarker),
+                   paste("biomarker", biomarker, "is not found in param_var", param_var, ".")))
+  # filter input data
+  data <- data %>%
+    filter(!!sym(param_var) == biomarker)
+  if (!is.null(unit)){
+    # check unit is in the dataset
+    stop_if_not(list(!is.null(data[[unit]]),
+                     paste("unit variable", unit, "is not in data.")))
+    # extract the most common unit
+    # if there are ties, take the use alphabetic order
+    tmp_unit <- data %>%
+      count(!!sym(unit)) %>%
+      top_n(1, n) %>%
+      arrange(!!sym(unit)) %>%
+      slice(1) %>%
+      select(!!sym(unit)) %>%
+      as.character()
+    if (is.factor(data[[unit]])){
+      unit <- levels(data[[unit]])[as.numeric(tmp_unit)]
+    } else {
+      unit <- tmp_unit
+    }
   }
   # Setup the Y axis label.  Combine the biomarker and the units (if available)
-  y_axis_label <- ifelse(is.null(unit), paste(data$PARAM, yaxis_var, "Values"),
-                         ifelse(unit == "", paste(data$PARAM, yaxis_var, "Values"),
-                                paste0(data$PARAM, " (", unit, ") ", yaxis_var, " Values"))
+  y_axis_label <- ifelse(is.null(unit), paste(data$PARAM[1], yaxis_var, "Values"),
+                         ifelse(unit == "", paste(data$PARAM[1], yaxis_var, "Values"),
+                                paste0(data$PARAM[1], " (", unit, ") ", yaxis_var, " Values"))
   )
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
-  ggtitle_label <- ifelse(is.null(unit), paste(data$PARAM, "Distribution by Treatment @ Visits"),
-                          ifelse(unit == "", paste(data$PARAM, "Distribution by Treatment @ Visits"),
-                                 paste0(data$PARAM, " (", unit, ") Distribution by Treatment @ Visits"))
+  ggtitle_label <- ifelse(is.null(unit), paste(data$PARAM[1], "Distribution by Treatment @ Visits"),
+                          ifelse(unit == "", paste(data$PARAM[1], "Distribution by Treatment @ Visits"),
+                                 paste0(data$PARAM[1], " (", unit, ") Distribution by Treatment @ Visits"))
   )
   # use armlabel if supplied, otherwise get arm label from arm column label
   armlabel <- if_null(armlabel, column_annotation_label(data, trt_group, omit_raw_name = TRUE))
