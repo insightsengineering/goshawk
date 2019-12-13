@@ -20,6 +20,7 @@ Imports:
     cowplot,
     grid, 
     gridExtra, 
+    magrittr,
     mcr, 
     rlang,
     stringr,
