@@ -145,6 +145,7 @@ g_spaghettiplot <- function(data,
     unique() %>%
     extract2(1)
   gtitle <- paste0(biomarker1, unit1, value_var, " Values by Treatment @ Visits")
+  gxlab <- if_null(attr(data[[time]], "label"), time)
   gylab <- paste0(biomarker1, " ", value_var, " Values")
   # re-establish treatment variable label
   if (trt_group == "ARM") {
@@ -152,6 +153,7 @@ g_spaghettiplot <- function(data,
   } else {
     attributes(plot_data$ACTARM)$label <- "Actual Arm"
   }
+
   # Setup legend label
   trt_label <- if_null(attr(plot_data[[trt_group]], "label"), "Dose")
 
@@ -162,7 +164,7 @@ g_spaghettiplot <- function(data,
     facet_wrap(trt_group, ncol = facet_ncol) +
     theme_bw() +
     ggtitle(gtitle) +
-    xlab(time) +
+    xlab(gxlab) +
     ylab(gylab) +
     theme(plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5))
   # Apply y-axis zoom range
@@ -197,6 +199,7 @@ g_spaghettiplot <- function(data,
     plot <- plot +
       scale_color_manual(values = color_manual, name = trt_label)
   }
+
   #Add horizontal line
   if (!is.null(hline)) {
     plot <- plot +

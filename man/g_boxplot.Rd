@@ -4,17 +4,19 @@
 \alias{g_boxplot}
 \title{Function to create a boxplot.}
 \usage{
-g_boxplot(data, biomarker, yaxis_var, trt_group, xaxis_var = NULL,
-  loq_flag = "LOQFL", unit = NULL, color_manual = NULL,
-  shape_manual = NULL, box = TRUE, ymax_scale = NULL,
-  ymin_scale = NULL, dot_size = 2, alpha = 1, facet_ncol = NULL,
-  hline = NULL, rotate_xlab = FALSE, font_size = NULL,
-  armlabel = NULL, facet = NULL)
+g_boxplot(data, biomarker, param_var = "PARAMCD", yaxis_var, trt_group,
+  xaxis_var = NULL, loq_flag = "LOQFL", unit = NULL,
+  color_manual = NULL, shape_manual = NULL, box = TRUE,
+  ymax_scale = NULL, ymin_scale = NULL, dot_size = 2, alpha = 1,
+  facet_ncol = NULL, hline = NULL, rotate_xlab = FALSE,
+  font_size = NULL, armlabel = NULL, facet = NULL)
 }
 \arguments{
 \item{data}{data frame with variables which will be displayed in the plot.}
 
 \item{biomarker}{biomarker to visualize e.g. IGG.}
+
+\item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
 \item{yaxis_var}{name of variable containing biomarker results displayed on
 Y-axis e.g. AVAL.}
@@ -83,10 +85,10 @@ library(random.cdisc.data)
 
 ADSL <- cadsl
 ADLB <- cadlb
-ADLB <- ADLB \%>\% filter(PARAMCD == "CRP")
 
 g_boxplot(ADLB,
           biomarker = "CRP",
+          param_var = "PARAMCD", 
           yaxis_var = "AVAL",
           trt_group = "ARM",
           loq_flag = "LOQFL",
