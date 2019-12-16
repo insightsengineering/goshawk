@@ -96,13 +96,13 @@
 #'            biomarker = "CRP",
 #'            value_var = "AVAL",
 #'            trt_group = "ARM",
-#'            shape = "RACE",
+#'            shape = NULL,
 #'            time = "AVISITCD",
 #'            color_manual = color_manual,
 #'            median = FALSE,
-#'            hline = NULL,
+#'            hline = 50,
 #'            rotate_xlab = FALSE,
-#'            plot_height = 2000)
+#'            plot_height = 600)
 #'
 #'}
 #'
@@ -277,7 +277,7 @@ g_lineplot <- function(label = "Line Plot",
   #Add horizontal line
   if (!is.null(hline)) {
     plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color = "red", size = 0.5)
+      geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
   # Format font size
   if (!is.null(font_size)) {
