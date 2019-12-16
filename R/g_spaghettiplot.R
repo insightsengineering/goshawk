@@ -172,18 +172,30 @@ g_spaghettiplot <- function(data,
     plot <- plot + coord_cartesian(ylim = ylim)
   }
   # add group statistics
+  # can't use stat_summary() because of presenting values for groups with all missings
   if (group_stats != "NONE") {
     if (group_stats == "MEAN") {
-      plot <- plot +
-        stat_summary(aes(group = 1, linetype = "Group Mean"),
-                     fun.y = mean, geom = "line", lwd = 1, color = color_comb) +
-        scale_linetype_manual(name = "", label = "Group Mean", values = c(1))
-    } else{
-      plot <- plot +
-        stat_summary(aes(group = 1, linetype = "Group Median"),
-                     fun.y = median, geom = "line", lwd = 1, color = color_comb) +
-        scale_linetype_manual(name = "", label = "Group Median", values = c(1))
+      plot_data_groupped <- plot_data %>% 
+        group_by(!!sym(time)) %>% 
+        transmute(AGG_VAL = mean(!!sym(value_var), na.rm = TRUE))
+      
+      agg_label <- "Group Mean"
+    } else {
+      plot_data_groupped <- plot_data %>% 
+        group_by(!!sym(time)) %>% 
+        transmute(AGG_VAL = median(!!sym(value_var), na.rm = TRUE))
+      
+      agg_label <- "Group Median"
     }
+    
+    plot <- plot +
+      geom_line(
+        aes_string(x = time, y = "AGG_VAL", group = 1, linetype = as.factor(agg_label)), 
+        data = plot_data_groupped, 
+        lwd = 1,
+        color = color_comb,
+        na.rm = TRUE) +
+      scale_linetype_manual(name = "", label = agg_label, values = c(1))
   }
   # Format x-label
   if (xtype == "continuous") {
