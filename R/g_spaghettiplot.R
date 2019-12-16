@@ -175,23 +175,23 @@ g_spaghettiplot <- function(data,
   # can't use stat_summary() because of presenting values for groups with all missings
   if (group_stats != "NONE") {
     if (group_stats == "MEAN") {
-      plot_data_groupped <- plot_data %>% 
-        group_by(!!sym(time)) %>% 
+      plot_data_groupped <- plot_data %>%
+        group_by(!!sym(time)) %>%
         transmute(AGG_VAL = mean(!!sym(value_var), na.rm = TRUE))
-      
+
       agg_label <- "Group Mean"
     } else {
-      plot_data_groupped <- plot_data %>% 
-        group_by(!!sym(time)) %>% 
+      plot_data_groupped <- plot_data %>%
+        group_by(!!sym(time)) %>%
         transmute(AGG_VAL = median(!!sym(value_var), na.rm = TRUE))
-      
+
       agg_label <- "Group Median"
     }
-    
+
     plot <- plot +
       geom_line(
-        aes_string(x = time, y = "AGG_VAL", group = 1, linetype = as.factor(agg_label)), 
-        data = plot_data_groupped, 
+        aes_string(x = time, y = "AGG_VAL", group = 1, linetype = as.factor(agg_label)),
+        data = plot_data_groupped,
         lwd = 1,
         color = color_comb,
         na.rm = TRUE) +
