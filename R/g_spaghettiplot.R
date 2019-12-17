@@ -176,13 +176,13 @@ g_spaghettiplot <- function(data,
   if (group_stats != "NONE") {
     if (group_stats == "MEAN") {
       plot_data_groupped <- plot_data %>%
-        group_by(!!sym(time)) %>%
+        group_by(!!sym(trt_group), !!sym(time)) %>%
         transmute(AGG_VAL = mean(!!sym(value_var), na.rm = TRUE))
 
       agg_label <- "Group Mean"
     } else {
       plot_data_groupped <- plot_data %>%
-        group_by(!!sym(time)) %>%
+        group_by(!!sym(trt_group), !!sym(time)) %>%
         transmute(AGG_VAL = median(!!sym(value_var), na.rm = TRUE))
 
       agg_label <- "Group Median"
