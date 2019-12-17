@@ -69,8 +69,6 @@ This function is rendered by teal.goshawk module
 }
 \examples{
 
-\dontrun{
-
 # Example using ADaM structure analysis dataset.
 
 library(random.cdisc.data)
@@ -125,9 +123,6 @@ g_spaghettiplot(data = ALB,
                 hline = NULL,
                 rotate_xlab = FALSE,
                 group_stats = "median")
-
-}
-
 }
 \author{
 Wenyi Liu (wenyi.liu@roche.com)
