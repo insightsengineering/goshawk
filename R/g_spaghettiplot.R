@@ -35,9 +35,9 @@
 #'
 #' @export
 #'
-#' @examples
+#' @importFrom magrittr extract2
 #'
-#'\dontrun{
+#' @examples
 #'
 #' # Example using ADaM structure analysis dataset.
 #'
@@ -93,9 +93,6 @@
 #'                 hline = NULL,
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median")
-#'
-#'}
-#'
 g_spaghettiplot <- function(data,
                             subj_id = "USUBJID",
                             biomarker_var = "PARAMCD",
@@ -118,52 +115,52 @@ g_spaghettiplot <- function(data,
                             font_size = 12,
                             group_stats = "NONE") {
   ## Pre-process data
-  if (!is.null(trt_group_level)) {
-    data[[trt_group]] <- factor(data[[trt_group]],
-                                levels = trt_group_level)
+  data[[trt_group]] <- if (!is.null(trt_group_level)) {
+    factor(data[[trt_group]], levels = trt_group_level)
   } else {
-    data[[trt_group]] <- factor(data[[trt_group]])
+    factor(data[[trt_group]])
   }
-  # Get label for x-axis
-  gxlab <- `if`(is.null(attr(data[[time]], "label")),
-                time,
-                attr(data[[time]], "label"))
 
-  if (is.factor(data[[time]]) | is.character(data[[time]])) {
-    xtype <- "discrete"
-  } else {
-    xtype <- "continuous"
-  }
+  xtype <- ifelse(is.factor(data[[time]]) | is.character(data[[time]]), "discrete", "continuous")
   if (xtype == "discrete") {
-    if (!is.null(time_level)) {
-      data[[time]] <- factor(data[[time]],
-                             levels = time_level)
+    data[[time]] <- if (!is.null(time_level)) {
+      factor(data[[time]], levels = time_level)
     } else {
-      data[[time]] <- factor(data[[time]])
+      factor(data[[time]])
     }
   }
+
   # Plot
-  for.plot <- data[data[[biomarker_var]] %in% biomarker, ]
-  unit <- unique(filter(data, !!sym(biomarker_var) == biomarker)[[unit_var]])
+  plot_data <- data %>%
+    filter(!!sym(biomarker_var) %in% biomarker) %>%
+    select(!!sym(time), !!sym(value_var), !!sym(trt_group), !!sym(subj_id), !!sym(unit_var), !!sym(biomarker_var),
+           !!sym(biomarker_var_label))
+  unit <- plot_data %>%
+    select(!!sym(unit_var)) %>%
+    unique() %>%
+    extract2(1)
   unit1 <- ifelse(is.na(unit) | unit == "", " ", paste0(" (", unit, ") "))
-  biomarker1 <- unique(filter(data, !!sym(biomarker_var) == biomarker)[[biomarker_var_label]])
+  biomarker1 <- plot_data %>%
+    select(!!sym(biomarker_var_label)) %>%
+    unique() %>%
+    extract2(1)
   gtitle <- paste0(biomarker1, unit1, value_var, " Values by Treatment @ Visits")
+  gxlab <- if_null(attr(data[[time]], "label"), time)
   gylab <- paste0(biomarker1, " ", value_var, " Values")
   # re-establish treatment variable label
   if (trt_group == "ARM") {
-    attributes(for.plot$ARM)$label <- "Planned Arm"
+    attributes(plot_data$ARM)$label <- "Planned Arm"
   } else {
-    attributes(for.plot$ACTARM)$label <- "Actual Arm"
+    attributes(plot_data$ACTARM)$label <- "Actual Arm"
   }
 
   # Setup legend label
-  trt_label <- `if`(is.null(attr(for.plot[[trt_group]], "label")),
-                    "Dose",
-                    attr(for.plot[[trt_group]], "label"))
-  plot <- ggplot(data = for.plot,
+  trt_label <- if_null(attr(plot_data[[trt_group]], "label"), "Dose")
+
+  plot <- ggplot(data = plot_data,
                  aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
-    geom_point(size = 0.8) +
-    geom_line(size = 0.4, alpha = alpha) +
+    geom_point(size = 0.8, na.rm = TRUE) +
+    geom_line(size = 0.4, alpha = alpha, na.rm = TRUE) +
     facet_wrap(trt_group, ncol = facet_ncol) +
     theme_bw() +
     ggtitle(gtitle) +
@@ -175,18 +172,30 @@ g_spaghettiplot <- function(data,
     plot <- plot + coord_cartesian(ylim = ylim)
   }
   # add group statistics
+  # can't use stat_summary() because of presenting values for groups with all missings
   if (group_stats != "NONE") {
     if (group_stats == "MEAN") {
-      plot <- plot +
-        stat_summary(aes(group = 1, linetype = "Group Mean"),
-                     fun.y = mean, geom = "line", lwd = 1, color = color_comb) +
-        scale_linetype_manual(name = "", label = "Group Mean", values = c(1))
-    } else{
-      plot <- plot +
-        stat_summary(aes(group = 1, linetype = "Group Median"),
-                     fun.y = median, geom = "line", lwd = 1, color = color_comb) +
-        scale_linetype_manual(name = "", label = "Group Median", values = c(1))
+      plot_data_groupped <- plot_data %>%
+        group_by(!!sym(trt_group), !!sym(time)) %>%
+        transmute(AGG_VAL = mean(!!sym(value_var), na.rm = TRUE))
+
+      agg_label <- "Group Mean"
+    } else {
+      plot_data_groupped <- plot_data %>%
+        group_by(!!sym(trt_group), !!sym(time)) %>%
+        transmute(AGG_VAL = median(!!sym(value_var), na.rm = TRUE))
+
+      agg_label <- "Group Median"
     }
+
+    plot <- plot +
+      geom_line(
+        aes_string(x = time, y = "AGG_VAL", group = 1, linetype = as.factor(agg_label)),
+        data = plot_data_groupped,
+        lwd = 1,
+        color = color_comb,
+        na.rm = TRUE) +
+      scale_linetype_manual(name = "", label = agg_label, values = c(1))
   }
   # Format x-label
   if (xtype == "continuous") {
