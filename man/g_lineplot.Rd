@@ -47,7 +47,7 @@ x-axis variable is character or factor.}
 
 \item{hline}{numeric value represnting intercept of horizontal line.}
 
-\item{xtick}{numeric vector to define the tick values of x-axis when x variable is numeric.
+\item{xtick}{a vector to define the tick values of time in x-axis.
 Default value is waiver().}
 
 \item{xlabel}{vector with same length of xtick to define the label of x-axis tick values.
@@ -124,13 +124,32 @@ g_lineplot(label = "Line Plot",
            biomarker = "CRP",
            value_var = "AVAL",
            trt_group = "ARM",
-           shape = "RACE",
+           shape = NULL,
            time = "AVISITCD",
            color_manual = color_manual,
            median = FALSE,
-           hline = NULL,
+           hline = 50,
+           xtick = c("BL", "W 1", "W 5"),
+           xlabel = c("Baseline", "Week 1", "Week 5"),
            rotate_xlab = FALSE,
-           plot_height = 2000)
+           plot_height = 600)
+
+
+g_lineplot(label = "Line Plot",
+           data = ALB,
+           biomarker_var = "PARAMCD",
+           biomarker = "CRP",
+           value_var = "AVAL",
+           trt_group = "ARM",
+           shape = NULL,
+           time = "AVISITCDN",
+           color_manual = color_manual,
+           median = FALSE,
+           hline = 50,
+           xtick = c(0, 1, 5),
+           xlabel = c("Baseline", "Week 1", "Week 5"),
+           rotate_xlab = FALSE,
+           plot_height = 600)
 
 }
 
