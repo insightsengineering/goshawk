@@ -4,17 +4,19 @@
 \alias{g_boxplot}
 \title{Function to create a boxplot.}
 \usage{
-g_boxplot(data, biomarker, yaxis_var, trt_group, xaxis_var = NULL,
-  loq_flag = "LOQFL", unit = NULL, color_manual = NULL,
-  shape_manual = NULL, box = TRUE, ymax_scale = NULL,
-  ymin_scale = NULL, dot_size = 2, alpha = 1, facet_ncol = NULL,
-  hline = NULL, rotate_xlab = FALSE, font_size = NULL,
-  armlabel = NULL, facet = NULL)
+g_boxplot(data, biomarker, param_var = "PARAMCD", yaxis_var, trt_group,
+  xaxis_var = NULL, loq_flag = "LOQFL", unit = NULL,
+  color_manual = NULL, shape_manual = NULL, box = TRUE,
+  ymax_scale = NULL, ymin_scale = NULL, dot_size = 2, alpha = 1,
+  facet_ncol = NULL, hline = NULL, rotate_xlab = FALSE,
+  font_size = NULL, armlabel = NULL, facet = NULL)
 }
 \arguments{
 \item{data}{data frame with variables which will be displayed in the plot.}
 
 \item{biomarker}{biomarker to visualize e.g. IGG.}
+
+\item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
 \item{yaxis_var}{name of variable containing biomarker results displayed on
 Y-axis e.g. AVAL.}
@@ -50,8 +52,8 @@ Y-axis e.g. AVAL.}
 \item{font_size}{point size of tex to use.  NULL is use default size}
 
 \item{armlabel}{label for the treatment symbols in the legend.
-If not specified then the label attribute for trt_group will be used. 
-If there is no label attribute for trt_group, then the name of the parameter 
+If not specified then the label attribute for trt_group will be used.
+If there is no label attribute for trt_group, then the name of the parameter
 (in title case) will be used.}
 
 \item{facet}{variable to facet the plot by, or "None" if no faceting
@@ -79,17 +81,14 @@ midhinge, range, mid-range, and trimean.
 
 # Example using ADaM structure analysis dataset.
 
-library(dplyr)
-library(ggplot2)
-library(goshawk)
 library(random.cdisc.data)
 
-ADSL <- radsl(N = 100, seed = 1)
-ADLB <- radlb(ADSL, seed = 2)
-ADLB <- ADLB \%>\% subset(PARAMCD == "CRP")
+ADSL <- cadsl
+ADLB <- cadlb
 
 g_boxplot(ADLB,
           biomarker = "CRP",
+          param_var = "PARAMCD",
           yaxis_var = "AVAL",
           trt_group = "ARM",
           loq_flag = "LOQFL",
@@ -102,7 +101,6 @@ g_boxplot(ADLB,
           rotate_xlab = TRUE)
 
 }
-
 }
 \author{
 Balazs Toth

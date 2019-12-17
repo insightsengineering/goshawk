@@ -34,7 +34,7 @@ in the plot.}
 
 \item{time}{name of vairable containing visit names.}
 
-\item{time_level}{vector that can be used to define the factor level of time. Only use it when 
+\item{time_level}{vector that can be used to define the factor level of time. Only use it when
 x-axis variable is character or factor.}
 
 \item{color_manual}{vector of colors.}
@@ -49,7 +49,7 @@ x-axis variable is character or factor.}
 
 \item{hline}{numeric value represnting intercept of horizontal line.}
 
-\item{xtick}{numeric vector to define the tick values of x-axis when x variable is numeric. 
+\item{xtick}{numeric vector to define the tick values of x-axis when x variable is numeric.
 Default value is waiver().}
 
 \item{xlabel}{vector with same length of xtick to define the label of x-axis tick values. Default
@@ -73,34 +73,44 @@ This function is rendered by teal.goshawk module
 
 # Example using ADaM structure analysis dataset.
 
-library(dplyr)
-library(ggplot2)
-library(goshawk)
 library(random.cdisc.data)
 library(stringr)
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", 
+arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 "C: Combination" = "Combination")
 color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 
-ASL <- radsl(N = 20, seed = 1)
-ALB <- radlb(ASL, visit_format = "WEEK", n_assessments = 7L, seed = 2)
-ALB <- ALB \%>\% 
-mutate(AVISITCD = case_when(
-AVISIT == "SCREENING" ~ "SCR",
-AVISIT == "BASELINE" ~ "BL", grepl("WEEK", AVISIT) ~ paste("W",trimws(substr(AVISIT, start=6, 
-stop=str_locate(AVISIT, "DAY")-1))),
-TRUE ~ as.character(NA))) \%>\%
-mutate(AVISITCDN = case_when(AVISITCD == "SCR" ~ -2,
-AVISITCD == "BL" ~ 0, grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)), 
-TRUE ~ as.numeric(NA))) \%>\%
-# use ARMCD values to order treatment in visualization legend
-mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
-ifelse(grepl("B", ARMCD), 2,
-ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
-mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
-mutate(ARM = factor(ARM) \%>\% reorder(TRTORD))
+ASL <- cadsl
+ALB <- cadlb
+ALB <- ALB \%>\%
+  mutate(AVISITCD = case_when(
+    AVISIT == "SCREENING" ~ "SCR",
+    AVISIT == "BASELINE" ~ "BL",
+    grepl("WEEK", AVISIT) ~
+      paste(
+        "W",
+        trimws(
+          substr(
+            AVISIT,
+            start = 6,
+            stop = str_locate(AVISIT, "DAY") - 1
+          )
+        )
+      ),
+    TRUE ~ NA_character_)) \%>\%
+  mutate(AVISITCDN = case_when(
+    AVISITCD == "SCR" ~ -2,
+    AVISITCD == "BL" ~ 0,
+    grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
+    TRUE ~ NA_real_)) \%>\%
+  # use ARMCD values to order treatment in visualization legend
+  mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+    ifelse(grepl("B", ARMCD), 2,
+      ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
+  mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
+  mutate(ARM = factor(ARM) \%>\%
+  reorder(TRTORD))
 
 g_spaghettiplot(data = ALB,
                 subj_id = "USUBJID",
@@ -110,7 +120,7 @@ g_spaghettiplot(data = ALB,
                 trt_group = "ARM",
                 time = "AVISITCD",
                 color_manual = color_manual,
-                color_comb = "#39ff14", 
+                color_comb = "#39ff14",
                 alpha = .02,
                 hline = NULL,
                 rotate_xlab = FALSE,
