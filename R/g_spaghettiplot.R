@@ -21,7 +21,7 @@
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
 #' @param hline numeric value represnting intercept of horizontal line.
-#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric.
+#' @param xtick a vector to define the tick values of time in x-axis.
 #' Default value is waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default
 #'  value is waiver().
@@ -91,8 +91,28 @@
 #'                 color_comb = "#39ff14",
 #'                 alpha = .02,
 #'                 hline = NULL,
+#'                 xtick = c("BL", "W 1", "W 4"),
+#'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median")
+#'
+#'
+#' g_spaghettiplot(data = ALB,
+#'                 subj_id = "USUBJID",
+#'                 biomarker_var = "PARAMCD",
+#'                 biomarker = "CRP",
+#'                 value_var = "AVAL",
+#'                 trt_group = "ARM",
+#'                 time = "AVISITCDN",
+#'                 color_manual = color_manual,
+#'                 color_comb = "#39ff14",
+#'                 alpha = .02,
+#'                 hline = NULL,
+#'                 xtick = c(0, 1, 4),
+#'                 xlabel = c("Baseline", "Week 1", "Week 4"),
+#'                 rotate_xlab = FALSE,
+#'                 group_stats = "median")
+#'
 g_spaghettiplot <- function(data,
                             subj_id = "USUBJID",
                             biomarker_var = "PARAMCD",
@@ -201,6 +221,9 @@ g_spaghettiplot <- function(data,
   if (xtype == "continuous") {
     plot <- plot +
       scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
+  } else if (xtype == "discrete"){
+    plot <- plot +
+      scale_x_discrete(breaks = xtick, labels = xlabel)
   }
   if (rotate_xlab) {
     plot <- plot +

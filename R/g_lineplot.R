@@ -18,7 +18,7 @@
 #' @param ylim numeric vector to define y-axis range.
 #' @param median boolean whether to display median results.
 #' @param hline numeric value represnting intercept of horizontal line.
-#' @param xtick numeric vector to define the tick values of x-axis when x variable is numeric.
+#' @param xtick a vector to define the tick values of time in x-axis.
 #' Default value is waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values.
 #' Default value is waiver().
@@ -101,6 +101,25 @@
 #'            color_manual = color_manual,
 #'            median = FALSE,
 #'            hline = 50,
+#'            xtick = c("BL", "W 1", "W 5"),
+#'            xlabel = c("Baseline", "Week 1", "Week 5"),
+#'            rotate_xlab = FALSE,
+#'            plot_height = 600)
+#'
+#'
+#' g_lineplot(label = "Line Plot",
+#'            data = ALB,
+#'            biomarker_var = "PARAMCD",
+#'            biomarker = "CRP",
+#'            value_var = "AVAL",
+#'            trt_group = "ARM",
+#'            shape = NULL,
+#'            time = "AVISITCDN",
+#'            color_manual = color_manual,
+#'            median = FALSE,
+#'            hline = 50,
+#'            xtick = c(0, 1, 5),
+#'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
 #'            plot_height = 600)
 #'
@@ -269,6 +288,9 @@ g_lineplot <- function(label = "Line Plot",
   if (xtype == "continuous") {
     plot1 <- plot1 +
       scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
+  } else if (xtype == "discrete"){
+    plot1 <- plot1 +
+      scale_x_discrete(breaks = xtick, labels = xlabel)
   }
   if (rotate_xlab) {
     plot1 <- plot1 +
