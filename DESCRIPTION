@@ -1,7 +1,8 @@
 Package: goshawk
 Type: Package
 Title: I2ON biomarker plot and summary table functions
-Version: 0.1.0
+Date: 2019-12-20
+Version: 0.1.1
 Authors@R: c(
   person("Nick", "Paszty", email = "nick.paszty@gene.com", role = c("aut", "cre")),
   person("Wenyi", "Liu", email = "liu.wenyi@roche.com", role = c("aut")),
@@ -13,8 +14,21 @@ Description: Functions that plot and summarize biomarkers of interest. Visualiza
     Data are expected in ADaM structure. Requires analysis subject level (ADSL/ASL) and
     analysis laboratory (ADLB/ALB) data sets. Beyond core variables, Lower Limit of Quantification
     flag variable (LOQFL) is expected with levels 'Y', 'N' or NA.
-Depends: dplyr, ggplot2
-Imports: grid, gridExtra, mcr, stringr, cowplot
+Depends: 
+    dplyr, 
+    ggplot2
+Imports: 
+    cowplot,
+    grid, 
+    gridExtra, 
+    magrittr,
+    rlang,
+    stringr,
+    utils.nest (>= 0.2.1)
+Suggests: 
+    random.cdisc.data (>= 0.3.1),
+    test.nest (>= 0.2.1),
+    testthat
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
