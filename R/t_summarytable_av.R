@@ -151,9 +151,10 @@ t_summarytable_av <- function(data,
       select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
     # by combined treatment group table
-    sum_data_combined_arm <- table_data %>%
+    sum_data_combined_arm <- table_data  %>%
+      filter(!!sym(param_var) == param) %>%
       group_by_(.dots = c(param_var, facet_var)) %>%
-      summarise(n = sum(!!sym(xaxis_var), na.rm = TRUE),
+      summarise(n = sum(!is.na(!!sym(xaxis_var))),
                 Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
                 Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
                 StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
