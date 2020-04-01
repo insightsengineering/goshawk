@@ -12,5 +12,5 @@ NULL
 
 #' @importFrom rlang .data := !!
 #' @importFrom utils getFromNamespace
-#' @importFrom mcr mc.deming
+#' @import mcr
 mc.deming <- getFromNamespace("mc.deming", "mcr") #nolint
