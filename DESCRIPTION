@@ -22,6 +22,7 @@ Imports:
     grid, 
     gridExtra, 
     magrittr,
+    mcr,
     rlang,
     stringr,
     utils.nest (>= 0.2.1)
