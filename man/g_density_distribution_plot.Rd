@@ -4,12 +4,26 @@
 \alias{g_density_distribution_plot}
 \title{Function to create a density distribution plot.}
 \usage{
-g_density_distribution_plot(label = "Density Distribution Plot", data,
-  param_var = "PARAMCD", param = "CRP", xaxis_var = "AVAL",
-  trt_group = "ARM", unit = "AVALU", xmin = NA, xmax = NA,
-  color_manual = NULL, color_comb = "#39ff14",
-  facet_var = "AVISITCD", hline = NULL, facet_ncol = 2,
-  rotate_xlab = FALSE, font_size = 12, line_size = 2)
+g_density_distribution_plot(
+  label = "Density Distribution Plot",
+  data,
+  param_var = "PARAMCD",
+  param = "CRP",
+  xaxis_var = "AVAL",
+  trt_group = "ARM",
+  unit = "AVALU",
+  xmin = NA,
+  xmax = NA,
+  color_manual = NULL,
+  color_comb = "#39ff14",
+  comb_line = TRUE,
+  facet_var = "AVISITCD",
+  hline = NULL,
+  facet_ncol = 2,
+  rotate_xlab = FALSE,
+  font_size = 12,
+  line_size = 2
+)
 }
 \arguments{
 \item{label}{text string used to identify plot.}
@@ -33,6 +47,8 @@ g_density_distribution_plot(label = "Density Distribution Plot", data,
 \item{color_manual}{vector of colors applied to treatment values.}
 
 \item{color_comb}{name or hex value for combined treatment color.}
+
+\item{comb_line}{display combined treatment line toggle.}
 
 \item{facet_var}{variable to use for facetting.}
 
@@ -106,12 +122,14 @@ g_density_distribution_plot(label = "Density Distribution Plot",
            unit = "AVALU",
            color_manual = color_manual,
            color_comb = "#39ff14",
+           comb_line = TRUE,
            facet_var = "AVISITCD",
            hline = NULL,
            facet_ncol = 2,
            rotate_xlab = FALSE,
            font_size = 10,
-           line_size = .5)
+           line_size = .5
+           )
 
 }
 

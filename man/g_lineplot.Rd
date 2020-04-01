@@ -4,13 +4,30 @@
 \alias{g_lineplot}
 \title{Function to create line plot of summary statistics over time.}
 \usage{
-g_lineplot(label = "Line Plot", data, biomarker_var = "PARAMCD",
-  biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
-  unit_var = "AVALU", ylim = NULL, trt_group, trt_group_level = NULL,
-  shape = NULL, time, time_level = NULL, color_manual = NULL,
-  median = FALSE, hline = NULL, xtick = waiver(), xlabel = xtick,
-  rotate_xlab = FALSE, font_size = 12, dodge = 0.4,
-  plot_height = 989)
+g_lineplot(
+  label = "Line Plot",
+  data,
+  biomarker_var = "PARAMCD",
+  biomarker_var_label = "PARAM",
+  biomarker,
+  value_var = "AVAL",
+  unit_var = "AVALU",
+  ylim = NULL,
+  trt_group,
+  trt_group_level = NULL,
+  shape = NULL,
+  time,
+  time_level = NULL,
+  color_manual = NULL,
+  median = FALSE,
+  hline = NULL,
+  xtick = waiver(),
+  xlabel = xtick,
+  rotate_xlab = FALSE,
+  font_size = 12,
+  dodge = 0.4,
+  plot_height = 989
+)
 }
 \arguments{
 \item{label}{text string to be displayed as plot label.}

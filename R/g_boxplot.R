@@ -18,10 +18,11 @@
 #' @param yaxis_var name of variable containing biomarker results displayed on
 #'   Y-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment trt_group e.g. ARM.
-#' @param loq_flag  name of variable containing LOQ flag e.g. LOQFL.
+#' @param loq_flag_var  name of variable containing LOQ flag e.g. LOQFL.
+#' @param loq_legend loq legend toggle.
 #' @param unit biomarker unit label e.g. (U/L)
 #' @param color_manual vector of colour for trt_group
-#' @param shape_manual vector of shapes (used with log_flag)
+#' @param shape_manual vector of shapes (used with log_flag_var)
 #' @param box add boxes to the plot (boolean)
 #' @param ymin_scale minimum value for the Y axis
 #' @param ymax_scale maximum value for the Y axis
@@ -65,14 +66,16 @@
 #'           param_var = "PARAMCD",
 #'           yaxis_var = "AVAL",
 #'           trt_group = "ARM",
-#'           loq_flag = "LOQFL",
+#'           loq_flag_var = "LOQFL",
+#'           loq_legend = FALSE,
 #'           unit = "AVALU",
 #'           shape_manual = c("N" = 1, "Y" = 2, "NA" = NULL),
 #'           hline = NULL,
 #'           facet = "AVISIT",
 #'           xaxis_var = "STUDYID",
 #'           alpha = 0.5,
-#'           rotate_xlab = TRUE)
+#'           rotate_xlab = TRUE
+#'           )
 #'
 #' }
 g_boxplot <- function(data,
@@ -81,7 +84,8 @@ g_boxplot <- function(data,
                       yaxis_var,
                       trt_group,
                       xaxis_var = NULL,
-                      loq_flag = "LOQFL",
+                      loq_flag_var = "LOQFL",
+                      loq_legend = TRUE,
                       unit = NULL,
                       color_manual = NULL,
                       shape_manual = NULL,
@@ -158,14 +162,6 @@ g_boxplot <- function(data,
       geom_hline(yintercept = hline, color = "red", linetype = "dashed", size = 0.5)
   }
   plot1 <- plot1 +
-    geom_jitter(data = data,
-                aes_string(x = xaxis_var,
-                           y = yaxis_var,
-                           color = trt_group,
-                           shape = loq_flag),
-                alpha = alpha,
-                position = position_jitter(width = 0.1, height = 0),
-                size = dot_size) +
     labs(color = armlabel, x = NULL, y = y_axis_label) +
     theme_bw() +
     ggtitle(ggtitle_label) +
@@ -178,14 +174,31 @@ g_boxplot <- function(data,
       scale_fill_manual(values = cols)
   }
   # LOQ needed?
-  if (!is.null(shape_manual)) {
-    plot1 <- plot1 +
-      scale_shape_manual(values = shape_manual, name = "LoQ")
+  if (loq_legend) {
+    if (!is.null(shape_manual)) {
+      plot1 <- plot1 +
+        scale_shape_manual(values = shape_manual, name = "LoQ")
+    }
   }
+
+  # add LOQ legend conditionally
+  if (loq_legend) {
+    plot1 <- plot1 +
+      geom_jitter(data = data,
+                  aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
+                  alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE)
+  }
+  else {
+    plot1 <- plot1 +
+      geom_jitter(data = data, aes_string(x = xaxis_var, y = yaxis_var, color = trt_group),
+                  alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE)
+  }
+
   # Any limits for the Y axis?
   if (!is.null(ymin_scale) & !is.null(ymax_scale)) {
     plot1 <- plot1 + coord_cartesian(ylim = c(ymin_scale, ymax_scale))
   }
+
   # Add facetting.
   if (!is.null(facet)) {
     if (facet != "None" & facet %in% names(data)) {
@@ -199,6 +212,7 @@ g_boxplot <- function(data,
       }
     }
   }
+
   # Format font size
   if (is_finite(font_size)) {
     plot1 <- plot1 +

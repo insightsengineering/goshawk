@@ -14,7 +14,9 @@
 #' @param yvar y-axis analysis variable from transposed data set.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
+#' @param visit_facet visit facet toggle.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
+#' @param loq_legend loq legend toggle.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
 #' @param xmin x-axis lower zoom limit.
 #' @param xmax x-axis upper zoom limit.
@@ -121,15 +123,17 @@
 #'   xvar = "AVAL.CRP",
 #'   yaxis_param = c("ALT"),
 #'   yaxis_var = "BASE",
-#'   yvar = "BASE.ALT",
+#'   yvar = "BASE.CRP",
 #'   trt_group = "ARM",
 #'   visit = "AVISITCD",
+#'   visit_facet = TRUE,
 #'   loq_flag_var = "LOQFL",
+#'   loq_legend = TRUE,
 #'   unit = "AVALU",
 #'   xmin = 0,
-#'   xmax = 200,
+#'   xmax = 100,
 #'   ymin = 0,
-#'   ymax = 2000,
+#'   ymax = 200,
 #'   title_text = "Test",
 #'   xaxis_lab = "Test x",
 #'   yaxis_lab = "Test y",
@@ -138,7 +142,7 @@
 #'   facet_ncol = 4,
 #'   facet = FALSE,
 #'   facet_var = "ARM",
-#'   reg_line = TRUE,
+#'   reg_line = FALSE,
 #'   hline = NULL,
 #'   vline = .5,
 #'   rotate_xlab = FALSE,
@@ -159,7 +163,9 @@ g_correlationplot <- function(label = "Correlation Plot",
                               yvar = yvar,
                               trt_group = "ARM",
                               visit = "AVISITCD",
+                              visit_facet = TRUE,
                               loq_flag_var = "LOQFL",
+                              loq_legend = TRUE,
                               unit = "AVALU",
                               xmin = NA,
                               xmax = NA,
@@ -196,14 +202,29 @@ g_correlationplot <- function(label = "Correlation Plot",
       color = trt_group
     )
   ) +
-    geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
-    facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol) +
     theme_bw() +
     ggtitle(title_text) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(xaxis_lab) +
     ylab(yaxis_lab)
+
+  # conditionally facet by visit
+  if (visit_facet) {
+    plot1 <- plot1 +
+      facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol)
+  }
+
+  # add LOQ legend conditionally
+  if (loq_legend) {
+    plot1 <- plot1 +
+      geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
+  }
+  else {
+    plot1 <- plot1 +
+      geom_point(size = dot_size, na.rm = TRUE)
+  }
+
   # add grid faceting to foundation
   if (facet) {
     plot1 <- plot1 +
@@ -268,15 +289,15 @@ g_correlationplot <- function(label = "Correlation Plot",
   # Format font size
   if (!is.null(font_size)) {
     plot1 <- plot1 +      theme(
-        axis.title.x = element_text(size = font_size),
-        axis.text.x = element_text(size = font_size),
-        axis.title.y = element_text(size = font_size),
-        axis.text.y = element_text(size = font_size),
-        legend.title = element_text(size = font_size),
-        legend.text = element_text(size = font_size),
-        strip.text.x = element_text(size = font_size),
-        strip.text.y = element_text(size = font_size)
-      )
+      axis.title.x = element_text(size = font_size),
+      axis.text.x = element_text(size = font_size),
+      axis.title.y = element_text(size = font_size),
+      axis.text.y = element_text(size = font_size),
+      legend.title = element_text(size = font_size),
+      legend.text = element_text(size = font_size),
+      strip.text.x = element_text(size = font_size),
+      strip.text.y = element_text(size = font_size)
+    )
   }
   # Format treatment color
   if (!is.null(color_manual)) {
@@ -288,10 +309,12 @@ g_correlationplot <- function(label = "Correlation Plot",
     plot1 <- plot1 +
       scale_shape_manual(values = shape_manual, name = "LOQ")
   }
-  # Format dot size
-  if (!is.null(dot_size)) {
-    plot1 <- plot1 +
-      geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
+  # Format dot size add LOQ legend conditionally
+  if (loq_legend) {
+    if (!is.null(dot_size)) {
+      plot1 <- plot1 +
+        geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
+    }
   }
   # Format x-label
   if (rotate_xlab) {
