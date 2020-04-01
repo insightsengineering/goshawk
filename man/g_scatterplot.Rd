@@ -4,14 +4,34 @@
 \alias{g_scatterplot}
 \title{Function to create a scatter plot.}
 \usage{
-g_scatterplot(label = "Scatter Plot", data, param_var = "PARAMCD",
-  param = "CRP", xaxis_var = "BASE", yaxis_var = "AVAL",
-  trt_group = "ARM", visit = "AVISITCD", loq_flag_var = "LOQFL",
-  unit = "AVALU", xmin = NA, xmax = NA, ymin = NA, ymax = NA,
-  color_manual = NULL, shape_manual = NULL, facet_ncol = 2,
-  facet = FALSE, facet_var = "ARM", reg_line = FALSE, hline = NULL,
-  vline = NULL, rotate_xlab = FALSE, font_size = 12,
-  dot_size = NULL, reg_text_size = 3)
+g_scatterplot(
+  label = "Scatter Plot",
+  data,
+  param_var = "PARAMCD",
+  param = "CRP",
+  xaxis_var = "BASE",
+  yaxis_var = "AVAL",
+  trt_group = "ARM",
+  visit = "AVISITCD",
+  loq_flag_var = "LOQFL",
+  unit = "AVALU",
+  xmin = NA,
+  xmax = NA,
+  ymin = NA,
+  ymax = NA,
+  color_manual = NULL,
+  shape_manual = NULL,
+  facet_ncol = 2,
+  facet = FALSE,
+  facet_var = "ARM",
+  reg_line = FALSE,
+  hline = NULL,
+  vline = NULL,
+  rotate_xlab = FALSE,
+  font_size = 12,
+  dot_size = NULL,
+  reg_text_size = 3
+)
 }
 \arguments{
 \item{label}{text string to used to identify plot.}

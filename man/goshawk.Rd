@@ -3,7 +3,6 @@
 \docType{package}
 \name{goshawk}
 \alias{goshawk}
-\alias{goshawk-package}
 \title{The goshawk package provides longitudinal visualizations of lab/biomarker data}
 \description{
 The goshawk package provides longitudinal visualizations of lab/biomarker data

@@ -4,12 +4,30 @@
 \alias{g_boxplot}
 \title{Function to create a boxplot.}
 \usage{
-g_boxplot(data, biomarker, param_var = "PARAMCD", yaxis_var, trt_group,
-  xaxis_var = NULL, loq_flag = "LOQFL", unit = NULL,
-  color_manual = NULL, shape_manual = NULL, box = TRUE,
-  ymax_scale = NULL, ymin_scale = NULL, dot_size = 2, alpha = 1,
-  facet_ncol = NULL, hline = NULL, rotate_xlab = FALSE,
-  font_size = NULL, armlabel = NULL, facet = NULL)
+g_boxplot(
+  data,
+  biomarker,
+  param_var = "PARAMCD",
+  yaxis_var,
+  trt_group,
+  xaxis_var = NULL,
+  loq_flag_var = "LOQFL",
+  loq_legend = TRUE,
+  unit = NULL,
+  color_manual = NULL,
+  shape_manual = NULL,
+  box = TRUE,
+  ymax_scale = NULL,
+  ymin_scale = NULL,
+  dot_size = 2,
+  alpha = 1,
+  facet_ncol = NULL,
+  hline = NULL,
+  rotate_xlab = FALSE,
+  font_size = NULL,
+  armlabel = NULL,
+  facet = NULL
+)
 }
 \arguments{
 \item{data}{data frame with variables which will be displayed in the plot.}
@@ -25,13 +43,15 @@ Y-axis e.g. AVAL.}
 
 \item{xaxis_var}{variable used to group the data on the x-axis.}
 
-\item{loq_flag}{name of variable containing LOQ flag e.g. LOQFL.}
+\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
+
+\item{loq_legend}{loq legend toggle.}
 
 \item{unit}{biomarker unit label e.g. (U/L)}
 
 \item{color_manual}{vector of colour for trt_group}
 
-\item{shape_manual}{vector of shapes (used with log_flag)}
+\item{shape_manual}{vector of shapes (used with log_flag_var)}
 
 \item{box}{add boxes to the plot (boolean)}
 
@@ -91,14 +111,16 @@ g_boxplot(ADLB,
           param_var = "PARAMCD",
           yaxis_var = "AVAL",
           trt_group = "ARM",
-          loq_flag = "LOQFL",
+          loq_flag_var = "LOQFL",
+          loq_legend = FALSE,
           unit = "AVALU",
           shape_manual = c("N" = 1, "Y" = 2, "NA" = NULL),
           hline = NULL,
           facet = "AVISIT",
           xaxis_var = "STUDYID",
           alpha = 0.5,
-          rotate_xlab = TRUE)
+          rotate_xlab = TRUE
+          )
 
 }
 }
