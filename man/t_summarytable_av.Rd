@@ -5,8 +5,16 @@
 \title{Function to create a table of descriptive summary statistics to accompany plots
 that present all visit data based on analysis day.}
 \usage{
-t_summarytable_av(data, trt_group, param_var, param, xaxis_var,
-  facet_var = "AVISITCD", loq_flag_var = "LOQFL", ...)
+t_summarytable_av(
+  data,
+  trt_group,
+  param_var,
+  param,
+  xaxis_var,
+  facet_var = "AVISITCD",
+  loq_flag_var = "LOQFL",
+  ...
+)
 }
 \arguments{
 \item{data}{name of data frame to summarize.}

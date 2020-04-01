@@ -4,17 +4,42 @@
 \alias{g_correlationplot}
 \title{Function to create a correlation plot.}
 \usage{
-g_correlationplot(label = "Correlation Plot", data,
-  param_var = "PARAMCD", xaxis_param = "CRP", xaxis_var = "BASE",
-  xvar = xvar, yaxis_param = "IGG", yaxis_var = "AVAL",
-  yvar = yvar, trt_group = "ARM", visit = "AVISITCD",
-  loq_flag_var = "LOQFL", unit = "AVALU", xmin = NA, xmax = NA,
-  ymin = NA, ymax = NA, title_text = title_text,
-  xaxis_lab = xaxis_lab, yaxis_lab = yaxis_lab, color_manual = NULL,
-  shape_manual = NULL, facet_ncol = 2, facet = FALSE,
-  facet_var = "ARM", reg_line = FALSE, hline = NULL, vline = NULL,
-  rotate_xlab = FALSE, font_size = 12, dot_size = NULL,
-  reg_text_size = 3)
+g_correlationplot(
+  label = "Correlation Plot",
+  data,
+  param_var = "PARAMCD",
+  xaxis_param = "CRP",
+  xaxis_var = "BASE",
+  xvar = xvar,
+  yaxis_param = "IGG",
+  yaxis_var = "AVAL",
+  yvar = yvar,
+  trt_group = "ARM",
+  visit = "AVISITCD",
+  visit_facet = TRUE,
+  loq_flag_var = "LOQFL",
+  loq_legend = TRUE,
+  unit = "AVALU",
+  xmin = NA,
+  xmax = NA,
+  ymin = NA,
+  ymax = NA,
+  title_text = title_text,
+  xaxis_lab = xaxis_lab,
+  yaxis_lab = yaxis_lab,
+  color_manual = NULL,
+  shape_manual = NULL,
+  facet_ncol = 2,
+  facet = FALSE,
+  facet_var = "ARM",
+  reg_line = FALSE,
+  hline = NULL,
+  vline = NULL,
+  rotate_xlab = FALSE,
+  font_size = 12,
+  dot_size = NULL,
+  reg_text_size = 3
+)
 }
 \arguments{
 \item{label}{text string to used to identify plot.}
@@ -39,7 +64,11 @@ g_correlationplot(label = "Correlation Plot", data,
 
 \item{visit}{name of variable containing nominal visits e.g. AVISITCD.}
 
+\item{visit_facet}{visit facet toggle.}
+
 \item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
+
+\item{loq_legend}{loq legend toggle.}
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
@@ -166,15 +195,17 @@ g_correlationplot(
   xvar = "AVAL.CRP",
   yaxis_param = c("ALT"),
   yaxis_var = "BASE",
-  yvar = "BASE.ALT",
+  yvar = "BASE.CRP",
   trt_group = "ARM",
   visit = "AVISITCD",
+  visit_facet = TRUE,
   loq_flag_var = "LOQFL",
+  loq_legend = TRUE,
   unit = "AVALU",
   xmin = 0,
-  xmax = 200,
+  xmax = 100,
   ymin = 0,
-  ymax = 2000,
+  ymax = 200,
   title_text = "Test",
   xaxis_lab = "Test x",
   yaxis_lab = "Test y",
@@ -183,7 +214,7 @@ g_correlationplot(
   facet_ncol = 4,
   facet = FALSE,
   facet_var = "ARM",
-  reg_line = TRUE,
+  reg_line = FALSE,
   hline = NULL,
   vline = .5,
   rotate_xlab = FALSE,

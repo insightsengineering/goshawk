@@ -4,13 +4,30 @@
 \alias{g_spaghettiplot}
 \title{Function to create a spaghetti plot.}
 \usage{
-g_spaghettiplot(data, subj_id = "USUBJID", biomarker_var = "PARAMCD",
-  biomarker_var_label = "PARAM", biomarker, value_var = "AVAL",
-  unit_var = "AVALU", trt_group, trt_group_level = NULL, time,
-  time_level = NULL, color_manual = NULL, color_comb = "#39ff14",
-  ylim = NULL, alpha = 1, facet_ncol = 2, hline = NULL,
-  xtick = waiver(), xlabel = xtick, rotate_xlab = FALSE,
-  font_size = 12, group_stats = "NONE")
+g_spaghettiplot(
+  data,
+  subj_id = "USUBJID",
+  biomarker_var = "PARAMCD",
+  biomarker_var_label = "PARAM",
+  biomarker,
+  value_var = "AVAL",
+  unit_var = "AVALU",
+  trt_group,
+  trt_group_level = NULL,
+  time,
+  time_level = NULL,
+  color_manual = NULL,
+  color_comb = "#39ff14",
+  ylim = NULL,
+  alpha = 1,
+  facet_ncol = 2,
+  hline = NULL,
+  xtick = waiver(),
+  xlabel = xtick,
+  rotate_xlab = FALSE,
+  font_size = 12,
+  group_stats = "NONE"
+)
 }
 \arguments{
 \item{data}{data frame with variables to be summarized and generate statistics which will display

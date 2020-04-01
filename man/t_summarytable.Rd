@@ -4,8 +4,16 @@
 \alias{t_summarytable}
 \title{Function to create a table of descriptive summary statistics to accompany plots.}
 \usage{
-t_summarytable(data, trt_group, param_var, param, xaxis_var,
-  visit_var = "AVISITCD", loq_flag_var = "LOQFL", ...)
+t_summarytable(
+  data,
+  trt_group,
+  param_var,
+  param,
+  xaxis_var,
+  visit_var = "AVISITCD",
+  loq_flag_var = "LOQFL",
+  ...
+)
 }
 \arguments{
 \item{data}{name of data frame to summarize.}
