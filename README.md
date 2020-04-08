@@ -7,7 +7,7 @@ Longitudinal biomarker visualizations functions. These can be used stand alone o
 
 ```r
 devtools::install_github(
-  repo = "Rpackages/goshawk",
+  repo = "NEST/goshawk",
   host = "https://github.roche.com/api/v3",
   upgrade_dependencies = FALSE
 )
