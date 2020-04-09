@@ -1,6 +1,6 @@
 Package: goshawk
 Type: Package
-Title: I2ON biomarker plot and summary table functions
+Title: Longitudinal visualization functions
 Date: 2020-04-01
 Version: 0.1.2
 Authors@R: c(
