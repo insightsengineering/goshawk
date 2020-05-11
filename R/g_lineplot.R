@@ -9,7 +9,6 @@
 #' @param value_var name of variable containing biomarker results.
 #' @param unit_var name of variable containing biomarker result unit.
 #' @param trt_group name of variable representing treatment group.
-#' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param shape categorical variable whose levels are used to split the plot lines.
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when
@@ -59,8 +58,9 @@
 #' "C: Combination" = "Combination")
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #'
-#' ASL <- cadsl
-#' ALB <- cadlb
+#' ASL <- cadsl[!(cadsl$ARM == "B: Placebo" & cadsl$AGE < 40), ]
+#' ALB <- right_join(cadlb, ASL[, c("STUDYID", "USUBJID")])
+#'
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
@@ -89,6 +89,8 @@
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
+#'
+#'
 #'
 #' g_lineplot(label = "Line Plot",
 #'            data = ALB,
@@ -147,17 +149,28 @@ g_lineplot <- function(label = "Line Plot",
                        font_size = 12,
                        dodge = 0.4,
                        plot_height = 989) {
+
   ## Pre-process data
-  data[[trt_group]] <- `if`(!is.null(trt_group_level),
-                            factor(data[[trt_group]], levels = trt_group_level),
-                            factor(data[[trt_group]]))
-  xtype <- `if`(is.factor(data[[time]]) | is.character(data[[time]]),
-                "discrete", "continuous")
-  if (xtype == "discrete") {
-    data[[time]] <- `if`(!is.null(time_level),
-                         factor(data[[time]], levels = time_level),
-                         factor(data[[time]]))
+  ## - convert to factors
+  data[[trt_group]] <- if (is.null(trt_group_level)) {
+    factor(data[[trt_group]])
+  } else {
+    factor(data[[trt_group]], levels = trt_group_level)
   }
+
+  xtype <- if (is.factor(data[[time]]) || is.character(data[[time]])) {
+    "discrete"
+  } else {
+    "continuous"
+  }
+  if (xtype == "discrete") {
+    data[[time]] <- if (is.null(time_level)) {
+      factor(data[[time]])
+    } else {
+      factor(data[[time]], levels = time_level)
+    }
+  }
+
   groupings <- c(time, trt_group, shape)
   ## Summary statistics
   sum_data <- data %>%
@@ -173,8 +186,10 @@ g_lineplot <- function(label = "Line Plot",
               quant25 = quantile(!!sym(value_var), 0.25, na.rm = TRUE),
               quant75 = quantile(!!sym(value_var), 0.75, na.rm = TRUE)) %>%
     arrange_at(c(trt_group, shape))
+
   listin <- list()
   listin[[trt_group]] <- sum_data[[trt_group]]
+
   if (!is.null(shape)) {
     listin[[shape]] <- sum_data[[shape]]
   }
@@ -183,6 +198,7 @@ g_lineplot <- function(label = "Line Plot",
   sum_data[[int]] <- str_wrap(sum_data[[int]], 12)
   sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
   unfiltered_data <- sum_data
+
   ## Base plot
   pd <- position_dodge(dodge)
   if (median) {
@@ -194,29 +210,41 @@ g_lineplot <- function(label = "Line Plot",
     up_limit <- "CIup"
     down_limit <- "CIdown"
   }
+
   filtered_data <- data %>%
     filter(!!sym(biomarker_var) == biomarker)
+
   unit <- filtered_data %>%
     pull(unit_var) %>%
     unique()
-  unit1 <- ifelse(is.na(unit) | unit == "",
-                  " ",
-                  paste0(" (", unit, ") "))
+
+  unit1 <- if (is.na(unit) || unit == "") {
+    " "
+  } else {
+    paste0(" (", unit, ") ")
+  }
+
   biomarker1 <- filtered_data %>%
     pull(biomarker_var_label) %>%
     unique()
+
   gtitle <- paste0(biomarker1, unit1, str_to_title(line), " by Treatment @ Visits")
   gylab <- paste0(biomarker1, " ", str_to_title(line), " of ", value_var, " Values")
+
   # re-establish treatment variable label
   if (trt_group == "ARM") {
     attributes(sum_data$ARM)$label <- "Planned Arm"
   } else {
     attributes(sum_data$ACTARM)$label <- "Actual Arm"
   }
+
   # Setup legend label
-  trt_label <- `if`(is.null(attr(sum_data[[trt_group]], "label")),
-                    "Dose",
-                    attr(sum_data[[trt_group]], "label"))
+  trt_label <- if (is.null(attr(sum_data[[trt_group]], "label"))) {
+    "Dose"
+  } else {
+    attr(sum_data[[trt_group]], "label")
+  }
+
   if (is.null(shape)) {
     plot1 <-  ggplot(data = sum_data,
                      aes_string(x = time,
@@ -230,7 +258,7 @@ g_lineplot <- function(label = "Line Plot",
       plot1 <- plot1 +
         scale_color_manual(values = vals, name = trt_label)
     }
-  }else{
+  } else {
     ncol <- nlevels(as.factor(unfiltered_data[[trt_group]]))
     nshape <- nlevels(as.factor(unfiltered_data[[shape]]))
     plot1 <-  ggplot(data = sum_data,
@@ -244,7 +272,7 @@ g_lineplot <- function(label = "Line Plot",
       vals <- rep(color_manual, rep(nshape, ncol))
       plot1 <- plot1 +
         scale_color_manual(" ", values = as.character(vals))
-    }else{
+    } else {
       colors <- gg_color_hue(ncol)
       vals <- rep(colors, rep(nshape, ncol))
       plot1 <- plot1 +
@@ -254,6 +282,7 @@ g_lineplot <- function(label = "Line Plot",
     if (nshape > length(shapes)) {
       warning("Number of available shapes exceeded, values will cycle!")
     }
+
     select <- (1:nshape) %% (length(shapes))
     select <- ifelse(select == 0, length(shapes), select)
     selected_shapes <- shapes[select]
@@ -263,6 +292,7 @@ g_lineplot <- function(label = "Line Plot",
       theme(legend.key.size = unit(1, "cm")) +
       geom_point(position = pd, size = 3)
   }
+
   plot1 <-  plot1 +
     geom_line(position = pd) +
     geom_errorbar(aes_string(ymin = down_limit,
@@ -279,11 +309,13 @@ g_lineplot <- function(label = "Line Plot",
           plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5),
           axis.title.y = element_text(margin = margin(r = 20))) +
     guides(color = guide_legend(byrow = TRUE))
+
   # Apply y-axis zoom range
   if (!is.null(ylim)) {
     plot1 <- plot1 +
       coord_cartesian(ylim = ylim)
   }
+
   # Format x-label
   if (xtype == "continuous") {
     plot1 <- plot1 +
@@ -292,15 +324,18 @@ g_lineplot <- function(label = "Line Plot",
     plot1 <- plot1 +
       scale_x_discrete(breaks = xtick, labels = xlabel)
   }
+
   if (rotate_xlab) {
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
+
   #Add horizontal line
   if (!is.null(hline)) {
     plot1 <- plot1 +
       geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
+
   # Format font size
   if (!is.null(font_size)) {
     plot1 <- plot1 +
@@ -311,7 +346,8 @@ g_lineplot <- function(label = "Line Plot",
             legend.title = element_text(size = font_size),
             legend.text = element_text(size = font_size))
   }
-  labels <- rev(levels(sum_data[[int]]))
+
+  labels <- levels(sum_data[[int]])
   lines <- sum(stringr::str_count(unique(labels), "\n")) / 2 + length(unique(labels))
   minline <- 36
   tabletotal <- lines * minline
@@ -320,6 +356,7 @@ g_lineplot <- function(label = "Line Plot",
     stop("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the
     plot height using the Plot Aesthetic Settings.")
   }
+
   tbl <- ggplot(sum_data, aes_string(x = time, y = int, label = "count")) +
     geom_text(size = 4.5) +
     ggtitle("Number of observations") +
@@ -333,9 +370,12 @@ g_lineplot <- function(label = "Line Plot",
           axis.title.y = element_blank(),
           axis.text.y = element_text(size = font_size),
           plot.title = element_text(face = "bold", size = font_size))
+
   #Plot the two grobs using plot_grid
   plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
 }
+
+
 new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { #nolint
   for (i in seq_along(args)) {
     if (is.null(args[[i]])) {
@@ -348,12 +388,14 @@ new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { 
   args <- mapply(function(n, val) paste0(n, ":", val), names(args), args, SIMPLIFY = FALSE)
   interaction(args, drop = drop, sep = sep, lex.order = lex.order)
 }
+
 unique_name <- function(newname, old_names) {
   if (newname %in% old_names) {
     unique_name(paste0(newname, "1"), old_names)
   }
   newname
 }
+
 gg_color_hue <- function(n) {
   hues <- seq(15, 375, length = n + 1)
   hcl(h = hues, l = 65, c = 100)[1:n]
