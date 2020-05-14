@@ -9,6 +9,7 @@
 #' @param value_var name of variable containing biomarker results.
 #' @param unit_var name of variable containing biomarker result unit.
 #' @param trt_group name of variable representing treatment group.
+#' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param shape categorical variable whose levels are used to split the plot lines.
 #' @param time name of vairable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when
@@ -90,8 +91,6 @@
 #'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
 #'
-#'
-#'
 #' g_lineplot(label = "Line Plot",
 #'            data = ALB,
 #'            biomarker_var = "PARAMCD",
@@ -107,7 +106,6 @@
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
 #'            plot_height = 600)
-#'
 #'
 #' g_lineplot(label = "Line Plot",
 #'            data = ALB,
@@ -140,7 +138,6 @@
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
 #'            plot_height = 600)
-#'
 #'
 #' g_lineplot(label = "Line Plot",
 #'            data = subset(ALB, SEX %in% c("M", "F")),
@@ -201,7 +198,6 @@ g_lineplot <- function(label = "Line Plot",
 
   ## Pre-process data
 
-
   ## - convert to factors
   data[[trt_group]] <- if (is.null(trt_group_level)) {
     factor(data[[trt_group]])
@@ -209,14 +205,12 @@ g_lineplot <- function(label = "Line Plot",
     factor(data[[trt_group]], levels = trt_group_level)
   }
 
-
   color_manual <- if (is.null(color_manual)) {
     gg_color_hue(nlevels(data[[trt_group]]))
   } else {
     stopifnot(all(levels(data[[trt_group]]) %in% names(color_manual)))
     color_manual
   }
-
 
   xtype <- if (is.factor(data[[time]]) || is.character(data[[time]])) {
     "discrete"
@@ -322,13 +316,12 @@ g_lineplot <- function(label = "Line Plot",
 
     if (nlevels(shape_val) > length(shapes)) {
       warning("Number of available shapes exceeded, values will cycle!")
-      shapes <-  rep(shapes, ceiling(nlevels(shape_val)/length(shapes)))
+      shapes <-  rep(shapes, ceiling(nlevels(shape_val) / length(shapes)))
     }
 
     shape_manual <- setNames(shapes[seq_along(shape_lvl)], shape_lvl)
 
-
-    mappings <- sum_data %>% ungroup() %>% select(!!sym(trt_group), !!sym(shape), int) %>% distinct() %>%
+    mappings <- sum_data %>% ungroup() %>% select(!!sym(trt_group), !!sym(shape), int) %>% distinct() %>% #nolint
       mutate(cols = color_manual[!!sym(trt_group)], shps = shape_manual[!!sym(shape)])
 
     col_mapping <- setNames(mappings$cols, mappings$int)
@@ -428,7 +421,6 @@ g_lineplot <- function(label = "Line Plot",
   #Plot the two grobs using plot_grid
   plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
 }
-
 
 new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { #nolint
   for (i in seq_along(args)) {

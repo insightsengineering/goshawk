@@ -102,10 +102,11 @@ library(stringr)
 # original ARM value = dose value
 arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 "C: Combination" = "Combination")
-color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
+color_manual <-  c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
 
-ASL <- cadsl
-ALB <- cadlb
+ASL <- cadsl[!(cadsl$ARM == "B: Placebo" & cadsl$AGE < 40), ]
+ALB <- right_join(cadlb, ASL[, c("STUDYID", "USUBJID")])
+
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",
@@ -151,6 +152,21 @@ g_lineplot(label = "Line Plot",
            rotate_xlab = FALSE,
            plot_height = 600)
 
+g_lineplot(label = "Line Plot",
+           data = ALB,
+           biomarker_var = "PARAMCD",
+           biomarker = "CRP",
+           value_var = "AVAL",
+           trt_group = "ARM",
+           shape = NULL,
+           time = "AVISITCD",
+           color_manual = NULL,
+           median = FALSE,
+           hline = 50,
+           xtick = c("BL", "W 1", "W 5"),
+           xlabel = c("Baseline", "Week 1", "Week 5"),
+           rotate_xlab = FALSE,
+           plot_height = 600)
 
 g_lineplot(label = "Line Plot",
            data = ALB,
@@ -161,6 +177,38 @@ g_lineplot(label = "Line Plot",
            shape = NULL,
            time = "AVISITCDN",
            color_manual = color_manual,
+           median = FALSE,
+           hline = 50,
+           xtick = c(0, 1, 5),
+           xlabel = c("Baseline", "Week 1", "Week 5"),
+           rotate_xlab = FALSE,
+           plot_height = 600)
+
+g_lineplot(label = "Line Plot",
+           data = subset(ALB, SEX \%in\% c("M", "F")),
+           biomarker_var = "PARAMCD",
+           biomarker = "CRP",
+           value_var = "AVAL",
+           trt_group = "ARM",
+           shape = "SEX",
+           time = "AVISITCDN",
+           color_manual = color_manual,
+           median = FALSE,
+           hline = 50,
+           xtick = c(0, 1, 5),
+           xlabel = c("Baseline", "Week 1", "Week 5"),
+           rotate_xlab = FALSE,
+           plot_height = 600)
+
+g_lineplot(label = "Line Plot",
+           data = subset(ALB, SEX \%in\% c("M", "F")),
+           biomarker_var = "PARAMCD",
+           biomarker = "CRP",
+           value_var = "AVAL",
+           trt_group = "ARM",
+           shape = "SEX",
+           time = "AVISITCDN",
+           color_manual = NULL,
            median = FALSE,
            hline = 50,
            xtick = c(0, 1, 5),
