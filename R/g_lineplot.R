@@ -125,6 +125,22 @@
 #'            rotate_xlab = FALSE,
 #'            plot_height = 600)
 #'
+#'
+#' g_lineplot(label = "Line Plot",
+#'            data = subset(ALB, SEX %in% c("M", "F")),
+#'            biomarker_var = "PARAMCD",
+#'            biomarker = "CRP",
+#'            value_var = "AVAL",
+#'            trt_group = "ARM",
+#'            shape = "SEX",
+#'            time = "AVISITCDN",
+#'            color_manual = color_manual,
+#'            median = FALSE,
+#'            hline = 50,
+#'            xtick = c(0, 1, 5),
+#'            xlabel = c("Baseline", "Week 1", "Week 5"),
+#'            rotate_xlab = FALSE,
+#'            plot_height = 600)
 #'}
 #'
 g_lineplot <- function(label = "Line Plot",
