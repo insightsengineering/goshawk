@@ -56,7 +56,7 @@
 #' # original ARM value = dose value
 #' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 #' "C: Combination" = "Combination")
-#' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
+#' color_manual <-  c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
 #'
 #' ASL <- cadsl[!(cadsl$ARM == "B: Placebo" & cadsl$AGE < 40), ]
 #' ALB <- right_join(cadlb, ASL[, c("STUDYID", "USUBJID")])
@@ -116,6 +116,22 @@
 #'            value_var = "AVAL",
 #'            trt_group = "ARM",
 #'            shape = NULL,
+#'            time = "AVISITCD",
+#'            color_manual = NULL,
+#'            median = FALSE,
+#'            hline = 50,
+#'            xtick = c("BL", "W 1", "W 5"),
+#'            xlabel = c("Baseline", "Week 1", "Week 5"),
+#'            rotate_xlab = FALSE,
+#'            plot_height = 600)
+#'
+#' g_lineplot(label = "Line Plot",
+#'            data = ALB,
+#'            biomarker_var = "PARAMCD",
+#'            biomarker = "CRP",
+#'            value_var = "AVAL",
+#'            trt_group = "ARM",
+#'            shape = NULL,
 #'            time = "AVISITCDN",
 #'            color_manual = color_manual,
 #'            median = FALSE,
@@ -141,6 +157,23 @@
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
 #'            plot_height = 600)
+#'
+#' g_lineplot(label = "Line Plot",
+#'            data = subset(ALB, SEX %in% c("M", "F")),
+#'            biomarker_var = "PARAMCD",
+#'            biomarker = "CRP",
+#'            value_var = "AVAL",
+#'            trt_group = "ARM",
+#'            shape = "SEX",
+#'            time = "AVISITCDN",
+#'            color_manual = NULL,
+#'            median = FALSE,
+#'            hline = 50,
+#'            xtick = c(0, 1, 5),
+#'            xlabel = c("Baseline", "Week 1", "Week 5"),
+#'            rotate_xlab = FALSE,
+#'            plot_height = 600)
+#'
 #'}
 #'
 g_lineplot <- function(label = "Line Plot",
@@ -167,12 +200,23 @@ g_lineplot <- function(label = "Line Plot",
                        plot_height = 989) {
 
   ## Pre-process data
+
+
   ## - convert to factors
   data[[trt_group]] <- if (is.null(trt_group_level)) {
     factor(data[[trt_group]])
   } else {
     factor(data[[trt_group]], levels = trt_group_level)
   }
+
+
+  color_manual <- if (is.null(color_manual)) {
+    gg_color_hue(nlevels(data[[trt_group]]))
+  } else {
+    stopifnot(all(levels(data[[trt_group]]) %in% names(color_manual)))
+    color_manual
+  }
+
 
   xtype <- if (is.factor(data[[time]]) || is.character(data[[time]])) {
     "discrete"
@@ -267,46 +311,40 @@ g_lineplot <- function(label = "Line Plot",
                                 y = line,
                                 color = trt_group,
                                 group = int)) + theme_bw() +
-      geom_point(position = pd)
-    # Add manual color
-    if (!is.null(color_manual)) {
-      vals <- color_manual
-      plot1 <- plot1 +
-        scale_color_manual(values = vals, name = trt_label)
-    }
+      geom_point(position = pd) +
+      scale_color_manual(values = color_manual, name = trt_label)
+
   } else {
-    ncol <- nlevels(as.factor(unfiltered_data[[trt_group]]))
-    nshape <- nlevels(as.factor(unfiltered_data[[shape]]))
+
+    shape_val <- as.factor(unfiltered_data[[shape]])
+    shape_lvl <- levels(shape_val)
+    shapes <- c(15:18, 3:14, 0:2)
+
+    if (nlevels(shape_val) > length(shapes)) {
+      warning("Number of available shapes exceeded, values will cycle!")
+      shapes <-  rep(shapes, ceiling(nlevels(shape_val)/length(shapes)))
+    }
+
+    shape_manual <- setNames(shapes[seq_along(shape_lvl)], shape_lvl)
+
+
+    mappings <- sum_data %>% ungroup() %>% select(!!sym(trt_group), !!sym(shape), int) %>% distinct() %>%
+      mutate(cols = color_manual[!!sym(trt_group)], shps = shape_manual[!!sym(shape)])
+
+    col_mapping <- setNames(mappings$cols, mappings$int)
+    shape_mapping <- setNames(mappings$shps, mappings$int)
+
     plot1 <-  ggplot(data = sum_data,
                      aes_string(x = time,
                                 y = line,
                                 color = int,
                                 group = int,
-                                shape = int)) + theme_bw()
-    # Add manual color
-    if (!is.null(color_manual)) {
-      vals <- rep(color_manual, rep(nshape, ncol))
-      plot1 <- plot1 +
-        scale_color_manual(" ", values = as.character(vals))
-    } else {
-      colors <- gg_color_hue(ncol)
-      vals <- rep(colors, rep(nshape, ncol))
-      plot1 <- plot1 +
-        scale_color_manual(" ", values = vals)
-    }
-    shapes <- c(15:18, 3:14, 0:2)
-    if (nshape > length(shapes)) {
-      warning("Number of available shapes exceeded, values will cycle!")
-    }
-
-    select <- (1:nshape) %% (length(shapes))
-    select <- ifelse(select == 0, length(shapes), select)
-    selected_shapes <- shapes[select]
-    vals <- rep(selected_shapes, ncol)
-    plot1 <- plot1 +
-      scale_shape_manual(" ", values = vals) +
+                                shape = int)) + theme_bw() +
+      scale_color_manual(" ", values = col_mapping) +
+      scale_shape_manual(" ", values = shape_mapping) +
       theme(legend.key.size = unit(1, "cm")) +
       geom_point(position = pd, size = 3)
+
   }
 
   plot1 <-  plot1 +
