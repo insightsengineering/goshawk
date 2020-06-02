@@ -1,4 +1,6 @@
-# goshawk 0.1.2.9000
+# goshawk 0.1.3
+
+* some cosmetic changes and address check issues 
 
 # goshawk 0.1.2
 
