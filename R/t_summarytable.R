@@ -85,6 +85,17 @@ t_summarytable <- function(data,
                            loq_flag_var = "LOQFL", ...) {
   table_data <- data %>%
     filter(!!sym(param_var) == param)
+
+  # get unique study id or unique study ids if multiple study data
+  study_id <- as.data.frame(table(table_data$STUDYID)) %>%
+    mutate(STUDYID = paste(.data$Var1, collapse = "/")) %>%
+    select(StudyID = .data$STUDYID) %>%
+    slice(1)
+
+  # get analysis variable name
+  anl_var <- as.data.frame(xaxis_var) %>%
+    rename("AnlVar" = xaxis_var)
+
   # by treatment group table
   sum_data_by_arm <- table_data %>%
     filter(!!sym(param_var) == param) %>%
@@ -132,4 +143,8 @@ t_summarytable <- function(data,
            .data$n:.data$PctLOQ, .data$TRTORD) %>% # reorder variables
     arrange(.data$Biomarker, .data$Visit, .data$TRTORD) %>% # drop variable
     select(-.data$TRTORD)
+
+  # add analysis variable as first column
+  sum_data <- cbind(study_id, anl_var, sum_data)
+
 }

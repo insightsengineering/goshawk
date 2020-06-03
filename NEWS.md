@@ -1,3 +1,7 @@
+# goshawk 0.1.4
+
+* Added Study Identifier and Analysis Variable as columns to t_summarytable
+
 # goshawk 0.1.3
 
 * some cosmetic changes and address check issues 
