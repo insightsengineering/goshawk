@@ -25,10 +25,10 @@ Imports:
     mcr,
     rlang,
     stringr,
-    utils.nest (>= 0.2.2)
+    utils.nest (>= 0.2.4)
 Suggests: 
-    random.cdisc.data (>= 0.3.2),
-    test.nest (>= 0.2.2),
+    random.cdisc.data (>= 0.3.4),
+    test.nest (>= 0.2.3),
     testthat (>= 2.0)
 License: GPL-2
 Encoding: UTF-8
