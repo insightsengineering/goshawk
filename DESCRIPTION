@@ -11,8 +11,8 @@ Authors@R: c(
   )
 Description: Functions that plot and summarize biomarkers/labs of interest. Visualizations
     include: box plot, correlation plot, density distribution, line plot and spaghetti plot.
-    Data are expected in ADaM structure. Requires analysis subject level (ADSL/ASL) and
-    analysis laboratory (ADLB/ALB) data sets. Beyond core variables, Limit of Quantification
+    Data are expected in ADaM structure. Requires analysis subject level (ADSL) and
+    analysis laboratory (ADLB) data sets. Beyond core variables, Limit of Quantification
     flag variable (LOQFL) is expected with levels 'Y', 'N' or NA.
 Depends: 
     dplyr, 
