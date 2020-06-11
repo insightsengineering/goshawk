@@ -1,5 +1,6 @@
 # goshawk 0.1.3
 
+* Added data driven data constraint UI rendering.
 * Added Study Identifier and Analysis Variable as columns to `t_summarytable`.
 * Some cosmetic changes and address check issues.
 
