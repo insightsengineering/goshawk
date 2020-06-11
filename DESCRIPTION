@@ -9,10 +9,10 @@ Authors@R: c(
   person("Jeffrey", "Tomlinson", email = "tomlinson.jeffrey@roche.com", role = c("aut")),
   person("Bali", "Toth", email = "toth.balazs@gene.com", role = c("aut"))
   )
-Description: Functions that plot and summarize biomarkers of interest. Visualizations
-    include: box plot, density distribution, line plot, scatter plot and spaghetti plot.
-    Data are expected in ADaM structure. Requires analysis subject level (ADSL/ASL) and
-    analysis laboratory (ADLB/ALB) data sets. Beyond core variables, Lower Limit of Quantification
+Description: Functions that plot and summarize biomarkers/labs of interest. Visualizations
+    include: box plot, correlation plot, density distribution, line plot and spaghetti plot.
+    Data are expected in ADaM structure. Requires analysis subject level (ADSL) and
+    analysis laboratory (ADLB) data sets. Beyond core variables, Limit of Quantification
     flag variable (LOQFL) is expected with levels 'Y', 'N' or NA.
 Depends: 
     dplyr, 

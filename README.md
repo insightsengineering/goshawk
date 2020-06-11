@@ -1,6 +1,6 @@
 # goshawk
 
-Longitudinal biomarker visualizations functions. These can be used stand alone or with the teal.goshawk package.
+Longitudinal biomarker/lab visualizations functions. These can be used stand alone or with the teal.goshawk package.
 
 
 # Install Instructions
