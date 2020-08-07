@@ -99,8 +99,8 @@
 #'
 #' # given the 2 param and 2 analysis vars we need to transform the data
 #' plot_data_t1 <- ALB %>%
-#'   gather(ANLVARS, ANLVALS, BASE2, BASE, AVAL, BASE, LOQFL) %>%
-#'   mutate(ANL.PARAM = ifelse(ANLVARS == "LOQFL",
+#'   gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL) %>%
+#'   mutate(ANL.PARAM = ifelse(ANLVARS %in% c("PARAM", "LBSTRESC", "LOQFL"),
 #'                             paste0(ANLVARS, "_", PARAMCD),
 #'                             paste0(ANLVARS, ".", PARAMCD))) %>%
 #'   select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
@@ -123,17 +123,17 @@
 #'   xvar = "AVAL.CRP",
 #'   yaxis_param = c("ALT"),
 #'   yaxis_var = "BASE",
-#'   yvar = "BASE.CRP",
+#'   yvar = "BASE.ALT",
 #'   trt_group = "ARM",
 #'   visit = "AVISITCD",
 #'   visit_facet = TRUE,
 #'   loq_flag_var = "LOQFL",
 #'   loq_legend = TRUE,
 #'   unit = "AVALU",
-#'   xmin = 0,
-#'   xmax = 100,
-#'   ymin = 0,
-#'   ymax = 200,
+#'   xmin = 20,
+#'   xmax = 80,
+#'   ymin = 20,
+#'   ymax = 80,
 #'   title_text = "Test",
 #'   xaxis_lab = "Test x",
 #'   yaxis_lab = "Test y",
@@ -188,6 +188,19 @@ g_correlationplot <- function(label = "Correlation Plot",
                               reg_text_size = 3) {
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
+
+  # identify param and lbstresc combinations in transposed data variable name
+  t_param_var <- paste("PARAM", xaxis_param, sep = "_")
+  t_lbstresc_var <- paste("LBSTRESC", xaxis_param, sep = "_")
+
+  xaxis_param_loqs_data <- data %>%
+    mutate(PARAM = !!sym(t_param_var),
+           LBSTRESC = !!sym(t_lbstresc_var)) %>%
+    select(.data$PARAM, .data$LBSTRESC)
+
+  # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data
+  caption_loqs_label <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
+
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")),
                     "Dose",
@@ -204,6 +217,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   ) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
     theme_bw() +
+    labs(caption = caption_loqs_label) +
     ggtitle(title_text) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(xaxis_lab) +

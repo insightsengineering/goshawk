@@ -154,7 +154,7 @@ g_spaghettiplot <- function(data,
   plot_data <- data %>%
     filter(!!sym(biomarker_var) %in% biomarker) %>%
     select(!!sym(time), !!sym(value_var), !!sym(trt_group), !!sym(subj_id), !!sym(unit_var), !!sym(biomarker_var),
-           !!sym(biomarker_var_label))
+           !!sym(biomarker_var_label), .data$LBSTRESC)
   unit <- plot_data %>%
     select(!!sym(unit_var)) %>%
     unique() %>%
@@ -177,11 +177,15 @@ g_spaghettiplot <- function(data,
   # Setup legend label
   trt_label <- if_null(attr(plot_data[[trt_group]], "label"), "Dose")
 
+  # Add footnote to identify LLOQ and ULOQ values pulled from data
+  caption_loqs_label <- caption_loqs_label(loqs_data = plot_data)
+
   plot <- ggplot(data = plot_data,
                  aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
     geom_point(size = 0.8, na.rm = TRUE) +
     geom_line(size = 0.4, alpha = alpha, na.rm = TRUE) +
     facet_wrap(trt_group, ncol = facet_ncol) +
+    labs(caption = caption_loqs_label) +
     theme_bw() +
     ggtitle(gtitle) +
     xlab(gxlab) +

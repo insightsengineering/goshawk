@@ -27,7 +27,12 @@ reference:
       - t_summarytable
       - t_summarytable_av
 
+  - title: Helpers
+    desc: These files are helper functions.
+    contents:
+      - caption_loqs_label
+
   - title: Package Build Related
     desc: These files facilitate package build.
     contents:
-      - goshawk_core_packages
+      - goshawk

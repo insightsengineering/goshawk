@@ -299,6 +299,9 @@ g_lineplot <- function(label = "Line Plot",
     attr(sum_data[[trt_group]], "label")
   }
 
+  # Add footnote to identify LLOQ and ULOQ values pulled from data
+  caption_loqs_label <- caption_loqs_label(loqs_data = filtered_data)
+
   if (is.null(shape)) {
     plot1 <-  ggplot(data = sum_data,
                      aes_string(x = time,
@@ -349,7 +352,8 @@ g_lineplot <- function(label = "Line Plot",
     ggtitle(gtitle) +
     labs(caption = paste("The output plot can display mean and median of input value.",
                          "For mean, the error bar denotes 95% confidence interval.",
-                         "For median, the bar denotes the first to third quartile.")) +
+                         "For median, the bar denotes the first to third quartile.\n",
+                         caption_loqs_label)) +
     xlab(time) +
     ylab(gylab) +
     theme(legend.position = "bottom", legend.direction = "horizontal",

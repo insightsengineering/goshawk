@@ -140,6 +140,9 @@ g_boxplot <- function(data,
   # use armlabel if supplied, otherwise get arm label from arm column label
   armlabel <- if_null(armlabel, column_annotation_label(data, trt_group, omit_raw_name = TRUE))
 
+  # add footnote to identify LLOQ and ULOQ values pulled from data
+  caption_loqs_label <- caption_loqs_label(loqs_data = data)
+
   # Base plot
   plot1 <-  ggplot()
   # Add boxes if required
@@ -162,7 +165,7 @@ g_boxplot <- function(data,
       geom_hline(yintercept = hline, color = "red", linetype = "dashed", size = 0.5)
   }
   plot1 <- plot1 +
-    labs(color = armlabel, x = NULL, y = y_axis_label) +
+    labs(color = armlabel, x = NULL, y = y_axis_label, caption = caption_loqs_label) +
     theme_bw() +
     ggtitle(ggtitle_label) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5))
