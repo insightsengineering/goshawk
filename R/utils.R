@@ -14,12 +14,14 @@
 #' ADLB <- radlb(cached = TRUE)
 #'
 #' # add footnote to identify LLOQ and ULOQ values pulled from data
+#'\dontrun{
 #' caption_label <- goshawk:::caption_loqs_label(loqs_data = ADLB)
+#' }
 caption_loqs_label <- function(loqs_data) {
-  ifelse (!grep("PARAM", names(loqs_data)),
+  ifelse(!grep("PARAM", names(loqs_data)),
           stop("Assay dataset must include variable PARAM to use the caption_loqs_label function."),
           1)
-  ifelse (!grep("LBSTRESC", names(loqs_data)),
+  ifelse(!grep("LBSTRESC", names(loqs_data)),
           stop("Assay dataset must include variable LBSTRESC to use the caption_loqs_label function."),
           1)
 
