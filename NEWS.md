@@ -1,6 +1,10 @@
+# goshawk 0.1.4
+
+* Added labeling function and data driven LLOQ and ULOQ related footnote.
+
 # goshawk 0.1.3.9000
 
-* issues with no news:
+* Issues with no news:
 
 # goshawk 0.1.3
 
