@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • goshawk</title>
+<title>Helper for identifying the LLOQ and ULOQ values used in the visualization footnote. — caption_loqs_label • goshawk</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Helper for identifying the LLOQ and ULOQ values used in the visualization footnote. — caption_loqs_label" />
+<meta property="og:description" content="Helper for identifying the LLOQ and ULOQ values used in the visualization footnote." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +56,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -104,121 +106,52 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Helper for identifying the LLOQ and ULOQ values used in the visualization footnote.</h1>
+    
+    <div class="hidden name"><code>caption_loqs_label.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Helper for identifying the LLOQ and ULOQ values used in the visualization footnote.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>caption_loqs_label</span>(<span class='no'>loqs_data</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-modules" class="hasAnchor"><a href="#section-modules" class="anchor"></a>Modules</h2>
-          <p class="section-desc"><p>These functions produce longitudinal visualizations and in some cases an accompanying descriptive summary table.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="g_boxplot.html">g_boxplot()</a></code> </p>
-        </td>
-        <td><p>Function to create a boxplot.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="g_correlationplot.html">g_correlationplot()</a></code> </p>
-        </td>
-        <td><p>Function to create a correlation plot.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="g_correlationplot_av.html">g_correlationplot_av()</a></code> </p>
-        </td>
-        <td><p>Function to create a correlation plot without visit facetting. Presents all visit data based on analysis day.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="g_density_distribution_plot.html">g_density_distribution_plot()</a></code> </p>
-        </td>
-        <td><p>Function to create a density distribution plot.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="g_lineplot.html">g_lineplot()</a></code> </p>
-        </td>
-        <td><p>Function to create line plot of summary statistics over time.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="g_scatterplot.html">g_scatterplot()</a></code> </p>
-        </td>
-        <td><p>Function to create a scatter plot.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="g_spaghettiplot.html">g_spaghettiplot()</a></code> </p>
-        </td>
-        <td><p>Function to create a spaghetti plot.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="t_summarytable.html">t_summarytable()</a></code> </p>
-        </td>
-        <td><p>Function to create a table of descriptive summary statistics to accompany plots.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="t_summarytable_av.html">t_summarytable_av()</a></code> </p>
-        </td>
-        <td><p>Function to create a table of descriptive summary statistics to accompany plots
-that present all visit data based on analysis day.</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-helpers" class="hasAnchor"><a href="#section-helpers" class="anchor"></a>Helpers</h2>
-          <p class="section-desc"><p>These files are helper functions.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="caption_loqs_label.html">caption_loqs_label()</a></code> </p>
-        </td>
-        <td><p>Helper for identifying the LLOQ and ULOQ values used in the visualization footnote.</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-package-build-related" class="hasAnchor"><a href="#section-package-build-related" class="anchor"></a>Package Build Related</h2>
-          <p class="section-desc"><p>These files facilitate package build.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="goshawk.html">goshawk</a></code> </p>
-        </td>
-        <td><p>The goshawk package provides longitudinal visualizations of lab/biomarker data</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>loqs_data</th>
+      <td><p>dataset containing assay data with potential LOQ values</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Biomarker Sciences would like to have LLOQ and ULOQ values available for
+reference in the visualizations. This also aids in setting the data constraint
+ranges when goshawk functions are run from teal.goshawk UI.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>random.cdisc.data</span>)
+
+<span class='no'>ADLB</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/random.cdisc.data/man/radlb.html'>radlb</a></span>(<span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># add footnote to identify LLOQ and ULOQ values pulled from data</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>caption_label</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>goshawk</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/goshawk/man/caption_loqs_label.html'>caption_loqs_label</a></span>(<span class='kw'>loqs_data</span> <span class='kw'>=</span> <span class='no'>ADLB</span>)
+}</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-modules">Modules</a></li>
-      <li><a href="#section-helpers">Helpers</a></li>
-      <li><a href="#section-package-build-related">Package Build Related</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

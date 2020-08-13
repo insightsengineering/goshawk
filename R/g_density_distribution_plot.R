@@ -114,6 +114,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         line_size = 2) {
   plot_data <- data %>%
     filter(!!sym(param_var) == param)
+
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
   ggtitle_label <- ifelse(is.null(unit),
                           paste(plot_data$PARAM,
@@ -124,40 +125,51 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                  paste0(plot_data$PARAM, " (", plot_data[[unit]],
                                         ") Density: Combined Treatment (Comb.) & by Treatment @ Visits"))
   )
+
   # Setup the x-axis label.  Combine the biomarker and the units (if available)
   x_axis_label <- ifelse(is.null(unit), paste(plot_data$PARAM, xaxis_var, "Values"),
                          ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, xaxis_var, "Values"),
                                 paste0(plot_data$PARAM, " (", plot_data[[unit]], ") ", xaxis_var, " Values"))
   )
+
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")),
                     "Dose",
                     attr(data[[trt_group]], "label"))
+
+  # Add footnote to identify LLOQ and ULOQ values pulled from data
+  caption_loqs_label <- caption_loqs_label(loqs_data = plot_data)
+
   plot1 <- ggplot(plot_data) +
     geom_density(aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
     coord_cartesian(xlim = c(xmin, xmax)) +
     facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol) +
+    labs(caption = caption_loqs_label) +
     theme_bw() +
     ggtitle(ggtitle_label) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(paste(x_axis_label)) +
     ylab(paste("Density"))
+
   # Format treatment color and label legend
   if (!is.null(color_manual)) {
     plot1 <- plot1 +
       scale_color_manual(values = color_manual, name = trt_label)
   }
+
   # conditionally add combined treatment line
   if (comb_line) {
     plot1 <- plot1 +
       geom_density(aes(x = !!sym(xaxis_var), linetype = "Comb."), color = color_comb, size = line_size) +
       scale_linetype_manual(name = "Combined Dose", values = c(Comb. = "solid", per_dose = "solid"))
   }
+
   # Add horizontal line
   if (!is.null(hline)) {
     plot1 <- plot1 +
       geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
+
   # Format font size
   if (!is.null(font_size)) {
     plot1 <- plot1 +
@@ -170,10 +182,13 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
             strip.text.x = element_text(size = font_size),
             strip.text.y = element_text(size = font_size))
   }
+
   # Format x-label
   if (rotate_xlab) {
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
+
   plot1
+
 }

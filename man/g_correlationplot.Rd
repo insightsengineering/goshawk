@@ -171,8 +171,8 @@ ALB <- ALB \%>\%
 
 # given the 2 param and 2 analysis vars we need to transform the data
 plot_data_t1 <- ALB \%>\%
-  gather(ANLVARS, ANLVALS, BASE2, BASE, AVAL, BASE, LOQFL) \%>\%
-  mutate(ANL.PARAM = ifelse(ANLVARS == "LOQFL",
+  gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL) \%>\%
+  mutate(ANL.PARAM = ifelse(ANLVARS \%in\% c("PARAM", "LBSTRESC", "LOQFL"),
                             paste0(ANLVARS, "_", PARAMCD),
                             paste0(ANLVARS, ".", PARAMCD))) \%>\%
   select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) \%>\%
@@ -195,17 +195,17 @@ g_correlationplot(
   xvar = "AVAL.CRP",
   yaxis_param = c("ALT"),
   yaxis_var = "BASE",
-  yvar = "BASE.CRP",
+  yvar = "BASE.ALT",
   trt_group = "ARM",
   visit = "AVISITCD",
   visit_facet = TRUE,
   loq_flag_var = "LOQFL",
   loq_legend = TRUE,
   unit = "AVALU",
-  xmin = 0,
-  xmax = 100,
-  ymin = 0,
-  ymax = 200,
+  xmin = 20,
+  xmax = 80,
+  ymin = 20,
+  ymax = 80,
   title_text = "Test",
   xaxis_lab = "Test x",
   yaxis_lab = "Test y",

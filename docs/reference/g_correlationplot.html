@@ -70,7 +70,7 @@ symbol attributed LOQ values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -355,8 +355,8 @@ Use with facet = TRUE.</p></td>
 
 <span class='co'># given the 2 param and 2 analysis vars we need to transform the data</span>
 <span class='no'>plot_data_t1</span> <span class='kw'>&lt;-</span> <span class='no'>ALB</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span>(<span class='no'>ANLVARS</span>, <span class='no'>ANLVALS</span>, <span class='no'>BASE2</span>, <span class='no'>BASE</span>, <span class='no'>AVAL</span>, <span class='no'>BASE</span>, <span class='no'>LOQFL</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>mutate</span>(<span class='kw'>ANL.PARAM</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>ANLVARS</span> <span class='kw'>==</span> <span class='st'>"LOQFL"</span>,
+  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span>(<span class='no'>ANLVARS</span>, <span class='no'>ANLVALS</span>, <span class='no'>PARAM</span>, <span class='no'>LBSTRESC</span>, <span class='no'>BASE2</span>, <span class='no'>BASE</span>, <span class='no'>AVAL</span>, <span class='no'>BASE</span>, <span class='no'>LOQFL</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>mutate</span>(<span class='kw'>ANL.PARAM</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>ANLVARS</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PARAM"</span>, <span class='st'>"LBSTRESC"</span>, <span class='st'>"LOQFL"</span>),
                             <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>ANLVARS</span>, <span class='st'>"_"</span>, <span class='no'>PARAMCD</span>),
                             <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>ANLVARS</span>, <span class='st'>"."</span>, <span class='no'>PARAMCD</span>))) <span class='kw'>%&gt;%</span>
   <span class='fu'>select</span>(<span class='no'>USUBJID</span>, <span class='no'>ARM</span>, <span class='no'>ARMCD</span>, <span class='no'>AVISITN</span>, <span class='no'>AVISITCD</span>, <span class='no'>ANL.PARAM</span>, <span class='no'>ANLVALS</span>) <span class='kw'>%&gt;%</span>
@@ -379,17 +379,17 @@ Use with facet = TRUE.</p></td>
   <span class='kw'>xvar</span> <span class='kw'>=</span> <span class='st'>"AVAL.CRP"</span>,
   <span class='kw'>yaxis_param</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ALT"</span>),
   <span class='kw'>yaxis_var</span> <span class='kw'>=</span> <span class='st'>"BASE"</span>,
-  <span class='kw'>yvar</span> <span class='kw'>=</span> <span class='st'>"BASE.CRP"</span>,
+  <span class='kw'>yvar</span> <span class='kw'>=</span> <span class='st'>"BASE.ALT"</span>,
   <span class='kw'>trt_group</span> <span class='kw'>=</span> <span class='st'>"ARM"</span>,
   <span class='kw'>visit</span> <span class='kw'>=</span> <span class='st'>"AVISITCD"</span>,
   <span class='kw'>visit_facet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>loq_flag_var</span> <span class='kw'>=</span> <span class='st'>"LOQFL"</span>,
   <span class='kw'>loq_legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"AVALU"</span>,
-  <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>ymin</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>ymax</span> <span class='kw'>=</span> <span class='fl'>200</span>,
+  <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='fl'>80</span>,
+  <span class='kw'>ymin</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>ymax</span> <span class='kw'>=</span> <span class='fl'>80</span>,
   <span class='kw'>title_text</span> <span class='kw'>=</span> <span class='st'>"Test"</span>,
   <span class='kw'>xaxis_lab</span> <span class='kw'>=</span> <span class='st'>"Test x"</span>,
   <span class='kw'>yaxis_lab</span> <span class='kw'>=</span> <span class='st'>"Test y"</span>,
