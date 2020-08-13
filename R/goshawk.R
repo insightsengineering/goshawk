@@ -1,5 +1,7 @@
 #' The goshawk package provides longitudinal visualizations of lab/biomarker data
 #'
+#' @description The goshawk package provides longitudinal visualizations of lab/biomarker data
+#'
 #' @docType package
 #'
 #' @name goshawk
