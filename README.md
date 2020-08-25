@@ -5,9 +5,9 @@ Longitudinal biomarker/lab visualizations functions. These can be used stand alo
 
 # Installation
 
-[BEE](https://r.roche.com/) users should check out [Agile-R installation page](https://pages.github.roche.com/NEST/docs/hugo/NEST/agile-R/master/quick_start/install-nest-environment/).
+Please refer to the quick start section in agile-R [here](https://pages.github.roche.com/NEST/docs/hugo/NEST/agile-R/master/quick_start/install-nest-environment/)
 
-You can install locally last released version of `goshawk` with:
+The latest version of `goshawk` can be installed locally with:
 
 ```r
 devtools::install_github(
