@@ -29,8 +29,6 @@
 #'
 #' @importFrom cowplot plot_grid
 #' @importFrom grDevices hcl
-#' @importFrom grid unit.pmax
-#' @importFrom gridExtra grid.arrange
 #' @importFrom stringr str_count str_wrap str_to_title
 #'
 #' @author Balazs Toth (toth.balazs@gene.com)
