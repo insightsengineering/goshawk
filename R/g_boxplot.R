@@ -40,7 +40,6 @@
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
 #'
-#' @importFrom gridExtra grid.arrange
 #' @importFrom utils.nest stop_if_not if_null column_annotation_label
 #'
 #' @author Balazs Toth
