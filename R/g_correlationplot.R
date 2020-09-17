@@ -190,16 +190,24 @@ g_correlationplot <- function(label = "Correlation Plot",
   plot_data <- data
 
   # identify param and lbstresc combinations in transposed data variable name
-  t_param_var <- paste("PARAM", xaxis_param, sep = "_")
-  t_lbstresc_var <- paste("LBSTRESC", xaxis_param, sep = "_")
+  t_param_var_x <- paste("PARAM", xaxis_param, sep = "_")
+  t_lbstresc_var_x <- paste("LBSTRESC", xaxis_param, sep = "_")
+  t_param_var_y <- paste("PARAM", yaxis_param, sep = "_")
+  t_lbstresc_var_y <- paste("LBSTRESC", yaxis_param, sep = "_")
 
   xaxis_param_loqs_data <- data %>%
-    mutate(PARAM = !!sym(t_param_var),
-           LBSTRESC = !!sym(t_lbstresc_var)) %>%
+    mutate(PARAM = !!sym(t_param_var_x),
+           LBSTRESC = !!sym(t_lbstresc_var_x)) %>%
+    select(.data$PARAM, .data$LBSTRESC)
+
+  yaxis_param_loqs_data <- data %>%
+    mutate(PARAM = !!sym(t_param_var_y),
+           LBSTRESC = !!sym(t_lbstresc_var_y)) %>%
     select(.data$PARAM, .data$LBSTRESC)
 
   # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data
-  caption_loqs_label <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
+  caption_loqs_label_x <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
+  caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
 
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")),
@@ -217,7 +225,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   ) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
     theme_bw() +
-    labs(caption = caption_loqs_label) +
+    labs(caption = paste(caption_loqs_label_x, "\n", caption_loqs_label_y)) +
     ggtitle(title_text) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(xaxis_lab) +
@@ -298,7 +306,8 @@ g_correlationplot <- function(label = "Correlation Plot",
         ),
         size = reg_text_size
       ) +
-      labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
+      labs(caption = paste("Deming Regression Model, Spearman Correlation Method.\n",
+                           caption_loqs_label_x, "\n", caption_loqs_label_y))
   }
   # Format font size
   if (!is.null(font_size)) {
