@@ -140,9 +140,9 @@
 #'   color_manual = color_manual,
 #'   shape_manual = shape_manual,
 #'   facet_ncol = 4,
-#'   facet = FALSE,
+#'   facet = TRUE,
 #'   facet_var = "ARM",
-#'   reg_line = FALSE,
+#'   reg_line = TRUE,
 #'   hline = NULL,
 #'   vline = .5,
 #'   rotate_xlab = FALSE,
@@ -225,7 +225,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   ) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
     theme_bw() +
-    labs(caption = paste(caption_loqs_label_x, "\n", caption_loqs_label_y)) +
+    labs(caption = paste0(caption_loqs_label_x, "\n", caption_loqs_label_y)) +
     ggtitle(title_text) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(xaxis_lab) +
@@ -306,7 +306,7 @@ g_correlationplot <- function(label = "Correlation Plot",
         ),
         size = reg_text_size
       ) +
-      labs(caption = paste("Deming Regression Model, Spearman Correlation Method.\n",
+      labs(caption = paste0("Deming Regression Model, Spearman Correlation Method.\n",
                            caption_loqs_label_x, "\n", caption_loqs_label_y))
   }
   # Format font size
