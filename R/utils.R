@@ -18,12 +18,14 @@
 #' caption_label <- goshawk:::caption_loqs_label(loqs_data = ADLB)
 #' }
 caption_loqs_label <- function(loqs_data) {
-  ifelse(!grep("PARAM", names(loqs_data)),
-          stop("Assay dataset must include variable PARAM to use the caption_loqs_label function."),
-          1)
-  ifelse(!grep("LBSTRESC", names(loqs_data)),
-          stop("Assay dataset must include variable LBSTRESC to use the caption_loqs_label function."),
-          1)
+  ifelse(
+    !grep("PARAM", names(loqs_data)),
+    stop("Assay dataset must include variable PARAM to use the caption_loqs_label function."),
+    1)
+  ifelse(
+    !grep("LBSTRESC", names(loqs_data)),
+    stop("Assay dataset must include variable LBSTRESC to use the caption_loqs_label function."),
+    1)
 
   # get LLOQ value
   lloq <- loqs_data %>%
@@ -52,8 +54,13 @@ caption_loqs_label <- function(loqs_data) {
   }
 
   # create caption
-  caption_loqs_label <- paste0("Limits of quantification read from study data for ",
-                               loqs_data$PARAM, ": LLOQ = ", lloq_value, ", ULOQ = ", uloq_value)
+  caption_loqs_label <- paste0(
+    "Limits of quantification read from study data for ",
+    loqs_data$PARAM,
+    ": LLOQ = ",
+    lloq_value,
+    ", ULOQ = ",
+    uloq_value)
 
   return(caption_loqs_label)
 

@@ -116,26 +116,29 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
     filter(!!sym(param_var) == param)
 
   # Setup the ggtitle label.  Combine the biomarker and the units (if available)
-  ggtitle_label <- ifelse(is.null(unit),
-                          paste(plot_data$PARAM,
-                                "Density: Combined Treatment (Comb.) & by Treatment @ Visits"),
-                          ifelse(plot_data[[unit]] == "",
-                                 paste(plot_data$PARAM,
-                                       "Density: Combined Treatment (Comb.) & by Treatment @ Visits"),
-                                 paste0(plot_data$PARAM, " (", plot_data[[unit]],
-                                        ") Density: Combined Treatment (Comb.) & by Treatment @ Visits"))
+  ggtitle_label <- ifelse(
+    is.null(unit),
+    paste(plot_data$PARAM, "Density: Combined Treatment (Comb.) & by Treatment @ Visits"),
+    ifelse(
+      plot_data[[unit]] == "",
+      paste(plot_data$PARAM, "Density: Combined Treatment (Comb.) & by Treatment @ Visits"),
+      paste0(plot_data$PARAM, " (", plot_data[[unit]], ") Density: Combined Treatment (Comb.) & by Treatment @ Visits")
+    )
   )
 
   # Setup the x-axis label.  Combine the biomarker and the units (if available)
-  x_axis_label <- ifelse(is.null(unit), paste(plot_data$PARAM, xaxis_var, "Values"),
-                         ifelse(plot_data[[unit]] == "", paste(plot_data$PARAM, xaxis_var, "Values"),
-                                paste0(plot_data$PARAM, " (", plot_data[[unit]], ") ", xaxis_var, " Values"))
+  x_axis_label <- ifelse(
+    is.null(unit),
+    paste(plot_data$PARAM, xaxis_var, "Values"),
+    ifelse(
+      plot_data[[unit]] == "",
+      paste(plot_data$PARAM, xaxis_var, "Values"),
+      paste0(plot_data$PARAM, " (", plot_data[[unit]], ") ", xaxis_var, " Values")
+    )
   )
 
   # Setup legend label
-  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")),
-                    "Dose",
-                    attr(data[[trt_group]], "label"))
+  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # Add footnote to identify LLOQ and ULOQ values pulled from data
   caption_loqs_label <- caption_loqs_label(loqs_data = plot_data)

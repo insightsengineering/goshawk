@@ -100,17 +100,15 @@ g_boxplot <- function(data,
                       armlabel = NULL,
                       facet = NULL
 ) {
-  stop_if_not(list(!is.null(data[[param_var]]),
-                   paste("param_var", param_var, "is not in data.")))
-  stop_if_not(list(any(data[[param_var]] == biomarker),
-                   paste("biomarker", biomarker, "is not found in param_var", param_var, ".")))
+  stop_if_not(list(!is.null(data[[param_var]]), paste("param_var", param_var, "is not in data.")))
+  stop_if_not(list(
+    any(data[[param_var]] == biomarker), paste("biomarker", biomarker, "is not found in param_var", param_var, ".")))
   # filter input data
   data <- data %>%
     filter(!!sym(param_var) == biomarker)
   if (!is.null(unit)){
     # check unit is in the dataset
-    stop_if_not(list(!is.null(data[[unit]]),
-                     paste("unit variable", unit, "is not in data.")))
+    stop_if_not(list(!is.null(data[[unit]]), paste("unit variable", unit, "is not in data.")))
     # extract the most common unit
     # if there are ties, take the use alphabetic order
     tmp_unit <- data %>%
@@ -147,11 +145,13 @@ g_boxplot <- function(data,
   # Add boxes if required
   if (box) {
     plot1 <- plot1 +
-      geom_boxplot(data = data,
-                   aes_string(x = xaxis_var,
-                              y = yaxis_var,
-                              fill = NULL),
-                   outlier.shape = NA)
+      geom_boxplot(
+        data = data,
+        aes_string(
+          x = xaxis_var,
+          y = yaxis_var,
+          fill = NULL),
+        outlier.shape = NA)
   }
   # Extend is.infinite to include zero length objects.
   is_finite <- function(x) {
