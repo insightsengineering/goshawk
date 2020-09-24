@@ -196,13 +196,11 @@ g_correlationplot <- function(label = "Correlation Plot",
   t_lbstresc_var_y <- paste("LBSTRESC", yaxis_param, sep = "_")
 
   xaxis_param_loqs_data <- data %>%
-    mutate(PARAM = !!sym(t_param_var_x),
-           LBSTRESC = !!sym(t_lbstresc_var_x)) %>%
+    mutate(PARAM = !!sym(t_param_var_x), LBSTRESC = !!sym(t_lbstresc_var_x)) %>%
     select(.data$PARAM, .data$LBSTRESC)
 
   yaxis_param_loqs_data <- data %>%
-    mutate(PARAM = !!sym(t_param_var_y),
-           LBSTRESC = !!sym(t_lbstresc_var_y)) %>%
+    mutate(PARAM = !!sym(t_param_var_y), LBSTRESC = !!sym(t_lbstresc_var_y)) %>%
     select(.data$PARAM, .data$LBSTRESC)
 
   # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data
@@ -210,9 +208,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
 
   # Setup legend label
-  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")),
-                    "Dose",
-                    attr(data[[trt_group]], "label"))
+  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
   # create plot foundation - titles and axes labels are defined in
   # teal.goshawk.tm_g_correlationplot.R
   plot1 <- ggplot2::ggplot(
@@ -266,30 +262,19 @@ g_correlationplot <- function(label = "Correlation Plot",
       # error below
       return(as.numeric(c(NA, NA, NA)))
     }
-    sub_data <- filter(
-      plot_data,
-      !is.na(!!sym(yvar)) & !is.na(!!sym(xvar))
-    ) %>%
+    sub_data <- filter(plot_data, !is.na(!!sym(yvar)) & !is.na(!!sym(xvar))) %>%
       group_by_(.dots = c(trt_group, visit)) %>%
       mutate(intercept = slope(!!sym(yvar), !!sym(xvar))[1]) %>%
       mutate(slope = slope(!!sym(yvar), !!sym(xvar))[2]) %>%
-      mutate(
-        corr = ifelse(slope(!!sym(yvar),
-                            !!sym(xvar))[3],
-                      cor(!!sym(yvar),
-                          !!sym(xvar),
-                          method = "spearman",
-                          use = "complete.obs"),
-                      NA
-        ))
+      mutate(corr = ifelse(
+        slope(!!sym(yvar), !!sym(xvar))[3],
+        cor(!!sym(yvar), !!sym(xvar), method = "spearman", use = "complete.obs"),
+        NA)
+      )
     plot1 <- plot1 +
       geom_abline(
         data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by
-        aes_string(
-          intercept = "intercept",
-          slope = "slope",
-          color = trt_group
-        )
+        aes_string(intercept = "intercept", slope = "slope", color = trt_group)
       ) +
       geom_text(
         data = filter(sub_data, row_number() == 1),
@@ -298,20 +283,23 @@ g_correlationplot <- function(label = "Correlation Plot",
           y = Inf,
           hjust = 0,
           vjust = 1,
-          label = ~ ifelse(!is.na(intercept) & !is.na(slope) & !is.na(corr),
-                           sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
-                           paste0("Insufficient Data For Regression")
-          ),
-          color = sym(trt_group)
-        ),
+          label = ~ ifelse(
+            !is.na(intercept) & !is.na(slope) & !is.na(corr),
+            sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
+            paste0("Insufficient Data For Regression")),
+          color = sym(trt_group)),
         size = reg_text_size
-      ) +
-      labs(caption = paste0("Deming Regression Model, Spearman Correlation Method.\n",
-                           caption_loqs_label_x, "\n", caption_loqs_label_y))
+        ) +
+      labs(caption = paste0(
+        "Deming Regression Model, Spearman Correlation Method.\n",
+        caption_loqs_label_x,
+        "\n",
+        caption_loqs_label_y)
+      )
   }
   # Format font size
   if (!is.null(font_size)) {
-    plot1 <- plot1 +      theme(
+    plot1 <- plot1 + theme(
       axis.title.x = element_text(size = font_size),
       axis.text.x = element_text(size = font_size),
       axis.title.y = element_text(size = font_size),

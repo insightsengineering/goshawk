@@ -163,14 +163,9 @@ g_scatterplot <- function(label = "Scatter Plot",
                                 paste0(plot_data$PARAM, " (", plot_data[[unit]], ") ", yaxis_var, " Values"))
   )
   # Setup legend label
-  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")),
-                    "Dose",
-                    attr(data[[trt_group]], "label"))
+  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
   # create plot foundation
-  plot1 <- ggplot2::ggplot(data = plot_data,
-                           aes_string(x = xaxis_var,
-                                      y = yaxis_var,
-                                      color = trt_group)) +
+  plot1 <- ggplot2::ggplot(data = plot_data, aes_string(x = xaxis_var, y = yaxis_var, color = trt_group)) +
     geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
     facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol) +
@@ -217,16 +212,19 @@ g_scatterplot <- function(label = "Scatter Plot",
                         color = !!sym(trt_group)))
     }
     plot1 <- plot1 +
-      geom_text(data = filter(sub_data, row_number() == 1),
-                aes(x = -Inf,
-                    y = Inf,
-                    hjust = 0,
-                    vjust = 1,
-                    label = ifelse(!is.na(.data$intercept) & !is.na(.data$slope) & !is.na(.data$corr),
-                                   sprintf("y = %.2f+%.2fX\ncor = %.2f", .data$intercept, .data$slope, .data$corr),
-                                   paste0("Insufficient Data For Regression")),
-                    color = !!sym(trt_group)),
-                size = reg_text_size) +
+      geom_text(
+        data = filter(sub_data, row_number() == 1),
+        aes(
+          x = -Inf,
+          y = Inf,
+          hjust = 0,
+          vjust = 1,
+          label = ifelse(
+            !is.na(.data$intercept) & !is.na(.data$slope) & !is.na(.data$corr),
+            sprintf("y = %.2f+%.2fX\ncor = %.2f", .data$intercept, .data$slope, .data$corr),
+            paste0("Insufficient Data For Regression")),
+          color = !!sym(trt_group)),
+        size = reg_text_size) +
       labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
   }
   # Add abline

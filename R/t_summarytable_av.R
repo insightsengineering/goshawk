@@ -90,63 +90,53 @@ t_summarytable_av <- function(data,
     # by treatment group table
     sum_data_by_arm <- table_data %>%
       group_by_(.dots = c(param_var, trt_group, "TRTORD", facet_var)) %>%
-      summarise(n = sum(!is.na(!!sym(xaxis_var))),
-                Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) /
-                                  length(!!sym(xaxis_var)),
-                                digits = 2),
-                PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) /
-                                 length(!!sym(loq_flag_var)),
-                               digits = 2)
+      summarise(
+        n = sum(!is.na(!!sym(xaxis_var))),
+        Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) / length(!!sym(xaxis_var)), digits = 2),
+        PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) / length(!!sym(loq_flag_var)), digits = 2)
       ) %>%
       select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
     # by combined treatment group table
     sum_data_combined_arm <- table_data %>%
       group_by_(.dots = c(param_var)) %>%
-      summarise(n = sum(!is.na(!!sym(xaxis_var))),
-                Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) /
-                                  length(!!sym(xaxis_var)),
-                                digits = 2),
-                PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) /
-                                 length(!!sym(loq_flag_var)),
-                               digits = 2),
-                MAXTRTORDVIS = max(.data$TRTORD) # identifies the maximum treatment order within visits
+      summarise(
+        n = sum(!is.na(!!sym(xaxis_var))),
+        Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) / length(!!sym(xaxis_var)), digits = 2),
+        PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) / length(!!sym(loq_flag_var)), digits = 2),
+        MAXTRTORDVIS = max(.data$TRTORD) # identifies the maximum treatment order within visits
       ) %>% # additional use of max function identifies maximum treatment order across all visits.
-      mutate(!!trt_group := "Comb.",
-             TRTORD = max(.data$MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
+      # select only those columns needed to prop
+      mutate(!!trt_group := "Comb.", TRTORD = max(.data$MAXTRTORDVIS) + 1) %>%
       select(param_var, trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
     sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
-      select(Biomarker = param_var, Treatment = trt_group,
-             .data$n:.data$PctLOQ, .data$TRTORD) %>% # reorder variables
+      select(Biomarker = param_var, Treatment = trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>% # reorder variables
       arrange(.data$Biomarker, .data$Treatment, .data$TRTORD) %>% # drop variable
       select(-.data$TRTORD)
   } else{
     # by treatment group table
     sum_data_by_arm <- table_data %>%
       group_by_(.dots = c(param_var, trt_group, "TRTORD", facet_var)) %>%
-      summarise(n = sum(!is.na(!!sym(xaxis_var))),
-                Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) /
-                                  length(!!sym(xaxis_var)),
-                                digits = 2),
-                PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) /
-                                 length(!!sym(loq_flag_var)),
-                               digits = 2)
+      summarise(
+        n = sum(!is.na(!!sym(xaxis_var))),
+        Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) / length(!!sym(xaxis_var)), digits = 2),
+        PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) / length(!!sym(loq_flag_var)), digits = 2)
       ) %>%
       select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
@@ -154,27 +144,24 @@ t_summarytable_av <- function(data,
     sum_data_combined_arm <- table_data  %>%
       filter(!!sym(param_var) == param) %>%
       group_by_(.dots = c(param_var, facet_var)) %>%
-      summarise(n = sum(!is.na(!!sym(xaxis_var))),
-                Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-                PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) /
-                                  length(!!sym(xaxis_var)),
-                                digits = 2),
-                PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) /
-                                 length(!!sym(loq_flag_var)),
-                               digits = 2),
-                MAXTRTORDVIS = max(.data$TRTORD) # identifies the maximum treatment order within visits
+      summarise(
+        n = sum(!is.na(!!sym(xaxis_var))),
+        Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+        PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) / length(!!sym(xaxis_var)), digits = 2),
+        PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) / length(!!sym(loq_flag_var)), digits = 2),
+        MAXTRTORDVIS = max(.data$TRTORD) # identifies the maximum treatment order within visits
       ) %>% # additional use of max function identifies maximum treatment order across all visits.
-      mutate(!!trt_group := "Comb.",
-             TRTORD = max(.data$MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
+      # select only those columns needed to prop
+      mutate(!!trt_group := "Comb.", TRTORD = max(.data$MAXTRTORDVIS) + 1) %>%
       select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
     sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
-      select(Biomarker = param_var, Treatment = trt_group, Facet = facet_var,
-             .data$n:.data$PctLOQ, .data$TRTORD) %>% # reorder variables
+      # reorder variables
+      select(Biomarker = param_var, Treatment = trt_group, Facet = facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       arrange(.data$Biomarker, .data$Facet, .data$Treatment, .data$TRTORD) %>% # drop variable
       select(-.data$TRTORD)
   }

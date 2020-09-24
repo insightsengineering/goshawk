@@ -53,7 +53,7 @@ in the plot.}
 
 \item{shape}{categorical variable whose levels are used to split the plot lines.}
 
-\item{time}{name of vairable containing visit names.}
+\item{time}{name of variable containing visit names.}
 
 \item{time_level}{vector that can be used to define the factor level of time. Only use it when
 x-axis variable is character or factor.}
@@ -62,7 +62,7 @@ x-axis variable is character or factor.}
 
 \item{median}{boolean whether to display median results.}
 
-\item{hline}{numeric value represnting intercept of horizontal line.}
+\item{hline}{numeric value representing intercept of horizontal line.}
 
 \item{xtick}{a vector to define the tick values of time in x-axis.
 Default value is waiver().}

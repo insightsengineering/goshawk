@@ -183,9 +183,7 @@ g_correlationplot_av <- function(label = "Correlation Plot",
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
   # Setup legend label
-  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")),
-                    "Dose",
-                    attr(data[[trt_group]], "label"))
+  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
   # create plot foundation - titles and axes labels are defined in
   # teal.goshawk.tm_g_correlationplot.R
   plot1 <- ggplot2::ggplot(
@@ -223,18 +221,14 @@ g_correlationplot_av <- function(label = "Correlation Plot",
       # error below
       return(as.numeric(c(NA, NA, NA)))
     }
-    sub_data <- filter(plot_data, !is.na(!!sym(yvar)) &
-                         !is.na(!!sym(xvar))) %>%
+    sub_data <- filter(plot_data, !is.na(!!sym(yvar)) & !is.na(!!sym(xvar))) %>%
       group_by_(.dots = c(trt_group)) %>%
       mutate(intercept = slope(!!sym(yvar), !!sym(xvar))[1]) %>%
       mutate(slope = slope(!!sym(yvar), !!sym(xvar))[2]) %>%
-      mutate(corr = ifelse(slope(!!sym(yvar),
-                                 !!sym(xvar))[3],
-                           cor(!!sym(yvar),
-                               !!sym(xvar),
-                               method = "spearman",
-                               use = "complete.obs"),
-                           NA
+      mutate(corr = ifelse(
+        slope(!!sym(yvar), !!sym(xvar))[3],
+        cor(!!sym(yvar), !!sym(xvar), method = "spearman", use = "complete.obs"),
+        NA
       ))
     plot1 <- plot1 +
       geom_abline(

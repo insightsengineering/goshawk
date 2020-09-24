@@ -11,13 +11,13 @@
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param shape categorical variable whose levels are used to split the plot lines.
-#' @param time name of vairable containing visit names.
+#' @param time name of variable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when
 #' x-axis variable is character or factor.
 #' @param color_manual vector of colors.
 #' @param ylim numeric vector to define y-axis range.
 #' @param median boolean whether to display median results.
-#' @param hline numeric value represnting intercept of horizontal line.
+#' @param hline numeric value representing intercept of horizontal line.
 #' @param xtick a vector to define the tick values of time in x-axis.
 #' Default value is waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values.
@@ -228,15 +228,14 @@ g_lineplot <- function(label = "Line Plot",
   sum_data <- data %>%
     filter(!!sym(biomarker_var) == biomarker) %>%
     group_by_at(groupings) %>%
-    summarise(count = sum(!is.na(!!sym(value_var))),
-              mean = mean(!!sym(value_var), na.rm = TRUE),
-              CIup = mean(!!sym(value_var), na.rm = TRUE) +
-                1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
-              CIdown = mean(!!sym(value_var), na.rm = TRUE) -
-                1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
-              median = median(!!sym(value_var), na.rm = TRUE),
-              quant25 = quantile(!!sym(value_var), 0.25, na.rm = TRUE),
-              quant75 = quantile(!!sym(value_var), 0.75, na.rm = TRUE)) %>%
+    summarise(
+      count = sum(!is.na(!!sym(value_var))),
+      mean = mean(!!sym(value_var), na.rm = TRUE),
+      CIup = mean(!!sym(value_var), na.rm = TRUE) + 1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
+      CIdown = mean(!!sym(value_var), na.rm = TRUE) - 1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
+      median = median(!!sym(value_var), na.rm = TRUE),
+      quant25 = quantile(!!sym(value_var), 0.25, na.rm = TRUE),
+      quant75 = quantile(!!sym(value_var), 0.75, na.rm = TRUE)) %>%
     arrange_at(c(trt_group, shape))
 
   listin <- list()
@@ -301,16 +300,12 @@ g_lineplot <- function(label = "Line Plot",
   caption_loqs_label <- caption_loqs_label(loqs_data = filtered_data)
 
   if (is.null(shape)) {
-    plot1 <-  ggplot(data = sum_data,
-                     aes_string(x = time,
-                                y = line,
-                                color = trt_group,
-                                group = int)) + theme_bw() +
+    plot1 <- ggplot(
+      data = sum_data, aes_string(x = time, y = line, color = trt_group, group = int)) +
+      theme_bw() +
       geom_point(position = pd) +
       scale_color_manual(values = color_manual, name = trt_label)
-
   } else {
-
     shape_val <- as.factor(unfiltered_data[[shape]])
     shape_lvl <- levels(shape_val)
     shapes <- c(15:18, 3:14, 0:2)
@@ -328,12 +323,8 @@ g_lineplot <- function(label = "Line Plot",
     col_mapping <- setNames(mappings$cols, mappings$int)
     shape_mapping <- setNames(mappings$shps, mappings$int)
 
-    plot1 <-  ggplot(data = sum_data,
-                     aes_string(x = time,
-                                y = line,
-                                color = int,
-                                group = int,
-                                shape = int)) + theme_bw() +
+    plot1 <-  ggplot(data = sum_data, aes_string(x = time, y = line, color = int, group = int, shape = int)) +
+      theme_bw() +
       scale_color_manual(" ", values = col_mapping) +
       scale_shape_manual(" ", values = shape_mapping) +
       theme(legend.key.size = unit(1, "cm")) +
@@ -343,20 +334,20 @@ g_lineplot <- function(label = "Line Plot",
 
   plot1 <-  plot1 +
     geom_line(position = pd) +
-    geom_errorbar(aes_string(ymin = down_limit,
-                             ymax = up_limit),
-                  width = 0.9,
-                  position = pd) +
+    geom_errorbar(aes_string(ymin = down_limit, ymax = up_limit), width = 0.9, position = pd) +
     ggtitle(gtitle) +
-    labs(caption = paste("The output plot can display mean and median of input value.",
-                         "For mean, the error bar denotes 95% confidence interval.",
-                         "For median, the bar denotes the first to third quartile.\n",
-                         caption_loqs_label)) +
+    labs(caption = paste(
+      "The output plot can display mean and median of input value.",
+      "For mean, the error bar denotes 95% confidence interval.",
+      "For median, the bar denotes the first to third quartile.\n",
+      caption_loqs_label)) +
     xlab(time) +
     ylab(gylab) +
-    theme(legend.position = "bottom", legend.direction = "horizontal",
-          plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5),
-          axis.title.y = element_text(margin = margin(r = 20))) +
+    theme(
+      legend.position = "bottom",
+      legend.direction = "horizontal",
+      plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5),
+      axis.title.y = element_text(margin = margin(r = 20))) +
     guides(color = guide_legend(byrow = TRUE))
 
   # Apply y-axis zoom range
@@ -411,14 +402,17 @@ g_lineplot <- function(label = "Line Plot",
     ggtitle("Number of observations") +
     theme_minimal() +
     scale_y_discrete(labels = labels) +
-    theme(panel.grid.major = element_blank(), legend.position = "none",
-          panel.grid.minor = element_blank(),
-          panel.border = element_blank(), axis.text.x = element_blank(),
-          axis.ticks = element_blank(),
-          axis.title.x = element_blank(),
-          axis.title.y = element_blank(),
-          axis.text.y = element_text(size = font_size),
-          plot.title = element_text(face = "bold", size = font_size))
+    theme(
+      panel.grid.major = element_blank(),
+      legend.position = "none",
+      panel.grid.minor = element_blank(),
+      panel.border = element_blank(), axis.text.x = element_blank(),
+      axis.ticks = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.y = element_text(size = font_size),
+      plot.title = element_text(face = "bold", size = font_size)
+    )
 
   #Plot the two grobs using plot_grid
   plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))

@@ -12,7 +12,7 @@
 #' @param unit_var name of variable containing biomarker units.
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
-#' @param time name of vairable containing visit names.
+#' @param time name of variable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when
 #' x-axis variable is character or factor.
 #' @param color_manual vector of colors.
@@ -20,7 +20,7 @@
 #' @param ylim numeric vector to define y-axis range.
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
-#' @param hline numeric value represnting intercept of horizontal line.
+#' @param hline numeric value representing intercept of horizontal line.
 #' @param xtick a vector to define the tick values of time in x-axis.
 #' Default value is waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default
@@ -153,8 +153,16 @@ g_spaghettiplot <- function(data,
   # Plot
   plot_data <- data %>%
     filter(!!sym(biomarker_var) %in% biomarker) %>%
-    select(!!sym(time), !!sym(value_var), !!sym(trt_group), !!sym(subj_id), !!sym(unit_var), !!sym(biomarker_var),
-           !!sym(biomarker_var_label), .data$LBSTRESC)
+    select(
+      !!sym(time),
+      !!sym(value_var),
+      !!sym(trt_group),
+      !!sym(subj_id),
+      !!sym(unit_var),
+      !!sym(biomarker_var),
+      !!sym(biomarker_var_label),
+      .data$LBSTRESC
+    )
   unit <- plot_data %>%
     select(!!sym(unit_var)) %>%
     unique() %>%
@@ -180,8 +188,7 @@ g_spaghettiplot <- function(data,
   # Add footnote to identify LLOQ and ULOQ values pulled from data
   caption_loqs_label <- caption_loqs_label(loqs_data = plot_data)
 
-  plot <- ggplot(data = plot_data,
-                 aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
+  plot <- ggplot(data = plot_data, aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
     geom_point(size = 0.8, na.rm = TRUE) +
     geom_line(size = 0.4, alpha = alpha, na.rm = TRUE) +
     facet_wrap(trt_group, ncol = facet_ncol) +
