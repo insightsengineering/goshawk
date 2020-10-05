@@ -1,7 +1,6 @@
-# goshawk 0.1.4.9000
+# goshawk 0.1.5
 
 * updated LLOQ/ULOQ footnote for correlation plot
-* issues with no news:
 
 # goshawk 0.1.4
 
