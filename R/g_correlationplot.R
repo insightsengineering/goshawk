@@ -206,6 +206,11 @@ g_correlationplot <- function(label = "Correlation Plot",
   # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data
   caption_loqs_label_x <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
   caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
+  caption_loqs_label_x_y <- if (caption_loqs_label_x == caption_loqs_label_y) {
+    caption_loqs_label_x
+  } else {
+    paste0(caption_loqs_label_x, "\n", caption_loqs_label_y)
+  }
 
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
@@ -221,7 +226,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   ) +
     coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
     theme_bw() +
-    labs(caption = paste0(caption_loqs_label_x, "\n", caption_loqs_label_y)) +
+    labs(caption = caption_loqs_label_x_y) +
     ggtitle(title_text) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(xaxis_lab) +
@@ -292,9 +297,7 @@ g_correlationplot <- function(label = "Correlation Plot",
         ) +
       labs(caption = paste0(
         "Deming Regression Model, Spearman Correlation Method.\n",
-        caption_loqs_label_x,
-        "\n",
-        caption_loqs_label_y)
+        caption_loqs_label_x_y)
       )
   }
   # Format font size
