@@ -206,11 +206,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data
   caption_loqs_label_x <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
   caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
-  caption_loqs_label_x_y <- if (caption_loqs_label_x == caption_loqs_label_y) {
-    caption_loqs_label_x
-  } else {
-    paste0(caption_loqs_label_x, "\n", caption_loqs_label_y)
-  }
+  caption_loqs_label_x_y <- paste0(union(caption_loqs_label_x, caption_loqs_label_y), collapse = "\n")
 
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
