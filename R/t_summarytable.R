@@ -99,7 +99,7 @@ t_summarytable <- function(data,
   # by treatment group table
   sum_data_by_arm <- table_data %>%
     filter(!!sym(param_var) == param) %>%
-    group_by_(.dots = c(param_var, trt_group, "TRTORD", visit_var)) %>%
+    group_by(!!sym(param_var), !!sym(trt_group), TRTORD, !!sym(visit_var)) %>%
     summarise(
       n = sum(!is.na(!!sym(xaxis_var))),
       Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
@@ -115,7 +115,7 @@ t_summarytable <- function(data,
   # by combined treatment group table
   sum_data_combined_arm <- table_data %>%
     filter(!!sym(param_var) == param) %>%
-    group_by_(.dots = c(param_var, visit_var)) %>%
+    group_by(!!sym(param_var), !!sym(visit_var)) %>%
     summarise(
       n = sum(!is.na(!!sym(xaxis_var))),
       Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),

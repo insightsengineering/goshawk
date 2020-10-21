@@ -194,13 +194,12 @@ g_scatterplot <- function(label = "Scatter Plot",
         # so that NULL condition does not throw error below
         as.numeric(c(NA, NA, NA))
       }
-
-      return(as_data_frame(setNames(as.list(res), c("intercept", "slope", "corr"))))
+      return(as_tibble(setNames(as.list(res), c("intercept", "slope", "corr"))))
     }
     sub_data <- plot_data %>%
-      select_(trt_group, visit, xaxis_var, yaxis_var) %>%
+      select(!!sym(trt_group), !!sym(visit), !!sym(xaxis_var), !!sym(yaxis_var)) %>%
       filter(!is.na(!!sym(yaxis_var)) & !is.na(!!sym(xaxis_var))) %>%
-      group_by_(.dots = c(trt_group, visit)) %>%
+      group_by(!!sym(trt_group), !!sym(visit)) %>%
       do(slope(.data[[yaxis_var]], .data[[xaxis_var]]))
 
     if (!(all(is.na(sub_data$intercept)) && all(is.na(sub_data$slope)))) {

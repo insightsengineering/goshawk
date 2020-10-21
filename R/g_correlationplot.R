@@ -260,11 +260,12 @@ g_correlationplot <- function(label = "Correlation Plot",
         return(c(round(reg$b0, 2), round(reg$b1, 2), !is.na(ratio) & ratio > 0))
       }
       # if ratio condition is not met then assign NA to vector so that NULL condition does not throw
-      # error below
+      # the error below
       return(as.numeric(c(NA, NA, NA)))
     }
+
     sub_data <- filter(plot_data, !is.na(!!sym(yvar)) & !is.na(!!sym(xvar))) %>%
-      group_by_(.dots = c(trt_group, visit)) %>%
+      group_by(!!sym(trt_group), !!sym(visit)) %>%
       mutate(intercept = slope(!!sym(yvar), !!sym(xvar))[1]) %>%
       mutate(slope = slope(!!sym(yvar), !!sym(xvar))[2]) %>%
       mutate(corr = ifelse(
