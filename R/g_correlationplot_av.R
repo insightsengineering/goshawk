@@ -222,7 +222,7 @@ g_correlationplot_av <- function(label = "Correlation Plot",
       return(as.numeric(c(NA, NA, NA)))
     }
     sub_data <- filter(plot_data, !is.na(!!sym(yvar)) & !is.na(!!sym(xvar))) %>%
-      group_by_(.dots = c(trt_group)) %>%
+      group_by(!!sym(trt_group)) %>%
       mutate(intercept = slope(!!sym(yvar), !!sym(xvar))[1]) %>%
       mutate(slope = slope(!!sym(yvar), !!sym(xvar))[2]) %>%
       mutate(corr = ifelse(
