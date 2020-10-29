@@ -19,13 +19,11 @@ reference:
     contents:
       - g_boxplot
       - g_correlationplot
-      - g_correlationplot_av
       - g_density_distribution_plot
       - g_lineplot
       - g_scatterplot
       - g_spaghettiplot
       - t_summarytable
-      - t_summarytable_av
 
   - title: Helpers
     desc: These files are helper functions.
