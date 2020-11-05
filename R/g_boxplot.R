@@ -51,7 +51,6 @@
 #'
 #' @examples
 #'
-#'\dontrun{
 #'
 #' # Example using ADaM structure analysis dataset.
 #'
@@ -76,7 +75,6 @@
 #'           rotate_xlab = TRUE
 #'           )
 #'
-#' }
 g_boxplot <- function(data,
                       biomarker,
                       param_var = "PARAMCD",

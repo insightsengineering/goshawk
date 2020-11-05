@@ -29,7 +29,6 @@
 #'
 #' @examples
 #'
-#'\dontrun{
 #'
 #' # Example using ADaM structure analysis dataset.
 #'
@@ -92,7 +91,6 @@
 #'            line_size = .5
 #'            )
 #'
-#' }
 #'
 g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         data,

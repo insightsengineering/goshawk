@@ -23,7 +23,6 @@
 #'
 #' @examples
 #'
-#'\dontrun{
 #'
 #' # Example using ADaM structure analysis dataset.
 #'
@@ -74,7 +73,6 @@
 #'                loq_flag_var = "LOQFL")
 #' tbl
 #'
-#'}
 #'
 t_summarytable <- function(data,
                            trt_group,
