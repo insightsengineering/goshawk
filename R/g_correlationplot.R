@@ -204,9 +204,15 @@ g_correlationplot <- function(label = "Correlation Plot",
     select(.data$PARAM, .data$LBSTRESC)
 
   # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data
-  caption_loqs_label_x <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
-  caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
-  caption_loqs_label_x_y <- paste0(union(caption_loqs_label_x, caption_loqs_label_y), collapse = "\n")
+  if (loq_legend) {
+    caption_loqs_label_x <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
+    caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
+    caption_loqs_label_x_y <- paste0(union(caption_loqs_label_x, caption_loqs_label_y), collapse = "\n")
+  } else {
+    caption_loqs_label_x <- NULL
+    caption_loqs_label_y <- NULL
+    caption_loqs_label_x_y <- NULL
+  }
 
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
@@ -291,11 +297,12 @@ g_correlationplot <- function(label = "Correlation Plot",
             paste0("Insufficient Data For Regression")),
           color = sym(trt_group)),
         size = reg_text_size
-        ) +
-      labs(caption = paste0(
-        "Deming Regression Model, Spearman Correlation Method.\n",
-        caption_loqs_label_x_y)
       )
+
+    if (loq_legend) {
+      plot1 <- plot1 +
+        labs(caption = paste0("Deming Regression Model, Spearman Correlation Method.\n", caption_loqs_label_x_y))
+    }
   }
   # Format font size
   if (!is.null(font_size)) {

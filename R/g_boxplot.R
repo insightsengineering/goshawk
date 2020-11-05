@@ -138,7 +138,11 @@ g_boxplot <- function(data,
   armlabel <- if_null(armlabel, column_annotation_label(data, trt_group, omit_raw_name = TRUE))
 
   # add footnote to identify LLOQ and ULOQ values pulled from data
-  caption_loqs_label <- caption_loqs_label(loqs_data = data)
+  if (loq_legend) {
+    caption_loqs_label <- caption_loqs_label(loqs_data = data)
+  } else {
+    caption_loqs_label <- NULL
+  }
 
   # Base plot
   plot1 <-  ggplot()
