@@ -16,7 +16,7 @@
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
 #' @param visit_facet visit facet toggle.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
-#' @param loq_legend loq legend toggle.
+#' @param loq_legend `logical` whether to include LoQ legend and footnotes.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
 #' @param xmin x-axis lower zoom limit.
 #' @param xmax x-axis upper zoom limit.
@@ -186,6 +186,9 @@ g_correlationplot <- function(label = "Correlation Plot",
                               font_size = 12,
                               dot_size = NULL,
                               reg_text_size = 3) {
+
+  stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
+
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
 
@@ -209,8 +212,6 @@ g_correlationplot <- function(label = "Correlation Plot",
     caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
     caption_loqs_label_x_y <- paste0(union(caption_loqs_label_x, caption_loqs_label_y), collapse = "\n")
   } else {
-    caption_loqs_label_x <- NULL
-    caption_loqs_label_y <- NULL
     caption_loqs_label_x_y <- NULL
   }
 
@@ -297,12 +298,13 @@ g_correlationplot <- function(label = "Correlation Plot",
             paste0("Insufficient Data For Regression")),
           color = sym(trt_group)),
         size = reg_text_size
+      ) +
+      labs(
+        caption = if_not_null(
+          caption_loqs_label_x_y,
+          paste0("Deming Regression Model, Spearman Correlation Method.\n", caption_loqs_label_x_y)
+        )
       )
-
-    if (loq_legend) {
-      plot1 <- plot1 +
-        labs(caption = paste0("Deming Regression Model, Spearman Correlation Method.\n", caption_loqs_label_x_y))
-    }
   }
   # Format font size
   if (!is.null(font_size)) {

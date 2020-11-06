@@ -19,7 +19,7 @@
 #'   Y-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment trt_group e.g. ARM.
 #' @param loq_flag_var  name of variable containing LOQ flag e.g. LOQFL.
-#' @param loq_legend loq legend toggle.
+#' @param loq_legend `logical` whether to include LoQ legend and footnotes.
 #' @param unit biomarker unit label e.g. (U/L)
 #' @param color_manual vector of colour for trt_group
 #' @param shape_manual vector of shapes (used with log_flag_var)
@@ -103,6 +103,8 @@ g_boxplot <- function(data,
   stop_if_not(list(!is.null(data[[param_var]]), paste("param_var", param_var, "is not in data.")))
   stop_if_not(list(
     any(data[[param_var]] == biomarker), paste("biomarker", biomarker, "is not found in param_var", param_var, ".")))
+  stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
+
   # filter input data
   data <- data %>%
     filter(!!sym(param_var) == biomarker)
