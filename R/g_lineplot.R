@@ -332,7 +332,7 @@ g_lineplot <- function(label = "Line Plot",
 
   plot1 <-  plot1 +
     geom_line(position = pd) +
-    geom_errorbar(aes_string(ymin = down_limit, ymax = up_limit), width = 0.9, position = pd) +
+    geom_errorbar(aes_string(ymin = down_limit, ymax = up_limit), width = 0.45, position = pd) +
     ggtitle(gtitle) +
     labs(caption = paste(
       "The output plot can display mean and median of input value.",
