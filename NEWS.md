@@ -1,6 +1,7 @@
 # goshawk 0.1.5.9000
 
 * LLOQ/ULOQ footnotes no longer shown when loq_legend = FALSE in g_boxplot.R and g_scatterplot.R
+* Decrease width of error bars in `g_lineplot`.
 * issues with no news:
 
 # goshawk 0.1.5
