@@ -1,6 +1,8 @@
 # goshawk 0.1.5.9000
 
 * Decrease width of error bars in `g_lineplot`.
+* Add option to add rug plot in `g_density_distribution_plot`.
+
 * issues with no news:
 
 # goshawk 0.1.5
