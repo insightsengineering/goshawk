@@ -68,7 +68,7 @@ g_correlationplot(
 
 \item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
 
-\item{loq_legend}{`logical` whether to include LoQ legend and footnotes.}
+\item{loq_legend}{`logical` whether to include LoQ legend.}
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 

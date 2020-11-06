@@ -16,7 +16,7 @@
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
 #' @param visit_facet visit facet toggle.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
-#' @param loq_legend `logical` whether to include LoQ legend and footnotes.
+#' @param loq_legend `logical` whether to include LoQ legend.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
 #' @param xmin x-axis lower zoom limit.
 #' @param xmax x-axis upper zoom limit.
@@ -207,14 +207,9 @@ g_correlationplot <- function(label = "Correlation Plot",
     select(.data$PARAM, .data$LBSTRESC)
 
   # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data
-  if (loq_legend) {
-    caption_loqs_label_x <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
-    caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
-    caption_loqs_label_x_y <- paste0(union(caption_loqs_label_x, caption_loqs_label_y), collapse = "\n")
-  } else {
-    caption_loqs_label_x_y <- NULL
-  }
-
+  caption_loqs_label_x <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
+  caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
+  caption_loqs_label_x_y <- paste0(union(caption_loqs_label_x, caption_loqs_label_y), collapse = "\n")
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
   # create plot foundation - titles and axes labels are defined in
@@ -300,10 +295,9 @@ g_correlationplot <- function(label = "Correlation Plot",
         size = reg_text_size
       ) +
       labs(
-        caption = if_not_null(
-          caption_loqs_label_x_y,
-          paste0("Deming Regression Model, Spearman Correlation Method.\n", caption_loqs_label_x_y)
-        )
+        caption = paste0(
+          "Deming Regression Model, Spearman Correlation Method.\n",
+          caption_loqs_label_x_y)
       )
   }
   # Format font size

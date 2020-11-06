@@ -19,7 +19,7 @@
 #'   Y-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment trt_group e.g. ARM.
 #' @param loq_flag_var  name of variable containing LOQ flag e.g. LOQFL.
-#' @param loq_legend `logical` whether to include LoQ legend and footnotes.
+#' @param loq_legend `logical` whether to include LoQ legend.
 #' @param unit biomarker unit label e.g. (U/L)
 #' @param color_manual vector of colour for trt_group
 #' @param shape_manual vector of shapes (used with log_flag_var)
@@ -140,12 +140,7 @@ g_boxplot <- function(data,
   armlabel <- if_null(armlabel, column_annotation_label(data, trt_group, omit_raw_name = TRUE))
 
   # add footnote to identify LLOQ and ULOQ values pulled from data
-  if (loq_legend) {
-    caption_loqs_label <- caption_loqs_label(loqs_data = data)
-  } else {
-    caption_loqs_label <- NULL
-  }
-
+  caption_loqs_label <- caption_loqs_label(loqs_data = data)
   # Base plot
   plot1 <-  ggplot()
   # Add boxes if required
