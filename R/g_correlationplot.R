@@ -210,6 +210,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   caption_loqs_label_x <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
   caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
   caption_loqs_label_x_y <- paste0(union(caption_loqs_label_x, caption_loqs_label_y), collapse = "\n")
+
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
   # create plot foundation - titles and axes labels are defined in
@@ -294,10 +295,9 @@ g_correlationplot <- function(label = "Correlation Plot",
           color = sym(trt_group)),
         size = reg_text_size
       ) +
-      labs(
-        caption = paste0(
-          "Deming Regression Model, Spearman Correlation Method.\n",
-          caption_loqs_label_x_y)
+      labs(caption = paste0(
+        "Deming Regression Model, Spearman Correlation Method.\n",
+        caption_loqs_label_x_y)
       )
   }
   # Format font size
