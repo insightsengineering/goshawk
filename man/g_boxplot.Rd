@@ -97,7 +97,6 @@ midhinge, range, mid-range, and trimean.
 }
 \examples{
 
-\dontrun{
 
 # Example using ADaM structure analysis dataset.
 
@@ -122,7 +121,6 @@ g_boxplot(ADLB,
           rotate_xlab = TRUE
           )
 
-}
 }
 \author{
 Balazs Toth

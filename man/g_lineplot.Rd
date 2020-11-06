@@ -92,7 +92,6 @@ quartile.
 }
 \examples{
 
-\dontrun{
 
 # Example using ADaM structure analysis dataset.
 
@@ -216,7 +215,6 @@ g_lineplot(label = "Line Plot",
            rotate_xlab = FALSE,
            plot_height = 600)
 
-}
 
 }
 \author{

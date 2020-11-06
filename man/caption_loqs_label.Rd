@@ -23,7 +23,6 @@ library(random.cdisc.data)
 ADLB <- radlb(cached = TRUE)
 
 # add footnote to identify LLOQ and ULOQ values pulled from data
-\dontrun{
 caption_label <- goshawk:::caption_loqs_label(loqs_data = ADLB)
-}
+
 }

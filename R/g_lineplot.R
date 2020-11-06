@@ -358,7 +358,7 @@ g_lineplot <- function(label = "Line Plot",
   if (xtype == "continuous") {
     plot1 <- plot1 +
       scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
-  } else if (xtype == "discrete"){
+  } else if (xtype == "discrete") {
     plot1 <- plot1 +
       scale_x_discrete(breaks = xtick, labels = xlabel)
   }
