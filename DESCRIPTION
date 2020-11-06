@@ -25,6 +25,7 @@ Imports:
     mcr,
     rlang,
     stringr,
+    tidyr,
     utils.nest (>= 0.2.6)
 Suggests: 
     random.cdisc.data (>= 0.3.6),
