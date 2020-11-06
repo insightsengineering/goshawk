@@ -45,7 +45,7 @@ Y-axis e.g. AVAL.}
 
 \item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
 
-\item{loq_legend}{loq legend toggle.}
+\item{loq_legend}{`logical` whether to include LoQ legend.}
 
 \item{unit}{biomarker unit label e.g. (U/L)}
 
