@@ -21,6 +21,8 @@
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param line_size plot line thickness.
+#' @param rug_plot should a rug plot be displayed under the density plot. Note this
+#'   option is most useful if the data only contains a single treatment group.
 #'
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
@@ -109,7 +111,8 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         facet_ncol = 2,
                                         rotate_xlab = FALSE,
                                         font_size = 12,
-                                        line_size = 2) {
+                                        line_size = 2,
+                                        rug_plot = FALSE) {
   plot_data <- data %>%
     filter(!!sym(param_var) == param)
 
@@ -163,6 +166,11 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
     plot1 <- plot1 +
       geom_density(aes(x = !!sym(xaxis_var), linetype = "Comb."), color = color_comb, size = line_size) +
       scale_linetype_manual(name = "Combined Dose", values = c(Comb. = "solid", per_dose = "solid"))
+  }
+
+  if (rug_plot) {
+    plot1 <- plot1 +
+      geom_rug(aes(x = !!sym(xaxis_var), colour = !!sym(trt_group)))
   }
 
   # Add horizontal line

@@ -22,7 +22,8 @@ g_density_distribution_plot(
   facet_ncol = 2,
   rotate_xlab = FALSE,
   font_size = 12,
-  line_size = 2
+  line_size = 2,
+  rug_plot = FALSE
 )
 }
 \arguments{
@@ -61,6 +62,9 @@ g_density_distribution_plot(
 \item{font_size}{font size control for title, x-axis label, y-axis label and legend.}
 
 \item{line_size}{plot line thickness.}
+
+\item{rug_plot}{should a rug plot be displayed under the density plot. Note this
+option is most useful if the data only contains a single treatment group.}
 }
 \description{
 Default plot displays overall density facetted by visit with treatment arms and combined
