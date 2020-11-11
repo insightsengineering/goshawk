@@ -48,7 +48,6 @@
 #'
 #' @examples
 #'
-#' \dontrun{
 #'
 #' # Example using ADaM structure analysis dataset.
 #'
@@ -150,7 +149,6 @@
 #'   dot_size = 2,
 #'   reg_text_size = 3
 #' )
-#' }
 #'
 g_correlationplot <- function(label = "Correlation Plot",
                               data,

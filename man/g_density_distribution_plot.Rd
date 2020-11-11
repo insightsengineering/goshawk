@@ -72,7 +72,6 @@ treatment overlaid.
 }
 \examples{
 
-\dontrun{
 
 # Example using ADaM structure analysis dataset.
 
@@ -135,7 +134,6 @@ g_density_distribution_plot(label = "Density Distribution Plot",
            line_size = .5
            )
 
-}
 
 }
 \author{

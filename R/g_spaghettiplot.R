@@ -232,7 +232,7 @@ g_spaghettiplot <- function(data,
   if (xtype == "continuous") {
     plot <- plot +
       scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
-  } else if (xtype == "discrete"){
+  } else if (xtype == "discrete") {
     plot <- plot +
       scale_x_discrete(breaks = xtick, labels = xlabel)
   }

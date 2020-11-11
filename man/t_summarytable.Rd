@@ -43,7 +43,6 @@ provide additional information as needed. link to specification file
 }
 \examples{
 
-\dontrun{
 
 # Example using ADaM structure analysis dataset.
 
@@ -94,7 +93,6 @@ tbl <- t_summarytable(data = ALB,
                loq_flag_var = "LOQFL")
 tbl
 
-}
 
 }
 \author{

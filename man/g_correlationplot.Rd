@@ -120,7 +120,6 @@ Regression uses deming model.
 }
 \examples{
 
-\dontrun{
 
 # Example using ADaM structure analysis dataset.
 
@@ -222,7 +221,6 @@ g_correlationplot(
   dot_size = 2,
   reg_text_size = 3
 )
-}
 
 }
 \author{

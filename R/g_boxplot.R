@@ -51,7 +51,6 @@
 #'
 #' @examples
 #'
-#'\dontrun{
 #'
 #' # Example using ADaM structure analysis dataset.
 #'
@@ -76,7 +75,6 @@
 #'           rotate_xlab = TRUE
 #'           )
 #'
-#' }
 g_boxplot <- function(data,
                       biomarker,
                       param_var = "PARAMCD",
@@ -108,7 +106,7 @@ g_boxplot <- function(data,
   # filter input data
   data <- data %>%
     filter(!!sym(param_var) == biomarker)
-  if (!is.null(unit)){
+  if (!is.null(unit)) {
     # check unit is in the dataset
     stop_if_not(list(!is.null(data[[unit]]), paste("unit variable", unit, "is not in data.")))
     # extract the most common unit
@@ -120,7 +118,7 @@ g_boxplot <- function(data,
       slice(1) %>%
       select(!!sym(unit)) %>%
       as.character()
-    if (is.factor(data[[unit]])){
+    if (is.factor(data[[unit]])) {
       unit <- levels(data[[unit]])[as.numeric(tmp_unit)]
     } else {
       unit <- tmp_unit
