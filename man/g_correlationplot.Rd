@@ -139,6 +139,7 @@ shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 
 ASL <- cadsl
 ALB <- cadlb
+var_labels <- sapply(ALB, function(x) attributes(x)$label)
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",
@@ -167,6 +168,7 @@ ALB <- ALB \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
   reorder(TRTORD))
+attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
 
 # given the 2 param and 2 analysis vars we need to transform the data
 plot_data_t1 <- ALB \%>\%

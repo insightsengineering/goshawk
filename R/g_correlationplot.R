@@ -67,6 +67,7 @@
 #'
 #' ASL <- cadsl
 #' ALB <- cadlb
+#' var_labels <- sapply(ALB, function(x) attributes(x)$label)
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
@@ -95,6 +96,7 @@
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
+#' attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
 #'
 #' # given the 2 param and 2 analysis vars we need to transform the data
 #' plot_data_t1 <- ALB %>%
@@ -211,6 +213,7 @@ g_correlationplot <- function(label = "Correlation Plot",
 
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
+
   # create plot foundation - titles and axes labels are defined in
   # teal.goshawk.tm_g_correlationplot.R
   plot1 <- ggplot2::ggplot(
