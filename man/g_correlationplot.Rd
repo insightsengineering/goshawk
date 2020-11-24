@@ -139,7 +139,7 @@ shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 
 ASL <- cadsl
 ALB <- cadlb
-var_labels <- sapply(ALB, function(x) attributes(x)$label)
+var_labels <- lapply(ALB, function(x) attributes(x)$label)
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",

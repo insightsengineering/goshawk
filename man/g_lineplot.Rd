@@ -105,7 +105,7 @@ color_manual <-  c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" =
 
 ASL <- cadsl[!(cadsl$ARM == "B: Placebo" & cadsl$AGE < 40), ]
 ALB <- right_join(cadlb, ASL[, c("STUDYID", "USUBJID")])
-var_labels <- sapply(ALB, function(x) attributes(x)$label)
+var_labels <- lapply(ALB, function(x) attributes(x)$label)
 
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(

@@ -98,7 +98,7 @@ color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" 
 
 ASL <- cadsl
 ALB <- cadlb
-var_labels <- sapply(ALB, function(x) attributes(x)$label)
+var_labels <- lapply(ALB, function(x) attributes(x)$label)
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",

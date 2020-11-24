@@ -44,7 +44,7 @@
 #'
 #' ASL <- cadsl
 #' ALB <- cadlb
-#' var_labels <- sapply(ALB, function(x) attributes(x)$label)
+#' var_labels <- lapply(ALB, function(x) attributes(x)$label)
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
@@ -73,7 +73,7 @@
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
-#'  attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+#' attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
 #'
 #' g_density_distribution_plot(label = "Density Distribution Plot",
 #'            data = ALB,
