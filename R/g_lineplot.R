@@ -58,6 +58,7 @@
 #'
 #' ASL <- cadsl[!(cadsl$ARM == "B: Placebo" & cadsl$AGE < 40), ]
 #' ALB <- right_join(cadlb, ASL[, c("STUDYID", "USUBJID")])
+#' var_labels <- lapply(ALB, function(x) attributes(x)$label)
 #'
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
@@ -87,6 +88,7 @@
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
+#' attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
 #'
 #' g_lineplot(label = "Line Plot",
 #'            data = ALB,
@@ -195,11 +197,13 @@ g_lineplot <- function(label = "Line Plot",
   ## Pre-process data
 
   ## - convert to factors
+  label_trt_group <- attr(data[[trt_group]], "label")
   data[[trt_group]] <- if (is.null(trt_group_level)) {
     factor(data[[trt_group]])
   } else {
     factor(data[[trt_group]], levels = trt_group_level)
   }
+  attr(data[[trt_group]], "label") <- label_trt_group
 
   color_manual <- if (is.null(color_manual)) {
     gg_color_hue(nlevels(data[[trt_group]]))
@@ -280,19 +284,8 @@ g_lineplot <- function(label = "Line Plot",
   gtitle <- paste0(biomarker1, unit1, str_to_title(line), " by Treatment @ Visits")
   gylab <- paste0(biomarker1, " ", str_to_title(line), " of ", value_var, " Values")
 
-  # re-establish treatment variable label
-  if (trt_group == "ARM") {
-    attributes(sum_data$ARM)$label <- "Planned Arm"
-  } else {
-    attributes(sum_data$ACTARM)$label <- "Actual Arm"
-  }
-
   # Setup legend label
-  trt_label <- if (is.null(attr(sum_data[[trt_group]], "label"))) {
-    "Dose"
-  } else {
-    attr(sum_data[[trt_group]], "label")
-  }
+  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # Add footnote to identify LLOQ and ULOQ values pulled from data
   caption_loqs_label <- caption_loqs_label(loqs_data = filtered_data)

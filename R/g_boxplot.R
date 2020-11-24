@@ -29,10 +29,6 @@
 #' @param facet variable to facet the plot by, or "None" if no faceting
 #'   required.
 #' @param xaxis_var variable used to group the data on the x-axis.
-#' @param armlabel label for the treatment symbols in the legend.
-#'        If not specified then the label attribute for trt_group will be used.
-#'        If there is no label attribute for trt_group, then the name of the parameter
-#'        (in title case) will be used.
 #' @param facet_ncol number of facets per row.  NULL = Use the default for facet_wrap
 #' @param hline y-axis value to position a horizontal line.  NULL = No line
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
@@ -40,7 +36,7 @@
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
 #'
-#' @importFrom utils.nest stop_if_not if_null column_annotation_label
+#' @importFrom utils.nest stop_if_not if_null
 #'
 #' @author Balazs Toth
 #' @author Jeff Tomlinson (tomlinsj) jeffrey.tomlinson@roche.com
@@ -95,7 +91,6 @@ g_boxplot <- function(data,
                       hline = NULL,
                       rotate_xlab = FALSE,
                       font_size = NULL,
-                      armlabel = NULL,
                       facet = NULL
 ) {
   stop_if_not(list(!is.null(data[[param_var]]), paste("param_var", param_var, "is not in data.")))
@@ -134,8 +129,8 @@ g_boxplot <- function(data,
                           ifelse(unit == "", paste(data$PARAM[1], "Distribution by Treatment @ Visits"),
                                  paste0(data$PARAM[1], " (", unit, ") Distribution by Treatment @ Visits"))
   )
-  # use armlabel if supplied, otherwise get arm label from arm column label
-  armlabel <- if_null(armlabel, column_annotation_label(data, trt_group, omit_raw_name = TRUE))
+  # Setup legend label
+  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # add footnote to identify LLOQ and ULOQ values pulled from data
   caption_loqs_label <- caption_loqs_label(loqs_data = data)
@@ -163,7 +158,7 @@ g_boxplot <- function(data,
       geom_hline(yintercept = hline, color = "red", linetype = "dashed", size = 0.5)
   }
   plot1 <- plot1 +
-    labs(color = armlabel, x = NULL, y = y_axis_label, caption = caption_loqs_label) +
+    labs(color = trt_label, x = NULL, y = y_axis_label, caption = caption_loqs_label) +
     theme_bw() +
     ggtitle(ggtitle_label) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5))

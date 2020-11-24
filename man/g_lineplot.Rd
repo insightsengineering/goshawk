@@ -105,6 +105,7 @@ color_manual <-  c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" =
 
 ASL <- cadsl[!(cadsl$ARM == "B: Placebo" & cadsl$AGE < 40), ]
 ALB <- right_join(cadlb, ASL[, c("STUDYID", "USUBJID")])
+var_labels <- lapply(ALB, function(x) attributes(x)$label)
 
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(
@@ -134,6 +135,7 @@ ALB <- ALB \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
   reorder(TRTORD))
+attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
 
 g_lineplot(label = "Line Plot",
            data = ALB,

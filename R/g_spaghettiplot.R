@@ -51,6 +51,7 @@
 #'
 #' ASL <- cadsl
 #' ALB <- cadlb
+#' var_labels <- lapply(ALB, function(x) attributes(x)$label)
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
@@ -79,6 +80,7 @@
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
+#'  attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
 #'
 #' g_spaghettiplot(data = ALB,
 #'                 subj_id = "USUBJID",
@@ -135,11 +137,14 @@ g_spaghettiplot <- function(data,
                             font_size = 12,
                             group_stats = "NONE") {
   ## Pre-process data
+  label_trt_group <- attr(data[[trt_group]], "label")
   data[[trt_group]] <- if (!is.null(trt_group_level)) {
     factor(data[[trt_group]], levels = trt_group_level)
   } else {
     factor(data[[trt_group]])
   }
+  attr(data[[trt_group]], "label") <- label_trt_group
+
 
   xtype <- ifelse(is.factor(data[[time]]) | is.character(data[[time]]), "discrete", "continuous")
   if (xtype == "discrete") {
@@ -175,15 +180,9 @@ g_spaghettiplot <- function(data,
   gtitle <- paste0(biomarker1, unit1, value_var, " Values by Treatment @ Visits")
   gxlab <- if_null(attr(data[[time]], "label"), time)
   gylab <- paste0(biomarker1, " ", value_var, " Values")
-  # re-establish treatment variable label
-  if (trt_group == "ARM") {
-    attributes(plot_data$ARM)$label <- "Planned Arm"
-  } else {
-    attributes(plot_data$ACTARM)$label <- "Actual Arm"
-  }
 
   # Setup legend label
-  trt_label <- if_null(attr(plot_data[[trt_group]], "label"), "Dose")
+  trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # Add footnote to identify LLOQ and ULOQ values pulled from data
   caption_loqs_label <- caption_loqs_label(loqs_data = plot_data)
