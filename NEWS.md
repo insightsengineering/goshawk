@@ -3,7 +3,7 @@
 * Adding additional validation and description for the `loq_legend` argument.
 * Decrease width of error bars in `g_lineplot`.
 * Add option to add rug plot in `g_density_distribution_plot`.
-* Set legend label as variable label attribute of `trt_group` across all modules
+* Set legend label as variable label attribute of `trt_group` across all modules.
 
 * issues with no news:
 
