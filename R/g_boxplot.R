@@ -26,7 +26,7 @@
 #' @param box add boxes to the plot (boolean)
 #' @param ymin_scale minimum value for the Y axis
 #' @param ymax_scale maximum value for the Y axis
-#' @param facet variable to facet the plot by, or "None" if no faceting
+#' @param facet_var variable to facet the plot by, or "None" if no faceting
 #'   required.
 #' @param xaxis_var variable used to group the data on the x-axis.
 #' @param facet_ncol number of facets per row.  NULL = Use the default for facet_wrap
@@ -65,7 +65,7 @@
 #'           unit = "AVALU",
 #'           shape_manual = c("N" = 1, "Y" = 2, "NA" = NULL),
 #'           hline = NULL,
-#'           facet = "AVISIT",
+#'           facet_var = "AVISIT",
 #'           xaxis_var = "STUDYID",
 #'           alpha = 0.5,
 #'           rotate_xlab = TRUE
@@ -91,7 +91,7 @@ g_boxplot <- function(data,
                       hline = NULL,
                       rotate_xlab = FALSE,
                       font_size = NULL,
-                      facet = NULL
+                      facet_var = NULL
 ) {
   stop_if_not(list(!is.null(data[[param_var]]), paste("param_var", param_var, "is not in data.")))
   stop_if_not(list(
@@ -196,15 +196,15 @@ g_boxplot <- function(data,
   }
 
   # Add facetting.
-  if (!is.null(facet)) {
-    if (facet != "None" & facet %in% names(data)) {
+  if (!is.null(facet_var)) {
+    if (facet_var != "None" & facet_var %in% names(data)) {
       if (!is_finite(facet_ncol)) facet_ncol <- 0
       if (facet_ncol >= 1) {
         plot1 <- plot1 +
-          facet_wrap(as.formula(paste0(" ~ ", facet)), ncol = round(facet_ncol))
+          facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = round(facet_ncol))
       } else {
         plot1 <- plot1 +
-          facet_wrap(as.formula(paste0(" ~ ", facet)))
+          facet_wrap(as.formula(paste0(" ~ ", facet_var)))
       }
     }
   }
