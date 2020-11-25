@@ -25,7 +25,7 @@ g_boxplot(
   hline = NULL,
   rotate_xlab = FALSE,
   font_size = NULL,
-  facet = NULL
+  facet_var = NULL
 )
 }
 \arguments{
@@ -70,7 +70,7 @@ Y-axis e.g. AVAL.}
 
 \item{font_size}{point size of tex to use.  NULL is use default size}
 
-\item{facet}{variable to facet the plot by, or "None" if no faceting
+\item{facet_var}{variable to facet the plot by, or "None" if no faceting
 required.}
 }
 \value{
@@ -109,7 +109,7 @@ g_boxplot(ADLB,
           unit = "AVALU",
           shape_manual = c("N" = 1, "Y" = 2, "NA" = NULL),
           hline = NULL,
-          facet = "AVISIT",
+          facet_var = "AVISIT",
           xaxis_var = "STUDYID",
           alpha = 0.5,
           rotate_xlab = TRUE

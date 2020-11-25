@@ -4,6 +4,7 @@
 * Decrease width of error bars in `g_lineplot`.
 * Add option to add rug plot in `g_density_distribution_plot`.
 * Set legend label as variable label attribute of `trt_group` across all modules.
+* Change `facet` to `facet_var` in `g_boxplot`.
 
 * issues with no news:
 
