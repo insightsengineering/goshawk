@@ -23,13 +23,19 @@
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values.
 #' Default value is waiver().
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
-#' @param font_size control font size for title, x-axis, y-axis and legend font.
+#' @param plot_font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge.
 #' @param plot_height height of produced plot. 989 pixels by default.
+#' @param count_threshold \code{integer} minimum number observations needed to show the appropriate
+#' bar and point on the plot. Default: 0
+#' @param table_font_size \code{float} controls the font size of the values printed in the table.
+#' Default: 12
 #'
 #' @importFrom cowplot plot_grid
 #' @importFrom grDevices hcl
 #' @importFrom stringr str_count str_wrap str_to_title
+#' @importFrom rlang .data
+#' @importFrom grid unit convertX
 #'
 #' @author Balazs Toth (toth.balazs@gene.com)
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -129,6 +135,24 @@
 #'            value_var = "AVAL",
 #'            trt_group = "ARM",
 #'            shape = NULL,
+#'            time = "AVISITCD",
+#'            color_manual = color_manual,
+#'            median = FALSE,
+#'            hline = 50,
+#'            xtick = c("BL", "W 1", "W 5"),
+#'            xlabel = c("Baseline", "Week 1", "Week 5"),
+#'            rotate_xlab = FALSE,
+#'            plot_height = 600,
+#'            count_threshold = 90,
+#'            table_font_size = 2)
+#'
+#' g_lineplot(label = "Line Plot",
+#'            data = ALB,
+#'            biomarker_var = "PARAMCD",
+#'            biomarker = "CRP",
+#'            value_var = "AVAL",
+#'            trt_group = "ARM",
+#'            shape = NULL,
 #'            time = "AVISITCDN",
 #'            color_manual = color_manual,
 #'            median = FALSE,
@@ -170,7 +194,6 @@
 #'            rotate_xlab = FALSE,
 #'            plot_height = 600)
 #'
-#'
 g_lineplot <- function(label = "Line Plot",
                        data,
                        biomarker_var = "PARAMCD",
@@ -190,11 +213,14 @@ g_lineplot <- function(label = "Line Plot",
                        xtick = waiver(),
                        xlabel = xtick,
                        rotate_xlab = FALSE,
-                       font_size = 12,
+                       plot_font_size = 12,
                        dodge = 0.4,
-                       plot_height = 989) {
+                       plot_height = 989,
+                       count_threshold = 0,
+                       table_font_size = 12) {
 
   ## Pre-process data
+  table_font_size <- convertX(unit(table_font_size, "points"), "mm", valueOnly = TRUE)
 
   ## - convert to factors
   label_trt_group <- attr(data[[trt_group]], "label")
@@ -240,17 +266,21 @@ g_lineplot <- function(label = "Line Plot",
       quant75 = quantile(!!sym(value_var), 0.75, na.rm = TRUE)) %>%
     arrange_at(c(trt_group, shape))
 
+  ## Filter out rows with insufficient number of counts
   listin <- list()
   listin[[trt_group]] <- sum_data[[trt_group]]
 
   if (!is.null(shape)) {
     listin[[shape]] <- sum_data[[shape]]
   }
+
   int <- unique_name("int", names(sum_data))
   sum_data[[int]] <- new_interaction(listin, sep = " ")
   sum_data[[int]] <- str_wrap(sum_data[[int]], 12)
   sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
-  unfiltered_data <- sum_data
+
+  unfiltered_data <- sum_data %>% mutate("met_threshold" = count >= count_threshold)
+  sum_data <- unfiltered_data %>% filter(.data[["met_threshold"]])
 
   ## Base plot
   pd <- position_dodge(dodge)
@@ -297,7 +327,7 @@ g_lineplot <- function(label = "Line Plot",
       geom_point(position = pd) +
       scale_color_manual(values = color_manual, name = trt_label)
   } else {
-    shape_val <- as.factor(unfiltered_data[[shape]])
+    shape_val <- as.factor(sum_data[[shape]])
     shape_lvl <- levels(shape_val)
     shapes <- c(15:18, 3:14, 0:2)
 
@@ -337,7 +367,7 @@ g_lineplot <- function(label = "Line Plot",
     theme(
       legend.position = "bottom",
       legend.direction = "horizontal",
-      plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5),
+      plot.title = element_text(size = plot_font_size, margin = margin(), hjust = 0.5),
       axis.title.y = element_text(margin = margin(r = 20))) +
     guides(color = guide_legend(byrow = TRUE))
 
@@ -368,17 +398,17 @@ g_lineplot <- function(label = "Line Plot",
   }
 
   # Format font size
-  if (!is.null(font_size)) {
+  if (!is.null(plot_font_size)) {
     plot1 <- plot1 +
-      theme(axis.title.x = element_text(size = font_size),
-            axis.text.x = element_text(size = font_size),
-            axis.title.y = element_text(size = font_size),
-            axis.text.y = element_text(size = font_size),
-            legend.title = element_text(size = font_size),
-            legend.text = element_text(size = font_size))
+      theme(axis.title.x = element_text(size = plot_font_size),
+            axis.text.x = element_text(size = plot_font_size),
+            axis.title.y = element_text(size = plot_font_size),
+            axis.text.y = element_text(size = plot_font_size),
+            legend.title = element_text(size = plot_font_size),
+            legend.text = element_text(size = plot_font_size))
   }
 
-  labels <- levels(sum_data[[int]])
+  labels <- levels(unfiltered_data[[int]])
   lines <- sum(stringr::str_count(unique(labels), "\n")) / 2 + length(unique(labels))
   minline <- 36
   tabletotal <- lines * minline
@@ -388,8 +418,8 @@ g_lineplot <- function(label = "Line Plot",
     plot height using the Plot Aesthetic Settings.")
   }
 
-  tbl <- ggplot(sum_data, aes_string(x = time, y = int, label = "count")) +
-    geom_text(size = 4.5) +
+  tbl <- ggplot(unfiltered_data, aes_string(x = time, y = int, label = "count")) +
+    geom_text(aes(color = .data[["met_threshold"]]), size = table_font_size) +
     ggtitle("Number of observations") +
     theme_minimal() +
     scale_y_discrete(labels = labels) +
@@ -401,9 +431,10 @@ g_lineplot <- function(label = "Line Plot",
       axis.ticks = element_blank(),
       axis.title.x = element_blank(),
       axis.title.y = element_blank(),
-      axis.text.y = element_text(size = font_size),
-      plot.title = element_text(face = "bold", size = font_size)
-    )
+      axis.text.y = element_text(size = plot_font_size),
+      plot.title = element_text(face = "bold", size = plot_font_size)
+    ) +
+    scale_color_manual(values = c("FALSE" = "red", "TRUE" = "black"))
 
   #Plot the two grobs using plot_grid
   plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))

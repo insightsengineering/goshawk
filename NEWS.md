@@ -3,6 +3,8 @@
 * Adding additional validation and description for the `loq_legend` argument.
 * Decrease width of error bars in `g_lineplot`.
 * Add option to add rug plot in `g_density_distribution_plot`.
+* Add minimum records threshold to `g_lineplot`
+* Allow changing the font size of values in the `g_lineplot`'s table. Also changed the name of the `font_size` argument to `plot_font_size`.
 * Set legend label as variable label attribute of `trt_group` across all modules.
 * Change `facet` to `facet_var` in `g_boxplot`.
 

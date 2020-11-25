@@ -24,9 +24,11 @@ g_lineplot(
   xtick = waiver(),
   xlabel = xtick,
   rotate_xlab = FALSE,
-  font_size = 12,
+  plot_font_size = 12,
   dodge = 0.4,
-  plot_height = 989
+  plot_height = 989,
+  count_threshold = 0,
+  table_font_size = 12
 )
 }
 \arguments{
@@ -72,11 +74,17 @@ Default value is waiver().}
 
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 
-\item{font_size}{control font size for title, x-axis, y-axis and legend font.}
+\item{plot_font_size}{control font size for title, x-axis, y-axis and legend font.}
 
 \item{dodge}{control position dodge.}
 
 \item{plot_height}{height of produced plot. 989 pixels by default.}
+
+\item{count_threshold}{\code{integer} minimum number observations needed to show the appropriate
+bar and point on the plot. Default: 0}
+
+\item{table_font_size}{\code{float} controls the font size of the values printed in the table.
+Default: 12}
 }
 \value{
 \code{ggplot} object
@@ -176,6 +184,24 @@ g_lineplot(label = "Line Plot",
            value_var = "AVAL",
            trt_group = "ARM",
            shape = NULL,
+           time = "AVISITCD",
+           color_manual = color_manual,
+           median = FALSE,
+           hline = 50,
+           xtick = c("BL", "W 1", "W 5"),
+           xlabel = c("Baseline", "Week 1", "Week 5"),
+           rotate_xlab = FALSE,
+           plot_height = 600,
+           count_threshold = 90,
+           table_font_size = 2)
+
+g_lineplot(label = "Line Plot",
+           data = ALB,
+           biomarker_var = "PARAMCD",
+           biomarker = "CRP",
+           value_var = "AVAL",
+           trt_group = "ARM",
+           shape = NULL,
            time = "AVISITCDN",
            color_manual = color_manual,
            median = FALSE,
@@ -216,7 +242,6 @@ g_lineplot(label = "Line Plot",
            xlabel = c("Baseline", "Week 1", "Week 5"),
            rotate_xlab = FALSE,
            plot_height = 600)
-
 
 }
 \author{
