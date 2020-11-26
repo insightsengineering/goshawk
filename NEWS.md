@@ -7,6 +7,7 @@
 * Allow changing the font size of values in the `g_lineplot`'s table. Also changed the name of the `font_size` argument to `plot_font_size`.
 * Set legend label as variable label attribute of `trt_group` across all modules.
 * Change `facet` to `facet_var` in `g_boxplot`.
+* Set legend orientation horizontal in `g_lineplot`.
 
 * issues with no news:
 
