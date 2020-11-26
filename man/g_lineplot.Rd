@@ -16,9 +16,11 @@ g_lineplot(
   trt_group,
   trt_group_level = NULL,
   shape = NULL,
+  shape_type = NULL,
   time,
   time_level = NULL,
   color_manual = NULL,
+  line_type = NULL,
   median = FALSE,
   hline = NULL,
   xtick = waiver(),
@@ -55,12 +57,16 @@ in the plot.}
 
 \item{shape}{categorical variable whose levels are used to split the plot lines.}
 
+\item{shape_type}{vector of symbol types.}
+
 \item{time}{name of variable containing visit names.}
 
 \item{time_level}{vector that can be used to define the factor level of time. Only use it when
 x-axis variable is character or factor.}
 
 \item{color_manual}{vector of colors.}
+
+\item{line_type}{vector of line types.}
 
 \item{median}{boolean whether to display median results.}
 
@@ -109,7 +115,8 @@ library(stringr)
 # original ARM value = dose value
 arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 "C: Combination" = "Combination")
-color_manual <-  c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
+color_manual <- c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
+type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "dotted")
 
 ASL <- cadsl[!(cadsl$ARM == "B: Placebo" & cadsl$AGE < 40), ]
 ALB <- right_join(cadlb, ASL[, c("STUDYID", "USUBJID")])
@@ -154,6 +161,7 @@ g_lineplot(label = "Line Plot",
            shape = NULL,
            time = "AVISITCD",
            color_manual = color_manual,
+           line_type = type_manual,
            median = FALSE,
            hline = 50,
            xtick = c("BL", "W 1", "W 5"),
@@ -170,6 +178,7 @@ g_lineplot(label = "Line Plot",
            shape = NULL,
            time = "AVISITCD",
            color_manual = NULL,
+           line_type = type_manual,
            median = FALSE,
            hline = 50,
            xtick = c("BL", "W 1", "W 5"),
@@ -186,6 +195,7 @@ g_lineplot(label = "Line Plot",
            shape = NULL,
            time = "AVISITCD",
            color_manual = color_manual,
+           line_type = type_manual,
            median = FALSE,
            hline = 50,
            xtick = c("BL", "W 1", "W 5"),
@@ -204,6 +214,7 @@ g_lineplot(label = "Line Plot",
            shape = NULL,
            time = "AVISITCDN",
            color_manual = color_manual,
+           line_type = type_manual,
            median = FALSE,
            hline = 50,
            xtick = c(0, 1, 5),
@@ -220,6 +231,7 @@ g_lineplot(label = "Line Plot",
            shape = "SEX",
            time = "AVISITCDN",
            color_manual = color_manual,
+           line_type = type_manual,
            median = FALSE,
            hline = 50,
            xtick = c(0, 1, 5),

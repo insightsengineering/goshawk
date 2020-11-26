@@ -11,10 +11,12 @@
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param shape categorical variable whose levels are used to split the plot lines.
+#' @param shape_type vector of symbol types.
 #' @param time name of variable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when
 #' x-axis variable is character or factor.
 #' @param color_manual vector of colors.
+#' @param line_type vector of line types.
 #' @param ylim numeric vector to define y-axis range.
 #' @param median boolean whether to display median results.
 #' @param hline numeric value representing intercept of horizontal line.
@@ -211,6 +213,7 @@ g_lineplot <- function(label = "Line Plot",
                        trt_group,
                        trt_group_level = NULL,
                        shape = NULL,
+                       shape_type = NULL,
                        time,
                        time_level = NULL,
                        color_manual = NULL,
@@ -246,10 +249,28 @@ g_lineplot <- function(label = "Line Plot",
   }
 
   line_type <- if (is.null(line_type)) {
-    rep("b", nlevels(data[[trt_group]]))
+    setNames(rep("dashed", nlevels(data[[trt_group]])), levels(data[[trt_group]]))
   } else {
     stopifnot(all(levels(data[[trt_group]]) %in% names(line_type)))
     line_type
+  }
+
+  shape_type <- if (is.null(shape)) {
+    NULL
+  } else {
+    if (is.null(shape_type)) {
+      default_shapes <- c(15:18, 3:14, 0:2)
+      res <- if (nlevels(data[[shape]]) > length(default_shapes)) {
+        rep(default_shapes, ceiling(nlevels(data[[shape]]) / length(default_shapes)))
+      } else {
+        default_shapes[seq_len(nlevels(data[[shape]]))]
+      }
+      setNames(res, levels(data[[shape]]))
+    } else {
+      stopifnot(all(shape_type %in% c(0:18)))
+      stopifnot(all(levels(data[[shape]]) %in% names(shape_type)))
+      shape_type
+    }
   }
 
   xtype <- if (is.factor(data[[time]]) || is.character(data[[time]])) {
@@ -341,22 +362,18 @@ g_lineplot <- function(label = "Line Plot",
     ) +
       theme_bw() +
       geom_point(position = pd) +
-      scale_linetype_manual(values = line_type, name = trt_label) +
-      scale_color_manual(values = color_manual, name = trt_label)
+      scale_color_manual(values = color_manual, name = trt_label) +
+      scale_linetype_manual(values = line_type, name = trt_label)
   } else {
-    shape_val <- as.factor(sum_data[[shape]])
-    shape_lvl <- levels(shape_val)
-    shapes <- c(15:18, 3:14, 0:2)
-
-    if (nlevels(shape_val) > length(shapes)) {
-      warning("Number of available shapes exceeded, values will cycle!")
-      shapes <-  rep(shapes, ceiling(nlevels(shape_val) / length(shapes)))
-    }
-
-    shape_manual <- setNames(shapes[seq_along(shape_lvl)], shape_lvl)
-
-    mappings <- sum_data %>% ungroup() %>% select(!!sym(trt_group), !!sym(shape), int) %>% distinct() %>% #nolint
-      mutate(cols = color_manual[!!sym(trt_group)], types = line_type[!!sym(trt_group)], shps = shape_manual[!!sym(shape)])
+    mappings <- sum_data %>%
+      ungroup() %>%
+      select(!!sym(trt_group), !!sym(shape), int) %>%
+      distinct() %>%
+      mutate(
+        cols = color_manual[!!sym(trt_group)],
+        types = line_type[!!sym(trt_group)],
+        shps = shape_type[!!sym(shape)]
+      )
 
     col_mapping <- setNames(mappings$cols, mappings$int)
     shape_mapping <- setNames(mappings$shps, mappings$int)
