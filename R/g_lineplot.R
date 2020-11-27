@@ -267,7 +267,6 @@ g_lineplot <- function(label = "Line Plot",
       }
       setNames(res, levels(data[[shape]]))
     } else {
-      stopifnot(all(shape_type %in% c(0:18)))
       stopifnot(all(levels(data[[shape]]) %in% names(shape_type)))
       shape_type
     }
