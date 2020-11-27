@@ -11,10 +11,12 @@
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of trt_group.
 #' @param shape categorical variable whose levels are used to split the plot lines.
+#' @param shape_type vector of symbol types.
 #' @param time name of variable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when
 #' x-axis variable is character or factor.
 #' @param color_manual vector of colors.
+#' @param line_type vector of line types.
 #' @param ylim numeric vector to define y-axis range.
 #' @param median boolean whether to display median results.
 #' @param hline numeric value representing intercept of horizontal line.
@@ -60,7 +62,8 @@
 #' # original ARM value = dose value
 #' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 #' "C: Combination" = "Combination")
-#' color_manual <-  c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
+#' color_manual <- c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
+#' type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "dotted")
 #'
 #' ASL <- cadsl[!(cadsl$ARM == "B: Placebo" & cadsl$AGE < 40), ]
 #' ALB <- right_join(cadlb, ASL[, c("STUDYID", "USUBJID")])
@@ -105,6 +108,7 @@
 #'            shape = NULL,
 #'            time = "AVISITCD",
 #'            color_manual = color_manual,
+#'            line_type = type_manual,
 #'            median = FALSE,
 #'            hline = 50,
 #'            xtick = c("BL", "W 1", "W 5"),
@@ -121,6 +125,7 @@
 #'            shape = NULL,
 #'            time = "AVISITCD",
 #'            color_manual = NULL,
+#'            line_type = type_manual,
 #'            median = FALSE,
 #'            hline = 50,
 #'            xtick = c("BL", "W 1", "W 5"),
@@ -137,6 +142,7 @@
 #'            shape = NULL,
 #'            time = "AVISITCD",
 #'            color_manual = color_manual,
+#'            line_type = type_manual,
 #'            median = FALSE,
 #'            hline = 50,
 #'            xtick = c("BL", "W 1", "W 5"),
@@ -155,6 +161,7 @@
 #'            shape = NULL,
 #'            time = "AVISITCDN",
 #'            color_manual = color_manual,
+#'            line_type = type_manual,
 #'            median = FALSE,
 #'            hline = 50,
 #'            xtick = c(0, 1, 5),
@@ -171,6 +178,7 @@
 #'            shape = "SEX",
 #'            time = "AVISITCDN",
 #'            color_manual = color_manual,
+#'            line_type = type_manual,
 #'            median = FALSE,
 #'            hline = 50,
 #'            xtick = c(0, 1, 5),
@@ -205,9 +213,11 @@ g_lineplot <- function(label = "Line Plot",
                        trt_group,
                        trt_group_level = NULL,
                        shape = NULL,
+                       shape_type = NULL,
                        time,
                        time_level = NULL,
                        color_manual = NULL,
+                       line_type = NULL,
                        median = FALSE,
                        hline = NULL,
                        xtick = waiver(),
@@ -236,6 +246,30 @@ g_lineplot <- function(label = "Line Plot",
   } else {
     stopifnot(all(levels(data[[trt_group]]) %in% names(color_manual)))
     color_manual
+  }
+
+  line_type <- if (is.null(line_type)) {
+    setNames(rep("dashed", nlevels(data[[trt_group]])), levels(data[[trt_group]]))
+  } else {
+    stopifnot(all(levels(data[[trt_group]]) %in% names(line_type)))
+    line_type
+  }
+
+  shape_type <- if (is.null(shape)) {
+    NULL
+  } else {
+    if (is.null(shape_type)) {
+      default_shapes <- c(15:18, 3:14, 0:2)
+      res <- if (nlevels(data[[shape]]) > length(default_shapes)) {
+        rep(default_shapes, ceiling(nlevels(data[[shape]]) / length(default_shapes)))
+      } else {
+        default_shapes[seq_len(nlevels(data[[shape]]))]
+      }
+      setNames(res, levels(data[[shape]]))
+    } else {
+      stopifnot(all(levels(data[[shape]]) %in% names(shape_type)))
+      shape_type
+    }
   }
 
   xtype <- if (is.factor(data[[time]]) || is.character(data[[time]])) {
@@ -322,31 +356,35 @@ g_lineplot <- function(label = "Line Plot",
 
   if (is.null(shape)) {
     plot1 <- ggplot(
-      data = sum_data, aes_string(x = time, y = line, color = trt_group, group = int)) +
+      data = sum_data,
+      aes_string(x = time, y = line, color = trt_group, linetype = trt_group, group = int)
+    ) +
       theme_bw() +
       geom_point(position = pd) +
-      scale_color_manual(values = color_manual, name = trt_label)
+      scale_color_manual(values = color_manual, name = trt_label) +
+      scale_linetype_manual(values = line_type, name = trt_label)
   } else {
-    shape_val <- as.factor(sum_data[[shape]])
-    shape_lvl <- levels(shape_val)
-    shapes <- c(15:18, 3:14, 0:2)
-
-    if (nlevels(shape_val) > length(shapes)) {
-      warning("Number of available shapes exceeded, values will cycle!")
-      shapes <-  rep(shapes, ceiling(nlevels(shape_val) / length(shapes)))
-    }
-
-    shape_manual <- setNames(shapes[seq_along(shape_lvl)], shape_lvl)
-
-    mappings <- sum_data %>% ungroup() %>% select(!!sym(trt_group), !!sym(shape), int) %>% distinct() %>% #nolint
-      mutate(cols = color_manual[!!sym(trt_group)], shps = shape_manual[!!sym(shape)])
+    mappings <- sum_data %>%
+      ungroup() %>%
+      select(!!sym(trt_group), !!sym(shape), int) %>%
+      distinct() %>%
+      mutate(
+        cols = color_manual[!!sym(trt_group)],
+        types = line_type[!!sym(trt_group)],
+        shps = shape_type[!!sym(shape)]
+      )
 
     col_mapping <- setNames(mappings$cols, mappings$int)
     shape_mapping <- setNames(mappings$shps, mappings$int)
+    type_mapping <- setNames(mappings$types, mappings$int)
 
-    plot1 <-  ggplot(data = sum_data, aes_string(x = time, y = line, color = int, group = int, shape = int)) +
+    plot1 <-  ggplot(
+      data = sum_data,
+      aes_string(x = time, y = line, color = int, linetype = int, group = int, shape = int)
+    ) +
       theme_bw() +
       scale_color_manual(" ", values = col_mapping) +
+      scale_linetype_manual(" ", values = type_mapping) +
       scale_shape_manual(" ", values = shape_mapping) +
       theme(legend.key.size = unit(1, "cm")) +
       geom_point(position = pd, size = 3)
@@ -355,7 +393,7 @@ g_lineplot <- function(label = "Line Plot",
 
   plot1 <-  plot1 +
     geom_line(position = pd) +
-    geom_errorbar(aes_string(ymin = down_limit, ymax = up_limit), width = 0.45, position = pd) +
+    geom_errorbar(aes_string(ymin = down_limit, ymax = up_limit), width = 0.45, position = pd, linetype = "solid") +
     ggtitle(gtitle) +
     labs(caption = paste(
       "The output plot can display mean and median of input value.",

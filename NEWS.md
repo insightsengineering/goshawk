@@ -8,6 +8,7 @@
 * Set legend label as variable label attribute of `trt_group` across all modules.
 * Change `facet` to `facet_var` in `g_boxplot`.
 * Set legend orientation horizontal in `g_lineplot`.
+* Support custom line type and custom symbol in `g_lineplot`.
 
 * issues with no news:
 
