@@ -1,8 +1,8 @@
 Package: goshawk
 Type: Package
 Title: Longitudinal visualization functions
-Date: 2020-10-20
-Version: 0.1.5.9000
+Date: 2020-12-15
+Version: 0.1.6
 Authors@R: c(
   person("Nick", "Paszty", email = "nick.paszty@gene.com", role = c("aut", "cre")),
   person("Wenyi", "Liu", email = "liu.wenyi@roche.com", role = c("aut")),
@@ -25,9 +25,9 @@ Imports:
     mcr,
     rlang,
     stringr,
-    utils.nest (>= 0.2.6)
+    utils.nest (>= 0.2.7)
 Suggests: 
-    random.cdisc.data (>= 0.3.6),
+    random.cdisc.data (>= 0.3.7),
     test.nest (>= 0.2.5),
     testthat (>= 2.0),
     tidyr

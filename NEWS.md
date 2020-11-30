@@ -1,4 +1,4 @@
-# goshawk 0.1.5.9000
+# goshawk 0.1.6
 
 * Adding additional validation and description for the `loq_legend` argument.
 * Decrease width of error bars in `g_lineplot`.
@@ -9,8 +9,6 @@
 * Change `facet` to `facet_var` in `g_boxplot`.
 * Set legend orientation horizontal in `g_lineplot`.
 * Support custom line type and custom symbol in `g_lineplot`.
-
-* issues with no news:
 
 # goshawk 0.1.5
 
