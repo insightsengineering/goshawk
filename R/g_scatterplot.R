@@ -43,8 +43,6 @@
 #' @export
 #'
 #' @examples
-#'
-#'
 #' # Example using ADaM structure analysis dataset.
 #'
 #' library(random.cdisc.data)
@@ -116,8 +114,6 @@
 #'            font_size = 14,
 #'            dot_size = 2,
 #'            reg_text_size = 3)
-#'
-#'
 g_scatterplot <- function(label = "Scatter Plot",
                           data,
                           param_var = "PARAMCD",
