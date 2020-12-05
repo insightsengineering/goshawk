@@ -22,8 +22,6 @@
 #' @export
 #'
 #' @examples
-#'
-#'
 #' # Example using ADaM structure analysis dataset.
 #'
 #' library(random.cdisc.data)
@@ -72,8 +70,6 @@
 #'                visit_var = "AVISITCD",
 #'                loq_flag_var = "LOQFL")
 #' tbl
-#'
-#'
 t_summarytable <- function(data,
                            trt_group,
                            param_var,
@@ -97,7 +93,7 @@ t_summarytable <- function(data,
   # by treatment group table
   sum_data_by_arm <- table_data %>%
     filter(!!sym(param_var) == param) %>%
-    group_by(!!sym(param_var), !!sym(trt_group), TRTORD, !!sym(visit_var)) %>%
+    group_by(!!sym(param_var), !!sym(trt_group), .data$TRTORD, !!sym(visit_var)) %>%
     summarise(
       n = sum(!is.na(!!sym(xaxis_var))),
       Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),

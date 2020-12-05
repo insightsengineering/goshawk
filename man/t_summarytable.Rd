@@ -42,8 +42,6 @@ provide additional information as needed. link to specification file
 \url{http://rstudio.com}
 }
 \examples{
-
-
 # Example using ADaM structure analysis dataset.
 
 library(random.cdisc.data)
@@ -92,8 +90,6 @@ tbl <- t_summarytable(data = ALB,
                visit_var = "AVISITCD",
                loq_flag_var = "LOQFL")
 tbl
-
-
 }
 \author{
 Nick Paszty (npaszty) paszty.nicholas@gene.com

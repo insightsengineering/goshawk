@@ -8,10 +8,10 @@
 #'
 #' @import dplyr
 #' @import ggplot2
+#' @importFrom rlang .data := !!
 #' @import utils.nest
-#'
 NULL
 
-#' @importFrom rlang .data := !!
+#' @import mcr
 #' @importFrom utils getFromNamespace
 mc.deming <- getFromNamespace("mc.deming", "mcr") #nolint

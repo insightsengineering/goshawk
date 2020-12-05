@@ -95,8 +95,6 @@ attributed LOQ values.
 Regression uses deming model.
 }
 \examples{
-
-
 # Example using ADaM structure analysis dataset.
 
 library(random.cdisc.data)
@@ -168,8 +166,6 @@ g_scatterplot(label = "Scatter Plot",
            font_size = 14,
            dot_size = 2,
            reg_text_size = 3)
-
-
 }
 \author{
 Nick Paszty (npaszty) paszty.nicholas@gene.com
