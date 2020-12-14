@@ -1,18 +1,21 @@
 # goshawk 0.1.6
 
 ### Enhancements
-* Added optional rug plot to `g_density_distribution_plot`.
-* Custom line type and custom symbol are now supported in `g_lineplot` in case of line splitting.
-* Added minimum records threshold to `g_lineplot`.
-* Changing the font size of values in the `g_lineplot` table is now enabled. Also changed the name of the `font_size` 
-argument to `plot_font_size`.
+* g_boxplot
+    - Argument changes: `facet` --> `facet_var`
+* g_density_distribution_plot
+   - Rug plot option added.
+* g_lineplot:
+     - Argument changes: `font_size` --> `plot_font_size`
+    - Line and symbol type can now be configured. especially useful if line splitting is used.
+    - Added minimum records threshold.
+    - Table font size can now be controlled.
+    - Decreased width of error bars.
+    - Horizontal and columned legend orientation.
 
-### Miscellaneous
+### General
 * Added additional validation and description for the `loq_legend` argument.
-* Decreased width of error bars in `g_lineplot`.
 * Set legend label as variable label attribute of `trt_group` across all modules.
-* Changed `facet` to `facet_var` in `g_boxplot`.
-* Set legend orientation horizontal in `g_lineplot`.
 
 # goshawk 0.1.5
 
