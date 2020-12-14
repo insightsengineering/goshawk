@@ -369,9 +369,9 @@ g_lineplot <- function(label = "Line Plot",
       select(!!sym(trt_group), !!sym(shape), int) %>%
       distinct() %>%
       mutate(
-        cols = color_manual[!!sym(trt_group)],
-        types = line_type[!!sym(trt_group)],
-        shps = shape_type[!!sym(shape)]
+        cols = color_manual[as.character(!!sym(trt_group))],
+        types = line_type[as.character(!!sym(trt_group))],
+        shps = shape_type[as.character(!!sym(shape))]
       )
 
     col_mapping <- setNames(mappings$cols, mappings$int)
