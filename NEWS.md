@@ -1,11 +1,11 @@
 # goshawk 0.1.6
 
 ### Enhancements
-* g_boxplot
+* `g_boxplot`
     - Argument changes: `facet` --> `facet_var`
-* g_density_distribution_plot
+* `g_density_distribution_plot`
    - Rug plot option added.
-* g_lineplot:
+* `g_lineplot`:
      - Argument changes: `font_size` --> `plot_font_size`
     - Line and symbol type can now be configured. especially useful if line splitting is used.
     - Added minimum records threshold.
