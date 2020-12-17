@@ -1,3 +1,7 @@
+# goshawk 0.1.6.9000
+
+* Issues with no news:
+
 # goshawk 0.1.6
 
 ### Enhancements
