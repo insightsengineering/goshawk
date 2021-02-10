@@ -371,7 +371,7 @@ g_lineplot <- function(label = "Line Plot",
       mutate(
         cols = color_manual[as.character(!!sym(trt_group))],
         types = line_type[as.character(!!sym(trt_group))],
-        shps = shape_type[as.character(!!sym(shape))]
+        shps = shape_type[!!sym(shape)]
       )
 
     col_mapping <- setNames(mappings$cols, mappings$int)
