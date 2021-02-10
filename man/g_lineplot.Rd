@@ -30,7 +30,8 @@ g_lineplot(
   dodge = 0.4,
   plot_height = 989,
   count_threshold = 0,
-  table_font_size = 12
+  table_font_size = 12,
+  display_center_tbl = TRUE
 )
 }
 \arguments{
@@ -91,6 +92,8 @@ bar and point on the plot. Default: 0}
 
 \item{table_font_size}{\code{float} controls the font size of the values printed in the table.
 Default: 12}
+
+\item{display_center_tbl}{boolean whether to include table of means or medians}
 }
 \value{
 \code{ggplot} object
