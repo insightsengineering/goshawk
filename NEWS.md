@@ -16,6 +16,7 @@
     - Table font size can now be controlled.
     - Decreased width of error bars.
     - Horizontal and columned legend orientation.
+    - Added optional table, controlled by argument `display_center_tbl`, that displays means or medians to plot
 
 ### General
 * Added additional validation and description for the `loq_legend` argument.
