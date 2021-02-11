@@ -458,8 +458,12 @@ g_lineplot <- function(label = "Line Plot",
     plot height using the Plot Aesthetic Settings.")
   }
   if (display_center_tbl) {
-    unfiltered_data$center <- if (median) round(unfiltered_data$median, 2) else round(unfiltered_data$mean, 2)
-    tbl_central_value_title <- if (median) "Median" else "Mean"
+    unfiltered_data$center <- if (median) {
+      sprintf("[%.2f %.2f %.2f]", unfiltered_data$quant25, unfiltered_data$median, unfiltered_data$quant75)
+    } else {
+      sprintf("[%.2f %.2f %.2f]", unfiltered_data$CIdown, unfiltered_data$mean, unfiltered_data$CIup)
+    }
+    tbl_central_value_title <- if (median) "[Q1 Median Q3]" else "[Lower CI 95% Mean Upper CI 95%]"
     tbl_central_value <- ggplot(unfiltered_data, aes_string(x = time, y = int, label = "center")) +
       geom_text(aes(color = .data[["met_threshold"]]), size = table_font_size) +
       ggtitle(tbl_central_value_title) +
