@@ -163,7 +163,7 @@
 #'            time = "AVISITCDN",
 #'            color_manual = color_manual,
 #'            line_type = type_manual,
-#'            median = FALSE,
+#'            median = TRUE,
 #'            hline = 50,
 #'            xtick = c(0, 1, 5),
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
