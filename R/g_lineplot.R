@@ -503,9 +503,9 @@ g_lineplot <- function(label = "Line Plot",
 
   #Plot the two grobs using plot_grid
   if (display_center_tbl) {
-     tables <- plot_grid(tbl_central_value, tbl, align = "v", ncol = 1)
+     tbl <- plot_grid(tbl_central_value, tbl, align = "v", ncol = 1)
   }
-  plot_grid(plot1, tables, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
+  plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
 }
 
 new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { #nolint
