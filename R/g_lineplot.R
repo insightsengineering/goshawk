@@ -459,9 +459,17 @@ g_lineplot <- function(label = "Line Plot",
   }
   if (display_center_tbl) {
     unfiltered_data$center <- if (median) {
-      sprintf("[%.2f %.2f %.2f]", unfiltered_data$quant25, unfiltered_data$median, unfiltered_data$quant75)
+      sprintf(
+        ifelse(unfiltered_data$count > 0, "[%.2f %.2f %.2f]", ""),
+        unfiltered_data$quant25,
+        unfiltered_data$median,
+        unfiltered_data$quant75)
     } else {
-      sprintf("[%.2f %.2f %.2f]", unfiltered_data$CIdown, unfiltered_data$mean, unfiltered_data$CIup)
+      sprintf(
+        ifelse(unfiltered_data$count > 0, "[%.2f %.2f %.2f]", ""),
+        unfiltered_data$CIdown,
+        unfiltered_data$mean,
+        unfiltered_data$CIup)
     }
     tbl_central_value_title <- if (median) "[Q1 Median Q3]" else "[Lower CI 95% Mean Upper CI 95%]"
     tbl_central_value <- ggplot(unfiltered_data, aes_string(x = time, y = int, label = "center")) +
