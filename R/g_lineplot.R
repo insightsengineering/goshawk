@@ -185,7 +185,7 @@
 #'            xtick = c(0, 1, 5),
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
-#'            plot_height = 600)
+#'            plot_height = 1000)
 #'
 #' g_lineplot(label = "Line Plot",
 #'            data = subset(ALB, SEX %in% c("M", "F")),
@@ -201,7 +201,7 @@
 #'            xtick = c(0, 1, 5),
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
-#'            plot_height = 600)
+#'            plot_height = 1000)
 #'
 g_lineplot <- function(label = "Line Plot",
                        data,
@@ -451,7 +451,7 @@ g_lineplot <- function(label = "Line Plot",
   labels <- levels(unfiltered_data[[int]])
   lines <- sum(stringr::str_count(unique(labels), "\n")) / 2 + length(unique(labels))
   minline <- 36
-  tabletotal <- lines * minline
+  tabletotal <- lines * minline * ifelse(display_center_tbl, 2, 1)
   plotsize <- plot_height - tabletotal
   if (plotsize <= 250) {
     stop("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the
@@ -503,10 +503,9 @@ g_lineplot <- function(label = "Line Plot",
 
   #Plot the two grobs using plot_grid
   if (display_center_tbl) {
-    plot_grid(plot1, tbl_central_value, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
-  } else {
-    plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
+     tables <- plot_grid(tbl_central_value, tbl, align = "v", ncol = 1)
   }
+  plot_grid(plot1, tables, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
 }
 
 new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { #nolint

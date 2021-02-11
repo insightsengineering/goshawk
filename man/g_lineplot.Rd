@@ -240,7 +240,7 @@ g_lineplot(label = "Line Plot",
            xtick = c(0, 1, 5),
            xlabel = c("Baseline", "Week 1", "Week 5"),
            rotate_xlab = FALSE,
-           plot_height = 600)
+           plot_height = 1000)
 
 g_lineplot(label = "Line Plot",
            data = subset(ALB, SEX \%in\% c("M", "F")),
@@ -256,7 +256,7 @@ g_lineplot(label = "Line Plot",
            xtick = c(0, 1, 5),
            xlabel = c("Baseline", "Week 1", "Week 5"),
            rotate_xlab = FALSE,
-           plot_height = 600)
+           plot_height = 1000)
 
 }
 \author{
