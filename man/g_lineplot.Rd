@@ -30,7 +30,8 @@ g_lineplot(
   dodge = 0.4,
   plot_height = 989,
   count_threshold = 0,
-  table_font_size = 12
+  table_font_size = 12,
+  display_center_tbl = TRUE
 )
 }
 \arguments{
@@ -91,6 +92,8 @@ bar and point on the plot. Default: 0}
 
 \item{table_font_size}{\code{float} controls the font size of the values printed in the table.
 Default: 12}
+
+\item{display_center_tbl}{boolean whether to include table of means or medians}
 }
 \value{
 \code{ggplot} object
@@ -159,12 +162,12 @@ g_lineplot(label = "Line Plot",
            value_var = "AVAL",
            trt_group = "ARM",
            shape = NULL,
-           time = "AVISITCD",
+           time = "AVISITCDN",
            color_manual = color_manual,
            line_type = type_manual,
            median = FALSE,
            hline = 50,
-           xtick = c("BL", "W 1", "W 5"),
+           xtick = c(0, 1, 5),
            xlabel = c("Baseline", "Week 1", "Week 5"),
            rotate_xlab = FALSE,
            plot_height = 600)
@@ -179,7 +182,7 @@ g_lineplot(label = "Line Plot",
            time = "AVISITCD",
            color_manual = NULL,
            line_type = type_manual,
-           median = FALSE,
+           median = TRUE,
            hline = 50,
            xtick = c("BL", "W 1", "W 5"),
            xlabel = c("Baseline", "Week 1", "Week 5"),
@@ -215,7 +218,7 @@ g_lineplot(label = "Line Plot",
            time = "AVISITCDN",
            color_manual = color_manual,
            line_type = type_manual,
-           median = FALSE,
+           median = TRUE,
            hline = 50,
            xtick = c(0, 1, 5),
            xlabel = c("Baseline", "Week 1", "Week 5"),
@@ -237,7 +240,7 @@ g_lineplot(label = "Line Plot",
            xtick = c(0, 1, 5),
            xlabel = c("Baseline", "Week 1", "Week 5"),
            rotate_xlab = FALSE,
-           plot_height = 600)
+           plot_height = 1000)
 
 g_lineplot(label = "Line Plot",
            data = subset(ALB, SEX \%in\% c("M", "F")),
@@ -253,7 +256,7 @@ g_lineplot(label = "Line Plot",
            xtick = c(0, 1, 5),
            xlabel = c("Baseline", "Week 1", "Week 5"),
            rotate_xlab = FALSE,
-           plot_height = 600)
+           plot_height = 1000)
 
 }
 \author{

@@ -32,6 +32,7 @@
 #' bar and point on the plot. Default: 0
 #' @param table_font_size \code{float} controls the font size of the values printed in the table.
 #' Default: 12
+#' @param display_center_tbl boolean whether to include table of means or medians
 #'
 #' @importFrom cowplot plot_grid
 #' @importFrom grDevices hcl
@@ -106,12 +107,12 @@
 #'            value_var = "AVAL",
 #'            trt_group = "ARM",
 #'            shape = NULL,
-#'            time = "AVISITCD",
+#'            time = "AVISITCDN",
 #'            color_manual = color_manual,
 #'            line_type = type_manual,
 #'            median = FALSE,
 #'            hline = 50,
-#'            xtick = c("BL", "W 1", "W 5"),
+#'            xtick = c(0, 1, 5),
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
 #'            plot_height = 600)
@@ -126,7 +127,7 @@
 #'            time = "AVISITCD",
 #'            color_manual = NULL,
 #'            line_type = type_manual,
-#'            median = FALSE,
+#'            median = TRUE,
 #'            hline = 50,
 #'            xtick = c("BL", "W 1", "W 5"),
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
@@ -162,7 +163,7 @@
 #'            time = "AVISITCDN",
 #'            color_manual = color_manual,
 #'            line_type = type_manual,
-#'            median = FALSE,
+#'            median = TRUE,
 #'            hline = 50,
 #'            xtick = c(0, 1, 5),
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
@@ -184,7 +185,7 @@
 #'            xtick = c(0, 1, 5),
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
-#'            plot_height = 600)
+#'            plot_height = 1000)
 #'
 #' g_lineplot(label = "Line Plot",
 #'            data = subset(ALB, SEX %in% c("M", "F")),
@@ -200,7 +201,7 @@
 #'            xtick = c(0, 1, 5),
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
-#'            plot_height = 600)
+#'            plot_height = 1000)
 #'
 g_lineplot <- function(label = "Line Plot",
                        data,
@@ -227,7 +228,8 @@ g_lineplot <- function(label = "Line Plot",
                        dodge = 0.4,
                        plot_height = 989,
                        count_threshold = 0,
-                       table_font_size = 12) {
+                       table_font_size = 12,
+                       display_center_tbl = TRUE) {
 
   ## Pre-process data
   table_font_size <- convertX(unit(table_font_size, "points"), "mm", valueOnly = TRUE)
@@ -449,11 +451,36 @@ g_lineplot <- function(label = "Line Plot",
   labels <- levels(unfiltered_data[[int]])
   lines <- sum(stringr::str_count(unique(labels), "\n")) / 2 + length(unique(labels))
   minline <- 36
-  tabletotal <- lines * minline
+  tabletotal <- lines * minline * ifelse(display_center_tbl, 2, 1)
   plotsize <- plot_height - tabletotal
   if (plotsize <= 250) {
     stop("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the
     plot height using the Plot Aesthetic Settings.")
+  }
+  if (display_center_tbl) {
+    unfiltered_data$center <- if (median) {
+      sprintf(ifelse(unfiltered_data$count > 0, "%.2f", ""), unfiltered_data$median)
+    } else {
+      sprintf(ifelse(unfiltered_data$count > 0, "%.2f", ""), unfiltered_data$mean)
+    }
+    tbl_central_value_title <- if (median) "Median" else "Mean"
+    tbl_central_value <- ggplot(unfiltered_data, aes_string(x = time, y = int, label = "center")) +
+      geom_text(aes(color = .data[["met_threshold"]]), size = table_font_size) +
+      ggtitle(tbl_central_value_title) +
+      theme_minimal() +
+      scale_y_discrete(labels = labels) +
+      theme(
+        panel.grid.major = element_blank(),
+        legend.position = "none",
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(), axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.y = element_text(size = plot_font_size),
+        plot.title = element_text(face = "bold", size = plot_font_size)
+      ) +
+      scale_color_manual(values = c("FALSE" = "red", "TRUE" = "black"))
   }
 
   tbl <- ggplot(unfiltered_data, aes_string(x = time, y = int, label = "count")) +
@@ -475,6 +502,9 @@ g_lineplot <- function(label = "Line Plot",
     scale_color_manual(values = c("FALSE" = "red", "TRUE" = "black"))
 
   #Plot the two grobs using plot_grid
+  if (display_center_tbl) {
+     tbl <- plot_grid(tbl_central_value, tbl, align = "v", ncol = 1)
+  }
   plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
 }
 
