@@ -459,19 +459,11 @@ g_lineplot <- function(label = "Line Plot",
   }
   if (display_center_tbl) {
     unfiltered_data$center <- if (median) {
-      sprintf(
-        ifelse(unfiltered_data$count > 0, "%.2f (%.2f, %.2f)", ""),
-        unfiltered_data$median,
-        unfiltered_data$quant25,
-        unfiltered_data$quant75)
+      sprintf(ifelse(unfiltered_data$count > 0, "%.2f", ""), unfiltered_data$median)
     } else {
-      sprintf(
-        ifelse(unfiltered_data$count > 0, "%.2f (%.2f, %.2f)", ""),
-        unfiltered_data$mean,
-        unfiltered_data$CIdown,
-        unfiltered_data$CIup)
+      sprintf(ifelse(unfiltered_data$count > 0, "%.2f", ""), unfiltered_data$mean)
     }
-    tbl_central_value_title <- if (median) "Median (Quartiles)" else "Mean (95% CI)"
+    tbl_central_value_title <- if (median) "Median" else "Mean"
     tbl_central_value <- ggplot(unfiltered_data, aes_string(x = time, y = int, label = "center")) +
       geom_text(aes(color = .data[["met_threshold"]]), size = table_font_size) +
       ggtitle(tbl_central_value_title) +
