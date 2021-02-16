@@ -151,7 +151,7 @@
 #'            rotate_xlab = FALSE,
 #'            plot_height = 600,
 #'            count_threshold = 90,
-#'            table_font_size = 2)
+#'            table_font_size = 15)
 #'
 #' g_lineplot(label = "Line Plot",
 #'            data = ALB,
@@ -185,7 +185,7 @@
 #'            xtick = c(0, 1, 5),
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
-#'            plot_height = 1000)
+#'            plot_height = 1500)
 #'
 #' g_lineplot(label = "Line Plot",
 #'            data = subset(ALB, SEX %in% c("M", "F")),
@@ -201,7 +201,7 @@
 #'            xtick = c(0, 1, 5),
 #'            xlabel = c("Baseline", "Week 1", "Week 5"),
 #'            rotate_xlab = FALSE,
-#'            plot_height = 1000)
+#'            plot_height = 1500)
 #'
 g_lineplot <- function(label = "Line Plot",
                        data,
@@ -244,7 +244,9 @@ g_lineplot <- function(label = "Line Plot",
   attr(data[[trt_group]], "label") <- label_trt_group
 
   color_manual <- if (is.null(color_manual)) {
-    gg_color_hue(nlevels(data[[trt_group]]))
+    temp <- gg_color_hue(nlevels(data[[trt_group]]))
+    names(temp) <- levels(data[[trt_group]])
+    temp
   } else {
     stopifnot(all(levels(data[[trt_group]]) %in% names(color_manual)))
     color_manual
@@ -380,7 +382,7 @@ g_lineplot <- function(label = "Line Plot",
     shape_mapping <- setNames(mappings$shps, mappings$int)
     type_mapping <- setNames(mappings$types, mappings$int)
 
-    plot1 <-  ggplot(
+    plot1 <- ggplot(
       data = sum_data,
       aes_string(x = time, y = line, color = int, linetype = int, group = int, shape = int)
     ) +
