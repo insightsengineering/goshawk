@@ -503,11 +503,14 @@ g_lineplot <- function(label = "Line Plot",
     ) +
     scale_color_manual(values = c("FALSE" = "red", "TRUE" = "black"))
 
-  #Plot the two grobs using plot_grid
+  #Plot the grobs using plot_grid
   if (display_center_tbl) {
-     tbl <- plot_grid(tbl_central_value, tbl, align = "v", ncol = 1)
+    plot_grid(plot1, tbl_central_value, tbl, align = "v", ncol = 1,
+      rel_heights = c(plotsize, tabletotal / 2, tabletotal / 2))
   }
-  plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
+  else {
+    plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
+  }
 }
 
 new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { #nolint
