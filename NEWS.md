@@ -1,4 +1,4 @@
-# goshawk 0.1.6.9000
+# goshawk 0.1.7
 
 * Issues with no news:
 
