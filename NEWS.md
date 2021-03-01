@@ -1,6 +1,6 @@
 # goshawk 0.1.7
 
-* Issues with no news:
+* Added optional table in `g_lineplot`, controlled by argument `display_center_tbl`, that displays means or medians of each group of each time point corresponding to the plot.
 
 # goshawk 0.1.6
 
@@ -10,13 +10,12 @@
 * `g_density_distribution_plot`
    - Rug plot option added.
 * `g_lineplot`:
-     - Argument changes: `font_size` --> `plot_font_size`
+    - Argument changes: `font_size` --> `plot_font_size`
     - Line and symbol type can now be configured. especially useful if line splitting is used.
     - Added minimum records threshold.
     - Table font size can now be controlled.
     - Decreased width of error bars.
     - Horizontal and columned legend orientation.
-    - Added optional table, controlled by argument `display_center_tbl`, that displays means or medians to plot
 
 ### General
 * Added additional validation and description for the `loq_legend` argument.
