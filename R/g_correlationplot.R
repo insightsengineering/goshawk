@@ -242,7 +242,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   }
   else {
     plot1 <- plot1 +
-      geom_point(size = dot_size, na.rm = TRUE)
+      geom_point(shape = 1, size = dot_size, na.rm = TRUE)
   }
 
   # add grid faceting to foundation
