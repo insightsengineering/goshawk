@@ -186,7 +186,7 @@ g_boxplot <- function(data,
   }
   else {
     plot1 <- plot1 +
-      geom_jitter(data = data, aes_string(x = xaxis_var, y = yaxis_var, color = trt_group),
+      geom_jitter(data = data, aes_string(x = xaxis_var, y = yaxis_var, color = trt_group), shape = 1,
                   alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE)
   }
 
