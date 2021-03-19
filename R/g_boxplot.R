@@ -22,7 +22,7 @@
 #' @param loq_legend `logical` whether to include LoQ legend.
 #' @param unit biomarker unit label e.g. (U/L)
 #' @param color_manual vector of colour for trt_group
-#' @param shape_manual vector of shapes (used with log_flag_var)
+#' @param shape_manual vector of shapes (used with loq_flag_var)
 #' @param box add boxes to the plot (boolean)
 #' @param ymin_scale minimum value for the Y axis
 #' @param ymax_scale maximum value for the Y axis
@@ -171,10 +171,13 @@ g_boxplot <- function(data,
   }
   # LOQ needed?
   if (loq_legend) {
-    if (!is.null(shape_manual)) {
-      plot1 <- plot1 +
-        scale_shape_manual(values = shape_manual, name = "LoQ")
+    if (is.null(shape_manual)) {
+      shape_names <- unique(data[!is.na(data[[loq_flag_var]]), ][[loq_flag_var]])
+      shape_manual <- seq_along(shape_names)
+      names(shape_manual) <- shape_names
     }
+    plot1 <- plot1 +
+      scale_shape_manual(values = shape_manual, name = "LoQ")
   }
 
   # add LOQ legend conditionally
