@@ -1,4 +1,6 @@
 # goshawk 0.1.7.9000
+
+* Removed the argument `loq_flag_var` from `g_correlationplot` as it was unused in the function definition.
 Issues with no news:
 
 # goshawk 0.1.7

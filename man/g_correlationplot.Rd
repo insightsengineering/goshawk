@@ -17,7 +17,6 @@ g_correlationplot(
   trt_group = "ARM",
   visit = "AVISITCD",
   visit_facet = TRUE,
-  loq_flag_var = "LOQFL",
   loq_legend = TRUE,
   unit = "AVALU",
   xmin = NA,
@@ -65,8 +64,6 @@ g_correlationplot(
 \item{visit}{name of variable containing nominal visits e.g. AVISITCD.}
 
 \item{visit_facet}{visit facet toggle.}
-
-\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
 
 \item{loq_legend}{`logical` whether to include LoQ legend.}
 
@@ -198,7 +195,6 @@ g_correlationplot(
   trt_group = "ARM",
   visit = "AVISITCD",
   visit_facet = TRUE,
-  loq_flag_var = "LOQFL",
   loq_legend = TRUE,
   unit = "AVALU",
   xmin = 20,
