@@ -90,6 +90,20 @@ t_summarytable <- function(data,
   anl_var <- as.data.frame(xaxis_var) %>%
     rename("AnlVar" = xaxis_var)
 
+  min_max_ignore_na <- function(x, type = c("min", "max")) {
+    type <- match.arg(type)
+    if (all(is.na(x))) {
+      return(NA)
+    }
+    return(
+      switch(type,
+        min = min,
+        max = max
+      )(x, na.rm = TRUE)
+    )
+  }
+
+
   # by treatment group table
   sum_data_by_arm <- table_data %>%
     filter(!!sym(param_var) == param) %>%
@@ -99,8 +113,8 @@ t_summarytable <- function(data,
       Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
       Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
       StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-      Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-      Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+      Min = round(min_max_ignore_na(!!sym(xaxis_var), type = "min"), digits = 2),
+      Max = round(min_max_ignore_na(!!sym(xaxis_var), type = "max"), digits = 2),
       PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) / length(!!sym(xaxis_var)), digits = 2),
       PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) / length(!!sym(loq_flag_var)), digits = 2)
     ) %>%
@@ -115,8 +129,8 @@ t_summarytable <- function(data,
       Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
       Median = round(median(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
       StdDev = round(sd(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-      Min = round(min(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
-      Max = round(max(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
+      Min = round(min_max_ignore_na(!!sym(xaxis_var), type = "min"), digits = 2),
+      Max = round(min_max_ignore_na(!!sym(xaxis_var), type = "max"), digits = 2),
       PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) / length(!!sym(xaxis_var)), digits = 2),
       PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) / length(!!sym(loq_flag_var)), digits = 2),
       MAXTRTORDVIS = max(.data$TRTORD) # identifies the maximum treatment order within visits
