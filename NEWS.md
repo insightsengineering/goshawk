@@ -1,3 +1,9 @@
+# goshawk 0.1.7.9000
+
+* Removed warnings in `g_boxplot` when one group has no data.
+
+Issues with no news:
+
 # goshawk 0.1.7
 
 * Added optional table in `g_lineplot`, controlled by argument `display_center_tbl`, that displays means or medians of each group of each time point corresponding to the plot.
