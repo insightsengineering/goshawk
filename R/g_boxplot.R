@@ -145,7 +145,8 @@ g_boxplot <- function(data,
           x = xaxis_var,
           y = yaxis_var,
           fill = NULL),
-        outlier.shape = NA)
+        outlier.shape = NA,
+        na.rm = TRUE)
   }
   # Extend is.infinite to include zero length objects.
   is_finite <- function(x) {
