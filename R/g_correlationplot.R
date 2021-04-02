@@ -14,6 +14,7 @@
 #' @param yvar y-axis analysis variable from transposed data set.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
+#' @param loq_flag_var  name of variable containing LOQ flag e.g. LOQFL_COMB.
 #' @param visit_facet visit facet toggle.
 #' @param loq_legend `logical` whether to include LoQ legend.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
@@ -25,7 +26,7 @@
 #' @param xaxis_lab x-axis label.
 #' @param yaxis_lab y-axis label.
 #' @param color_manual vector of colors applied to treatment values.
-#' @param shape_manual vector of symbols applied to LOQ values.
+#' @param shape_manual vector of symbols applied to LOQ values. (used with loq_flag_var).
 #' @param facet_ncol number of facets per row.
 #' @param facet set layout to use treatment facetting.
 #' @param facet_var variable to use for treatment facetting.
@@ -158,6 +159,7 @@ g_correlationplot <- function(label = "Correlation Plot",
                               yvar = yvar,
                               trt_group = "ARM",
                               visit = "AVISITCD",
+                              loq_flag_var = "LOQFL_COMB",
                               visit_facet = TRUE,
                               loq_legend = TRUE,
                               unit = "AVALU",
@@ -234,7 +236,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   }
 
   plot1 <- plot1 +
-    geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
+    geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
 
   # add grid faceting to foundation
   if (facet) {
@@ -309,7 +311,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   }
   # Format LOQ flag symbol shape
   if (is.null(shape_manual)) {
-    shape_names <- unique(data[!is.na(data[["LOQFL_COMB"]]), ][["LOQFL_COMB"]])
+    shape_names <- unique(data[!is.na(data[[loq_flag_var]]), ][[loq_flag_var]])
     shape_manual <- seq_along(shape_names)
     names(shape_manual) <- shape_names
   }

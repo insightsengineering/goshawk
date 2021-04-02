@@ -16,6 +16,7 @@ g_correlationplot(
   yvar = yvar,
   trt_group = "ARM",
   visit = "AVISITCD",
+  loq_flag_var = "LOQFL_COMB",
   visit_facet = TRUE,
   loq_legend = TRUE,
   unit = "AVALU",
@@ -63,6 +64,8 @@ g_correlationplot(
 
 \item{visit}{name of variable containing nominal visits e.g. AVISITCD.}
 
+\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL_COMB.}
+
 \item{visit_facet}{visit facet toggle.}
 
 \item{loq_legend}{`logical` whether to include LoQ legend.}
@@ -85,7 +88,7 @@ g_correlationplot(
 
 \item{color_manual}{vector of colors applied to treatment values.}
 
-\item{shape_manual}{vector of symbols applied to LOQ values.}
+\item{shape_manual}{vector of symbols applied to LOQ values. (used with loq_flag_var).}
 
 \item{facet_ncol}{number of facets per row.}
 
