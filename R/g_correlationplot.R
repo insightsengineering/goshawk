@@ -178,10 +178,11 @@ g_correlationplot <- function(label = "Correlation Plot",
                               vline = NULL,
                               rotate_xlab = FALSE,
                               font_size = 12,
-                              dot_size = NULL,
+                              dot_size = 2,
                               reg_text_size = 3) {
 
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
+  stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
@@ -317,13 +318,6 @@ g_correlationplot <- function(label = "Correlation Plot",
   if (!is.null(shape_manual)) {
     plot1 <- plot1 +
       scale_shape_manual(values = shape_manual, name = "LOQ")
-  }
-  # Format dot size add LOQ legend conditionally
-  if (loq_legend) {
-    if (!is.null(dot_size)) {
-      plot1 <- plot1 +
-        geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
-    }
   }
   # Format x-label
   if (rotate_xlab) {

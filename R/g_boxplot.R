@@ -97,6 +97,7 @@ g_boxplot <- function(data,
   stop_if_not(list(
     any(data[[param_var]] == biomarker), paste("biomarker", biomarker, "is not found in param_var", param_var, ".")))
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
+  stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
 
   # filter input data
   data <- data %>%

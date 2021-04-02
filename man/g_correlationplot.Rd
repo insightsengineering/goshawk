@@ -36,7 +36,7 @@ g_correlationplot(
   vline = NULL,
   rotate_xlab = FALSE,
   font_size = 12,
-  dot_size = NULL,
+  dot_size = 2,
   reg_text_size = 3
 )
 }
