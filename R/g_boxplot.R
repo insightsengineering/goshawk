@@ -181,15 +181,17 @@ g_boxplot <- function(data,
   }
   # add LOQ legend conditionally
   plot1 <- if (!loq_legend) {
-    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = 'none')
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
   } else {
     plot1 + scale_shape_manual(values = shape_manual, name = "LoQ")
   }
 
   plot1 <- plot1 +
-    geom_jitter(data = data,
-                aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
-                alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE)
+    geom_jitter(
+      data = data,
+      aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
+      alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE
+    )
 
   # Any limits for the Y axis?
   if (!is.null(ymin_scale) & !is.null(ymax_scale)) {

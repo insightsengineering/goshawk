@@ -317,7 +317,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   }
   # add LOQ legend conditionally
   plot1 <- if (!loq_legend) {
-    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = 'none')
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
   } else {
     plot1 + scale_shape_manual(values = shape_manual, name = "LoQ")
   }
