@@ -233,15 +233,8 @@ g_correlationplot <- function(label = "Correlation Plot",
       facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol)
   }
 
-  # add LOQ legend conditionally
-  if (loq_legend) {
-    plot1 <- plot1 +
-      geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
-  }
-  else {
-    plot1 <- plot1 +
-      geom_point(shape = 1, size = dot_size, na.rm = TRUE)
-  }
+  plot1 <- plot1 +
+    geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
 
   # add grid faceting to foundation
   if (facet) {
@@ -315,9 +308,16 @@ g_correlationplot <- function(label = "Correlation Plot",
       scale_color_manual(values = color_manual, name = trt_label)
   }
   # Format LOQ flag symbol shape
-  if (!is.null(shape_manual)) {
-    plot1 <- plot1 +
-      scale_shape_manual(values = shape_manual, name = "LOQ")
+  if (is.null(shape_manual)) {
+    shape_names <- unique(data[!is.na(data[["LOQFL_COMB"]]), ][["LOQFL_COMB"]])
+    shape_manual <- seq_along(shape_names)
+    names(shape_manual) <- shape_names
+  }
+  # add LOQ legend conditionally
+  plot1 <- if (!loq_legend) {
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = 'none')
+  } else {
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ")
   }
   # Format x-label
   if (rotate_xlab) {
