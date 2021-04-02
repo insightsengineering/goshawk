@@ -50,7 +50,7 @@ Y-axis e.g. AVAL.}
 
 \item{color_manual}{vector of colour for trt_group}
 
-\item{shape_manual}{vector of shapes (used with log_flag_var)}
+\item{shape_manual}{vector of shapes (used with loq_flag_var)}
 
 \item{box}{add boxes to the plot (boolean)}
 

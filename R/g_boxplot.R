@@ -22,7 +22,7 @@
 #' @param loq_legend `logical` whether to include LoQ legend.
 #' @param unit biomarker unit label e.g. (U/L)
 #' @param color_manual vector of colour for trt_group
-#' @param shape_manual vector of shapes (used with log_flag_var)
+#' @param shape_manual vector of shapes (used with loq_flag_var)
 #' @param box add boxes to the plot (boolean)
 #' @param ymin_scale minimum value for the Y axis
 #' @param ymax_scale maximum value for the Y axis
@@ -97,6 +97,7 @@ g_boxplot <- function(data,
   stop_if_not(list(
     any(data[[param_var]] == biomarker), paste("biomarker", biomarker, "is not found in param_var", param_var, ".")))
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
+  stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
 
   # filter input data
   data <- data %>%
@@ -170,26 +171,27 @@ g_boxplot <- function(data,
       scale_color_manual(values = cols) +
       scale_fill_manual(values = cols)
   }
-  # LOQ needed?
-  if (loq_legend) {
-    if (!is.null(shape_manual)) {
-      plot1 <- plot1 +
-        scale_shape_manual(values = shape_manual, name = "LoQ")
-    }
+
+
+  # Format LOQ flag symbol shape
+  if (is.null(shape_manual)) {
+    shape_names <- unique(data[!is.na(data[[loq_flag_var]]), ][[loq_flag_var]])
+    shape_manual <- seq_along(shape_names)
+    names(shape_manual) <- shape_names
+  }
+  # add LOQ legend conditionally
+  plot1 <- if (!loq_legend) {
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
+  } else {
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ")
   }
 
-  # add LOQ legend conditionally
-  if (loq_legend) {
-    plot1 <- plot1 +
-      geom_jitter(data = data,
-                  aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
-                  alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE)
-  }
-  else {
-    plot1 <- plot1 +
-      geom_jitter(data = data, aes_string(x = xaxis_var, y = yaxis_var, color = trt_group),
-                  alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE)
-  }
+  plot1 <- plot1 +
+    geom_jitter(
+      data = data,
+      aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
+      alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE
+    )
 
   # Any limits for the Y axis?
   if (!is.null(ymin_scale) & !is.null(ymax_scale)) {

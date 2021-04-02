@@ -14,6 +14,7 @@
 #' @param yvar y-axis analysis variable from transposed data set.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
+#' @param loq_flag_var  name of variable containing LOQ flag e.g. LOQFL_COMB.
 #' @param visit_facet visit facet toggle.
 #' @param loq_legend `logical` whether to include LoQ legend.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
@@ -25,7 +26,7 @@
 #' @param xaxis_lab x-axis label.
 #' @param yaxis_lab y-axis label.
 #' @param color_manual vector of colors applied to treatment values.
-#' @param shape_manual vector of symbols applied to LOQ values.
+#' @param shape_manual vector of symbols applied to LOQ values. (used with loq_flag_var).
 #' @param facet_ncol number of facets per row.
 #' @param facet set layout to use treatment facetting.
 #' @param facet_var variable to use for treatment facetting.
@@ -158,6 +159,7 @@ g_correlationplot <- function(label = "Correlation Plot",
                               yvar = yvar,
                               trt_group = "ARM",
                               visit = "AVISITCD",
+                              loq_flag_var = "LOQFL_COMB",
                               visit_facet = TRUE,
                               loq_legend = TRUE,
                               unit = "AVALU",
@@ -178,10 +180,11 @@ g_correlationplot <- function(label = "Correlation Plot",
                               vline = NULL,
                               rotate_xlab = FALSE,
                               font_size = 12,
-                              dot_size = NULL,
+                              dot_size = 2,
                               reg_text_size = 3) {
 
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
+  stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
@@ -232,15 +235,8 @@ g_correlationplot <- function(label = "Correlation Plot",
       facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol)
   }
 
-  # add LOQ legend conditionally
-  if (loq_legend) {
-    plot1 <- plot1 +
-      geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
-  }
-  else {
-    plot1 <- plot1 +
-      geom_point(size = dot_size, na.rm = TRUE)
-  }
+  plot1 <- plot1 +
+    geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
 
   # add grid faceting to foundation
   if (facet) {
@@ -314,16 +310,16 @@ g_correlationplot <- function(label = "Correlation Plot",
       scale_color_manual(values = color_manual, name = trt_label)
   }
   # Format LOQ flag symbol shape
-  if (!is.null(shape_manual)) {
-    plot1 <- plot1 +
-      scale_shape_manual(values = shape_manual, name = "LOQ")
+  if (is.null(shape_manual)) {
+    shape_names <- unique(data[!is.na(data[[loq_flag_var]]), ][[loq_flag_var]])
+    shape_manual <- seq_along(shape_names)
+    names(shape_manual) <- shape_names
   }
-  # Format dot size add LOQ legend conditionally
-  if (loq_legend) {
-    if (!is.null(dot_size)) {
-      plot1 <- plot1 +
-        geom_point(aes_string(shape = "LOQFL_COMB"), size = dot_size, na.rm = TRUE)
-    }
+  # add LOQ legend conditionally
+  plot1 <- if (!loq_legend) {
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
+  } else {
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ")
   }
   # Format x-label
   if (rotate_xlab) {
