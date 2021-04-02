@@ -171,29 +171,25 @@ g_boxplot <- function(data,
       scale_color_manual(values = cols) +
       scale_fill_manual(values = cols)
   }
-  # LOQ needed?
-  if (loq_legend) {
-    if (is.null(shape_manual)) {
-      shape_names <- unique(data[!is.na(data[[loq_flag_var]]), ][[loq_flag_var]])
-      shape_manual <- seq_along(shape_names)
-      names(shape_manual) <- shape_names
-    }
-    plot1 <- plot1 +
-      scale_shape_manual(values = shape_manual, name = "LoQ")
+
+
+  # Format LOQ flag symbol shape
+  if (is.null(shape_manual)) {
+    shape_names <- unique(data[!is.na(data[[loq_flag_var]]), ][[loq_flag_var]])
+    shape_manual <- seq_along(shape_names)
+    names(shape_manual) <- shape_names
+  }
+  # add LOQ legend conditionally
+  plot1 <- if (!loq_legend) {
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = 'none')
+  } else {
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ")
   }
 
-  # add LOQ legend conditionally
-  if (loq_legend) {
-    plot1 <- plot1 +
-      geom_jitter(data = data,
-                  aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
-                  alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE)
-  }
-  else {
-    plot1 <- plot1 +
-      geom_jitter(data = data, aes_string(x = xaxis_var, y = yaxis_var, color = trt_group), shape = 1,
-                  alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE)
-  }
+  plot1 <- plot1 +
+    geom_jitter(data = data,
+                aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
+                alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE)
 
   # Any limits for the Y axis?
   if (!is.null(ymin_scale) & !is.null(ymax_scale)) {
