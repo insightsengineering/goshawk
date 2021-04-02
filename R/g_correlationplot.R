@@ -15,7 +15,6 @@
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
 #' @param visit_facet visit facet toggle.
-#' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
 #' @param loq_legend `logical` whether to include LoQ legend.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
 #' @param xmin x-axis lower zoom limit.
@@ -126,7 +125,6 @@
 #'   trt_group = "ARM",
 #'   visit = "AVISITCD",
 #'   visit_facet = TRUE,
-#'   loq_flag_var = "LOQFL",
 #'   loq_legend = TRUE,
 #'   unit = "AVALU",
 #'   xmin = 20,
@@ -161,7 +159,6 @@ g_correlationplot <- function(label = "Correlation Plot",
                               trt_group = "ARM",
                               visit = "AVISITCD",
                               visit_facet = TRUE,
-                              loq_flag_var = "LOQFL",
                               loq_legend = TRUE,
                               unit = "AVALU",
                               xmin = NA,
