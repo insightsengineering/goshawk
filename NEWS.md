@@ -1,8 +1,7 @@
-# goshawk 0.1.7.9000
+# goshawk 0.1.8
+
 * Removed warnings in `g_boxplot` and `t_summarytable` when one group has no data.
 * `g_boxplot` and `g_correlationplot` have been modified to always have empty points, regardless of whether `loq_legend` parameter is set to `TRUE` or `FALSE`.
-
-Issues with no news:
 
 # goshawk 0.1.7
 
