@@ -456,8 +456,11 @@ g_lineplot <- function(label = "Line Plot",
   tabletotal <- lines * minline * ifelse(display_center_tbl, 2, 1)
   plotsize <- plot_height - tabletotal
   if (plotsize <= 250) {
-    stop("Due to number of line splitting levels default plot height is not sufficient to display. Please adjust the
-    plot height using the Plot Aesthetic Settings.")
+    stop("Due to number of line splitting levels the current plot height is not sufficient to display plot.
+    Please try a combination of increasing the plot height using the Plot Aesthetic Settings,
+    increasing the relative height of plot to table(s),
+    increasing the initial maximum plot height argument during creation of this app, and / or consider removing
+    the mean / median table.")
   }
   if (display_center_tbl) {
     unfiltered_data$center <- if (median) {
