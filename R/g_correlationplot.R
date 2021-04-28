@@ -185,10 +185,6 @@ g_correlationplot <- function(label = "Correlation Plot",
 
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
   stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
-  if (dot_size < 2) {
-    warning("dot_size is floored at 2")
-    dot_size <- 2
-  }
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
