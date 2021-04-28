@@ -184,7 +184,10 @@ g_correlationplot <- function(label = "Correlation Plot",
                               reg_text_size = 3) {
 
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
-  stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
+  stop_if_not(
+    list(is_numeric_single(dot_size), "dot_size must be numeric."),
+    list(dot_size >= 1, "dot_size must not be less than 1.")
+    )
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
@@ -284,7 +287,8 @@ g_correlationplot <- function(label = "Correlation Plot",
             sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
             paste0("Insufficient Data For Regression")),
           color = sym(trt_group)),
-        size = reg_text_size
+        size = reg_text_size,
+        show.legend = FALSE
       ) +
       labs(caption = paste0(
         "Deming Regression Model, Spearman Correlation Method.\n",
