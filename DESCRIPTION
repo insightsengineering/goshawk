@@ -27,7 +27,7 @@ Imports:
     utils.nest (>= 0.2.8)
 Suggests: 
     random.cdisc.data (>= 0.3.10),
-    test.nest (>= 0.2.7),
+    test.nest (>= 0.2.8),
     testthat (>= 2.0),
     tidyr
 License: GPL-2
