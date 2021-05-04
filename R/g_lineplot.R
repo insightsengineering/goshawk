@@ -460,8 +460,8 @@ g_lineplot <- function(label = "Line Plot",
     If applicable, please try a combination of:
       * increasing the plot height using the Plot Aesthetic Settings,
       * increasing the relative height of plot to table(s),
-      * increasing the initial maximum plot_height argument during creation of this app, and / or consider removing
-        the mean / median table.")
+      * increasing the initial maximum plot_height argument during creation of this app,
+      * and / or consider removing the mean / median table.")
   }
   if (display_center_tbl) {
     unfiltered_data$center <- if (median) {
