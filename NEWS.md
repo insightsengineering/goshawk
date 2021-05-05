@@ -1,3 +1,6 @@
+# goshawk 0.1.8.9000
+.
+
 # goshawk 0.1.8
 
 * Removed warnings in `g_boxplot` and `t_summarytable` when one group has no data.
