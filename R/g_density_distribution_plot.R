@@ -147,7 +147,12 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   caption_loqs_label <- caption_loqs_label(loqs_data = plot_data)
 
   plot1 <- ggplot(plot_data) +
-    geom_density(aes_string(x = xaxis_var, colour = trt_group), size = line_size) +
+    stat_density(
+      aes_string(x = xaxis_var, colour = trt_group),
+      size = line_size,
+      geom = "line",
+      position = "identity"
+      ) +
     coord_cartesian(xlim = c(xmin, xmax)) +
     facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol) +
     labs(caption = caption_loqs_label) +
@@ -166,7 +171,13 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   # conditionally add combined treatment line
   if (comb_line) {
     plot1 <- plot1 +
-      geom_density(aes(x = !!sym(xaxis_var), linetype = "Comb."), color = color_comb, size = line_size) +
+      stat_density(
+        aes(x = !!sym(xaxis_var), linetype = "Comb."),
+        color = color_comb,
+        size = line_size,
+        geom = "line",
+        position = "identity"
+        ) +
       scale_linetype_manual(name = "Combined Dose", values = c(Comb. = "solid", per_dose = "solid"))
   }
 

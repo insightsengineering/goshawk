@@ -1,5 +1,6 @@
 # goshawk 0.1.8.9000
-.
+
+* Updated `g_density_distribution_plot` legend, lines not squares.
 
 # goshawk 0.1.8
 
