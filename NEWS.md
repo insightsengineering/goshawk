@@ -1,5 +1,6 @@
 # goshawk 0.1.8.9000
-.
+
+* Fixed `g_correlationplot` when facetting by treatment and visit variables.
 
 # goshawk 0.1.8
 
