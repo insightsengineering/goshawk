@@ -233,14 +233,14 @@ g_correlationplot <- function(label = "Correlation Plot",
     ylab(yaxis_lab)
 
   # conditionally facet
-  if (visit_facet && facet) {
-    plot1 <- plot1 +
+  plot1 <- if (visit_facet && facet) {
+    plot1 +
       facet_grid(as.formula(paste0(facet_var, " ~ ", visit)))
   } else if (visit_facet) {
-    plot1 <- plot1 +
+    plot1 +
       facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol)
   } else if (facet) {
-    plot1 <- plot1 +
+    plot1 +
       facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol)
   } else {
     plot1
