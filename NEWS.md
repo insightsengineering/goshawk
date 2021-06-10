@@ -1,6 +1,6 @@
 # goshawk 0.1.8.9000
 
-* Fixed `g_correlationplot` when facetting by treatment and visit variables.
+* Fixed a bug in `g_correlationplot` when facetting by treatment variable would nullify facetting by visit variable..
 
 # goshawk 0.1.8
 
