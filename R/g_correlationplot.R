@@ -148,6 +148,7 @@
 #'   dot_size = 2,
 #'   reg_text_size = 3
 #' )
+#'
 g_correlationplot <- function(label = "Correlation Plot",
                               data,
                               param_var = "PARAMCD",
@@ -232,20 +233,23 @@ g_correlationplot <- function(label = "Correlation Plot",
     xlab(xaxis_lab) +
     ylab(yaxis_lab)
 
-  # conditionally facet by visit
-  if (visit_facet) {
-    plot1 <- plot1 +
+  # conditionally facet
+  plot1 <- if (visit_facet && facet) {
+    plot1 +
+      facet_grid(as.formula(paste0(facet_var, " ~ ", visit)))
+  } else if (visit_facet) {
+    plot1 +
       facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol)
+  } else if (facet) {
+    plot1 +
+      facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol)
+  } else {
+    plot1
   }
 
   plot1 <- plot1 +
     geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
 
-  # add grid faceting to foundation
-  if (facet) {
-    plot1 <- plot1 +
-      facet_grid(as.formula(paste0(facet_var, " ~ ", visit)))
-  }
   # add regression line
   if (reg_line) {
     slope <- function(x, y) {

@@ -1,6 +1,7 @@
 # goshawk 0.1.8.9000
 
 * Updated `g_density_distribution_plot` legend to show lines not squares.
+* Fixed a bug in `g_correlationplot` when facetting by treatment variable would nullify facetting by visit variable..
 
 # goshawk 0.1.8
 
