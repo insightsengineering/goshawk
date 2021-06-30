@@ -32,4 +32,4 @@
 ^temp$
 ^templates$
 ^test_full_example$
-^TODO\.md$
+^TODO\.md$^staged_dependencies.yaml$
