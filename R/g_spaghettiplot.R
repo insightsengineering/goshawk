@@ -28,7 +28,7 @@
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
-#'
+#' @param hline_var name(s) of variable containing range.
 #' @author Wenyi Liu (wenyi.liu@roche.com)
 #'
 #' @return \code{ggplot} object
@@ -135,7 +135,8 @@ g_spaghettiplot <- function(data,
                             xtick = waiver(), xlabel = xtick,
                             rotate_xlab = FALSE,
                             font_size = 12,
-                            group_stats = "NONE") {
+                            group_stats = "NONE",
+                            hline_var = c("ANRLO","ANRHI")) {
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
   data[[trt_group]] <- if (!is.null(trt_group_level)) {
@@ -166,6 +167,7 @@ g_spaghettiplot <- function(data,
       !!sym(unit_var),
       !!sym(biomarker_var),
       !!sym(biomarker_var_label),
+      !!!syms(hline_var),
       .data$LBSTRESC
     )
   unit <- plot_data %>%
@@ -250,6 +252,13 @@ g_spaghettiplot <- function(data,
     plot <- plot +
       geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
+
+  #Add horizontal line for range based on option
+  for (i in hline_var) {
+    plot <- plot +
+      geom_hline(yintercept = plot_data[[i]][1], color = "red", linetype = "dashed", size = 0.5)
+  }
+
   # Format font size
   if (!is.null(font_size)) {
     plot <- plot +
