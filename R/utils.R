@@ -9,9 +9,9 @@
 #' @import dplyr
 #'
 #' @examples
-#' library(random.cdisc.data)
+#' library(scda)
 #'
-#' ADLB <- radlb(cached = TRUE)
+#' ADLB <- synthetic_cdisc_data("latest")$adlb
 #'
 #' # add footnote to identify LLOQ and ULOQ values pulled from data
 #' caption_label <- goshawk:::caption_loqs_label(loqs_data = ADLB)

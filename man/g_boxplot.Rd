@@ -94,10 +94,10 @@ midhinge, range, mid-range, and trimean.
 
 # Example using ADaM structure analysis dataset.
 
-library(random.cdisc.data)
+library(scda)
 
-ADSL <- cadsl
-ADLB <- cadlb
+ADSL <- synthetic_cdisc_data("latest")$adsl
+ADLB <- synthetic_cdisc_data("latest")$adlb
 
 g_boxplot(ADLB,
           biomarker = "CRP",

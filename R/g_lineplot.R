@@ -57,8 +57,9 @@
 #'
 #' # Example using ADaM structure analysis dataset.
 #'
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(stringr)
+#' library(dplyr)
 #'
 #' # original ARM value = dose value
 #' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
@@ -66,8 +67,10 @@
 #' color_manual <- c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
 #' type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "dotted")
 #'
-#' ASL <- cadsl[!(cadsl$ARM == "B: Placebo" & cadsl$AGE < 40), ]
-#' ALB <- right_join(cadlb, ASL[, c("STUDYID", "USUBJID")])
+#' ASL <- synthetic_cdisc_data("latest")$adsl %>%
+#'   filter(!(ARM == "B: Placebo" & AGE < 40))
+#' ALB <- synthetic_cdisc_data("latest")$adlb
+#' ALB <- right_join(ALB, ASL[, c("STUDYID", "USUBJID")])
 #' var_labels <- lapply(ALB, function(x) attributes(x)$label)
 #'
 #' ALB <- ALB %>%
