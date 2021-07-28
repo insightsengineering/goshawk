@@ -97,7 +97,7 @@ Regression uses deming model.
 \examples{
 # Example using ADaM structure analysis dataset.
 
-library(random.cdisc.data)
+library(scda)
 library(stringr)
 
 # original ARM value = dose value
@@ -107,8 +107,8 @@ color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" 
 # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
 shape_manual <-  c("N" = 1, "Y" = 2, "NA" = 0)
 
-ASL <- cadsl
-ALB <- cadlb
+ASL <- synthetic_cdisc_data("latest")$adsl
+ALB <- synthetic_cdisc_data("latest")$adlb
 var_labels <- lapply(ALB, function(x) attributes(x)$label)
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(
