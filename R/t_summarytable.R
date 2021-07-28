@@ -150,4 +150,3 @@ t_summarytable <- function(data,
   sum_data <- cbind(study_id, anl_var, sum_data)
 
 }
-
