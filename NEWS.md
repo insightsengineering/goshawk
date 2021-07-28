@@ -1,4 +1,5 @@
 # goshawk 0.1.9.9000
+* Update examples and documentations to `scda` synthetic data replacing `random.cdisc.data`.
 
 # goshawk 0.1.9
 
