@@ -26,7 +26,8 @@ g_spaghettiplot(
   xlabel = xtick,
   rotate_xlab = FALSE,
   font_size = 12,
-  group_stats = "NONE"
+  group_stats = "NONE",
+  hline_var = c("ANRLO", "ANRHI")
 )
 }
 \arguments{
@@ -77,6 +78,8 @@ value is waiver().}
 \item{font_size}{control font size for title, x-axis, y-axis and legend font.}
 
 \item{group_stats}{control group mean or median overlay.}
+
+\item{hline_var}{name(s) of variable containing range.}
 }
 \value{
 \code{ggplot} object
@@ -126,7 +129,8 @@ ALB <- ALB \%>\%
       ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
-  reorder(TRTORD))
+  reorder(TRTORD)) \%>\%
+  mutate(ANRLO = 30, ANRHI = 75)
  attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
 
 g_spaghettiplot(data = ALB,
@@ -143,7 +147,8 @@ g_spaghettiplot(data = ALB,
                 xtick = c("BL", "W 1", "W 4"),
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
-                group_stats = "median")
+                group_stats = "median",
+                hline_var = c("ANRLO", "ANRHI"))
 
 
 g_spaghettiplot(data = ALB,
@@ -160,7 +165,8 @@ g_spaghettiplot(data = ALB,
                 xtick = c(0, 1, 4),
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
-                group_stats = "median")
+                group_stats = "median",
+                hline_var = c("ANRLO", "ANRHI"))
 
 }
 \author{
