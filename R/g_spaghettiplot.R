@@ -28,7 +28,7 @@
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
-#'
+#' @param hline_var name(s) of variable containing range.
 #' @author Wenyi Liu (wenyi.liu@roche.com)
 #'
 #' @return \code{ggplot} object
@@ -79,7 +79,8 @@
 #'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
-#'   reorder(TRTORD))
+#'   reorder(TRTORD)) %>%
+#'   mutate(ANRLO = 30, ANRHI = 75)
 #'  attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
 #'
 #' g_spaghettiplot(data = ALB,
@@ -96,7 +97,8 @@
 #'                 xtick = c("BL", "W 1", "W 4"),
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
-#'                 group_stats = "median")
+#'                 group_stats = "median",
+#'                 hline_var = c("ANRLO", "ANRHI"))
 #'
 #'
 #' g_spaghettiplot(data = ALB,
@@ -113,7 +115,8 @@
 #'                 xtick = c(0, 1, 4),
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
-#'                 group_stats = "median")
+#'                 group_stats = "median",
+#'                 hline_var = c("ANRLO", "ANRHI"))
 #'
 g_spaghettiplot <- function(data,
                             subj_id = "USUBJID",
@@ -135,7 +138,8 @@ g_spaghettiplot <- function(data,
                             xtick = waiver(), xlabel = xtick,
                             rotate_xlab = FALSE,
                             font_size = 12,
-                            group_stats = "NONE") {
+                            group_stats = "NONE",
+                            hline_var = c("ANRLO", "ANRHI")) {
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
   data[[trt_group]] <- if (!is.null(trt_group_level)) {
@@ -166,6 +170,7 @@ g_spaghettiplot <- function(data,
       !!sym(unit_var),
       !!sym(biomarker_var),
       !!sym(biomarker_var_label),
+      !!!syms(hline_var),
       .data$LBSTRESC
     )
   unit <- plot_data %>%
@@ -224,8 +229,7 @@ g_spaghettiplot <- function(data,
         data = plot_data_groupped,
         lwd = 1,
         color = color_comb,
-        na.rm = TRUE) +
-      scale_linetype_manual(name = "", label = agg_label, values = c(1))
+        na.rm = TRUE)
   }
   # Format x-label
   if (xtype == "continuous") {
@@ -245,11 +249,33 @@ g_spaghettiplot <- function(data,
       scale_color_manual(values = color_manual, name = trt_label)
   }
 
-  #Add horizontal line
+  # Add horizontal line
   if (!is.null(hline)) {
     plot <- plot +
       geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
+
+  # Add horizontal line for range based on option
+  range_color <-  c("purple", "orange")
+  legend_color <- c()
+  j <- 1
+
+  for (i in hline_var) {
+    plot <- plot +
+      geom_hline(aes_(yintercept = plot_data[[i]][1], linetype = as.factor(i)), size = 0.5, color = range_color[j])
+    legend_color <- c(legend_color, range_color[j])
+    j <- j + 1
+  }
+
+  plot <- plot +
+    scale_linetype_manual(
+      name = "Description of Horizontal Line(s)",
+      label = c(hline_var, agg_label),
+      values = c(rep(2, j - 1), 1)
+    ) +
+    guides(linetype = guide_legend(override.aes = list(color = c(legend_color, color_comb)))) + # nolint
+    theme(legend.key.size = unit(0.5, "in"))
+
   # Format font size
   if (!is.null(font_size)) {
     plot <- plot +
