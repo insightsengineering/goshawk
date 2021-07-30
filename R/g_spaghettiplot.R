@@ -267,13 +267,14 @@ g_spaghettiplot <- function(data,
     j <- j + 1
   }
 
-  # nolint start
   plot <- plot +
-    scale_linetype_manual(name = "Description of Horizontal Line(s)", label = c(hline_var, agg_label),
-                          values = c(rep(2, j - 1), 1)) +
-    guides(linetype = guide_legend(override.aes = list(color = c(legend_color, color_comb)))) +
+    scale_linetype_manual(
+      name = "Description of Horizontal Line(s)",
+      label = c(hline_var, agg_label),
+      values = c(rep(2, j - 1), 1)
+    ) +
+    guides(linetype = guide_legend(override.aes = list(color = c(legend_color, color_comb)))) + # nolint
     theme(legend.key.size = unit(0.5, "in"))
-  # nolint end
 
   # Format font size
   if (!is.null(font_size)) {
