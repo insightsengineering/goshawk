@@ -91,7 +91,7 @@ This function is rendered by teal.goshawk module
 
 # Example using ADaM structure analysis dataset.
 
-library(random.cdisc.data)
+library(scda)
 library(stringr)
 
 # original ARM value = dose value
@@ -99,8 +99,8 @@ arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 "C: Combination" = "Combination")
 color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 
-ASL <- cadsl
-ALB <- cadlb
+ASL <- synthetic_cdisc_data("latest")$adsl
+ALB <- synthetic_cdisc_data("latest")$adlb
 var_labels <- lapply(ALB, function(x) attributes(x)$label)
 ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(

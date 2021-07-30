@@ -24,15 +24,15 @@
 #' @examples
 #' # Example using ADaM structure analysis dataset.
 #'
-#' library(random.cdisc.data)
+#' library(scda)
 #' library(stringr)
 #'
 #' # original ARM value = dose value
 #' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
 #' "C: Combination" = "Combination")
 #'
-#' ASL <- cadsl
-#' ALB <- cadlb
+#' ASL <- synthetic_cdisc_data("latest")$adsl
+#' ALB <- synthetic_cdisc_data("latest")$adlb
 #' ALB <- ALB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
