@@ -7,8 +7,6 @@ current_repo:
 upstream_repos:
 - repo: insightsengineering/utils.nest
   host: https://github.com
-- repo: insightsengineering/random.cdisc.data
-  host: https://github.com
 - repo: insightsengineering/scda
   host: https://github.com
 - repo: insightsengineering/scda.2021
