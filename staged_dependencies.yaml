@@ -1,15 +1,20 @@
-
----
 current_repo:
   repo: insightsengineering/goshawk
   host: https://github.com
-
 upstream_repos:
-- repo: insightsengineering/utils.nest
-  host: https://github.com
-- repo: insightsengineering/scda
-  host: https://github.com
-- repo: insightsengineering/scda.2021
-  host: https://github.com
-
+  insightsengineering/utils.nest:
+    repo: insightsengineering/utils.nest
+    host: https://github.com
+  insightsengineering/scda:
+    repo: insightsengineering/scda
+    host: https://github.com
+  insightsengineering/scda.2021:
+    repo: insightsengineering/scda.2021
+    host: https://github.com
+  insightsengineering/test.nest:
+    repo: insightsengineering/test.nest
+    host: https://github.com
 downstream_repos:
+  insightsengineering/teal.goshawk:
+    repo: insightsengineering/teal.goshawk
+    host: https://github.com
