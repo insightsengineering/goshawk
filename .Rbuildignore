@@ -28,7 +28,7 @@
 ^Meta$
 ^outputdir$
 ^scratch$
-^staged_dependencies.yaml$
+^staged_dependencies\.yaml$
 ^stubs$
 ^temp$
 ^templates$
