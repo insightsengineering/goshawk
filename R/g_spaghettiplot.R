@@ -139,7 +139,18 @@ g_spaghettiplot <- function(data,
                             rotate_xlab = FALSE,
                             font_size = 12,
                             group_stats = "NONE",
-                            hline_var = c("ANRLO", "ANRHI")) {
+                            hline_var = c("ANRLO", "ANRHI"),
+                            hline_labels = NULL,
+                            hline_color = NULL) {
+  stopifnot(all(hline_var %in% names(data)))
+  stopifnot(all(lapply(hline_var, function(x) is.numeric(data[[x]]) && length(unique(data[[x]])) == 1)))
+  if (!is.null(hline_labels)) {
+    stopifnot(is_character_vector(hline_labels, min_length = length(hline_var), max_length = (length(hline_var))))
+  }
+  if (!is.null(hline_color)) {
+    stopifnot(is_character_vector(hline_color, min_length = length(hline_var), max_length = (length(hline_var))))
+  }
+
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
   data[[trt_group]] <- if (!is.null(trt_group_level)) {
@@ -256,24 +267,22 @@ g_spaghettiplot <- function(data,
   }
 
   # Add horizontal line for range based on option
-  range_color <-  c("purple", "orange")
-  legend_color <- c()
-  j <- 1
+  range_color <- if_null(hline_color, seq(length(hline_var)))
 
+  j <- 1
   for (i in hline_var) {
     plot <- plot +
       geom_hline(aes_(yintercept = plot_data[[i]][1], linetype = as.factor(i)), size = 0.5, color = range_color[j])
-    legend_color <- c(legend_color, range_color[j])
     j <- j + 1
   }
 
   plot <- plot +
     scale_linetype_manual(
       name = "Description of Horizontal Line(s)",
-      label = c(hline_var, agg_label),
-      values = c(rep(2, j - 1), 1)
+      label = c(if_null(hline_labels, hline_var), agg_label),
+      values = c(rep(2, length(hline_var)), 1)
     ) +
-    guides(linetype = guide_legend(override.aes = list(color = c(legend_color, color_comb)))) + # nolint
+    guides(linetype = guide_legend(override.aes = list(color = c(range_color, color_comb)))) + # nolint
     theme(legend.key.size = unit(0.5, "in"))
 
   # Format font size
