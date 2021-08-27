@@ -20,7 +20,6 @@
 #' @param ylim numeric vector to define y-axis range.
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
-#' @param hline numeric value representing intercept of horizontal line.
 #' @param xtick a vector to define the tick values of time in x-axis.
 #' Default value is waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default
@@ -28,9 +27,12 @@
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
-#' @param hline_arb name(s) of variable containing range.
-#' @param hline_arb_label labels(s) for hline_arb that will appear on the legend.
-#' @param hline_arb_color color(s) for the lines of hline_arb that will appear on the plot.
+#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color for hline_arb that will appear on the plot.
+#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_vars name(s) of variables (ANR*) or values (*LOQ) identifying interecpt values.
+#' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
+#' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
 #'
 #'
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -86,6 +88,8 @@
 #'   reorder(TRTORD)) %>%
 #'   mutate(ANRLO = 30, ANRHI = 75)
 #'  attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+#'  attr(ALB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+#'  attr(ALB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
 #'
 #' g_spaghettiplot(data = ALB,
 #'                 subj_id = "USUBJID",
@@ -97,13 +101,17 @@
 #'                 color_manual = color_manual,
 #'                 color_comb = "#39ff14",
 #'                 alpha = .02,
-#'                 hline = NULL,
 #'                 xtick = c("BL", "W 1", "W 4"),
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median",
-#'                 hline_arb = c("ANRLO", "ANRHI"))
-#'
+#'                 hline_arb = NULL,
+#'                 hline_arb_color = NULL,
+#'                 hline_arb_label = NULL,
+#'                 hline_vars = c("ANRHI", "ANRLO"),
+#'                 hline_vars_colors = c("pink", "brown"),
+#'                 hline_vars_labels = NULL,
+#'                 )
 #'
 #' g_spaghettiplot(data = ALB,
 #'                 subj_id = "USUBJID",
@@ -115,12 +123,17 @@
 #'                 color_manual = color_manual,
 #'                 color_comb = "#39ff14",
 #'                 alpha = .02,
-#'                 hline = NULL,
 #'                 xtick = c(0, 1, 4),
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median",
-#'                 hline_arb = c("ANRLO", "ANRHI"))
+#'                 hline_arb = NULL,
+#'                 hline_arb_color = NULL,
+#'                 hline_arb_label = NULL,
+#'                 hline_vars = c("ANRLO", "ANRHI"),
+#'                 hline_vars_colors = NULL,
+#'                 hline_vars_labels = NULL,
+#'                 )
 #'
 g_spaghettiplot <- function(data,
                             subj_id = "USUBJID",
@@ -138,41 +151,43 @@ g_spaghettiplot <- function(data,
                             ylim = NULL,
                             alpha = 1.0,
                             facet_ncol = 2,
-                            hline = NULL,
                             xtick = waiver(), xlabel = xtick,
                             rotate_xlab = FALSE,
                             font_size = 12,
                             group_stats = "NONE",
-                            hline_arb = c("ANRLO", "ANRHI"),
+                            hline_arb = NULL,
+                            hline_arb_color = "red",
                             hline_arb_label = NULL,
-                            hline_arb_color = NULL) {
-  if (!is.null(hline_arb)) {
-    stopifnot(is_character_vector(hline_arb, min_length = 1, max_length = length(data)))
-    stopifnot(all(hline_arb %in% names(data)))
+                            hline_vars = c("ANRLO", "ANRHI"),
+                            hline_vars_colors = c("purple", "orange"),
+                            hline_vars_labels = NULL) {
+  if (!is.null(hline_vars)) {
+    stopifnot(is_character_vector(hline_vars, min_length = 1, max_length = length(data)))
+    stopifnot(all(hline_vars %in% names(data)))
     stopifnot(
       all(vapply(
-        hline_arb,
+        hline_vars,
         FUN = function(x) is.numeric(data[[x]]) && length(unique(data[[x]])) == 1,
         FUN.VALUE = logical(1)
         )
       )
     )
-    if (!is.null(hline_arb_label)) {
-      stopifnot(is_character_vector(hline_arb_label, min_length = length(hline_arb), max_length = (length(hline_arb))))
+    if (!is.null(hline_vars_labels)) {
+      stopifnot(is_character_vector(hline_vars_labels, min_length = length(hline_vars), max_length = (length(hline_vars))))
     } else {
-      hline_arb_label <- vapply(
-        hline_arb,
+      hline_vars_labels <- vapply(
+        hline_vars,
         FUN = function(x) if_null(attributes(data[[x]])$label, ""),
         FUN.VALUE = character(1)
       )
-      hline_arb_label <- vapply(
-        seq_along(hline_arb_label),
-        FUN = function(x) `if`(hline_arb_label[x] == "", hline_arb[x], hline_arb_label[x]),
+      hline_vars_labels <- vapply(
+        seq_along(hline_vars_labels),
+        FUN = function(x) `if`(hline_vars_labels[x] == "", hline_vars[x], hline_vars_labels[x]),
         FUN.VALUE = character(1)
       )
     }
-    if (!is.null(hline_arb_color)) {
-      stopifnot(is_character_vector(hline_arb_color, min_length = length(hline_arb), max_length = (length(hline_arb))))
+    if (!is.null(hline_vars_colors)) {
+      stopifnot(is_character_vector(hline_vars_colors, min_length = length(hline_vars), max_length = (length(hline_vars))))
     }
   }
 
@@ -206,7 +221,7 @@ g_spaghettiplot <- function(data,
       !!sym(unit_var),
       !!sym(biomarker_var),
       !!sym(biomarker_var_label),
-      !!!syms(hline_arb),
+      !!!syms(hline_vars),
       .data$LBSTRESC
     )
   unit <- plot_data %>%
@@ -287,17 +302,17 @@ g_spaghettiplot <- function(data,
       scale_color_manual(values = color_manual, name = trt_label)
   }
 
-  # Add horizontal line
-  if (!is.null(hline)) {
+  # Add arbitrary horizontal line: !!!!! NEED TO ADD IN HLINE_ARB_LABEL !!!!!
+  if (!is.null(hline_arb)) {
     plot <- plot +
-      geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
+      geom_hline(aes(yintercept = hline_arb), color = hline_arb_color, linetype = "dashed", size = 0.5)
   }
 
   # Add horizontal line for range based on option
-  range_color <- if_null(hline_arb_color, seq(length(hline_arb)))
+  range_color <- if_null(hline_vars_colors, seq(length(hline_vars)))
 
   j <- 1
-  for (i in hline_arb) {
+  for (i in hline_vars) {
     plot <- plot +
       geom_hline(aes_(yintercept = plot_data[[i]][1], linetype = as.factor(i)), size = 0.5, color = range_color[j])
     j <- j + 1
@@ -306,8 +321,8 @@ g_spaghettiplot <- function(data,
   plot <- plot +
     scale_linetype_manual(
       name = "Description of Horizontal Line(s)",
-      label = c(if_null(hline_arb_label, hline_arb), agg_label),
-      values = c(rep(2, length(hline_arb)), if_not_null(agg_label, 1))
+      label = c(if_null(hline_vars_labels, hline_vars), agg_label),
+      values = c(rep(2, length(hline_vars)), if_not_null(agg_label, 1))
     ) +
     guides(linetype = guide_legend(override.aes = list(color = c(range_color, if_not_null(agg_label, color_comb))))) + # nolint
     theme(legend.key.size = unit(0.5, "in"))
