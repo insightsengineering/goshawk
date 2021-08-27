@@ -143,7 +143,14 @@ g_spaghettiplot <- function(data,
                             hline_labels = NULL,
                             hline_color = NULL) {
   stopifnot(all(hline_var %in% names(data)))
-  stopifnot(all(lapply(hline_var, function(x) is.numeric(data[[x]]) && length(unique(data[[x]])) == 1)))
+  stopifnot(
+    all(vapply(
+      hline_var,
+      FUN = function(x) is.numeric(data[[x]]) && length(unique(data[[x]])) == 1,
+      FUN.VALUE = logical(1)
+      )
+    )
+  )
   if (!is.null(hline_labels)) {
     stopifnot(is_character_vector(hline_labels, min_length = length(hline_var), max_length = (length(hline_var))))
   }
