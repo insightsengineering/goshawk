@@ -248,6 +248,8 @@ g_spaghettiplot <- function(data,
         lwd = 1,
         color = color_comb,
         na.rm = TRUE)
+  } else {
+    agg_label <- NULL
   }
   # Format x-label
   if (xtype == "continuous") {
@@ -287,9 +289,9 @@ g_spaghettiplot <- function(data,
     scale_linetype_manual(
       name = "Description of Horizontal Line(s)",
       label = c(if_null(hline_labels, hline_var), agg_label),
-      values = c(rep(2, length(hline_var)), 1)
+      values = c(rep(2, length(hline_var)), if_not_null(agg_label, 1))
     ) +
-    guides(linetype = guide_legend(override.aes = list(color = c(range_color, color_comb)))) + # nolint
+    guides(linetype = guide_legend(override.aes = list(color = c(range_color, if_not_null(agg_label, color_comb))))) + # nolint
     theme(legend.key.size = unit(0.5, "in"))
 
   # Format font size
