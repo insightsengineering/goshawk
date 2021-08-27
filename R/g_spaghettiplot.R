@@ -142,20 +142,34 @@ g_spaghettiplot <- function(data,
                             hline_var = c("ANRLO", "ANRHI"),
                             hline_labels = NULL,
                             hline_color = NULL) {
-  stopifnot(all(hline_var %in% names(data)))
-  stopifnot(
-    all(vapply(
-      hline_var,
-      FUN = function(x) is.numeric(data[[x]]) && length(unique(data[[x]])) == 1,
-      FUN.VALUE = logical(1)
+  if (!is.null(hline_var)) {
+    stopifnot(is_character_vector(hline_var, min_length = 1, max_length = length(data)))
+    stopifnot(all(hline_var %in% names(data)))
+    stopifnot(
+      all(vapply(
+        hline_var,
+        FUN = function(x) is.numeric(data[[x]]) && length(unique(data[[x]])) == 1,
+        FUN.VALUE = logical(1)
+        )
       )
     )
-  )
-  if (!is.null(hline_labels)) {
-    stopifnot(is_character_vector(hline_labels, min_length = length(hline_var), max_length = (length(hline_var))))
-  }
-  if (!is.null(hline_color)) {
-    stopifnot(is_character_vector(hline_color, min_length = length(hline_var), max_length = (length(hline_var))))
+    if (!is.null(hline_labels)) {
+      stopifnot(is_character_vector(hline_labels, min_length = length(hline_var), max_length = (length(hline_var))))
+    } else {
+      hline_labels <- vapply(
+        hline_var,
+        FUN = function(x) if_null(attributes(data[[x]])$label, ""),
+        FUN.VALUE = character(1)
+      )
+      hline_labels <- vapply(
+        seq_along(hline_labels),
+        FUN = function(x) `if`(hline_labels[x] == "", hline_var[x], hline_labels[x]),
+        FUN.VALUE = character(1)
+      )
+    }
+    if (!is.null(hline_color)) {
+      stopifnot(is_character_vector(hline_color, min_length = length(hline_var), max_length = (length(hline_var))))
+    }
   }
 
   ## Pre-process data
