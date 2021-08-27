@@ -27,7 +27,9 @@ g_spaghettiplot(
   rotate_xlab = FALSE,
   font_size = 12,
   group_stats = "NONE",
-  hline_var = c("ANRLO", "ANRHI")
+  hline_arb = c("ANRLO", "ANRHI"),
+  hline_arb_label = NULL,
+  hline_arb_color = NULL
 )
 }
 \arguments{
@@ -79,7 +81,11 @@ value is waiver().}
 
 \item{group_stats}{control group mean or median overlay.}
 
-\item{hline_var}{name(s) of variable containing range.}
+\item{hline_arb}{name(s) of variable containing range.}
+
+\item{hline_arb_label}{labels(s) for hline_arb that will appear on the legend.}
+
+\item{hline_arb_color}{color(s) for the lines of hline_arb that will appear on the plot.}
 }
 \value{
 \code{ggplot} object
@@ -148,7 +154,7 @@ g_spaghettiplot(data = ALB,
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
                 group_stats = "median",
-                hline_var = c("ANRLO", "ANRHI"))
+                hline_arb = c("ANRLO", "ANRHI"))
 
 
 g_spaghettiplot(data = ALB,
@@ -166,7 +172,7 @@ g_spaghettiplot(data = ALB,
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
                 group_stats = "median",
-                hline_var = c("ANRLO", "ANRHI"))
+                hline_arb = c("ANRLO", "ANRHI"))
 
 }
 \author{
