@@ -30,7 +30,7 @@ g_spaghettiplot(
   hline_arb_color = "red",
   hline_arb_label = NULL,
   hline_vars = c("ANRLO", "ANRHI"),
-  hline_vars_colors = c("purple", "orange"),
+  hline_vars_colors = NULL,
   hline_vars_labels = NULL
 )
 }

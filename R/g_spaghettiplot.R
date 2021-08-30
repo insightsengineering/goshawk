@@ -159,7 +159,7 @@ g_spaghettiplot <- function(data,
                             hline_arb_color = "red",
                             hline_arb_label = NULL,
                             hline_vars = c("ANRLO", "ANRHI"),
-                            hline_vars_colors = c("purple", "orange"),
+                            hline_vars_colors = NULL,
                             hline_vars_labels = NULL) {
   if (!is.null(hline_vars)) {
     stopifnot(is_character_vector(hline_vars, min_length = 1, max_length = length(data)))
