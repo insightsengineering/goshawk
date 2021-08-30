@@ -1,9 +1,8 @@
 # goshawk 0.1.9.9000
 * Update examples and documentations to `scda` synthetic data replacing `random.cdisc.data`.
 * Updated license and `README.md` with appropriate information for migration to public Github.
-
-
-* updated g_spaghettiplot.R to include upper and lower normal range horizontal lines
+* Updated g_spaghettiplot.R to include upper and lower normal range horizontal lines.
+* Added `error_on_lint: TRUE` to `.lintr`.
 
 # goshawk 0.1.9
 
