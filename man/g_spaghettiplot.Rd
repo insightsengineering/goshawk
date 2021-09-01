@@ -142,10 +142,21 @@ ALB <- ALB \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
   reorder(TRTORD)) \%>\%
-  mutate(ANRLO = 30, ANRHI = 75)
- attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
- attr(ALB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
- attr(ALB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+  mutate(ANRLO = 30, ANRHI = 75) \%>\%
+  rowwise() \%>\%
+  group_by(PARAMCD) \%>\%
+  mutate(LBSTRESC = ifelse(USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
+  paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) \%>\%
+  mutate(LBSTRESC = ifelse(USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
+  paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) \%>\%
+  ungroup
+  attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+  attr(ALB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+  attr(ALB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+
+  # add LLOQ and ULOQ variables
+  ALB_LOQS <- goshawk:::h_identify_loq_values(ALB)
+  ALB <- left_join(ALB, ALB_LOQS, by = "PARAM")
 
 g_spaghettiplot(data = ALB,
                 subj_id = "USUBJID",
@@ -164,8 +175,8 @@ g_spaghettiplot(data = ALB,
                 hline_arb = NULL,
                 hline_arb_color = NULL,
                 hline_arb_label = NULL,
-                hline_vars = c("ANRHI", "ANRLO"),
-                hline_vars_colors = c("pink", "brown"),
+                hline_vars = c("ANRHI", "ANRLO", "LLOQ_VALUE_N"),
+                hline_vars_colors = c("pink", "brown", "purple"),
                 hline_vars_labels = NULL,
                 )
 

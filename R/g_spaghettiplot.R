@@ -86,10 +86,21 @@
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD)) %>%
-#'   mutate(ANRLO = 30, ANRHI = 75)
-#'  attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
-#'  attr(ALB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
-#'  attr(ALB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+#'   mutate(ANRLO = 30, ANRHI = 75) %>%
+#'   rowwise() %>%
+#'   group_by(PARAMCD) %>%
+#'   mutate(LBSTRESC = ifelse(USUBJID %in% sample(USUBJID, 1, replace = TRUE),
+#'   paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) %>%
+#'   mutate(LBSTRESC = ifelse(USUBJID %in% sample(USUBJID, 1, replace = TRUE),
+#'   paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) %>%
+#'   ungroup
+#'   attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+#'   attr(ALB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+#'   attr(ALB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+#'
+#'   # add LLOQ and ULOQ variables
+#'   ALB_LOQS <- goshawk:::h_identify_loq_values(ALB)
+#'   ALB <- left_join(ALB, ALB_LOQS, by = "PARAM")
 #'
 #' g_spaghettiplot(data = ALB,
 #'                 subj_id = "USUBJID",
@@ -110,6 +121,28 @@
 #'                 hline_arb_label = NULL,
 #'                 hline_vars = c("ANRHI", "ANRLO"),
 #'                 hline_vars_colors = c("pink", "brown"),
+#'                 hline_vars_labels = NULL,
+#'                 )
+#'
+#' g_spaghettiplot(data = ALB,
+#'                 subj_id = "USUBJID",
+#'                 biomarker_var = "PARAMCD",
+#'                 biomarker = "CRP",
+#'                 value_var = "AVAL",
+#'                 trt_group = "ARM",
+#'                 time = "AVISITCD",
+#'                 color_manual = color_manual,
+#'                 color_comb = "#39ff14",
+#'                 alpha = .02,
+#'                 xtick = c("BL", "W 1", "W 4"),
+#'                 xlabel = c("Baseline", "Week 1", "Week 4"),
+#'                 rotate_xlab = FALSE,
+#'                 group_stats = "median",
+#'                 hline_arb = NULL,
+#'                 hline_arb_color = NULL,
+#'                 hline_arb_label = NULL,
+#'                 hline_vars = c("ANRHI", "ANRLO", "LLOQ_VALUE_N", "ULOQ_VALUE_N"),
+#'                 hline_vars_colors = c("pink", "brown", "purple", "gray"),
 #'                 hline_vars_labels = NULL,
 #'                 )
 #'
@@ -167,9 +200,9 @@ g_spaghettiplot <- function(data,
     stopifnot(
       all(vapply(
         hline_vars,
-        FUN = function(x) is.numeric(data[[x]]) && length(unique(data[[x]])) == 1,
+        FUN = function(x) is.numeric(data[[x]]) == 1,
         FUN.VALUE = logical(1)
-        )
+      )
       )
     )
     if (!is.null(hline_vars_labels)) {
@@ -198,35 +231,35 @@ g_spaghettiplot <- function(data,
     }
   }
 
-  stopifnot("LBSTRESC" %in% names(data))
-  LLOQ_index <- grep("^<", data$LBSTRESC)
-  ULOQ_index <- grep("^>", data$LBSTRESC)
-  stopifnot(length(LLOQ_index) <= 1)
-  stopifnot(length(ULOQ_index) <= 1)
-  if(length(LLOQ_index) == 1) {
-    data$LLOQ <- as.numeric(gsub("<", "", data$LBSTRESC[LLOQ_index]))
-    if (!is.null(hline_vars)) {
-      hline_vars <- c(hline_vars, "LLOQ")
-    }
-    if (!is.null(hline_vars_colors)) {
-      hline_vars_colors <- c(hline_vars_colors, length(hline_vars_colors) + 1)
-    }
-    if (!is.null(hline_arb_label)) {
-      hline_vars_label <- c(hline_vars_label, "LLOQ")
-    }
-  }
-  if(length(ULOQ_index) == 1) {
-    data$ULOQ <- as.numeric(gsub(">", "", data$LBSTRESC[ULOQ_index]))
-    if (!is.null(hline_vars)) {
-      hline_vars <- c(hline_vars, "ULOQ")
-    }
-    if (!is.null(hline_vars_colors)) {
-      hline_vars_colors <- c(hline_vars_colors, length(hline_vars_colors) + 1)
-    }
-    if (!is.null(hline_arb_label)) {
-      hline_vars_label <- c(hline_vars_label, "ULOQ")
-    }
-  }
+  # stopifnot("LBSTRESC" %in% names(data))
+  # LLOQ_index <- grep("^<", data$LBSTRESC)
+  # ULOQ_index <- grep("^>", data$LBSTRESC)
+  # stopifnot(length(LLOQ_index) <= 1)
+  # stopifnot(length(ULOQ_index) <= 1)
+  # if(length(LLOQ_index) == 1) {
+  #   data$LLOQ <- as.numeric(gsub("<", "", data$LBSTRESC[LLOQ_index]))
+  #   if (!is.null(hline_vars)) {
+  #     hline_vars <- c(hline_vars, "LLOQ")
+  #   }
+  #   if (!is.null(hline_vars_colors)) {
+  #     hline_vars_colors <- c(hline_vars_colors, length(hline_vars_colors) + 1)
+  #   }
+  #   if (!is.null(hline_arb_label)) {
+  #     hline_vars_label <- c(hline_vars_label, "LLOQ")
+  #   }
+  # }
+  # if(length(ULOQ_index) == 1) {
+  #   data$ULOQ <- as.numeric(gsub(">", "", data$LBSTRESC[ULOQ_index]))
+  #   if (!is.null(hline_vars)) {
+  #     hline_vars <- c(hline_vars, "ULOQ")
+  #   }
+  #   if (!is.null(hline_vars_colors)) {
+  #     hline_vars_colors <- c(hline_vars_colors, length(hline_vars_colors) + 1)
+  #   }
+  #   if (!is.null(hline_arb_label)) {
+  #     hline_vars_label <- c(hline_vars_label, "ULOQ")
+  #   }
+  # }
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
@@ -278,7 +311,7 @@ g_spaghettiplot <- function(data,
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # Add footnote to identify LLOQ and ULOQ values pulled from data
-  caption_loqs_label <- caption_loqs_label(loqs_data = plot_data)
+  caption_loqs_label <- h_caption_loqs_label(loqs_data = plot_data)
 
   plot <- ggplot(data = plot_data, aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
     geom_point(size = 0.8, na.rm = TRUE) +
