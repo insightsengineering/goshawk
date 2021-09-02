@@ -231,36 +231,6 @@ g_spaghettiplot <- function(data,
     }
   }
 
-  # stopifnot("LBSTRESC" %in% names(data))
-  # LLOQ_index <- grep("^<", data$LBSTRESC)
-  # ULOQ_index <- grep("^>", data$LBSTRESC)
-  # stopifnot(length(LLOQ_index) <= 1)
-  # stopifnot(length(ULOQ_index) <= 1)
-  # if(length(LLOQ_index) == 1) {
-  #   data$LLOQ <- as.numeric(gsub("<", "", data$LBSTRESC[LLOQ_index]))
-  #   if (!is.null(hline_vars)) {
-  #     hline_vars <- c(hline_vars, "LLOQ")
-  #   }
-  #   if (!is.null(hline_vars_colors)) {
-  #     hline_vars_colors <- c(hline_vars_colors, length(hline_vars_colors) + 1)
-  #   }
-  #   if (!is.null(hline_arb_label)) {
-  #     hline_vars_label <- c(hline_vars_label, "LLOQ")
-  #   }
-  # }
-  # if(length(ULOQ_index) == 1) {
-  #   data$ULOQ <- as.numeric(gsub(">", "", data$LBSTRESC[ULOQ_index]))
-  #   if (!is.null(hline_vars)) {
-  #     hline_vars <- c(hline_vars, "ULOQ")
-  #   }
-  #   if (!is.null(hline_vars_colors)) {
-  #     hline_vars_colors <- c(hline_vars_colors, length(hline_vars_colors) + 1)
-  #   }
-  #   if (!is.null(hline_arb_label)) {
-  #     hline_vars_label <- c(hline_vars_label, "ULOQ")
-  #   }
-  # }
-
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
   data[[trt_group]] <- if (!is.null(trt_group_level)) {
