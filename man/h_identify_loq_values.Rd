@@ -26,6 +26,6 @@ library(scda)
 
 ADLB <- synthetic_cdisc_data("latest")$adlb
 
-h_identify_loq_values(loqs_data = ADLB)
+goshawk:::h_identify_loq_values(loqs_data = ADLB)
 
 }
