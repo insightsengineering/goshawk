@@ -21,13 +21,17 @@ g_spaghettiplot(
   ylim = NULL,
   alpha = 1,
   facet_ncol = 2,
-  hline = NULL,
   xtick = waiver(),
   xlabel = xtick,
   rotate_xlab = FALSE,
   font_size = 12,
   group_stats = "NONE",
-  hline_var = c("ANRLO", "ANRHI")
+  hline_arb = NULL,
+  hline_arb_color = "red",
+  hline_arb_label = NULL,
+  hline_vars = NULL,
+  hline_vars_colors = NULL,
+  hline_vars_labels = NULL
 )
 }
 \arguments{
@@ -65,8 +69,6 @@ x-axis variable is character or factor.}
 
 \item{facet_ncol}{number of facets per row.}
 
-\item{hline}{numeric value representing intercept of horizontal line.}
-
 \item{xtick}{a vector to define the tick values of time in x-axis.
 Default value is waiver().}
 
@@ -79,7 +81,17 @@ value is waiver().}
 
 \item{group_stats}{control group mean or median overlay.}
 
-\item{hline_var}{name(s) of variable containing range.}
+\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+
+\item{hline_arb_color}{color for hline_arb that will appear on the plot.}
+
+\item{hline_arb_label}{label for hline_arb that will appear on the legend.}
+
+\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+
+\item{hline_vars_colors}{color(s) for the lines of hline_arb that will appear on the plot.}
+
+\item{hline_vars_labels}{labels(s) for hline_arb that will appear on the legend.}
 }
 \value{
 \code{ggplot} object
@@ -130,8 +142,21 @@ ALB <- ALB \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
   reorder(TRTORD)) \%>\%
-  mutate(ANRLO = 30, ANRHI = 75)
- attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+  mutate(ANRLO = 30, ANRHI = 75) \%>\%
+  rowwise() \%>\%
+  group_by(PARAMCD) \%>\%
+  mutate(LBSTRESC = ifelse(USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
+  paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) \%>\%
+  mutate(LBSTRESC = ifelse(USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
+  paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) \%>\%
+  ungroup
+  attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+  attr(ALB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+  attr(ALB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+
+  # add LLOQ and ULOQ variables
+  ALB_LOQS <- goshawk:::h_identify_loq_values(ALB)
+  ALB <- left_join(ALB, ALB_LOQS, by = "PARAM")
 
 g_spaghettiplot(data = ALB,
                 subj_id = "USUBJID",
@@ -143,13 +168,39 @@ g_spaghettiplot(data = ALB,
                 color_manual = color_manual,
                 color_comb = "#39ff14",
                 alpha = .02,
-                hline = NULL,
                 xtick = c("BL", "W 1", "W 4"),
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
                 group_stats = "median",
-                hline_var = c("ANRLO", "ANRHI"))
+                hline_arb = NULL,
+                hline_arb_color = NULL,
+                hline_arb_label = NULL,
+                hline_vars = c("ANRHI", "ANRLO"),
+                hline_vars_colors = c("pink", "brown"),
+                hline_vars_labels = NULL,
+                )
 
+g_spaghettiplot(data = ALB,
+                subj_id = "USUBJID",
+                biomarker_var = "PARAMCD",
+                biomarker = "CRP",
+                value_var = "AVAL",
+                trt_group = "ARM",
+                time = "AVISITCD",
+                color_manual = color_manual,
+                color_comb = "#39ff14",
+                alpha = .02,
+                xtick = c("BL", "W 1", "W 4"),
+                xlabel = c("Baseline", "Week 1", "Week 4"),
+                rotate_xlab = FALSE,
+                group_stats = "median",
+                hline_arb = NULL,
+                hline_arb_color = NULL,
+                hline_arb_label = NULL,
+                hline_vars = c("ANRHI", "ANRLO", "LLOQ_VALUE_N", "ULOQ_VALUE_N"),
+                hline_vars_colors = c("pink", "brown", "purple", "gray"),
+                hline_vars_labels = NULL,
+                )
 
 g_spaghettiplot(data = ALB,
                 subj_id = "USUBJID",
@@ -161,12 +212,17 @@ g_spaghettiplot(data = ALB,
                 color_manual = color_manual,
                 color_comb = "#39ff14",
                 alpha = .02,
-                hline = NULL,
                 xtick = c(0, 1, 4),
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
                 group_stats = "median",
-                hline_var = c("ANRLO", "ANRHI"))
+                hline_arb = NULL,
+                hline_arb_color = NULL,
+                hline_arb_label = NULL,
+                hline_vars = c("ANRLO", "ANRHI"),
+                hline_vars_colors = NULL,
+                hline_vars_labels = NULL,
+                )
 
 }
 \author{
