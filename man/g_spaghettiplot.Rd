@@ -87,7 +87,7 @@ value is waiver().}
 
 \item{hline_arb_label}{label for hline_arb that will appear on the legend.}
 
-\item{hline_vars}{name(s) of variables (ANR*) or values (*LOQ) identifying interecpt values.}
+\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
 
 \item{hline_vars_colors}{color(s) for the lines of hline_arb that will appear on the plot.}
 
