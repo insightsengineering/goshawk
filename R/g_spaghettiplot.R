@@ -282,7 +282,7 @@ g_spaghettiplot <- function(data,
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # Add footnote to identify LLOQ and ULOQ values pulled from data
-  caption_loqs_label <- caption_loqs_label(loqs_data = plot_data)
+  caption_loqs_label <- h_caption_loqs_label(loqs_data = plot_data)
 
   plot <- ggplot(data = plot_data, aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
     geom_point(size = 0.8, na.rm = TRUE) +
