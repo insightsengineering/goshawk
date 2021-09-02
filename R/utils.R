@@ -31,8 +31,7 @@ h_identify_loq_values <- function(loqs_data) {
   lloq <- loqs_data %>%
     select(.data$PARAM, .data$LBSTRESC) %>%
     filter(grepl("<", .data$LBSTRESC, fixed = FALSE)) %>%
-    mutate(LLOQ_VALUE_C = .data$LBSTRESC,
-           LLOQ_VALUE_N = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
+    mutate(LLOQ_VALUE_C = .data$LBSTRESC, LLOQ_VALUE_N = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
     group_by(.data$PARAM) %>%
     slice(1) %>%
     ungroup %>%
@@ -42,8 +41,7 @@ h_identify_loq_values <- function(loqs_data) {
   uloq <- loqs_data %>%
     select(.data$PARAM, .data$LBSTRESC) %>%
     filter(grepl(">", .data$LBSTRESC, fixed = FALSE)) %>%
-    mutate(ULOQ_VALUE_C = .data$LBSTRESC,
-           ULOQ_VALUE_N = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
+    mutate(ULOQ_VALUE_C = .data$LBSTRESC, ULOQ_VALUE_N = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
     group_by(.data$PARAM) %>%
     slice(1) %>%
     ungroup %>%
@@ -53,11 +51,13 @@ h_identify_loq_values <- function(loqs_data) {
   loq_values <- merge(lloq, uloq, by = "PARAM", all = TRUE)
   if (nrow(loq_values) == 0) {
     message(paste("Number of rows is:", nrow(loq_values)))
-    loq_values <- data.frame(PARAM = names(table(droplevels(loqs_data$PARAM))),
-                             LLOQ_VALUE_C = NA,
-                             LLOQ_VALUE_N = NA,
-                             ULOQ_VALUE_C = NA,
-                             ULOQ_VALUE_N = NA)
+    loq_values <- data.frame(
+      PARAM = names(table(droplevels(loqs_data$PARAM))),
+      LLOQ_VALUE_C = NA,
+      LLOQ_VALUE_N = NA,
+      ULOQ_VALUE_C = NA,
+      ULOQ_VALUE_N = NA
+    )
   }
 
   attr(loq_values[["PARAM"]], "label") <- "Parameter"
