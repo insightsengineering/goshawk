@@ -103,7 +103,6 @@ t_summarytable <- function(data,
     )
   }
 
-
   # by treatment group table
   sum_data_by_arm <- table_data %>%
     filter(!!sym(param_var) == param) %>%
@@ -142,8 +141,8 @@ t_summarytable <- function(data,
   # a factor and character
   sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
     # reorder variables
-    select(Biomarker = param_var, Treatment = trt_group, Visit = visit_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
-    arrange(.data$Biomarker, .data$Visit, .data$TRTORD) %>% # drop variable
+    select(Biomarker = param_var, Treatment = trt_group, Facet = visit_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+    arrange(.data$Biomarker, .data$Facet, .data$TRTORD) %>% # drop variable
     select(-.data$TRTORD)
 
   # add analysis variable as first column
