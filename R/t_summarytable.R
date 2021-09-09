@@ -77,6 +77,12 @@ t_summarytable <- function(data,
                            xaxis_var,
                            visit_var = "AVISITCD",
                            loq_flag_var = "LOQFL", ...) {
+
+  if (trt_group == visit_var) {
+    data[paste0(visit_var, "_")] <- data[visit_var]
+    visit_var <- paste0(visit_var, "_")
+  }
+
   table_data <- data %>%
     filter(!!sym(param_var) == param)
 
