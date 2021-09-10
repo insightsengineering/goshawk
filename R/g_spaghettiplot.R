@@ -357,9 +357,11 @@ g_spaghettiplot <- function(data,
     plot <- plot +
       scale_color_manual(values = color_manual, name = trt_label)
   }
-
   # Add horizontal line for range based on option
-  range_color <- c(if_null(hline_vars_colors, seq(length(hline_vars))), if_not_null(hline_arb, hline_arb_color))
+  range_color <- c(
+    if_null(hline_vars_colors, if_not_null(hline_vars, seq(length(hline_vars)))),
+    if_not_null(hline_arb, hline_arb_color)
+  )
   if (!is.null(hline_arb)) {
     hline_vars <- c(hline_vars, new_hline_col)
     plot_data[new_hline_col] <- hline_arb
@@ -379,7 +381,7 @@ g_spaghettiplot <- function(data,
   plot <- plot +
     scale_linetype_manual(
       name = "Description of Horizontal Line(s)",
-      label = c(if_null(hline_vars_labels, hline_vars), if_not_null(hline_arb, hline_arb_label), agg_label),
+      label = c(if_null(c(hline_vars_labels, hline_arb_label), hline_vars), agg_label),
       values = c(rep(2, length(hline_vars)), if_not_null(agg_label, 1))
     ) +
     guides(linetype = guide_legend(override.aes = list(color = c(range_color, if_not_null(agg_label, color_comb))))) + # nolint
