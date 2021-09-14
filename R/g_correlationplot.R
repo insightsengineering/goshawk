@@ -208,8 +208,8 @@ g_correlationplot <- function(label = "Correlation Plot",
     select(.data$PARAM, .data$LBSTRESC)
 
   # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data
-  caption_loqs_label_x <- caption_loqs_label(loqs_data = xaxis_param_loqs_data)
-  caption_loqs_label_y <- caption_loqs_label(loqs_data = yaxis_param_loqs_data)
+  caption_loqs_label_x <- h_caption_loqs_label(loqs_data = xaxis_param_loqs_data)
+  caption_loqs_label_y <- h_caption_loqs_label(loqs_data = yaxis_param_loqs_data)
   caption_loqs_label_x_y <- paste0(union(caption_loqs_label_x, caption_loqs_label_y), collapse = "\n")
 
   # Setup legend label

@@ -134,7 +134,7 @@ g_boxplot <- function(data,
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # add footnote to identify LLOQ and ULOQ values pulled from data
-  caption_loqs_label <- caption_loqs_label(loqs_data = data)
+  caption_loqs_label <- h_caption_loqs_label(loqs_data = data)
   # Base plot
   plot1 <-  ggplot()
   # Add boxes if required
