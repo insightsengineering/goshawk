@@ -52,7 +52,7 @@ h_identify_loq_values <- function(loqs_data) {
   if (nrow(loq_values) == 0) {
     message(paste("Number of rows is:", nrow(loq_values)))
     loq_values <- data.frame(
-      PARAM = names(table(droplevels(loqs_data$PARAM))),
+      PARAM = names(table(droplevels(as.factor(loqs_data$PARAM)))),
       LLOQC = NA,
       LLOQN = NA,
       ULOQC = NA,
