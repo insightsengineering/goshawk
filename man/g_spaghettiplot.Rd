@@ -197,7 +197,7 @@ g_spaghettiplot(data = ALB,
                 hline_arb = NULL,
                 hline_arb_color = NULL,
                 hline_arb_label = NULL,
-                hline_vars = c("ANRHI", "ANRLO", "LLOQ_VALUE_N", "ULOQ_VALUE_N"),
+                hline_vars = c("ANRHI", "ANRLO", "LLOQN", "ULOQN"),
                 hline_vars_colors = c("pink", "brown", "purple", "gray"),
                 hline_vars_labels = NULL,
                 )

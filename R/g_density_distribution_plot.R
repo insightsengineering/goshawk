@@ -144,7 +144,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # Add footnote to identify LLOQ and ULOQ values pulled from data
-  caption_loqs_label <- caption_loqs_label(loqs_data = plot_data)
+  caption_loqs_label <- h_caption_loqs_label(loqs_data = plot_data)
 
   plot1 <- ggplot(plot_data) +
     stat_density(
