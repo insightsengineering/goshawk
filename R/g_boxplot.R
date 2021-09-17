@@ -30,11 +30,16 @@
 #'   required.
 #' @param xaxis_var variable used to group the data on the x-axis.
 #' @param facet_ncol number of facets per row.  NULL = Use the default for facet_wrap
-#' @param hline y-axis value to position a horizontal line.  NULL = No line
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
+#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color for hline_arb that will appear on the plot.
+#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
+#' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
 #'
 #' @importFrom utils.nest stop_if_not if_null
 #'
@@ -64,7 +69,6 @@
 #'           loq_legend = FALSE,
 #'           unit = "AVALU",
 #'           shape_manual = c("N" = 1, "Y" = 2, "NA" = NULL),
-#'           hline = NULL,
 #'           facet_var = "AVISIT",
 #'           xaxis_var = "STUDYID",
 #'           alpha = 0.5,
@@ -88,10 +92,15 @@ g_boxplot <- function(data,
                       dot_size = 2,
                       alpha = 1.0,
                       facet_ncol = NULL,
-                      hline = NULL,
                       rotate_xlab = FALSE,
                       font_size = NULL,
-                      facet_var = NULL
+                      facet_var = NULL,
+                      hline_arb = NULL,
+                      hline_arb_color = "red",
+                      hline_arb_label = NULL,
+                      hline_vars = NULL,
+                      hline_vars_colors = NULL,
+                      hline_vars_labels = NULL
 ) {
   stop_if_not(list(!is.null(data[[param_var]]), paste("param_var", param_var, "is not in data.")))
   stop_if_not(list(
