@@ -5,6 +5,7 @@
 * Added `error_on_lint: TRUE` to `.lintr`.
 * Added functionality to generate arbitrary number of horizontals to `g_spaghettiplot`.
 * Added functionality to generate arbitrary number of horizontals to `g_boxplot`.
+* Added functionality to generate arbitrary number of horizontals to `g_correlationplot`.
 
 # goshawk 0.1.9
 

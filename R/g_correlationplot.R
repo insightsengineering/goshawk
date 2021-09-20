@@ -32,7 +32,12 @@
 #' @param facet_var variable to use for treatment facetting.
 #' @param reg_line include regression line and annotations for slope and coefficient.
 #' Use with facet = TRUE.
-#' @param hline y-axis value to position a horizontal line.
+#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color for hline_arb that will appear on the plot.
+#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
+#' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
 #' @param vline x-axis value to position a vertical line.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
@@ -177,7 +182,12 @@ g_correlationplot <- function(label = "Correlation Plot",
                               facet = FALSE,
                               facet_var = "ARM",
                               reg_line = FALSE,
-                              hline = NULL,
+                              hline_arb = NULL,
+                              hline_arb_color = "red",
+                              hline_arb_label = NULL,
+                              hline_vars = NULL,
+                              hline_vars_colors = NULL,
+                              hline_vars_labels = NULL,
                               vline = NULL,
                               rotate_xlab = FALSE,
                               font_size = 12,
@@ -189,6 +199,12 @@ g_correlationplot <- function(label = "Correlation Plot",
     list(is_numeric_single(dot_size), "dot_size must be numeric."),
     list(dot_size >= 1, "dot_size must not be less than 1.")
     )
+
+  new_hline_col <- validate_hori_line_args(
+    data = data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
@@ -335,10 +351,21 @@ g_correlationplot <- function(label = "Correlation Plot",
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
   # Add horizontal line
-  if (!is.null(hline)) {
-    plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
-  }
+  # if (!is.null(hline)) {
+  #   plot1 <- plot1 +
+  #     geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
+  # }
+
+  plot1 <- add_horizontal_lines(
+    plot = plot1,
+    plot_data = plot_data,
+    agg_label = NULL,
+    color_comb = NULL,
+    new_hline_col = new_hline_col,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
+
   # Add vertical line
   if (!is.null(vline)) {
     plot1 <- plot1 +

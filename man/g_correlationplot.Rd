@@ -33,7 +33,12 @@ g_correlationplot(
   facet = FALSE,
   facet_var = "ARM",
   reg_line = FALSE,
-  hline = NULL,
+  hline_arb = NULL,
+  hline_arb_color = "red",
+  hline_arb_label = NULL,
+  hline_vars = NULL,
+  hline_vars_colors = NULL,
+  hline_vars_labels = NULL,
   vline = NULL,
   rotate_xlab = FALSE,
   font_size = 12,
@@ -99,7 +104,17 @@ g_correlationplot(
 \item{reg_line}{include regression line and annotations for slope and coefficient.
 Use with facet = TRUE.}
 
-\item{hline}{y-axis value to position a horizontal line.}
+\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+
+\item{hline_arb_color}{color for hline_arb that will appear on the plot.}
+
+\item{hline_arb_label}{label for hline_arb that will appear on the legend.}
+
+\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+
+\item{hline_vars_colors}{color(s) for the lines of hline_arb that will appear on the plot.}
+
+\item{hline_vars_labels}{labels(s) for hline_arb that will appear on the legend.}
 
 \item{vline}{x-axis value to position a vertical line.}
 
