@@ -111,7 +111,7 @@ h_caption_loqs_label <- function(loqs_data) {
 
 #' validate arbitrary horizontal lines
 #'
-validate_horizontal_line_arguments <- function(data,
+validate_hori_line_args <- function(data,
                                                hline_arb = NULL,
                                                hline_arb_color = "red",
                                                hline_arb_label = NULL,

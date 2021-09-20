@@ -196,7 +196,7 @@ g_spaghettiplot <- function(data,
                             hline_vars_colors = NULL,
                             hline_vars_labels = NULL) {
 
-  new_hline_col <- validate_horizontal_line_arguments(
+  new_hline_col <- validate_hori_line_args(
     data = data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels

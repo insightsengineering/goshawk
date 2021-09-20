@@ -108,7 +108,7 @@ g_boxplot <- function(data,
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
   stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
 
-  new_hline_col <- validate_horizontal_line_arguments(
+  new_hline_col <- validate_hori_line_args(
     data = data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
