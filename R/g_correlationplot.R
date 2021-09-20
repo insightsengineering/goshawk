@@ -350,11 +350,6 @@ g_correlationplot <- function(label = "Correlation Plot",
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
-  # Add horizontal line
-  # if (!is.null(hline)) {
-  #   plot1 <- plot1 +
-  #     geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
-  # }
 
   plot1 <- add_horizontal_lines(
     plot = plot1,
