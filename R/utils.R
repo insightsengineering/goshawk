@@ -108,3 +108,120 @@ h_caption_loqs_label <- function(loqs_data) {
   return(caption_loqs_label)
 
 }
+
+#' validate arbitrary horizontal lines
+#'
+validate_horizontal_line_arguments <- function(data,
+                                               hline_arb = NULL,
+                                               hline_arb_color = "red",
+                                               hline_arb_label = NULL,
+                                               hline_vars = NULL,
+                                               hline_vars_colors = NULL,
+                                               hline_vars_labels = NULL) {
+
+  new_hline_col <- if (!is.null(hline_arb)) {
+    if (is.null(hline_arb_color)) {
+      hline_arb_color <- "red"
+    } else {
+      stopifnot(is_character_single(hline_arb_color))
+    }
+    if (is.null(hline_arb_label)) {
+      hline_arb_label <- "Arbitrary Horizontal Line"
+    } else {
+      stopifnot(is_character_single(hline_arb_label))
+    }
+    stopifnot(is_numeric_single(hline_arb))
+
+    new_hline_col <- "Arbitrary_Horizontal_Line"
+    i <- 1
+    while (new_hline_col %in% names(data)) {
+      new_hline_col <- paste0(new_hline_col, "_", i)
+      i <- i + 1
+    }
+    new_hline_col
+  }
+
+  if (!is.null(hline_vars)) {
+    stopifnot(is_character_vector(hline_vars, min_length = 1, max_length = length(data)))
+    stopifnot(all(hline_vars %in% names(data)))
+    stopifnot(
+      all(vapply(
+        hline_vars,
+        FUN = function(x) is.numeric(data[[x]]) == 1,
+        FUN.VALUE = logical(1)
+      )
+      )
+    )
+    if (!is.null(hline_vars_labels)) {
+      stopifnot(is_character_vector(
+        hline_vars_labels, min_length = length(hline_vars),
+        max_length = (length(hline_vars)))
+      )
+    } else {
+      hline_vars_labels <- vapply(
+        hline_vars,
+        FUN = function(x) if_null(attributes(data[[x]])$label, ""),
+        FUN.VALUE = character(1)
+      )
+      hline_vars_labels <- vapply(
+        seq_along(hline_vars_labels),
+        FUN = function(x) `if`(hline_vars_labels[x] == "", hline_vars[x], hline_vars_labels[x]),
+        FUN.VALUE = character(1)
+      )
+    }
+    if (!is.null(hline_vars_colors)) {
+      stopifnot(is_character_vector(
+        hline_vars_colors,
+        min_length = length(hline_vars),
+        max_length = (length(hline_vars)))
+      )
+    }
+  }
+  return(new_hline_col)
+}
+
+#' Add horizontal lines and their legend labels to a plot
+#'
+add_horizontal_lines <- function(plot,
+                                 plot_data,
+                                 agg_label,
+                                 color_comb,
+                                 new_hline_col,
+                                 hline_arb = NULL,
+                                 hline_arb_color = "red",
+                                 hline_arb_label = NULL,
+                                 hline_vars = NULL,
+                                 hline_vars_colors = NULL,
+                                 hline_vars_labels = NULL) {
+
+  range_color <- c(
+    if_null(hline_vars_colors, if_not_null(hline_vars, seq(length(hline_vars)))),
+    if_not_null(hline_arb, hline_arb_color)
+  )
+  if (!is.null(hline_arb)) {
+    hline_vars <- c(hline_vars, new_hline_col)
+    plot_data[new_hline_col] <- hline_arb
+  }
+
+  j <- 1
+  for (i in hline_vars) {
+    plot <- plot +
+      geom_hline(
+        data = plot_data,
+        aes_(yintercept = plot_data[[i]][1], linetype = as.factor(paste0("dashed_", i))),
+        size = 0.5,
+        color = range_color[j]
+      )
+    j <- j + 1
+  }
+
+  plot <- plot +
+    scale_linetype_manual(
+      name = "Description of Horizontal Line(s)",
+      label = c(if_null(c(hline_vars_labels, hline_arb_label), hline_vars), agg_label),
+      values = c(rep(2, length(hline_vars)), if_not_null(agg_label, 1))
+    ) +
+    guides(linetype = guide_legend(override.aes = list(color = c(range_color, if_not_null(agg_label, color_comb))))) + # nolint
+    theme(legend.key.size = unit(0.5, "in"))
+}
+

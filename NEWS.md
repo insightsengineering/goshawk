@@ -3,6 +3,8 @@
 * Updated license and `README.md` with appropriate information for migration to public Github.
 * Updated g_spaghettiplot.R to include upper and lower normal range horizontal lines.
 * Added `error_on_lint: TRUE` to `.lintr`.
+* Added functionality to generate arbitrary number of horizontals to `g_spaghettiplot`.
+* Added functionality to generate arbitrary number of horizontals to `g_boxplot`.
 
 # goshawk 0.1.9
 

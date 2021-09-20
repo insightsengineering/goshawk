@@ -196,56 +196,11 @@ g_spaghettiplot <- function(data,
                             hline_vars_colors = NULL,
                             hline_vars_labels = NULL) {
 
-  new_hline_col <- if (!is.null(hline_arb)) {
-    if (is.null(hline_arb_color)) {
-      hline_arb_color <- "red"
-    } else {
-      stopifnot(is_character_single(hline_arb_color))
-    }
-    if (is.null(hline_arb_label)) {
-      hline_arb_label <- "Arbitrary Horizontal Line"
-    } else {
-      stopifnot(is_character_single(hline_arb_label))
-    }
-    stopifnot(is_numeric_single(hline_arb))
-    paste(names(data), collapse = "")
-  }
-  if (!is.null(hline_vars)) {
-    stopifnot(is_character_vector(hline_vars, min_length = 1, max_length = length(data)))
-    stopifnot(all(hline_vars %in% names(data)))
-    stopifnot(
-      all(vapply(
-        hline_vars,
-        FUN = function(x) is.numeric(data[[x]]) == 1,
-        FUN.VALUE = logical(1)
-      )
-      )
-    )
-    if (!is.null(hline_vars_labels)) {
-      stopifnot(is_character_vector(
-        hline_vars_labels, min_length = length(hline_vars),
-        max_length = (length(hline_vars)))
-      )
-    } else {
-      hline_vars_labels <- vapply(
-        hline_vars,
-        FUN = function(x) if_null(attributes(data[[x]])$label, ""),
-        FUN.VALUE = character(1)
-      )
-      hline_vars_labels <- vapply(
-        seq_along(hline_vars_labels),
-        FUN = function(x) `if`(hline_vars_labels[x] == "", hline_vars[x], hline_vars_labels[x]),
-        FUN.VALUE = character(1)
-      )
-    }
-    if (!is.null(hline_vars_colors)) {
-      stopifnot(is_character_vector(
-        hline_vars_colors,
-        min_length = length(hline_vars),
-        max_length = (length(hline_vars)))
-      )
-    }
-  }
+  new_hline_col <- validate_horizontal_line_arguments(
+    data = data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
@@ -358,34 +313,15 @@ g_spaghettiplot <- function(data,
       scale_color_manual(values = color_manual, name = trt_label)
   }
   # Add horizontal line for range based on option
-  range_color <- c(
-    if_null(hline_vars_colors, if_not_null(hline_vars, seq(length(hline_vars)))),
-    if_not_null(hline_arb, hline_arb_color)
+  plot <- add_horizontal_lines(
+    plot,
+    plot_data = plot_data,
+    agg_label = agg_label,
+    color_comb = color_comb,
+    new_hline_col = new_hline_col,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
   )
-  if (!is.null(hline_arb)) {
-    hline_vars <- c(hline_vars, new_hline_col)
-    plot_data[new_hline_col] <- hline_arb
-  }
-
-  j <- 1
-  for (i in hline_vars) {
-    plot <- plot +
-      geom_hline(
-        aes_(yintercept = plot_data[[i]][1], linetype = as.factor(paste0("dashed_", i))),
-        size = 0.5,
-        color = range_color[j]
-      )
-    j <- j + 1
-  }
-
-  plot <- plot +
-    scale_linetype_manual(
-      name = "Description of Horizontal Line(s)",
-      label = c(if_null(c(hline_vars_labels, hline_arb_label), hline_vars), agg_label),
-      values = c(rep(2, length(hline_vars)), if_not_null(agg_label, 1))
-    ) +
-    guides(linetype = guide_legend(override.aes = list(color = c(range_color, if_not_null(agg_label, color_comb))))) + # nolint
-    theme(legend.key.size = unit(0.5, "in"))
 
   # Format font size
   if (!is.null(font_size)) {

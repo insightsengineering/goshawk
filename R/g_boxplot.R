@@ -108,9 +108,16 @@ g_boxplot <- function(data,
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
   stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
 
+  new_hline_col <- validate_horizontal_line_arguments(
+    data = data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
+
   # filter input data
   data <- data %>%
     filter(!!sym(param_var) == biomarker)
+
   if (!is.null(unit)) {
     # check unit is in the dataset
     stop_if_not(list(!is.null(data[[unit]]), paste("unit variable", unit, "is not in data.")))
@@ -163,11 +170,7 @@ g_boxplot <- function(data,
     if (length(x) == 0) return(FALSE)
     return(is.finite(x))
   }
-  # Add horizontal line
-  if (is_finite(hline)) {
-    plot1 <- plot1 +
-      geom_hline(yintercept = hline, color = "red", linetype = "dashed", size = 0.5)
-  }
+
   plot1 <- plot1 +
     labs(color = trt_label, x = NULL, y = y_axis_label, caption = caption_loqs_label) +
     theme_bw() +
@@ -220,6 +223,16 @@ g_boxplot <- function(data,
       }
     }
   }
+  # Add horizontal line for range based on option
+  plot1 <- add_horizontal_lines(
+    plot = plot1,
+    plot_data = data,
+    agg_label = NULL,
+    color_comb = NULL,
+    new_hline_col = new_hline_col,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
 
   # Format font size
   if (is_finite(font_size)) {
