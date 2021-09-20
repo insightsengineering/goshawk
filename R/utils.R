@@ -224,4 +224,3 @@ add_horizontal_lines <- function(plot,
     guides(linetype = guide_legend(override.aes = list(color = c(range_color, if_not_null(agg_label, color_comb))))) + # nolint
     theme(legend.key.size = unit(0.5, "in"))
 }
-
