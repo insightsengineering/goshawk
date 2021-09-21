@@ -196,11 +196,14 @@ g_spaghettiplot <- function(data,
                             hline_vars_colors = NULL,
                             hline_vars_labels = NULL) {
 
-  new_hline_col <- validate_hori_line_args(
+  validated_res <- validate_hori_line_args(
     data = data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
   )
+
+  new_hline_col <- validated_res$new_hline_col
+  hline_vars_labels <- validated_res$hline_vars_labels
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")

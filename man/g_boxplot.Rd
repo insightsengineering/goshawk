@@ -113,6 +113,24 @@ library(scda)
 
 ADSL <- synthetic_cdisc_data("latest")$adsl
 ADLB <- synthetic_cdisc_data("latest")$adlb
+ADLB <- ADLB \%>\%
+  mutate(ANRLO = 50, ANRHI = 75) \%>\%
+  rowwise() \%>\%
+  group_by(PARAMCD) \%>\%
+  mutate(LBSTRESC = ifelse(
+    USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
+    paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) \%>\%
+  mutate(LBSTRESC = ifelse(
+    USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
+    paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) \%>\%
+  ungroup()
+attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
+attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+
+# add LLOQ and ULOQ variables
+ALB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+ADLB <- left_join(ADLB, ALB_LOQS, by = "PARAM")
 
 g_boxplot(ADLB,
           biomarker = "CRP",
@@ -126,9 +144,14 @@ g_boxplot(ADLB,
           facet_var = "AVISIT",
           xaxis_var = "STUDYID",
           alpha = 0.5,
-          rotate_xlab = TRUE
+          rotate_xlab = TRUE,
+          hline_arb = 30,
+          hline_arb_color = "blue",
+          hline_arb_label = "Hori_line_label",
+          hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
+          hline_vars_colors = c("pink", "brown", "purple", "gray"),
+          hline_vars_labels =  NULL
           )
-
 }
 \author{
 Balazs Toth
