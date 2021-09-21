@@ -14,6 +14,21 @@ validate_hori_line_args(
   hline_vars_labels = NULL
 )
 }
+\arguments{
+\item{data}{data frame with variables which will be displayed in the plot.}
+
+\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+
+\item{hline_arb_color}{color for hline_arb that will appear on the plot.}
+
+\item{hline_arb_label}{label for hline_arb that will appear on the legend.}
+
+\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+
+\item{hline_vars_colors}{color(s) for the lines of hline_arb that will appear on the plot.}
+
+\item{hline_vars_labels}{labels(s) for hline_arb that will appear on the legend.}
+}
 \description{
 validate arbitrary horizontal lines
 }
