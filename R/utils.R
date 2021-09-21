@@ -110,6 +110,13 @@ h_caption_loqs_label <- function(loqs_data) {
 
 #' validate arbitrary horizontal lines
 #'
+#' @param data data frame with variables which will be displayed in the plot.
+#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color for hline_arb that will appear on the plot.
+#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
+#' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
 validate_hori_line_args <- function(data,
                                     hline_arb = NULL,
                                     hline_arb_color = "red",
@@ -182,11 +189,22 @@ validate_hori_line_args <- function(data,
 
 #' Add horizontal lines and their legend labels to a plot
 #'
+#' @param plot the ggplot2 plot object which the horizontal lines should be added to
+#' @param plot_data data frame with variables which will be displayed in the plot.
+#' @param agg_label label for the line denoting the Mean or Median.
+#' @param color_comb character denoting the color of the Mean or Median line.
+#' @param new_hline_col the name of the column to be added to plot_data that will hold the single value for hline_arb
+#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color for hline_arb that will appear on the plot.
+#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
+#' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
 add_horizontal_lines <- function(plot,
                                  plot_data,
-                                 agg_label,
-                                 color_comb,
-                                 new_hline_col,
+                                 agg_label = NULL,
+                                 color_comb = NULL,
+                                 new_hline_col = NULL,
                                  hline_arb = NULL,
                                  hline_arb_color = "red",
                                  hline_arb_label = NULL,
@@ -215,7 +233,7 @@ add_horizontal_lines <- function(plot,
     j <- j + 1
   }
 
-  plot <- plot +
+  plot +
     scale_linetype_manual(
       name = "Description of Horizontal Line(s)",
       label = c(if_null(c(hline_vars_labels, hline_arb_label), hline_vars), agg_label),
