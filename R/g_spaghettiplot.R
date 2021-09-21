@@ -141,7 +141,7 @@
 #'                 hline_arb = NULL,
 #'                 hline_arb_color = NULL,
 #'                 hline_arb_label = NULL,
-#'                 hline_vars = c("ANRHI", "ANRLO", "LLOQN", "ULOQN"),
+#'                 hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
 #'                 hline_vars_colors = c("pink", "brown", "purple", "gray"),
 #'                 hline_vars_labels = NULL,
 #'                 )
@@ -163,7 +163,7 @@
 #'                 hline_arb = NULL,
 #'                 hline_arb_color = NULL,
 #'                 hline_arb_label = NULL,
-#'                 hline_vars = c("ANRLO", "ANRHI"),
+#'                 hline_vars = c("ANRHI", "ANRLO"),
 #'                 hline_vars_colors = NULL,
 #'                 hline_vars_labels = NULL,
 #'                 )
@@ -196,11 +196,14 @@ g_spaghettiplot <- function(data,
                             hline_vars_colors = NULL,
                             hline_vars_labels = NULL) {
 
-  new_hline_col <- validate_hori_line_args(
+  validated_res <- validate_hori_line_args(
     data = data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
   )
+
+  new_hline_col <- validated_res$new_hline_col
+  hline_vars_labels <- validated_res$hline_vars_labels
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")

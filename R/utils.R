@@ -50,7 +50,6 @@ h_identify_loq_values <- function(loqs_data) {
   # return LOQ data
   loq_values <- merge(lloq, uloq, by = "PARAM", all = TRUE)
   if (nrow(loq_values) == 0) {
-    message(paste("Number of rows is:", nrow(loq_values)))
     loq_values <- data.frame(
       PARAM = names(table(droplevels(as.factor(loqs_data$PARAM)))),
       LLOQC = NA,
@@ -112,12 +111,12 @@ h_caption_loqs_label <- function(loqs_data) {
 #' validate arbitrary horizontal lines
 #'
 validate_hori_line_args <- function(data,
-                                               hline_arb = NULL,
-                                               hline_arb_color = "red",
-                                               hline_arb_label = NULL,
-                                               hline_vars = NULL,
-                                               hline_vars_colors = NULL,
-                                               hline_vars_labels = NULL) {
+                                    hline_arb = NULL,
+                                    hline_arb_color = "red",
+                                    hline_arb_label = NULL,
+                                    hline_vars = NULL,
+                                    hline_vars_colors = NULL,
+                                    hline_vars_labels = NULL) {
 
   new_hline_col <- if (!is.null(hline_arb)) {
     if (is.null(hline_arb_color)) {
@@ -141,7 +140,7 @@ validate_hori_line_args <- function(data,
     new_hline_col
   }
 
-  if (!is.null(hline_vars)) {
+  hline_vars_labels <- if (!is.null(hline_vars)) {
     stopifnot(is_character_vector(hline_vars, min_length = 1, max_length = length(data)))
     stopifnot(all(hline_vars %in% names(data)))
     stopifnot(
@@ -176,8 +175,9 @@ validate_hori_line_args <- function(data,
         max_length = (length(hline_vars)))
       )
     }
+    hline_vars_labels
   }
-  return(new_hline_col)
+  return(list(new_hline_col = new_hline_col, hline_vars_labels = hline_vars_labels))
 }
 
 #' Add horizontal lines and their legend labels to a plot

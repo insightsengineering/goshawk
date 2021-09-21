@@ -59,6 +59,24 @@
 #'
 #' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' ADLB <- synthetic_cdisc_data("latest")$adlb
+#' ADLB <- ADLB %>%
+#'   mutate(ANRLO = 50, ANRHI = 75) %>%
+#'   rowwise() %>%
+#'   group_by(PARAMCD) %>%
+#'   mutate(LBSTRESC = ifelse(
+#'     USUBJID %in% sample(USUBJID, 1, replace = TRUE),
+#'     paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) %>%
+#'   mutate(LBSTRESC = ifelse(
+#'     USUBJID %in% sample(USUBJID, 1, replace = TRUE),
+#'     paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) %>%
+#'   ungroup()
+#' attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
+#' attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+#' attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+#'
+#' # add LLOQ and ULOQ variables
+#' ALB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+#' ADLB <- left_join(ADLB, ALB_LOQS, by = "PARAM")
 #'
 #' g_boxplot(ADLB,
 #'           biomarker = "CRP",
@@ -72,9 +90,14 @@
 #'           facet_var = "AVISIT",
 #'           xaxis_var = "STUDYID",
 #'           alpha = 0.5,
-#'           rotate_xlab = TRUE
+#'           rotate_xlab = TRUE,
+#'           hline_arb = 30,
+#'           hline_arb_color = "blue",
+#'           hline_arb_label = "Hori_line_label",
+#'           hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
+#'           hline_vars_colors = c("pink", "brown", "purple", "gray"),
+#'           hline_vars_labels =  NULL
 #'           )
-#'
 g_boxplot <- function(data,
                       biomarker,
                       param_var = "PARAMCD",
@@ -108,11 +131,14 @@ g_boxplot <- function(data,
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
   stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
 
-  new_hline_col <- validate_hori_line_args(
+  validated_res <- validate_hori_line_args(
     data = data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
   )
+
+  new_hline_col <- validated_res$new_hline_col
+  hline_vars_labels <- validated_res$hline_vars_labels
 
   # filter input data
   data <- data %>%
@@ -223,6 +249,7 @@ g_boxplot <- function(data,
       }
     }
   }
+
   # Add horizontal line for range based on option
   plot1 <- add_horizontal_lines(
     plot = plot1,
