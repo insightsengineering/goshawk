@@ -192,7 +192,7 @@ validate_hori_line_args <- function(data,
 #' @param plot the ggplot2 plot object which the horizontal lines should be added to
 #' @param plot_data data frame with variables which will be displayed in the plot.
 #' @param agg_label label for the line denoting the Mean or Median.
-#' @param color_comb character denoting the color of the agg_label line.
+#' @param color_comb character denoting the color of the Mean or Median line.
 #' @param new_hline_col the name of the column to be added to plot_data that will hold the single value for hline_arb
 #' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
 #' @param hline_arb_color color for hline_arb that will appear on the plot.
