@@ -50,7 +50,6 @@ h_identify_loq_values <- function(loqs_data) {
   # return LOQ data
   loq_values <- merge(lloq, uloq, by = "PARAM", all = TRUE)
   if (nrow(loq_values) == 0) {
-    message(paste("Number of rows is:", nrow(loq_values)))
     loq_values <- data.frame(
       PARAM = names(table(droplevels(as.factor(loqs_data$PARAM)))),
       LLOQC = NA,
