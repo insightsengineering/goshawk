@@ -141,7 +141,7 @@
 #'                 hline_arb = NULL,
 #'                 hline_arb_color = NULL,
 #'                 hline_arb_label = NULL,
-#'                 hline_vars = c("ANRHI", "ANRLO", "LLOQN", "ULOQN"),
+#'                 hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
 #'                 hline_vars_colors = c("pink", "brown", "purple", "gray"),
 #'                 hline_vars_labels = NULL,
 #'                 )
@@ -163,7 +163,7 @@
 #'                 hline_arb = NULL,
 #'                 hline_arb_color = NULL,
 #'                 hline_arb_label = NULL,
-#'                 hline_vars = c("ANRLO", "ANRHI"),
+#'                 hline_vars = c("ANRHI", "ANRLO"),
 #'                 hline_vars_colors = NULL,
 #'                 hline_vars_labels = NULL,
 #'                 )
