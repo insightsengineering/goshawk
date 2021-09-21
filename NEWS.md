@@ -10,11 +10,11 @@
     - `g_correlationplot`
 
     - User modifications required
-      - `g_spaghettiplot` and `g_boxplot` update from hline argument to
-        - hline_arb, hline_arb_color and hline_arb_label
-      - `g_correlationplot` update from hline and vline arguments to 
-        - hline_arb_var, hline_arb_color and hline_arb_label
-        - vline_arb_var, vline_arb_color and vline_arb_label
+      - `g_spaghettiplot` and `g_boxplot` update from `hline` argument to
+        - `hline_arb`, `hline_arb_color` and `hline_arb_label`
+      - `g_correlationplot` update from `hline` and `vline` arguments to 
+        - `hline_arb_var`, `hline_arb_color` and `hline_arb_label`
+        - `vline_arb_var`, `vline_arb_color` and `vline_arb_label`
 
 * **New Feature(s)**
 
