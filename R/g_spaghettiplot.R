@@ -31,8 +31,8 @@
 #' @param hline_arb_color color for hline_arb that will appear on the plot.
 #' @param hline_arb_label label for hline_arb that will appear on the legend.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
-#' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
+#' @param hline_vars_colors color(s) for the lines of hline_vars that will appear on the plot.
+#' @param hline_vars_labels labels(s) for hline_vars that will appear on the legend.
 #'
 #'
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -56,9 +56,9 @@
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #'
 #' ASL <- synthetic_cdisc_data("latest")$adsl
-#' ALB <- synthetic_cdisc_data("latest")$adlb
-#' var_labels <- lapply(ALB, function(x) attributes(x)$label)
-#' ALB <- ALB %>%
+#' ADLB <- synthetic_cdisc_data("latest")$adlb
+#' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
+#' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
@@ -94,15 +94,15 @@
 #'   mutate(LBSTRESC = ifelse(USUBJID %in% sample(USUBJID, 1, replace = TRUE),
 #'   paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) %>%
 #'   ungroup
-#'   attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
-#'   attr(ALB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
-#'   attr(ALB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+#'   attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
+#'   attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+#'   attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
 #'
 #'   # add LLOQ and ULOQ variables
-#'   ALB_LOQS <- goshawk:::h_identify_loq_values(ALB)
-#'   ALB <- left_join(ALB, ALB_LOQS, by = "PARAM")
+#'   ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+#'   ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 #'
-#' g_spaghettiplot(data = ALB,
+#' g_spaghettiplot(data = ADLB,
 #'                 subj_id = "USUBJID",
 #'                 biomarker_var = "PARAMCD",
 #'                 biomarker = "CRP",
@@ -124,7 +124,7 @@
 #'                 hline_vars_labels = NULL,
 #'                 )
 #'
-#' g_spaghettiplot(data = ALB,
+#' g_spaghettiplot(data = ADLB,
 #'                 subj_id = "USUBJID",
 #'                 biomarker_var = "PARAMCD",
 #'                 biomarker = "CRP",
@@ -146,7 +146,7 @@
 #'                 hline_vars_labels = NULL,
 #'                 )
 #'
-#' g_spaghettiplot(data = ALB,
+#' g_spaghettiplot(data = ADLB,
 #'                 subj_id = "USUBJID",
 #'                 biomarker_var = "PARAMCD",
 #'                 biomarker = "CRP",
