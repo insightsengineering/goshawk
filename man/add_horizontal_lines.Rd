@@ -25,7 +25,7 @@ add_horizontal_lines(
 
 \item{agg_label}{label for the line denoting the Mean or Median.}
 
-\item{color_comb}{character denoting the color of the agg_label line.}
+\item{color_comb}{character denoting the color of the Mean or Median line.}
 
 \item{new_hline_col}{the name of the column to be added to plot_data that will hold the single value for hline_arb}
 
