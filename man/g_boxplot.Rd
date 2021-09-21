@@ -84,9 +84,9 @@ required.}
 
 \item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
 
-\item{hline_vars_colors}{color(s) for the lines of hline_arb that will appear on the plot.}
+\item{hline_vars_colors}{color(s) for the lines of hline_vars that will appear on the plot.}
 
-\item{hline_vars_labels}{labels(s) for hline_arb that will appear on the legend.}
+\item{hline_vars_labels}{labels(s) for hline_vars that will appear on the legend.}
 }
 \value{
 \code{ggplot} object
@@ -115,6 +115,26 @@ ADSL <- synthetic_cdisc_data("latest")$adsl
 ADLB <- synthetic_cdisc_data("latest")$adlb
 var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 ADLB <- ADLB \%>\%
+  mutate(AVISITCD = case_when(
+    AVISIT == "SCREENING" ~ "SCR",
+    AVISIT == "BASELINE" ~ "BL",
+    grepl("WEEK", AVISIT) ~
+      paste(
+        "W",
+        trimws(
+          substr(
+            AVISIT,
+            start = 6,
+            stop = str_locate(AVISIT, "DAY") - 1
+          )
+        )
+      ),
+    TRUE ~ NA_character_)) \%>\%
+  mutate(AVISITCDN = case_when(
+    AVISITCD == "SCR" ~ -2,
+    AVISITCD == "BL" ~ 0,
+    grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
+    TRUE ~ NA_real_)) \%>\%
   mutate(ANRLO = 50, ANRHI = 75) \%>\%
   rowwise() \%>\%
   group_by(PARAMCD) \%>\%
@@ -153,6 +173,7 @@ g_boxplot(ADLB,
           hline_vars_colors = c("pink", "brown", "purple", "gray"),
           hline_vars_labels =  NULL
           )
+
 }
 \author{
 Balazs Toth
