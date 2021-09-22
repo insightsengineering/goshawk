@@ -30,11 +30,16 @@
 #'   required.
 #' @param xaxis_var variable used to group the data on the x-axis.
 #' @param facet_ncol number of facets per row.  NULL = Use the default for facet_wrap
-#' @param hline y-axis value to position a horizontal line.  NULL = No line
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
+#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color for hline_arb that will appear on the plot.
+#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#' @param hline_vars_colors color(s) for the lines of hline_vars that will appear on the plot.
+#' @param hline_vars_labels labels(s) for hline_vars that will appear on the legend.
 #'
 #' @importFrom utils.nest stop_if_not if_null
 #'
@@ -54,6 +59,45 @@
 #'
 #' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' ADLB <- synthetic_cdisc_data("latest")$adlb
+#' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
+#' ADLB <- ADLB %>%
+#'   mutate(AVISITCD = case_when(
+#'     AVISIT == "SCREENING" ~ "SCR",
+#'     AVISIT == "BASELINE" ~ "BL",
+#'     grepl("WEEK", AVISIT) ~
+#'       paste(
+#'         "W",
+#'         trimws(
+#'           substr(
+#'             AVISIT,
+#'             start = 6,
+#'             stop = stringr::str_locate(AVISIT, "DAY") - 1
+#'           )
+#'         )
+#'       ),
+#'     TRUE ~ NA_character_)) %>%
+#'   mutate(AVISITCDN = case_when(
+#'     AVISITCD == "SCR" ~ -2,
+#'     AVISITCD == "BL" ~ 0,
+#'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
+#'     TRUE ~ NA_real_)) %>%
+#'   mutate(ANRLO = 50, ANRHI = 75) %>%
+#'   rowwise() %>%
+#'   group_by(PARAMCD) %>%
+#'   mutate(LBSTRESC = ifelse(
+#'     USUBJID %in% sample(USUBJID, 1, replace = TRUE),
+#'     paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) %>%
+#'   mutate(LBSTRESC = ifelse(
+#'     USUBJID %in% sample(USUBJID, 1, replace = TRUE),
+#'     paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) %>%
+#'   ungroup()
+#' attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
+#' attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+#' attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+#'
+#' # add LLOQ and ULOQ variables
+#' ALB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+#' ADLB <- left_join(ADLB, ALB_LOQS, by = "PARAM")
 #'
 #' g_boxplot(ADLB,
 #'           biomarker = "CRP",
@@ -64,11 +108,16 @@
 #'           loq_legend = FALSE,
 #'           unit = "AVALU",
 #'           shape_manual = c("N" = 1, "Y" = 2, "NA" = NULL),
-#'           hline = NULL,
 #'           facet_var = "AVISIT",
 #'           xaxis_var = "STUDYID",
 #'           alpha = 0.5,
-#'           rotate_xlab = TRUE
+#'           rotate_xlab = TRUE,
+#'           hline_arb = 30,
+#'           hline_arb_color = "blue",
+#'           hline_arb_label = "Hori_line_label",
+#'           hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
+#'           hline_vars_colors = c("pink", "brown", "purple", "gray"),
+#'           hline_vars_labels =  NULL
 #'           )
 #'
 g_boxplot <- function(data,
@@ -88,10 +137,15 @@ g_boxplot <- function(data,
                       dot_size = 2,
                       alpha = 1.0,
                       facet_ncol = NULL,
-                      hline = NULL,
                       rotate_xlab = FALSE,
                       font_size = NULL,
-                      facet_var = NULL
+                      facet_var = NULL,
+                      hline_arb = NULL,
+                      hline_arb_color = "red",
+                      hline_arb_label = NULL,
+                      hline_vars = NULL,
+                      hline_vars_colors = NULL,
+                      hline_vars_labels = NULL
 ) {
   stop_if_not(list(!is.null(data[[param_var]]), paste("param_var", param_var, "is not in data.")))
   stop_if_not(list(
@@ -99,9 +153,19 @@ g_boxplot <- function(data,
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
   stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
 
+  validated_res <- validate_hori_line_args(
+    data = data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
+
+  new_hline_col <- validated_res$new_hline_col
+  hline_vars_labels <- validated_res$hline_vars_labels
+
   # filter input data
   data <- data %>%
     filter(!!sym(param_var) == biomarker)
+
   if (!is.null(unit)) {
     # check unit is in the dataset
     stop_if_not(list(!is.null(data[[unit]]), paste("unit variable", unit, "is not in data.")))
@@ -154,11 +218,7 @@ g_boxplot <- function(data,
     if (length(x) == 0) return(FALSE)
     return(is.finite(x))
   }
-  # Add horizontal line
-  if (is_finite(hline)) {
-    plot1 <- plot1 +
-      geom_hline(yintercept = hline, color = "red", linetype = "dashed", size = 0.5)
-  }
+
   plot1 <- plot1 +
     labs(color = trt_label, x = NULL, y = y_axis_label, caption = caption_loqs_label) +
     theme_bw() +
@@ -211,6 +271,17 @@ g_boxplot <- function(data,
       }
     }
   }
+
+  # Add horizontal line for range based on option
+  plot1 <- add_horizontal_lines(
+    plot = plot1,
+    plot_data = data,
+    agg_label = NULL,
+    color_comb = NULL,
+    new_hline_col = new_hline_col,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
 
   # Format font size
   if (is_finite(font_size)) {

@@ -22,10 +22,15 @@ g_boxplot(
   dot_size = 2,
   alpha = 1,
   facet_ncol = NULL,
-  hline = NULL,
   rotate_xlab = FALSE,
   font_size = NULL,
-  facet_var = NULL
+  facet_var = NULL,
+  hline_arb = NULL,
+  hline_arb_color = "red",
+  hline_arb_label = NULL,
+  hline_vars = NULL,
+  hline_vars_colors = NULL,
+  hline_vars_labels = NULL
 )
 }
 \arguments{
@@ -64,14 +69,24 @@ Y-axis e.g. AVAL.}
 
 \item{facet_ncol}{number of facets per row.  NULL = Use the default for facet_wrap}
 
-\item{hline}{y-axis value to position a horizontal line.  NULL = No line}
-
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
 \item{font_size}{point size of tex to use.  NULL is use default size}
 
 \item{facet_var}{variable to facet the plot by, or "None" if no faceting
 required.}
+
+\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+
+\item{hline_arb_color}{color for hline_arb that will appear on the plot.}
+
+\item{hline_arb_label}{label for hline_arb that will appear on the legend.}
+
+\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+
+\item{hline_vars_colors}{color(s) for the lines of hline_vars that will appear on the plot.}
+
+\item{hline_vars_labels}{labels(s) for hline_vars that will appear on the legend.}
 }
 \value{
 \code{ggplot} object
@@ -98,6 +113,45 @@ library(scda)
 
 ADSL <- synthetic_cdisc_data("latest")$adsl
 ADLB <- synthetic_cdisc_data("latest")$adlb
+var_labels <- lapply(ADLB, function(x) attributes(x)$label)
+ADLB <- ADLB \%>\%
+  mutate(AVISITCD = case_when(
+    AVISIT == "SCREENING" ~ "SCR",
+    AVISIT == "BASELINE" ~ "BL",
+    grepl("WEEK", AVISIT) ~
+      paste(
+        "W",
+        trimws(
+          substr(
+            AVISIT,
+            start = 6,
+            stop = stringr::str_locate(AVISIT, "DAY") - 1
+          )
+        )
+      ),
+    TRUE ~ NA_character_)) \%>\%
+  mutate(AVISITCDN = case_when(
+    AVISITCD == "SCR" ~ -2,
+    AVISITCD == "BL" ~ 0,
+    grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
+    TRUE ~ NA_real_)) \%>\%
+  mutate(ANRLO = 50, ANRHI = 75) \%>\%
+  rowwise() \%>\%
+  group_by(PARAMCD) \%>\%
+  mutate(LBSTRESC = ifelse(
+    USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
+    paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) \%>\%
+  mutate(LBSTRESC = ifelse(
+    USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
+    paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) \%>\%
+  ungroup()
+attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
+attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+
+# add LLOQ and ULOQ variables
+ALB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+ADLB <- left_join(ADLB, ALB_LOQS, by = "PARAM")
 
 g_boxplot(ADLB,
           biomarker = "CRP",
@@ -108,11 +162,16 @@ g_boxplot(ADLB,
           loq_legend = FALSE,
           unit = "AVALU",
           shape_manual = c("N" = 1, "Y" = 2, "NA" = NULL),
-          hline = NULL,
           facet_var = "AVISIT",
           xaxis_var = "STUDYID",
           alpha = 0.5,
-          rotate_xlab = TRUE
+          rotate_xlab = TRUE,
+          hline_arb = 30,
+          hline_arb_color = "blue",
+          hline_arb_label = "Hori_line_label",
+          hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
+          hline_vars_colors = c("pink", "brown", "purple", "gray"),
+          hline_vars_labels =  NULL
           )
 
 }

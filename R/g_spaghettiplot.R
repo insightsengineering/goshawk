@@ -31,8 +31,8 @@
 #' @param hline_arb_color color for hline_arb that will appear on the plot.
 #' @param hline_arb_label label for hline_arb that will appear on the legend.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
-#' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
+#' @param hline_vars_colors color(s) for the lines of hline_vars that will appear on the plot.
+#' @param hline_vars_labels labels(s) for hline_vars that will appear on the legend.
 #'
 #'
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -56,9 +56,9 @@
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #'
 #' ASL <- synthetic_cdisc_data("latest")$adsl
-#' ALB <- synthetic_cdisc_data("latest")$adlb
-#' var_labels <- lapply(ALB, function(x) attributes(x)$label)
-#' ALB <- ALB %>%
+#' ADLB <- synthetic_cdisc_data("latest")$adlb
+#' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
+#' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
@@ -94,15 +94,15 @@
 #'   mutate(LBSTRESC = ifelse(USUBJID %in% sample(USUBJID, 1, replace = TRUE),
 #'   paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) %>%
 #'   ungroup
-#'   attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
-#'   attr(ALB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
-#'   attr(ALB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+#'   attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
+#'   attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+#'   attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
 #'
 #'   # add LLOQ and ULOQ variables
-#'   ALB_LOQS <- goshawk:::h_identify_loq_values(ALB)
-#'   ALB <- left_join(ALB, ALB_LOQS, by = "PARAM")
+#'   ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+#'   ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 #'
-#' g_spaghettiplot(data = ALB,
+#' g_spaghettiplot(data = ADLB,
 #'                 subj_id = "USUBJID",
 #'                 biomarker_var = "PARAMCD",
 #'                 biomarker = "CRP",
@@ -124,7 +124,7 @@
 #'                 hline_vars_labels = NULL,
 #'                 )
 #'
-#' g_spaghettiplot(data = ALB,
+#' g_spaghettiplot(data = ADLB,
 #'                 subj_id = "USUBJID",
 #'                 biomarker_var = "PARAMCD",
 #'                 biomarker = "CRP",
@@ -141,12 +141,12 @@
 #'                 hline_arb = NULL,
 #'                 hline_arb_color = NULL,
 #'                 hline_arb_label = NULL,
-#'                 hline_vars = c("ANRHI", "ANRLO", "LLOQN", "ULOQN"),
+#'                 hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
 #'                 hline_vars_colors = c("pink", "brown", "purple", "gray"),
 #'                 hline_vars_labels = NULL,
 #'                 )
 #'
-#' g_spaghettiplot(data = ALB,
+#' g_spaghettiplot(data = ADLB,
 #'                 subj_id = "USUBJID",
 #'                 biomarker_var = "PARAMCD",
 #'                 biomarker = "CRP",
@@ -163,7 +163,7 @@
 #'                 hline_arb = NULL,
 #'                 hline_arb_color = NULL,
 #'                 hline_arb_label = NULL,
-#'                 hline_vars = c("ANRLO", "ANRHI"),
+#'                 hline_vars = c("ANRHI", "ANRLO"),
 #'                 hline_vars_colors = NULL,
 #'                 hline_vars_labels = NULL,
 #'                 )
@@ -196,56 +196,14 @@ g_spaghettiplot <- function(data,
                             hline_vars_colors = NULL,
                             hline_vars_labels = NULL) {
 
-  new_hline_col <- if (!is.null(hline_arb)) {
-    if (is.null(hline_arb_color)) {
-      hline_arb_color <- "red"
-    } else {
-      stopifnot(is_character_single(hline_arb_color))
-    }
-    if (is.null(hline_arb_label)) {
-      hline_arb_label <- "Arbitrary Horizontal Line"
-    } else {
-      stopifnot(is_character_single(hline_arb_label))
-    }
-    stopifnot(is_numeric_single(hline_arb))
-    paste(names(data), collapse = "")
-  }
-  if (!is.null(hline_vars)) {
-    stopifnot(is_character_vector(hline_vars, min_length = 1, max_length = length(data)))
-    stopifnot(all(hline_vars %in% names(data)))
-    stopifnot(
-      all(vapply(
-        hline_vars,
-        FUN = function(x) is.numeric(data[[x]]) == 1,
-        FUN.VALUE = logical(1)
-      )
-      )
-    )
-    if (!is.null(hline_vars_labels)) {
-      stopifnot(is_character_vector(
-        hline_vars_labels, min_length = length(hline_vars),
-        max_length = (length(hline_vars)))
-      )
-    } else {
-      hline_vars_labels <- vapply(
-        hline_vars,
-        FUN = function(x) if_null(attributes(data[[x]])$label, ""),
-        FUN.VALUE = character(1)
-      )
-      hline_vars_labels <- vapply(
-        seq_along(hline_vars_labels),
-        FUN = function(x) `if`(hline_vars_labels[x] == "", hline_vars[x], hline_vars_labels[x]),
-        FUN.VALUE = character(1)
-      )
-    }
-    if (!is.null(hline_vars_colors)) {
-      stopifnot(is_character_vector(
-        hline_vars_colors,
-        min_length = length(hline_vars),
-        max_length = (length(hline_vars)))
-      )
-    }
-  }
+  validated_res <- validate_hori_line_args(
+    data = data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
+
+  new_hline_col <- validated_res$new_hline_col
+  hline_vars_labels <- validated_res$hline_vars_labels
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
@@ -358,34 +316,15 @@ g_spaghettiplot <- function(data,
       scale_color_manual(values = color_manual, name = trt_label)
   }
   # Add horizontal line for range based on option
-  range_color <- c(
-    if_null(hline_vars_colors, if_not_null(hline_vars, seq(length(hline_vars)))),
-    if_not_null(hline_arb, hline_arb_color)
+  plot <- add_horizontal_lines(
+    plot,
+    plot_data = plot_data,
+    agg_label = agg_label,
+    color_comb = color_comb,
+    new_hline_col = new_hline_col,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
   )
-  if (!is.null(hline_arb)) {
-    hline_vars <- c(hline_vars, new_hline_col)
-    plot_data[new_hline_col] <- hline_arb
-  }
-
-  j <- 1
-  for (i in hline_vars) {
-    plot <- plot +
-      geom_hline(
-        aes_(yintercept = plot_data[[i]][1], linetype = as.factor(paste0("dashed_", i))),
-        size = 0.5,
-        color = range_color[j]
-      )
-    j <- j + 1
-  }
-
-  plot <- plot +
-    scale_linetype_manual(
-      name = "Description of Horizontal Line(s)",
-      label = c(if_null(c(hline_vars_labels, hline_arb_label), hline_vars), agg_label),
-      values = c(rep(2, length(hline_vars)), if_not_null(agg_label, 1))
-    ) +
-    guides(linetype = guide_legend(override.aes = list(color = c(range_color, if_not_null(agg_label, color_comb))))) + # nolint
-    theme(legend.key.size = unit(0.5, "in"))
 
   # Format font size
   if (!is.null(font_size)) {

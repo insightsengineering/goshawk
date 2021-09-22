@@ -1,8 +1,27 @@
 # goshawk 0.1.9.9000
 * Update examples and documentations to `scda` synthetic data replacing `random.cdisc.data`.
 * Updated license and `README.md` with appropriate information for migration to public Github.
-* Updated g_spaghettiplot.R to include upper and lower normal range horizontal lines.
 * Added `error_on_lint: TRUE` to `.lintr`.
+* **Breaking Change(s)**
+
+  - Arbitrary horizontal and vertical line arguments in 
+    - `g_spaghettiplot`
+    - `g_boxplot`
+    - `g_correlationplot`
+
+    - User modifications required
+      - `g_spaghettiplot` and `g_boxplot` update from `hline` argument to
+        - `hline_arb`, `hline_arb_color` and `hline_arb_label`
+      - `g_correlationplot` update from `hline` and `vline` arguments to 
+        - `hline_arb_var`, `hline_arb_color` and `hline_arb_label`
+        - `vline_arb_var`, `vline_arb_color` and `vline_arb_label`
+
+* **New Feature(s)**
+
+  - Lab normal range and LOQs horizontal line feature in 
+    - `g_spaghettiplot`
+    - `g_boxplot`
+    - `g_correlationplot`
 
 # goshawk 0.1.9
 
