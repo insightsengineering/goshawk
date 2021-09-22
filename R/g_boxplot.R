@@ -71,7 +71,7 @@
 #'           substr(
 #'             AVISIT,
 #'             start = 6,
-#'             stop = str_locate(AVISIT, "DAY") - 1
+#'             stop = stringr::str_locate(AVISIT, "DAY") - 1
 #'           )
 #'         )
 #'       ),
