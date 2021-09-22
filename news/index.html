@@ -118,10 +118,57 @@
 <h1 class="page-header" data-toc-text="0.1.9.9000">
 <a href="#goshawk-0199000" class="anchor"></a>goshawk 0.1.9.9000</h1>
 <ul>
-<li>Update examples and documentations to <code>scda</code> synthetic data replacing <code>random.cdisc.data</code>.</li>
-<li>Updated license and <code>README.md</code> with appropriate information for migration to public Github.</li>
-<li>Updated g_spaghettiplot.R to include upper and lower normal range horizontal lines.</li>
-<li>Added <code>error_on_lint: TRUE</code> to <code>.lintr</code>.</li>
+<li><p>Update examples and documentations to <code>scda</code> synthetic data replacing <code>random.cdisc.data</code>.</p></li>
+<li><p>Updated license and <code>README.md</code> with appropriate information for migration to public Github.</p></li>
+<li><p>Added <code>error_on_lint: TRUE</code> to <code>.lintr</code>.</p></li>
+<li>
+<p><strong>Breaking Change(s)</strong></p>
+<ul>
+<li>Arbitrary horizontal and vertical line arguments in
+<ul>
+<li><p><code>g_spaghettiplot</code></p></li>
+<li><p><code>g_boxplot</code></p></li>
+<li><p><code>g_correlationplot</code></p></li>
+<li>
+<p>User modifications required</p>
+<ul>
+<li>
+<code>g_spaghettiplot</code> and <code>g_boxplot</code> update from <code>hline</code> argument to
+<ul>
+<li>
+<code>hline_arb</code>, <code>hline_arb_color</code> and <code>hline_arb_label</code>
+</li>
+</ul>
+</li>
+<li>
+<code>g_correlationplot</code> update from <code>hline</code> and <code>vline</code> arguments to
+<ul>
+<li>
+<code>hline_arb_var</code>, <code>hline_arb_color</code> and <code>hline_arb_label</code>
+</li>
+<li>
+<code>vline_arb_var</code>, <code>vline_arb_color</code> and <code>vline_arb_label</code>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>New Feature(s)</strong></p>
+<ul>
+<li>Lab normal range and LOQs horizontal line feature in
+<ul>
+<li><code>g_spaghettiplot</code></li>
+<li><code>g_boxplot</code></li>
+<li><code>g_correlationplot</code></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
     <div id="goshawk-019" class="section level1">

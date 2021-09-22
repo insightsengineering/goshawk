@@ -4,6 +4,9 @@
     <loc>https://insightsengineering.github.io/goshawk/index.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/goshawk/reference/add_horizontal_lines.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/g_boxplot.html</loc>
   </url>
   <url>
@@ -32,5 +35,8 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/t_summarytable.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/goshawk/reference/validate_hori_line_args.html</loc>
   </url>
 </urlset>

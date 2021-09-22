@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add footnote to identify LLOQ and ULOQ values identified from data — h_caption_loqs_label • goshawk</title>
+<title>Add horizontal lines and their legend labels to a plot — add_horizontal_lines • goshawk</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Add footnote to identify LLOQ and ULOQ values identified from data — h_caption_loqs_label" />
-<meta property="og:description" content="Add footnote to identify LLOQ and ULOQ values identified from data" />
+<meta property="og:title" content="Add horizontal lines and their legend labels to a plot — add_horizontal_lines" />
+<meta property="og:description" content="Add horizontal lines and their legend labels to a plot" />
 
 
 
@@ -111,33 +111,79 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add footnote to identify LLOQ and ULOQ values identified from data</h1>
+    <h1>Add horizontal lines and their legend labels to a plot</h1>
     
-    <div class="hidden name"><code>h_caption_loqs_label.Rd</code></div>
+    <div class="hidden name"><code>add_horizontal_lines.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Add footnote to identify LLOQ and ULOQ values identified from data</p>
+    <p>Add horizontal lines and their legend labels to a plot</p>
     </div>
 
-    <pre class="usage"><span class='fu'>h_caption_loqs_label</span><span class='op'>(</span><span class='va'>loqs_data</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>add_horizontal_lines</span><span class='op'>(</span>
+  <span class='va'>plot</span>,
+  <span class='va'>plot_data</span>,
+  agg_label <span class='op'>=</span> <span class='cn'>NULL</span>,
+  color_comb <span class='op'>=</span> <span class='cn'>NULL</span>,
+  new_hline_col <span class='op'>=</span> <span class='cn'>NULL</span>,
+  hline_arb <span class='op'>=</span> <span class='cn'>NULL</span>,
+  hline_arb_color <span class='op'>=</span> <span class='st'>"red"</span>,
+  hline_arb_label <span class='op'>=</span> <span class='cn'>NULL</span>,
+  hline_vars <span class='op'>=</span> <span class='cn'>NULL</span>,
+  hline_vars_colors <span class='op'>=</span> <span class='cn'>NULL</span>,
+  hline_vars_labels <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>loqs_data</th>
-      <td><p>(`data frame`)<br /> loqs_data data set containing assay data with potential LOQ values</p></td>
+      <th>plot</th>
+      <td><p>the ggplot2 plot object which the horizontal lines should be added to</p></td>
+    </tr>
+    <tr>
+      <th>plot_data</th>
+      <td><p>data frame with variables which will be displayed in the plot.</p></td>
+    </tr>
+    <tr>
+      <th>agg_label</th>
+      <td><p>label for the line denoting the Mean or Median.</p></td>
+    </tr>
+    <tr>
+      <th>color_comb</th>
+      <td><p>character denoting the color of the Mean or Median line.</p></td>
+    </tr>
+    <tr>
+      <th>new_hline_col</th>
+      <td><p>the name of the column to be added to plot_data that will hold the single value for hline_arb</p></td>
+    </tr>
+    <tr>
+      <th>hline_arb</th>
+      <td><p>numeric value identifying intercept for arbitrary horizontal line.</p></td>
+    </tr>
+    <tr>
+      <th>hline_arb_color</th>
+      <td><p>color for hline_arb that will appear on the plot.</p></td>
+    </tr>
+    <tr>
+      <th>hline_arb_label</th>
+      <td><p>label for hline_arb that will appear on the legend.</p></td>
+    </tr>
+    <tr>
+      <th>hline_vars</th>
+      <td><p>name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.</p></td>
+    </tr>
+    <tr>
+      <th>hline_vars_colors</th>
+      <td><p>color(s) for the lines of hline_arb that will appear on the plot.</p></td>
+    </tr>
+    <tr>
+      <th>hline_vars_labels</th>
+      <td><p>labels(s) for hline_arb that will appear on the legend.</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span>
-<span class='va'>caption_label</span> <span class='op'>&lt;-</span> <span class='fu'>goshawk</span><span class='fu'>:::</span><span class='fu'>h_caption_loqs_label</span><span class='op'>(</span>loqs_data <span class='op'>=</span> <span class='va'>ADLB</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
