@@ -200,11 +200,14 @@ g_correlationplot <- function(label = "Correlation Plot",
     list(dot_size >= 1, "dot_size must not be less than 1.")
     )
 
-  new_hline_col <- validate_hori_line_args(
+  validated_res <- validate_hori_line_args(
     data = data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
   )
+
+  new_hline_col <- validated_res$new_hline_col
+  hline_vars_labels <- validated_res$hline_vars_labels
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
