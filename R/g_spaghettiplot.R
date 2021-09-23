@@ -28,11 +28,11 @@
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
 #' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for hline_arb that will appear on the plot.
-#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_arb_color color for the arbitrary horizontal line.
+#' @param hline_arb_label legend label for the arbitrary horizontal line.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the lines of hline_vars that will appear on the plot.
-#' @param hline_vars_labels labels(s) for hline_vars that will appear on the legend.
+#' @param hline_vars_colors color(s) for the hline_vars.
+#' @param hline_vars_labels legend label(s) for the hline_vars.
 #'
 #'
 #' @author Wenyi Liu (wenyi.liu@roche.com)

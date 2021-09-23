@@ -4,25 +4,26 @@
 * Added `error_on_lint: TRUE` to `.lintr`.
 * **Breaking Change(s)**
 
-  - (1) Arbitrary horizontal and vertical line arguments in 
+  - Arbitrary horizontal and vertical line arguments in 
     - `g_spaghettiplot`
     - `g_boxplot`
     - `g_correlationplot`
-    
-  - (1) User modifications required
-    - `g_spaghettiplot` and `g_boxplot` update from hline argument to
-      - hline_arb, hline_arb_color and hline_arb_label
-    - `g_correlationplot` update from hline and vline arguments to 
-      - hline_arb_var, hline_arb_color and hline_arb_label
-      - vline_arb_var, vline_arb_color and vline_arb_label
-  
+
+    - User modifications required
+      - `g_spaghettiplot` and `g_boxplot` update from `hline` argument to
+        - `hline_arb`, `hline_arb_color` and `hline_arb_label`
+      - `g_correlationplot` update from `hline` and `vline` arguments to 
+        - `hline_arb_var`, `hline_arb_color` and `hline_arb_label`
+        - `vline_arb_var`, `vline_arb_color` and `vline_arb_label`
+
 * **New Feature(s)**
 
   - Lab normal range and LOQs horizontal line feature in 
     - `g_spaghettiplot`
     - `g_boxplot`
     - `g_correlationplot`
-    
+
+
 # goshawk 0.1.9
 
 * Updated `g_density_distribution_plot` legend to show lines not squares.

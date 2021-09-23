@@ -36,10 +36,12 @@ g_correlationplot(
   hline_arb = NULL,
   hline_arb_color = "red",
   hline_arb_label = NULL,
+  vline_arb = NULL,
+  vline_arb_color = "green",
+  vline_arb_label = NULL,
   hline_vars = NULL,
   hline_vars_colors = NULL,
   hline_vars_labels = NULL,
-  vline = NULL,
   rotate_xlab = FALSE,
   font_size = 12,
   dot_size = 2,
@@ -49,7 +51,7 @@ g_correlationplot(
 \arguments{
 \item{label}{text string to used to identify plot.}
 
-\item{data}{ADaM structured analysis laboratory data frame e.g. ALB.}
+\item{data}{ADaM structured analysis laboratory data frame e.g. ADLB.}
 
 \item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
@@ -106,17 +108,21 @@ Use with facet = TRUE.}
 
 \item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
 
-\item{hline_arb_color}{color for hline_arb that will appear on the plot.}
+\item{hline_arb_color}{color for the arbitrary horizontal line.}
 
-\item{hline_arb_label}{label for hline_arb that will appear on the legend.}
+\item{hline_arb_label}{legend label for the arbitrary horizontal line.}
+
+\item{vline_arb}{numeric value identifying intercept for arbitrary vertical line.}
+
+\item{vline_arb_color}{color for the arbitrary vertical line.}
+
+\item{vline_arb_label}{legend label for the arbitrary vertical.}
 
 \item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
 
-\item{hline_vars_colors}{color(s) for the lines of hline_arb that will appear on the plot.}
+\item{hline_vars_colors}{color(s) for the hline_vars.}
 
-\item{hline_vars_labels}{labels(s) for hline_arb that will appear on the legend.}
-
-\item{vline}{x-axis value to position a vertical line.}
+\item{hline_vars_labels}{legend label(s) for the hline_vars.}
 
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
@@ -151,9 +157,9 @@ color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" =
 shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 
 ASL <- synthetic_cdisc_data("latest")$adsl
-ALB <- synthetic_cdisc_data("latest")$adlb
-var_labels <- lapply(ALB, function(x) attributes(x)$label)
-ALB <- ALB \%>\%
+ADLB <- synthetic_cdisc_data("latest")$adlb
+var_labels <- lapply(ADLB, function(x) attributes(x)$label)
+ADLB <- ADLB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
@@ -181,10 +187,10 @@ ALB <- ALB \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
   reorder(TRTORD))
-attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 
 # given the 2 param and 2 analysis vars we need to transform the data
-plot_data_t1 <- ALB \%>\%
+plot_data_t1 <- ADLB \%>\%
   gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL) \%>\%
   mutate(ANL.PARAM = ifelse(ANLVARS \%in\% c("PARAM", "LBSTRESC", "LOQFL"),
                             paste0(ANLVARS, "_", PARAMCD),
@@ -198,7 +204,11 @@ plot_data_t1 <- ALB \%>\%
 plot_data_t2 <- plot_data_t1 \%>\%
   filter(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) \%>\%
   mutate_at(vars(contains(".")), as.numeric) \%>\%
-  mutate(LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"))
+  mutate(
+    LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"),
+    ANRLO = 50,
+    ANRHI = 75
+  )
 
 g_correlationplot(
   label = "Correlation Plot",
@@ -228,8 +238,15 @@ g_correlationplot(
   facet = FALSE,
   facet_var = "ARM",
   reg_line = FALSE,
-  hline = NULL,
-  vline = .5,
+  hline_arb = 70,
+  hline_arb_color = "gray",
+  hline_arb_label = "Hori_line_label",
+  vline_arb = 50,
+  vline_arb_color = "black",
+  vline_arb_label = "Vertical Line",
+  hline_vars = c("ANRHI", "ANRLO"),
+  hline_vars_colors = c("green", "blue"),
+  hline_vars_label =  c("ANRHI Label", "ANRLO Label"),
   rotate_xlab = FALSE,
   font_size = 14,
   dot_size = 2,

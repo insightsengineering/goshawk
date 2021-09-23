@@ -4,7 +4,7 @@
 #' treatment overlaid.
 #'
 #' @param label text string used to identify plot.
-#' @param data ADaM structured analysis laboratory data frame e.g. ALB.
+#' @param data ADaM structured analysis laboratory data frame e.g. ADLB.
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param param biomarker to visualize e.g. IGG.
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
@@ -43,9 +43,9 @@
 #' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #'
 #' ASL <- synthetic_cdisc_data("latest")$adsl
-#' ALB <- synthetic_cdisc_data("latest")$adlb
-#' var_labels <- lapply(ALB, function(x) attributes(x)$label)
-#' ALB <- ALB %>%
+#' ADLB <- synthetic_cdisc_data("latest")$adlb
+#' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
+#' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
@@ -73,10 +73,10 @@
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
-#' attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+#' attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 #'
 #' g_density_distribution_plot(label = "Density Distribution Plot",
-#'            data = ALB,
+#'            data = ADLB,
 #'            param_var = "PARAMCD",
 #'            param = c("CRP"),
 #'            xaxis_var = "AVAL",

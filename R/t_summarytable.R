@@ -2,7 +2,7 @@
 #'
 #' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment,
 #' visit,
-#' n, meand, median, sd, min, max, %missing values, % LOQ values.
+#' n, mean, median, sd, min, max, %missing values, % LOQ values.
 #'
 #' @param data name of data frame to summarize.
 #' @param trt_group treatment group variable name e.g. ARM.
@@ -32,8 +32,8 @@
 #' "C: Combination" = "Combination")
 #'
 #' ASL <- synthetic_cdisc_data("latest")$adsl
-#' ALB <- synthetic_cdisc_data("latest")$adlb
-#' ALB <- ALB %>%
+#' ADLB <- synthetic_cdisc_data("latest")$adlb
+#' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
@@ -62,7 +62,7 @@
 #'   mutate(ARM = factor(ARM) %>%
 #'   reorder(TRTORD))
 #'
-#' tbl <- t_summarytable(data = ALB,
+#' tbl <- t_summarytable(data = ADLB,
 #'                trt_group = "ARM",
 #'                param_var = "PARAMCD",
 #'                param = c("CRP"),
