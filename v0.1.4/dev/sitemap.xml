@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/index.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_boxplot.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_correlationplot.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_density_distribution_plot.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_lineplot.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_scatterplot.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/g_spaghettiplot.html</loc>
+  </url>
+  <url>
+    <loc>https://pages.github.roche.com/Rpackages/goshawk/reference/t_summarytable.html</loc>
+  </url>
+</urlset>
