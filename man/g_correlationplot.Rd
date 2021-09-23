@@ -39,7 +39,9 @@ g_correlationplot(
   hline_vars = NULL,
   hline_vars_colors = NULL,
   hline_vars_labels = NULL,
-  vline = NULL,
+  vline_arb = NULL,
+  vline_arb_color = "green",
+  vline_arb_label = NULL,
   rotate_xlab = FALSE,
   font_size = 12,
   dot_size = 2,
@@ -115,8 +117,6 @@ Use with facet = TRUE.}
 \item{hline_vars_colors}{color(s) for the lines of hline_arb that will appear on the plot.}
 
 \item{hline_vars_labels}{labels(s) for hline_arb that will appear on the legend.}
-
-\item{vline}{x-axis value to position a vertical line.}
 
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
@@ -198,7 +198,11 @@ plot_data_t1 <- ALB \%>\%
 plot_data_t2 <- plot_data_t1 \%>\%
   filter(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) \%>\%
   mutate_at(vars(contains(".")), as.numeric) \%>\%
-  mutate(LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"))
+  mutate(
+    LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"),
+    ANRLO = 50,
+    ANRHI = 75
+  )
 
 g_correlationplot(
   label = "Correlation Plot",
@@ -228,8 +232,15 @@ g_correlationplot(
   facet = FALSE,
   facet_var = "ARM",
   reg_line = FALSE,
-  hline = NULL,
-  vline = .5,
+  hline_arb = 70,
+  hline_arb_color = "gray",
+  hline_arb_label = "Hori_line_label",
+  hline_vars = c("ANRHI", "ANRLO"),
+  hline_vars_colors = c("green", "blue"),
+  hline_vars_label =  c("ANRHI Label", "ANRLO Label"),
+  vline_arb = 50,
+  vline_arb_color = "black",
+  vline_arb_label = "Vertical Line",
   rotate_xlab = FALSE,
   font_size = 14,
   dot_size = 2,

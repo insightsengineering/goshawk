@@ -38,7 +38,6 @@
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 #' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
 #' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
-#' @param vline x-axis value to position a vertical line.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param dot_size plot dot size.
@@ -116,7 +115,11 @@
 #' plot_data_t2 <- plot_data_t1 %>%
 #'   filter(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) %>%
 #'   mutate_at(vars(contains(".")), as.numeric) %>%
-#'   mutate(LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"))
+#'   mutate(
+#'     LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"),
+#'     ANRLO = 50,
+#'     ANRHI = 75
+#'   )
 #'
 #' g_correlationplot(
 #'   label = "Correlation Plot",
@@ -146,8 +149,15 @@
 #'   facet = FALSE,
 #'   facet_var = "ARM",
 #'   reg_line = FALSE,
-#'   hline = NULL,
-#'   vline = .5,
+#'   hline_arb = 70,
+#'   hline_arb_color = "gray",
+#'   hline_arb_label = "Hori_line_label",
+#'   hline_vars = c("ANRHI", "ANRLO"),
+#'   hline_vars_colors = c("green", "blue"),
+#'   hline_vars_label =  c("ANRHI Label", "ANRLO Label"),
+#'   vline_arb = 50,
+#'   vline_arb_color = "black",
+#'   vline_arb_label = "Vertical Line",
 #'   rotate_xlab = FALSE,
 #'   font_size = 14,
 #'   dot_size = 2,
@@ -188,7 +198,9 @@ g_correlationplot <- function(label = "Correlation Plot",
                               hline_vars = NULL,
                               hline_vars_colors = NULL,
                               hline_vars_labels = NULL,
-                              vline = NULL,
+                              vline_arb = NULL,
+                              vline_arb_color = "green",
+                              vline_arb_label = NULL,
                               rotate_xlab = FALSE,
                               font_size = 12,
                               dot_size = 2,
@@ -203,7 +215,8 @@ g_correlationplot <- function(label = "Correlation Plot",
   validated_res <- validate_hori_line_args(
     data = data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
-    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels,
+    vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label
   )
 
   new_hline_col <- validated_res$new_hline_col
@@ -357,17 +370,11 @@ g_correlationplot <- function(label = "Correlation Plot",
   plot1 <- add_horizontal_lines(
     plot = plot1,
     plot_data = plot_data,
-    agg_label = NULL,
-    color_comb = NULL,
     new_hline_col = new_hline_col,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
-    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels,
+    vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label
   )
 
-  # Add vertical line
-  if (!is.null(vline)) {
-    plot1 <- plot1 +
-      geom_vline(aes(xintercept = vline), color = "red", linetype = "dashed", size = 0.5)
-  }
   plot1
 }

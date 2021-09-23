@@ -117,13 +117,19 @@ h_caption_loqs_label <- function(loqs_data) {
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 #' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
 #' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
+#' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
+#' @param vline_arb_color color for vline_arb that will appear on the plot.
+#' @param vline_arb_label label for vline_arb that will appear on the legend.
 validate_hori_line_args <- function(data,
                                     hline_arb = NULL,
                                     hline_arb_color = "red",
                                     hline_arb_label = NULL,
                                     hline_vars = NULL,
                                     hline_vars_colors = NULL,
-                                    hline_vars_labels = NULL) {
+                                    hline_vars_labels = NULL,
+                                    vline_arb = NULL,
+                                    vline_arb_color = "green",
+                                    vline_arb_label = NULL) {
 
   new_hline_col <- if (!is.null(hline_arb)) {
     if (is.null(hline_arb_color)) {
@@ -184,6 +190,17 @@ validate_hori_line_args <- function(data,
     }
     hline_vars_labels
   }
+
+  if (!is.null(vline_arb)) {
+    if (!is.null(vline_arb_color)) {
+      stopifnot(is_character_single(vline_arb_color))
+    }
+    if (!is.null(vline_arb_label)) {
+      stopifnot(is_character_single(vline_arb_label))
+    }
+    stopifnot(is_numeric_single(vline_arb))
+  }
+
   return(list(new_hline_col = new_hline_col, hline_vars_labels = hline_vars_labels))
 }
 
@@ -200,6 +217,9 @@ validate_hori_line_args <- function(data,
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 #' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
 #' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
+#' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
+#' @param vline_arb_color color for vline_arb that will appear on the plot.
+#' @param vline_arb_label label for vline_arb that will appear on the legend.
 add_horizontal_lines <- function(plot,
                                  plot_data,
                                  agg_label = NULL,
@@ -210,7 +230,11 @@ add_horizontal_lines <- function(plot,
                                  hline_arb_label = NULL,
                                  hline_vars = NULL,
                                  hline_vars_colors = NULL,
-                                 hline_vars_labels = NULL) {
+                                 hline_vars_labels = NULL,
+                                 vline_arb = NULL,
+                                 vline_arb_color = "green",
+                                 vline_arb_label = NULL
+                                 ) {
 
   range_color <- c(
     if_null(hline_vars_colors, if_not_null(hline_vars, seq(length(hline_vars)))),
@@ -221,6 +245,14 @@ add_horizontal_lines <- function(plot,
     plot_data[new_hline_col] <- hline_arb
   }
 
+  draw_key_cust <- function(data, params, size) {
+    if (data$orientation == "horizontal") {
+      draw_key_path(data, params, size)
+    } else {
+      draw_key_vpath(data, params, size)
+    }
+  }
+
   j <- 1
   for (i in hline_vars) {
     plot <- plot +
@@ -228,17 +260,39 @@ add_horizontal_lines <- function(plot,
         data = plot_data,
         aes_(yintercept = plot_data[[i]][1], linetype = as.factor(paste0("dashed_", i))),
         size = 0.5,
-        color = range_color[j]
+        color = range_color[j],
+        key_glyph = draw_key_cust
       )
     j <- j + 1
   }
 
+  if (!is.null(vline_arb)) {
+    plot <- plot +
+      geom_vline(
+        aes(xintercept = vline_arb, linetype = "dashed"),
+        color = vline_arb_color,
+        size = 0.5,
+        key_glyph = draw_key_cust
+      )
+    vline_arb_label <- if_null(vline_arb_label, "")
+    vline_arb_color <- if_null(vline_arb_color, "green")
+  }
+
   plot +
     scale_linetype_manual(
-      name = "Description of Horizontal Line(s)",
-      label = c(if_null(c(hline_vars_labels, hline_arb_label), hline_vars), agg_label),
-      values = c(rep(2, length(hline_vars)), if_not_null(agg_label, 1))
+      name = paste0("Description of Horizontal ", if_not_null(vline_arb, "and Vertical "),  "Line(s)"),
+      label = c(
+        if_null(c(hline_vars_labels, hline_arb_label), hline_vars),
+        agg_label,
+        if_not_null(vline_arb, vline_arb_label)
+      ),
+      values = c(rep(2, length(hline_vars)), if_not_null(agg_label, 1), if_not_null(vline_arb, 2))
     ) +
-    guides(linetype = guide_legend(override.aes = list(color = c(range_color, if_not_null(agg_label, color_comb))))) + # nolint
+    guides(linetype = guide_legend(override.aes =
+      list(
+        color = c(range_color, if_not_null(agg_label, color_comb), if_not_null(vline_arb, vline_arb_color)),
+        orientation = c(rep("horizontal", length(c(hline_vars, agg_label))), if_not_null(vline_arb, "vertical")))
+      )
+    ) +
     theme(legend.key.size = unit(0.5, "in"))
 }

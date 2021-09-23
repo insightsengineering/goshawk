@@ -15,7 +15,10 @@ add_horizontal_lines(
   hline_arb_label = NULL,
   hline_vars = NULL,
   hline_vars_colors = NULL,
-  hline_vars_labels = NULL
+  hline_vars_labels = NULL,
+  vline_arb = NULL,
+  vline_arb_color = "green",
+  vline_arb_label = NULL
 )
 }
 \arguments{
@@ -40,6 +43,12 @@ add_horizontal_lines(
 \item{hline_vars_colors}{color(s) for the lines of hline_arb that will appear on the plot.}
 
 \item{hline_vars_labels}{labels(s) for hline_arb that will appear on the legend.}
+
+\item{vline_arb}{numeric value identifying intercept for arbitrary vertical line.}
+
+\item{vline_arb_color}{color for vline_arb that will appear on the plot.}
+
+\item{vline_arb_label}{label for vline_arb that will appear on the legend.}
 }
 \description{
 Add horizontal lines and their legend labels to a plot
