@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{validate_hori_line_args}
 \alias{validate_hori_line_args}
-\title{validate arbitrary horizontal lines}
+\title{validate horizontal line arguments}
 \usage{
 validate_hori_line_args(
   data,
@@ -39,5 +39,5 @@ validate_hori_line_args(
 \item{vline_arb_label}{label for the arbitrary vertical that will appear on the legend.}
 }
 \description{
-validate arbitrary horizontal lines
+validate horizontal line arguments
 }

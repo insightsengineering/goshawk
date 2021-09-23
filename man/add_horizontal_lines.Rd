@@ -10,6 +10,7 @@ add_horizontal_lines(
   agg_label = NULL,
   color_comb = NULL,
   new_hline_col = NULL,
+  new_vline_col = NULL,
   hline_arb = NULL,
   hline_arb_color = "red",
   hline_arb_label = NULL,
@@ -18,7 +19,10 @@ add_horizontal_lines(
   hline_vars_labels = NULL,
   vline_arb = NULL,
   vline_arb_color = "green",
-  vline_arb_label = NULL
+  vline_arb_label = NULL,
+  vline_vars = NULL,
+  vline_vars_colors = NULL,
+  vline_vars_labels = NULL
 )
 }
 \arguments{
@@ -32,6 +36,9 @@ add_horizontal_lines(
 
 \item{new_hline_col}{the name of the column to be added to plot_data that will hold the single value for
 the arbitrary horizontal line}
+
+\item{new_vline_col}{the name of the column to be added to plot_data that will hold the single value for
+the arbitrary vertical line}
 
 \item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
 
@@ -50,6 +57,12 @@ the arbitrary horizontal line}
 \item{vline_arb_color}{color for the arbitrary vertical line that will appear on the plot.}
 
 \item{vline_arb_label}{label for the arbitrary vertical that will appear on the legend.}
+
+\item{vline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+
+\item{vline_vars_colors}{color(s) for the vertical lines defined by variables that will appear on the plot.}
+
+\item{vline_vars_labels}{labels(s) for the vertical lines defined by variables that will appear on the legend.}
 }
 \description{
 Add horizontal lines and their legend labels to a plot

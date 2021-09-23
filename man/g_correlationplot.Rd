@@ -42,6 +42,9 @@ g_correlationplot(
   hline_vars = NULL,
   hline_vars_colors = NULL,
   hline_vars_labels = NULL,
+  vline_vars = NULL,
+  vline_vars_colors = NULL,
+  vline_vars_labels = NULL,
   rotate_xlab = FALSE,
   font_size = 12,
   dot_size = 2,
@@ -124,6 +127,12 @@ Use with facet = TRUE.}
 
 \item{hline_vars_labels}{legend label(s) for the hline_vars.}
 
+\item{vline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+
+\item{vline_vars_colors}{color(s) for the vline_vars.}
+
+\item{vline_vars_labels}{legend label(s) for the vline_vars.}
+
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
 \item{font_size}{font size control for title, x-axis label, y-axis label and legend.}
@@ -157,9 +166,9 @@ color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" =
 shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 
 ASL <- synthetic_cdisc_data("latest")$adsl
-ADLB <- synthetic_cdisc_data("latest")$adlb
-var_labels <- lapply(ADLB, function(x) attributes(x)$label)
-ADLB <- ADLB \%>\%
+ALB <- synthetic_cdisc_data("latest")$adlb
+var_labels <- lapply(ALB, function(x) attributes(x)$label)
+ALB <- ALB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
@@ -182,20 +191,36 @@ ADLB <- ADLB \%>\%
     TRUE ~ NA_real_)) \%>\%
   # use ARMCD values to order treatment in visualization legend
   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
-    ifelse(grepl("B", ARMCD), 2,
-      ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
+                         ifelse(grepl("B", ARMCD), 2,
+                                ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
-  reorder(TRTORD))
-attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
+           reorder(TRTORD)) \%>\%
+  mutate(ANRLO = 50, ANRHI = 75) \%>\%
+  rowwise() \%>\%
+  group_by(PARAMCD) \%>\%
+  mutate(LBSTRESC = ifelse(
+    USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
+    paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) \%>\%
+  mutate(LBSTRESC = ifelse(
+    USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
+    paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) \%>\%
+  ungroup()
+attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+attr(ALB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+
+# add LLOQ and ULOQ variables
+ALB_LOQS <- goshawk:::h_identify_loq_values(ALB)
+ALB <- left_join(ALB, ALB_LOQS, by = "PARAM")
 
 # given the 2 param and 2 analysis vars we need to transform the data
-plot_data_t1 <- ADLB \%>\%
+plot_data_t1 <- ALB \%>\%
   gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL) \%>\%
   mutate(ANL.PARAM = ifelse(ANLVARS \%in\% c("PARAM", "LBSTRESC", "LOQFL"),
                             paste0(ANLVARS, "_", PARAMCD),
                             paste0(ANLVARS, ".", PARAMCD))) \%>\%
-  select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) \%>\%
+  select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS, ANRLO, ANRHI) \%>\%
   spread(ANL.PARAM, ANLVALS)
 # the transformed analysis value variables are character and need to be converted to numeric for
 # ggplot
@@ -205,9 +230,7 @@ plot_data_t2 <- plot_data_t1 \%>\%
   filter(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) \%>\%
   mutate_at(vars(contains(".")), as.numeric) \%>\%
   mutate(
-    LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"),
-    ANRLO = 50,
-    ANRHI = 75
+    LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N")
   )
 
 g_correlationplot(
@@ -247,6 +270,9 @@ g_correlationplot(
   hline_vars = c("ANRHI", "ANRLO"),
   hline_vars_colors = c("green", "blue"),
   hline_vars_label =  c("ANRHI Label", "ANRLO Label"),
+  vline_vars = c("ANRHI", "ANRLO"),
+  vline_vars_colors = c("yellow", "cyan"),
+  vline_vars_labels =  c("ANRHI vert Label", "ANRLO vert Label"),
   rotate_xlab = FALSE,
   font_size = 14,
   dot_size = 2,
