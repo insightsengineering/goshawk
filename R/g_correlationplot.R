@@ -38,6 +38,9 @@
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 #' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
 #' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
+#' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
+#' @param vline_arb_color color for vline_arb that will appear on the plot.
+#' @param vline_arb_label label for vline_arb that will appear on the legend.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param dot_size plot dot size.

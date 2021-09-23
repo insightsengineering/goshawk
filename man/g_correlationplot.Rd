@@ -118,6 +118,12 @@ Use with facet = TRUE.}
 
 \item{hline_vars_labels}{labels(s) for hline_arb that will appear on the legend.}
 
+\item{vline_arb}{numeric value identifying intercept for arbitrary vertical line.}
+
+\item{vline_arb_color}{color for vline_arb that will appear on the plot.}
+
+\item{vline_arb_label}{label for vline_arb that will appear on the legend.}
+
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
 \item{font_size}{font size control for title, x-axis label, y-axis label and legend.}
