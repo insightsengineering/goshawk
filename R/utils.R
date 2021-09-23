@@ -112,14 +112,14 @@ h_caption_loqs_label <- function(loqs_data) {
 #'
 #' @param data data frame with variables which will be displayed in the plot.
 #' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for hline_arb that will appear on the plot.
-#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_arb_color color for the arbitrary horizontal line that will appear on the plot.
+#' @param hline_arb_label label for the arbitrary horizontal line that will appear on the legend.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
-#' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
+#' @param hline_vars_colors color(s) for the horizontal lines defined by variables that will appear on the plot.
+#' @param hline_vars_labels labels(s) for the horizontal lines defined by variables that will appear on the legend.
 #' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
-#' @param vline_arb_color color for vline_arb that will appear on the plot.
-#' @param vline_arb_label label for vline_arb that will appear on the legend.
+#' @param vline_arb_color color for the arbitrary vertical line that will appear on the plot.
+#' @param vline_arb_label label for the arbitrary vertical that will appear on the legend.
 validate_hori_line_args <- function(data,
                                     hline_arb = NULL,
                                     hline_arb_color = "red",
@@ -210,16 +210,17 @@ validate_hori_line_args <- function(data,
 #' @param plot_data data frame with variables which will be displayed in the plot.
 #' @param agg_label label for the line denoting the Mean or Median.
 #' @param color_comb character denoting the color of the Mean or Median line.
-#' @param new_hline_col the name of the column to be added to plot_data that will hold the single value for hline_arb
+#' @param new_hline_col the name of the column to be added to plot_data that will hold the single value for
+#'  the arbitrary horizontal line
 #' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for hline_arb that will appear on the plot.
-#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_arb_color color for the arbitrary horizontal line that will appear on the plot.
+#' @param hline_arb_label label for the arbitrary horizontal line that will appear on the legend.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
-#' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
+#' @param hline_vars_colors color(s) for the horizontal lines defined by variables that will appear on the plot.
+#' @param hline_vars_labels labels(s) for the horizontal lines defined by variables that will appear on the legend.
 #' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
-#' @param vline_arb_color color for vline_arb that will appear on the plot.
-#' @param vline_arb_label label for vline_arb that will appear on the legend.
+#' @param vline_arb_color color for the arbitrary vertical line that will appear on the plot.
+#' @param vline_arb_label label for the arbitrary vertical that will appear on the legend.
 add_horizontal_lines <- function(plot,
                                  plot_data,
                                  agg_label = NULL,

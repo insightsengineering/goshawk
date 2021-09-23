@@ -33,14 +33,14 @@
 #' @param reg_line include regression line and annotations for slope and coefficient.
 #' Use with facet = TRUE.
 #' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for hline_arb that will appear on the plot.
-#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_arb_color color for the arbitrary horizontal line that will appear on the plot.
+#' @param hline_arb_label label for the arbitrary horizontal line that will appear on the legend.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the lines of hline_arb that will appear on the plot.
-#' @param hline_vars_labels labels(s) for hline_arb that will appear on the legend.
+#' @param hline_vars_colors color(s) for the horizontal lines defined by variables that will appear on the plot.
+#' @param hline_vars_labels labels(s) for the horizontal lines defined by variables that will appear on the legend.
 #' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
-#' @param vline_arb_color color for vline_arb that will appear on the plot.
-#' @param vline_arb_label label for vline_arb that will appear on the legend.
+#' @param vline_arb_color color for the arbitrary vertical line that will appear on the plot.
+#' @param vline_arb_label label for the arbitrary vertical that will appear on the legend.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param dot_size plot dot size.
