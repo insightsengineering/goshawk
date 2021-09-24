@@ -3,6 +3,7 @@ url: https://insightsengineering.github.io/goshawk
 template:
   params:
     bootswatch: cerulean
+    ganalytics: "UA-125641273-1"
 
 navbar:
   right:
@@ -28,7 +29,11 @@ reference:
   - title: Helpers
     desc: These files are helper functions.
     contents:
-      - caption_loqs_label
+      - add_horizontal_lines
+      - h_caption_loqs_label
+      - h_identify_loq_values
+      - validate_hori_line_args
+      - validate_vert_line_args
 
   - title: Package Build Related
     desc: These files facilitate package build.
