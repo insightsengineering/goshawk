@@ -166,9 +166,9 @@ color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" =
 shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 
 ASL <- synthetic_cdisc_data("latest")$adsl
-ALB <- synthetic_cdisc_data("latest")$adlb
-var_labels <- lapply(ALB, function(x) attributes(x)$label)
-ALB <- ALB \%>\%
+ADLB <- synthetic_cdisc_data("latest")$adlb
+var_labels <- lapply(ADLB, function(x) attributes(x)$label)
+ADLB <- ADLB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
@@ -196,7 +196,19 @@ ALB <- ALB \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
            reorder(TRTORD)) \%>\%
-  mutate(ANRLO = 50, ANRHI = 75) \%>\%
+  mutate(
+  ANRHI = case_when(
+    PARAMCD == "ALT" ~ 60,
+    PARAMCD == "CRP" ~ 70,
+    PARAMCD == "IGA" ~ 80,
+    TRUE ~ NA_real_
+  ),
+  ANRLO = case_when(
+    PARAMCD == "ALT" ~ 20,
+    PARAMCD == "CRP" ~ 30,
+    PARAMCD == "IGA" ~ 40,
+    TRUE ~ NA_real_
+  )) \%>\%
   rowwise() \%>\%
   group_by(PARAMCD) \%>\%
   mutate(LBSTRESC = ifelse(
@@ -206,22 +218,23 @@ ALB <- ALB \%>\%
     USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
     paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) \%>\%
   ungroup()
-attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
-attr(ALB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
-attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
+attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
 
 # add LLOQ and ULOQ variables
-ALB_LOQS <- goshawk:::h_identify_loq_values(ALB)
-ALB <- left_join(ALB, ALB_LOQS, by = "PARAM")
+ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 
 # given the 2 param and 2 analysis vars we need to transform the data
-plot_data_t1 <- ALB \%>\%
-  gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL) \%>\%
+plot_data_t1 <- ADLB \%>\%
+  gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL, ANRHI, ANRLO, ULOQN, LLOQN) \%>\%
   mutate(ANL.PARAM = ifelse(ANLVARS \%in\% c("PARAM", "LBSTRESC", "LOQFL"),
                             paste0(ANLVARS, "_", PARAMCD),
                             paste0(ANLVARS, ".", PARAMCD))) \%>\%
-  select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS, ANRLO, ANRHI) \%>\%
+  select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) \%>\%
   spread(ANL.PARAM, ANLVALS)
+
 # the transformed analysis value variables are character and need to be converted to numeric for
 # ggplot
 # remove records where either of the analysis variables are NA since they will not appear on the
@@ -252,9 +265,9 @@ g_correlationplot(
   xmax = 80,
   ymin = 20,
   ymax = 80,
-  title_text = "Test",
-  xaxis_lab = "Test x",
-  yaxis_lab = "Test y",
+  title_text = "Correlation of ALT to CRP",
+  xaxis_lab = "CRP",
+  yaxis_lab = "ALT",
   color_manual = color_manual,
   shape_manual = shape_manual,
   facet_ncol = 4,
@@ -267,12 +280,12 @@ g_correlationplot(
   vline_arb = 50,
   vline_arb_color = "black",
   vline_arb_label = "Vertical Line",
-  hline_vars = c("ANRHI", "ANRLO"),
-  hline_vars_colors = c("green", "blue"),
-  hline_vars_label =  c("ANRHI Label", "ANRLO Label"),
-  vline_vars = c("ANRHI", "ANRLO"),
-  vline_vars_colors = c("yellow", "cyan"),
-  vline_vars_labels =  c("ANRHI vert Label", "ANRLO vert Label"),
+  hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
+  hline_vars_colors = c("green", "blue", "purple", "cyan"),
+  hline_vars_label =  c("ANRHI ALT Label", "ANRLO ALT Label", "ULOQN ALT Label", "LLOQN ALT Label"),
+  vline_vars = c("ANRHI.CRP", "ANRLO.CRP", "ULOQN.CRP", "LLOQN.CRP"),
+  vline_vars_colors = c("yellow", "orange", "brown", "gold"),
+  vline_vars_labels =  c("ANRHI CRP Label", "ANRLO CRP Label", "ULOQN CRP Label", "LLOQN CRP Label"),
   rotate_xlab = FALSE,
   font_size = 14,
   dot_size = 2,

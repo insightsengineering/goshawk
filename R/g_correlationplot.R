@@ -136,7 +136,8 @@
 #'
 #' # given the 2 param and 2 analysis vars we need to transform the data
 #' plot_data_t1 <- ADLB %>%
-#'   gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL, ANRHI, ANRLO, ULOQN, LLOQN) %>%
+#'   gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL,
+#'   ANRHI, ANRLO, ULOQN, LLOQN) %>%
 #'   mutate(ANL.PARAM = ifelse(ANLVARS %in% c("PARAM", "LBSTRESC", "LOQFL"),
 #'                             paste0(ANLVARS, "_", PARAMCD),
 #'                             paste0(ANLVARS, ".", PARAMCD))) %>%
@@ -190,10 +191,12 @@
 #'   vline_arb_label = "Vertical Line",
 #'   hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
 #'   hline_vars_colors = c("green", "blue", "purple", "cyan"),
-#'   hline_vars_label =  c("ANRHI ALT Label", "ANRLO ALT Label", "ULOQN ALT Label", "LLOQN ALT Label"),
+#'   hline_vars_label =  c("ANRHI ALT Label", "ANRLO ALT Label",
+#'   "ULOQN ALT Label", "LLOQN ALT Label"),
 #'   vline_vars = c("ANRHI.CRP", "ANRLO.CRP", "ULOQN.CRP", "LLOQN.CRP"),
 #'   vline_vars_colors = c("yellow", "orange", "brown", "gold"),
-#'   vline_vars_labels =  c("ANRHI CRP Label", "ANRLO CRP Label", "ULOQN CRP Label", "LLOQN CRP Label"),
+#'   vline_vars_labels =  c("ANRHI CRP Label", "ANRLO CRP Label",
+#'   "ULOQN CRP Label", "LLOQN CRP Label"),
 #'   rotate_xlab = FALSE,
 #'   font_size = 14,
 #'   dot_size = 2,
