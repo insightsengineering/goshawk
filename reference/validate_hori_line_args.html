@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>validate arbitrary horizontal lines — validate_hori_line_args • goshawk</title>
+<title>validate horizontal line arguments — validate_hori_line_args • goshawk</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="validate arbitrary horizontal lines — validate_hori_line_args" />
-<meta property="og:description" content="validate arbitrary horizontal lines" />
+<meta property="og:title" content="validate horizontal line arguments — validate_hori_line_args" />
+<meta property="og:description" content="validate horizontal line arguments" />
 
 
 
@@ -90,22 +90,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../v0.1.9/index.html">v0.1.9</a></li>
-   <li><a href="../v0.1.8/index.html">v0.1.8</a></li>
-   <li><a href="../v0.1.7/index.html">v0.1.7</a></li>
-   <li><a href="../v0.1.6/index.html">v0.1.6</a></li>
-   <li><a href="../v0.1.5/index.html">v0.1.5</a></li>
-   <li><a href="../v0.1.4/index.html">v0.1.4</a></li>
-   <li><a href="../v0.1.3/index.html">v0.1.3</a></li>
-   <li><a href="../v0.1.2/index.html">v0.1.2</a></li>
-   <li><a href="../v0.1.1/index.html">v0.1.1</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -127,13 +111,13 @@ Other releases
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>validate arbitrary horizontal lines</h1>
+    <h1>validate horizontal line arguments</h1>
     
     <div class="hidden name"><code>validate_hori_line_args.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>validate arbitrary horizontal lines</p>
+    <p>validate horizontal line arguments</p>
     </div>
 
     <pre class="usage"><span class='fu'>validate_hori_line_args</span><span class='op'>(</span>
@@ -143,7 +127,10 @@ Other releases
   hline_arb_label <span class='op'>=</span> <span class='cn'>NULL</span>,
   hline_vars <span class='op'>=</span> <span class='cn'>NULL</span>,
   hline_vars_colors <span class='op'>=</span> <span class='cn'>NULL</span>,
-  hline_vars_labels <span class='op'>=</span> <span class='cn'>NULL</span>
+  hline_vars_labels <span class='op'>=</span> <span class='cn'>NULL</span>,
+  vline_arb <span class='op'>=</span> <span class='cn'>NULL</span>,
+  vline_arb_color <span class='op'>=</span> <span class='st'>"green"</span>,
+  vline_arb_label <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -159,11 +146,11 @@ Other releases
     </tr>
     <tr>
       <th>hline_arb_color</th>
-      <td><p>color for hline_arb that will appear on the plot.</p></td>
+      <td><p>color for the arbitrary horizontal line that will appear on the plot.</p></td>
     </tr>
     <tr>
       <th>hline_arb_label</th>
-      <td><p>label for hline_arb that will appear on the legend.</p></td>
+      <td><p>label for the arbitrary horizontal line that will appear on the legend.</p></td>
     </tr>
     <tr>
       <th>hline_vars</th>
@@ -171,11 +158,23 @@ Other releases
     </tr>
     <tr>
       <th>hline_vars_colors</th>
-      <td><p>color(s) for the lines of hline_arb that will appear on the plot.</p></td>
+      <td><p>color(s) for the horizontal lines defined by variables that will appear on the plot.</p></td>
     </tr>
     <tr>
       <th>hline_vars_labels</th>
-      <td><p>labels(s) for hline_arb that will appear on the legend.</p></td>
+      <td><p>labels(s) for the horizontal lines defined by variables that will appear on the legend.</p></td>
+    </tr>
+    <tr>
+      <th>vline_arb</th>
+      <td><p>numeric value identifying intercept for arbitrary vertical line.</p></td>
+    </tr>
+    <tr>
+      <th>vline_arb_color</th>
+      <td><p>color for the arbitrary vertical line that will appear on the plot.</p></td>
+    </tr>
+    <tr>
+      <th>vline_arb_label</th>
+      <td><p>label for the arbitrary vertical that will appear on the legend.</p></td>
     </tr>
     </table>
 

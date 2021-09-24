@@ -91,22 +91,6 @@ treatment overlaid." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../v0.1.9/index.html">v0.1.9</a></li>
-   <li><a href="../v0.1.8/index.html">v0.1.8</a></li>
-   <li><a href="../v0.1.7/index.html">v0.1.7</a></li>
-   <li><a href="../v0.1.6/index.html">v0.1.6</a></li>
-   <li><a href="../v0.1.5/index.html">v0.1.5</a></li>
-   <li><a href="../v0.1.4/index.html">v0.1.4</a></li>
-   <li><a href="../v0.1.3/index.html">v0.1.3</a></li>
-   <li><a href="../v0.1.2/index.html">v0.1.2</a></li>
-   <li><a href="../v0.1.1/index.html">v0.1.1</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -169,7 +153,7 @@ treatment overlaid.</p>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>ADaM structured analysis laboratory data frame e.g. ALB.</p></td>
+      <td><p>ADaM structured analysis laboratory data frame e.g. ADLB.</p></td>
     </tr>
     <tr>
       <th>param_var</th>
@@ -261,9 +245,9 @@ option is most useful if the data only contains a single treatment group.</p></t
 <span class='va'>color_manual</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"150mg QD"</span> <span class='op'>=</span> <span class='st'>"#000000"</span>, <span class='st'>"Placebo"</span> <span class='op'>=</span> <span class='st'>"#3498DB"</span>, <span class='st'>"Combination"</span> <span class='op'>=</span> <span class='st'>"#E74C3C"</span><span class='op'>)</span>
 
 <span class='va'>ASL</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span>
-<span class='va'>ALB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span>
-<span class='va'>var_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>ALB</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>$</span><span class='va'>label</span><span class='op'>)</span>
-<span class='va'>ALB</span> <span class='op'>&lt;-</span> <span class='va'>ALB</span> <span class='op'>%&gt;%</span>
+<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span>
+<span class='va'>var_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>$</span><span class='va'>label</span><span class='op'>)</span>
+<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='va'>ADLB</span> <span class='op'>%&gt;%</span>
   <span class='fu'>mutate</span><span class='op'>(</span>AVISITCD <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
     <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"SCREENING"</span> <span class='op'>~</span> <span class='st'>"SCR"</span>,
     <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"BASELINE"</span> <span class='op'>~</span> <span class='st'>"BL"</span>,
@@ -291,10 +275,10 @@ option is most useful if the data only contains a single treatment group.</p></t
   <span class='fu'>mutate</span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span><span class='op'>(</span><span class='va'>ARM</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>mutate</span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>ARM</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>TRTORD</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>ALB</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>var_labels</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>
+<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>ADLB</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>var_labels</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>
 
 <span class='fu'>g_density_distribution_plot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Density Distribution Plot"</span>,
-           data <span class='op'>=</span> <span class='va'>ALB</span>,
+           data <span class='op'>=</span> <span class='va'>ADLB</span>,
            param_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
            param <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CRP"</span><span class='op'>)</span>,
            xaxis_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,

@@ -90,22 +90,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../v0.1.9/index.html">v0.1.9</a></li>
-   <li><a href="../v0.1.8/index.html">v0.1.8</a></li>
-   <li><a href="../v0.1.7/index.html">v0.1.7</a></li>
-   <li><a href="../v0.1.6/index.html">v0.1.6</a></li>
-   <li><a href="../v0.1.5/index.html">v0.1.5</a></li>
-   <li><a href="../v0.1.4/index.html">v0.1.4</a></li>
-   <li><a href="../v0.1.3/index.html">v0.1.3</a></li>
-   <li><a href="../v0.1.2/index.html">v0.1.2</a></li>
-   <li><a href="../v0.1.1/index.html">v0.1.1</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -175,8 +159,7 @@ Other releases
     </tr>
     <tr>
       <th>data</th>
-      <td><p>data frame with variables to be summarized and generate statistics which will display
-in the plot.</p></td>
+      <td><p>ADaM structured analysis laboratory data frame e.g. ADLB.</p></td>
     </tr>
     <tr>
       <th>biomarker_var</th>
@@ -316,11 +299,11 @@ quartile.</p>
 
 <span class='va'>ASL</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>(</span><span class='va'>ARM</span> <span class='op'>==</span> <span class='st'>"B: Placebo"</span> <span class='op'>&amp;</span> <span class='va'>AGE</span> <span class='op'>&lt;</span> <span class='fl'>40</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>ALB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span>
-<span class='va'>ALB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>right_join</a></span><span class='op'>(</span><span class='va'>ALB</span>, <span class='va'>ASL</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STUDYID"</span>, <span class='st'>"USUBJID"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("STUDYID", "USUBJID")</span></div><div class='input'><span class='va'>var_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>ALB</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>$</span><span class='va'>label</span><span class='op'>)</span>
+<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span>
+<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>right_join</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>ASL</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STUDYID"</span>, <span class='st'>"USUBJID"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("STUDYID", "USUBJID")</span></div><div class='input'><span class='va'>var_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>$</span><span class='va'>label</span><span class='op'>)</span>
 
-<span class='va'>ALB</span> <span class='op'>&lt;-</span> <span class='va'>ALB</span> <span class='op'>%&gt;%</span>
+<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='va'>ADLB</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITCD <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span>
     <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"SCREENING"</span> <span class='op'>~</span> <span class='st'>"SCR"</span>,
     <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"BASELINE"</span> <span class='op'>~</span> <span class='st'>"BL"</span>,
@@ -348,10 +331,10 @@ quartile.</p>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span><span class='op'>(</span><span class='va'>ARM</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>ARM</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>TRTORD</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>ALB</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>var_labels</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>
+<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>ADLB</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>var_labels</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>
 
 <span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='va'>ALB</span>,
+           data <span class='op'>=</span> <span class='va'>ADLB</span>,
            biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
            biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
            value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
@@ -368,7 +351,7 @@ quartile.</p>
            plot_height <span class='op'>=</span> <span class='fl'>600</span><span class='op'>)</span>
 </div><div class='img'><img src='g_lineplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='va'>ALB</span>,
+           data <span class='op'>=</span> <span class='va'>ADLB</span>,
            biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
            biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
            value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
@@ -385,7 +368,7 @@ quartile.</p>
            plot_height <span class='op'>=</span> <span class='fl'>600</span><span class='op'>)</span>
 </div><div class='img'><img src='g_lineplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='va'>ALB</span>,
+           data <span class='op'>=</span> <span class='va'>ADLB</span>,
            biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
            biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
            value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
@@ -404,7 +387,7 @@ quartile.</p>
            table_font_size <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span>
 </div><div class='img'><img src='g_lineplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='va'>ALB</span>,
+           data <span class='op'>=</span> <span class='va'>ADLB</span>,
            biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
            biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
            value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
@@ -421,7 +404,7 @@ quartile.</p>
            plot_height <span class='op'>=</span> <span class='fl'>600</span><span class='op'>)</span>
 </div><div class='img'><img src='g_lineplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>ALB</span>, <span class='va'>SEX</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"M"</span>, <span class='st'>"F"</span><span class='op'>)</span><span class='op'>)</span>,
+           data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>SEX</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"M"</span>, <span class='st'>"F"</span><span class='op'>)</span><span class='op'>)</span>,
            biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
            biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
            value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
@@ -438,7 +421,7 @@ quartile.</p>
            plot_height <span class='op'>=</span> <span class='fl'>1500</span><span class='op'>)</span>
 </div><div class='img'><img src='g_lineplot-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>ALB</span>, <span class='va'>SEX</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"M"</span>, <span class='st'>"F"</span><span class='op'>)</span><span class='op'>)</span>,
+           data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>SEX</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"M"</span>, <span class='st'>"F"</span><span class='op'>)</span><span class='op'>)</span>,
            biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
            biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
            value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,

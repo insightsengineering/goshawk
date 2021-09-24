@@ -100,22 +100,6 @@ midhinge, range, mid-range, and trimean." />
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="../v0.1.9/index.html">v0.1.9</a></li>
-   <li><a href="../v0.1.8/index.html">v0.1.8</a></li>
-   <li><a href="../v0.1.7/index.html">v0.1.7</a></li>
-   <li><a href="../v0.1.6/index.html">v0.1.6</a></li>
-   <li><a href="../v0.1.5/index.html">v0.1.5</a></li>
-   <li><a href="../v0.1.4/index.html">v0.1.4</a></li>
-   <li><a href="../v0.1.3/index.html">v0.1.3</a></li>
-   <li><a href="../v0.1.2/index.html">v0.1.2</a></li>
-   <li><a href="../v0.1.1/index.html">v0.1.1</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -190,7 +174,7 @@ midhinge, range, mid-range, and trimean.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>data frame with variables which will be displayed in the plot.</p></td>
+      <td><p>ADaM structured analysis laboratory data frame e.g. ADLB.</p></td>
     </tr>
     <tr>
       <th>biomarker</th>
@@ -227,7 +211,7 @@ Y-axis e.g. AVAL.</p></td>
     </tr>
     <tr>
       <th>color_manual</th>
-      <td><p>vector of colour for trt_group</p></td>
+      <td><p>vector of color for trt_group</p></td>
     </tr>
     <tr>
       <th>shape_manual</th>
@@ -276,11 +260,11 @@ required.</p></td>
     </tr>
     <tr>
       <th>hline_arb_color</th>
-      <td><p>color for hline_arb that will appear on the plot.</p></td>
+      <td><p>color for the arbitrary horizontal line.</p></td>
     </tr>
     <tr>
       <th>hline_arb_label</th>
-      <td><p>label for hline_arb that will appear on the legend.</p></td>
+      <td><p>legend label for the arbitrary horizontal line.</p></td>
     </tr>
     <tr>
       <th>hline_vars</th>
@@ -288,11 +272,11 @@ required.</p></td>
     </tr>
     <tr>
       <th>hline_vars_colors</th>
-      <td><p>color(s) for the lines of hline_vars that will appear on the plot.</p></td>
+      <td><p>color(s) for the hline_vars.</p></td>
     </tr>
     <tr>
       <th>hline_vars_labels</th>
-      <td><p>labels(s) for hline_vars that will appear on the legend.</p></td>
+      <td><p>legend label(s) for the hline_vars.</p></td>
     </tr>
     </table>
 
@@ -350,8 +334,8 @@ required.</p></td>
 <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>ADLB</span><span class='op'>[[</span><span class='st'>"ANRHI"</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Analysis Normal Range Upper Limit"</span>
 
 <span class='co'># add LLOQ and ULOQ variables</span>
-<span class='va'>ALB_LOQS</span> <span class='op'>&lt;-</span> <span class='fu'>goshawk</span><span class='fu'>:::</span><span class='fu'><a href='h_identify_loq_values.html'>h_identify_loq_values</a></span><span class='op'>(</span><span class='va'>ADLB</span><span class='op'>)</span>
-<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>ALB_LOQS</span>, by <span class='op'>=</span> <span class='st'>"PARAM"</span><span class='op'>)</span>
+<span class='va'>ADLB_LOQS</span> <span class='op'>&lt;-</span> <span class='fu'>goshawk</span><span class='fu'>:::</span><span class='fu'><a href='h_identify_loq_values.html'>h_identify_loq_values</a></span><span class='op'>(</span><span class='va'>ADLB</span><span class='op'>)</span>
+<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>ADLB_LOQS</span>, by <span class='op'>=</span> <span class='st'>"PARAM"</span><span class='op'>)</span>
 
 <span class='fu'>g_boxplot</span><span class='op'>(</span><span class='va'>ADLB</span>,
           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
