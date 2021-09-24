@@ -4,7 +4,7 @@
 #' symbol attributed LOQ values.
 #'
 #' @param label text string to used to identify plot.
-#' @param data ADaM structured analysis laboratory data frame e.g. ALB.
+#' @param data ADaM structured analysis laboratory data frame e.g. ADLB.
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param xaxis_param x-axis biomarker to visualize e.g. IGG.
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
@@ -32,8 +32,18 @@
 #' @param facet_var variable to use for treatment facetting.
 #' @param reg_line include regression line and annotations for slope and coefficient.
 #' Use with facet = TRUE.
-#' @param hline y-axis value to position a horizontal line.
-#' @param vline x-axis value to position a vertical line.
+#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color for the arbitrary horizontal line.
+#' @param hline_arb_label legend label for the arbitrary horizontal line.
+#' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
+#' @param vline_arb_color color for the arbitrary vertical line.
+#' @param vline_arb_label legend label for the arbitrary vertical.
+#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#' @param hline_vars_colors color(s) for the hline_vars.
+#' @param hline_vars_labels legend label(s) for the hline_vars.
+#' @param vline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#' @param vline_vars_colors color(s) for the vline_vars.
+#' @param vline_vars_labels legend label(s) for the vline_vars.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param dot_size plot dot size.
@@ -64,9 +74,9 @@
 #' shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 #'
 #' ASL <- synthetic_cdisc_data("latest")$adsl
-#' ALB <- synthetic_cdisc_data("latest")$adlb
-#' var_labels <- lapply(ALB, function(x) attributes(x)$label)
-#' ALB <- ALB %>%
+#' ADLB <- synthetic_cdisc_data("latest")$adlb
+#' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
+#' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
@@ -89,21 +99,51 @@
 #'     TRUE ~ NA_real_)) %>%
 #'   # use ARMCD values to order treatment in visualization legend
 #'   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
-#'     ifelse(grepl("B", ARMCD), 2,
-#'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
+#'                          ifelse(grepl("B", ARMCD), 2,
+#'                                 ifelse(grepl("A", ARMCD), 3, NA)))) %>%
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
-#'   reorder(TRTORD))
-#' attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+#'            reorder(TRTORD)) %>%
+#'   mutate(
+#'   ANRHI = case_when(
+#'     PARAMCD == "ALT" ~ 60,
+#'     PARAMCD == "CRP" ~ 70,
+#'     PARAMCD == "IGA" ~ 80,
+#'     TRUE ~ NA_real_
+#'   ),
+#'   ANRLO = case_when(
+#'     PARAMCD == "ALT" ~ 20,
+#'     PARAMCD == "CRP" ~ 30,
+#'     PARAMCD == "IGA" ~ 40,
+#'     TRUE ~ NA_real_
+#'   )) %>%
+#'   rowwise() %>%
+#'   group_by(PARAMCD) %>%
+#'   mutate(LBSTRESC = ifelse(
+#'     USUBJID %in% sample(USUBJID, 1, replace = TRUE),
+#'     paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) %>%
+#'   mutate(LBSTRESC = ifelse(
+#'     USUBJID %in% sample(USUBJID, 1, replace = TRUE),
+#'     paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) %>%
+#'   ungroup()
+#' attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
+#' attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+#' attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+#'
+#' # add LLOQ and ULOQ variables
+#' ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+#' ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 #'
 #' # given the 2 param and 2 analysis vars we need to transform the data
-#' plot_data_t1 <- ALB %>%
-#'   gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL) %>%
+#' plot_data_t1 <- ADLB %>%
+#'   gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL,
+#'   ANRHI, ANRLO, ULOQN, LLOQN) %>%
 #'   mutate(ANL.PARAM = ifelse(ANLVARS %in% c("PARAM", "LBSTRESC", "LOQFL"),
 #'                             paste0(ANLVARS, "_", PARAMCD),
 #'                             paste0(ANLVARS, ".", PARAMCD))) %>%
 #'   select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
 #'   spread(ANL.PARAM, ANLVALS)
+#'
 #' # the transformed analysis value variables are character and need to be converted to numeric for
 #' # ggplot
 #' # remove records where either of the analysis variables are NA since they will not appear on the
@@ -111,7 +151,9 @@
 #' plot_data_t2 <- plot_data_t1 %>%
 #'   filter(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) %>%
 #'   mutate_at(vars(contains(".")), as.numeric) %>%
-#'   mutate(LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N"))
+#'   mutate(
+#'     LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N")
+#'   )
 #'
 #' g_correlationplot(
 #'   label = "Correlation Plot",
@@ -132,17 +174,29 @@
 #'   xmax = 80,
 #'   ymin = 20,
 #'   ymax = 80,
-#'   title_text = "Test",
-#'   xaxis_lab = "Test x",
-#'   yaxis_lab = "Test y",
+#'   title_text = "Correlation of ALT to CRP",
+#'   xaxis_lab = "CRP",
+#'   yaxis_lab = "ALT",
 #'   color_manual = color_manual,
 #'   shape_manual = shape_manual,
 #'   facet_ncol = 4,
 #'   facet = FALSE,
 #'   facet_var = "ARM",
 #'   reg_line = FALSE,
-#'   hline = NULL,
-#'   vline = .5,
+#'   hline_arb = 70,
+#'   hline_arb_color = "gray",
+#'   hline_arb_label = "Hori_line_label",
+#'   vline_arb = 50,
+#'   vline_arb_color = "black",
+#'   vline_arb_label = "Vertical Line",
+#'   hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
+#'   hline_vars_colors = c("green", "blue", "purple", "cyan"),
+#'   hline_vars_label =  c("ANRHI ALT Label", "ANRLO ALT Label",
+#'   "ULOQN ALT Label", "LLOQN ALT Label"),
+#'   vline_vars = c("ANRHI.CRP", "ANRLO.CRP", "ULOQN.CRP", "LLOQN.CRP"),
+#'   vline_vars_colors = c("yellow", "orange", "brown", "gold"),
+#'   vline_vars_labels =  c("ANRHI CRP Label", "ANRLO CRP Label",
+#'   "ULOQN CRP Label", "LLOQN CRP Label"),
 #'   rotate_xlab = FALSE,
 #'   font_size = 14,
 #'   dot_size = 2,
@@ -177,8 +231,18 @@ g_correlationplot <- function(label = "Correlation Plot",
                               facet = FALSE,
                               facet_var = "ARM",
                               reg_line = FALSE,
-                              hline = NULL,
-                              vline = NULL,
+                              hline_arb = NULL,
+                              hline_arb_color = "red",
+                              hline_arb_label = NULL,
+                              vline_arb = NULL,
+                              vline_arb_color = "green",
+                              vline_arb_label = NULL,
+                              hline_vars = NULL,
+                              hline_vars_colors = NULL,
+                              hline_vars_labels = NULL,
+                              vline_vars = NULL,
+                              vline_vars_colors = NULL,
+                              vline_vars_labels = NULL,
                               rotate_xlab = FALSE,
                               font_size = 12,
                               dot_size = 2,
@@ -189,6 +253,22 @@ g_correlationplot <- function(label = "Correlation Plot",
     list(is_numeric_single(dot_size), "dot_size must be numeric."),
     list(dot_size >= 1, "dot_size must not be less than 1.")
     )
+
+  validated_res <- validate_hori_line_args(
+    data = data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
+  new_hline_col <- validated_res$new_hline_col
+  hline_vars_labels <- validated_res$hline_vars_labels
+
+  validated_res_vert <- validate_vert_line_args(
+    data = data,
+    vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label,
+    vline_vars = vline_vars, vline_vars_colors = vline_vars_colors, vline_vars_labels = vline_vars_labels
+  )
+  new_vline_col <- validated_res_vert$new_vline_col
+  vline_vars_labels <- validated_res_vert$vline_vars_labels
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
@@ -334,15 +414,17 @@ g_correlationplot <- function(label = "Correlation Plot",
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
-  # Add horizontal line
-  if (!is.null(hline)) {
-    plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
-  }
-  # Add vertical line
-  if (!is.null(vline)) {
-    plot1 <- plot1 +
-      geom_vline(aes(xintercept = vline), color = "red", linetype = "dashed", size = 0.5)
-  }
+
+  plot1 <- add_horizontal_lines(
+    plot = plot1,
+    plot_data = plot_data,
+    new_hline_col = new_hline_col,
+    new_vline_col = new_vline_col,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels,
+    vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label,
+    vline_vars = vline_vars, vline_vars_colors = vline_vars_colors, vline_vars_labels = vline_vars_labels,
+  )
+
   plot1
 }

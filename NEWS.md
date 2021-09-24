@@ -23,6 +23,7 @@
     - `g_boxplot`
     - `g_correlationplot`
 
+
 # goshawk 0.1.9
 
 * Updated `g_density_distribution_plot` legend to show lines not squares.

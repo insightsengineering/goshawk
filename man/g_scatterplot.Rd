@@ -36,7 +36,7 @@ g_scatterplot(
 \arguments{
 \item{label}{text string to used to identify plot.}
 
-\item{data}{ADaM structured analysis laboratory data frame e.g. ALB.}
+\item{data}{ADaM structured analysis laboratory data frame e.g. ADLB.}
 
 \item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
 
@@ -108,9 +108,9 @@ color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" 
 shape_manual <-  c("N" = 1, "Y" = 2, "NA" = 0)
 
 ASL <- synthetic_cdisc_data("latest")$adsl
-ALB <- synthetic_cdisc_data("latest")$adlb
-var_labels <- lapply(ALB, function(x) attributes(x)$label)
-ALB <- ALB \%>\%
+ADLB <- synthetic_cdisc_data("latest")$adlb
+var_labels <- lapply(ADLB, function(x) attributes(x)$label)
+ADLB <- ADLB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
@@ -138,10 +138,10 @@ ALB <- ALB \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
   reorder(TRTORD))
- attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+ attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 
 g_scatterplot(label = "Scatter Plot",
-           data = ALB,
+           data = ADLB,
            param_var = "PARAMCD",
            param = c("ALT"),
            xaxis_var = "BASE",

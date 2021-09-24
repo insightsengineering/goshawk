@@ -12,7 +12,7 @@
 #' to visually estimate various L-estimators, notably the interquartile range,
 #' midhinge, range, mid-range, and trimean.
 #'
-#' @param data data frame with variables which will be displayed in the plot.
+#' @param data ADaM structured analysis laboratory data frame e.g. ADLB.
 #' @param biomarker biomarker to visualize e.g. IGG.
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param yaxis_var name of variable containing biomarker results displayed on
@@ -21,7 +21,7 @@
 #' @param loq_flag_var  name of variable containing LOQ flag e.g. LOQFL.
 #' @param loq_legend `logical` whether to include LoQ legend.
 #' @param unit biomarker unit label e.g. (U/L)
-#' @param color_manual vector of colour for trt_group
+#' @param color_manual vector of color for trt_group
 #' @param shape_manual vector of shapes (used with loq_flag_var)
 #' @param box add boxes to the plot (boolean)
 #' @param ymin_scale minimum value for the Y axis
@@ -35,11 +35,11 @@
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
 #' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for hline_arb that will appear on the plot.
-#' @param hline_arb_label label for hline_arb that will appear on the legend.
+#' @param hline_arb_color color for the arbitrary horizontal line.
+#' @param hline_arb_label legend label for the arbitrary horizontal line.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the lines of hline_vars that will appear on the plot.
-#' @param hline_vars_labels labels(s) for hline_vars that will appear on the legend.
+#' @param hline_vars_colors color(s) for the hline_vars.
+#' @param hline_vars_labels legend label(s) for the hline_vars.
 #'
 #' @importFrom utils.nest stop_if_not if_null
 #'
@@ -96,8 +96,8 @@
 #' attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
 #'
 #' # add LLOQ and ULOQ variables
-#' ALB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
-#' ADLB <- left_join(ADLB, ALB_LOQS, by = "PARAM")
+#' ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+#' ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 #'
 #' g_boxplot(ADLB,
 #'           biomarker = "CRP",

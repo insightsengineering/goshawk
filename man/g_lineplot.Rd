@@ -37,8 +37,7 @@ g_lineplot(
 \arguments{
 \item{label}{text string to be displayed as plot label.}
 
-\item{data}{data frame with variables to be summarized and generate statistics which will display
-in the plot.}
+\item{data}{ADaM structured analysis laboratory data frame e.g. ADLB.}
 
 \item{biomarker_var}{name of variable containing biomarker names.}
 
@@ -124,11 +123,11 @@ type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "do
 
 ASL <- synthetic_cdisc_data("latest")$adsl \%>\%
   filter(!(ARM == "B: Placebo" & AGE < 40))
-ALB <- synthetic_cdisc_data("latest")$adlb
-ALB <- right_join(ALB, ASL[, c("STUDYID", "USUBJID")])
-var_labels <- lapply(ALB, function(x) attributes(x)$label)
+ADLB <- synthetic_cdisc_data("latest")$adlb
+ADLB <- right_join(ADLB, ASL[, c("STUDYID", "USUBJID")])
+var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 
-ALB <- ALB \%>\%
+ADLB <- ADLB \%>\%
   mutate(AVISITCD = case_when(
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
@@ -156,10 +155,10 @@ ALB <- ALB \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
   reorder(TRTORD))
-attr(ALB[["ARM"]], "label") <- var_labels[["ARM"]]
+attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 
 g_lineplot(label = "Line Plot",
-           data = ALB,
+           data = ADLB,
            biomarker_var = "PARAMCD",
            biomarker = "CRP",
            value_var = "AVAL",
@@ -176,7 +175,7 @@ g_lineplot(label = "Line Plot",
            plot_height = 600)
 
 g_lineplot(label = "Line Plot",
-           data = ALB,
+           data = ADLB,
            biomarker_var = "PARAMCD",
            biomarker = "CRP",
            value_var = "AVAL",
@@ -193,7 +192,7 @@ g_lineplot(label = "Line Plot",
            plot_height = 600)
 
 g_lineplot(label = "Line Plot",
-           data = ALB,
+           data = ADLB,
            biomarker_var = "PARAMCD",
            biomarker = "CRP",
            value_var = "AVAL",
@@ -212,7 +211,7 @@ g_lineplot(label = "Line Plot",
            table_font_size = 15)
 
 g_lineplot(label = "Line Plot",
-           data = ALB,
+           data = ADLB,
            biomarker_var = "PARAMCD",
            biomarker = "CRP",
            value_var = "AVAL",
@@ -229,7 +228,7 @@ g_lineplot(label = "Line Plot",
            plot_height = 600)
 
 g_lineplot(label = "Line Plot",
-           data = subset(ALB, SEX \%in\% c("M", "F")),
+           data = subset(ADLB, SEX \%in\% c("M", "F")),
            biomarker_var = "PARAMCD",
            biomarker = "CRP",
            value_var = "AVAL",
@@ -246,7 +245,7 @@ g_lineplot(label = "Line Plot",
            plot_height = 1500)
 
 g_lineplot(label = "Line Plot",
-           data = subset(ALB, SEX \%in\% c("M", "F")),
+           data = subset(ADLB, SEX \%in\% c("M", "F")),
            biomarker_var = "PARAMCD",
            biomarker = "CRP",
            value_var = "AVAL",

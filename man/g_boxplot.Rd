@@ -34,7 +34,7 @@ g_boxplot(
 )
 }
 \arguments{
-\item{data}{data frame with variables which will be displayed in the plot.}
+\item{data}{ADaM structured analysis laboratory data frame e.g. ADLB.}
 
 \item{biomarker}{biomarker to visualize e.g. IGG.}
 
@@ -53,7 +53,7 @@ Y-axis e.g. AVAL.}
 
 \item{unit}{biomarker unit label e.g. (U/L)}
 
-\item{color_manual}{vector of colour for trt_group}
+\item{color_manual}{vector of color for trt_group}
 
 \item{shape_manual}{vector of shapes (used with loq_flag_var)}
 
@@ -78,15 +78,15 @@ required.}
 
 \item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
 
-\item{hline_arb_color}{color for hline_arb that will appear on the plot.}
+\item{hline_arb_color}{color for the arbitrary horizontal line.}
 
-\item{hline_arb_label}{label for hline_arb that will appear on the legend.}
+\item{hline_arb_label}{legend label for the arbitrary horizontal line.}
 
 \item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
 
-\item{hline_vars_colors}{color(s) for the lines of hline_vars that will appear on the plot.}
+\item{hline_vars_colors}{color(s) for the hline_vars.}
 
-\item{hline_vars_labels}{labels(s) for hline_vars that will appear on the legend.}
+\item{hline_vars_labels}{legend label(s) for the hline_vars.}
 }
 \value{
 \code{ggplot} object
@@ -150,8 +150,8 @@ attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
 attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
 
 # add LLOQ and ULOQ variables
-ALB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
-ADLB <- left_join(ADLB, ALB_LOQS, by = "PARAM")
+ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 
 g_boxplot(ADLB,
           biomarker = "CRP",
