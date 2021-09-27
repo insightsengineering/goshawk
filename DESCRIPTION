@@ -1,8 +1,8 @@
 Package: goshawk
 Type: Package
 Title: Longitudinal visualization functions
-Date: 2021-07-07
-Version: 0.1.9.9000
+Date: 2021-10-13
+Version: 0.1.10
 Authors@R: c(
   person("Nick", "Paszty", email = "nick.paszty@gene.com", role = c("aut", "cre")),
   person("Wenyi", "Liu", email = "liu.wenyi@roche.com", role = c("aut")),
@@ -24,11 +24,11 @@ Imports:
     mcr,
     rlang,
     stringr,
-    utils.nest (>= 0.2.9)
+    utils.nest (>= 0.2.11)
 Suggests: 
-    scda(>= 0.1.0),
-    scda.2021(>= 0.1.0),
-    test.nest (>= 0.2.9),
+    scda(>= 0.1.1),
+    scda.2021(>= 0.1.1),
+    test.nest (>= 0.2.11),
     testthat (>= 2.0),
     tidyr
 License: Apache License 2.0 | file LICENSE
