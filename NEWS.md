@@ -1,7 +1,7 @@
 # goshawk 0.1.10
 
+* Updated `LICENCE` and `README` with new package reference.
 * Update examples and documentations to `scda` synthetic data replacing `random.cdisc.data`.
-* Updated license and `README.md` with appropriate information for migration to public Github.
 * Added `error_on_lint: TRUE` to `.lintr`.
 * **Breaking Change(s)**
 
