@@ -381,22 +381,25 @@ add_horizontal_lines <- function(plot,
     j <- j + 1
   }
   #------------------------------------------------------------------------------
-
-  plot +
-    scale_linetype_manual(
-      name = paste0("Description of Horizontal ", if_not_null(vline_vars, "and Vertical "),  "Line(s)"),
-      label = c(
-        if_null(c(hline_vars_labels, hline_arb_label), hline_vars),
-        agg_label,
-        if_null(c(vline_vars_labels, vline_arb_label), vline_vars)
-      ),
-      values = c(rep(2, length(hline_vars)), if_not_null(agg_label, 1), rep(2, length(vline_vars)))
-    ) +
-    guides(linetype = guide_legend(override.aes =
-      list(
-        color = c(range_color, if_not_null(agg_label, color_comb), range_color_vert),
-        orientation = c(rep("horizontal", length(c(hline_vars, agg_label))), rep("vertical", length(vline_vars))))
+  if (length(hline_vars) > 0 || length(vline_vars) > 0) {
+    plot +
+      scale_linetype_manual(
+        name = paste0("Description of Horizontal ", if_not_null(vline_vars, "and Vertical "),  "Line(s)"),
+        label = c(
+          if_null(c(hline_vars_labels, hline_arb_label), hline_vars),
+          agg_label,
+          if_null(c(vline_vars_labels, vline_arb_label), vline_vars)
+        ),
+        values = c(rep(2, length(hline_vars)), if_not_null(agg_label, 1), rep(2, length(vline_vars)))
+      ) +
+      guides(linetype = guide_legend(override.aes =
+        list(
+          color = c(range_color, if_not_null(agg_label, color_comb), range_color_vert),
+          orientation = c(rep("horizontal", length(c(hline_vars, agg_label))), rep("vertical", length(vline_vars))))
       )
-    ) +
-    theme(legend.key.size = unit(0.5, "in"))
+      ) +
+      theme(legend.key.size = unit(0.5, "in"))
+  } else {
+    plot
+  }
 }
