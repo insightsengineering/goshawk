@@ -87,10 +87,10 @@
 #'            xmax = 200,
 #'            unit = "AVALU",
 #'            color_manual = color_manual,
-#'            color_comb = "orange",
-#'            comb_line = TRUE,
+#'            color_comb = "#39ff14",
+#'            comb_line = FALSE,
 #'            facet_var = "AVISITCD",
-#'            hline_arb = .05,
+#'            hline_arb = 0.05,
 #'            hline_arb_color = "black",
 #'            hline_arb_label = "Horizontal Line Label",
 #'            facet_ncol = 2,
@@ -160,7 +160,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
     plot_data <- dplyr::bind_rows(
       plot_data,
       plot_data %>%
-        dplyr::mutate(!!sym(trt_group) := "Whole Dataset")
+        dplyr::mutate(!!sym(trt_group) := "Combined Dose")
       )
   }
 
@@ -175,9 +175,9 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
 
   if (comb_line) {
     if (!is.null(color_comb)) {
-      color_manual["Whole Dataset"] <- color_comb
-    } else if (!"Whole Dataset" %in% names(color_manual)) {
-      color_manual["Whole Dataset"] <- length(color_manual) + 1
+      color_manual["Combined Dose"] <- color_comb
+    } else if (!"Combined Dose" %in% names(color_manual)) {
+      color_manual["Combined Dose"] <- length(color_manual) + 1
     }
   }
 
