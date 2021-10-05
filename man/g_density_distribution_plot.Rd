@@ -18,7 +18,9 @@ g_density_distribution_plot(
   color_comb = "#39ff14",
   comb_line = TRUE,
   facet_var = "AVISITCD",
-  hline = NULL,
+  hline_arb = NULL,
+  hline_arb_color = "red",
+  hline_arb_label = NULL,
   facet_ncol = 2,
   rotate_xlab = FALSE,
   font_size = 12,
@@ -53,7 +55,11 @@ g_density_distribution_plot(
 
 \item{facet_var}{variable to use for facetting.}
 
-\item{hline}{y-axis value to position a horizontal line.}
+\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+
+\item{hline_arb_color}{color for the arbitrary horizontal line.}
+
+\item{hline_arb_label}{legend label for the arbitrary horizontal line.}
 
 \item{facet_ncol}{number of facets per row.}
 
@@ -127,9 +133,11 @@ g_density_distribution_plot(label = "Density Distribution Plot",
            unit = "AVALU",
            color_manual = color_manual,
            color_comb = "#39ff14",
-           comb_line = TRUE,
+           comb_line = FALSE,
            facet_var = "AVISITCD",
-           hline = NULL,
+           hline_arb = 0.05,
+           hline_arb_color = "black",
+           hline_arb_label = "Horizontal Line Label",
            facet_ncol = 2,
            rotate_xlab = FALSE,
            font_size = 10,
