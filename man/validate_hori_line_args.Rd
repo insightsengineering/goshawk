@@ -11,10 +11,7 @@ validate_hori_line_args(
   hline_arb_label = NULL,
   hline_vars = NULL,
   hline_vars_colors = NULL,
-  hline_vars_labels = NULL,
-  vline_arb = NULL,
-  vline_arb_color = "green",
-  vline_arb_label = NULL
+  hline_vars_labels = NULL
 )
 }
 \arguments{
@@ -31,12 +28,6 @@ validate_hori_line_args(
 \item{hline_vars_colors}{color(s) for the horizontal lines defined by variables that will appear on the plot.}
 
 \item{hline_vars_labels}{labels(s) for the horizontal lines defined by variables that will appear on the legend.}
-
-\item{vline_arb}{numeric value identifying intercept for arbitrary vertical line.}
-
-\item{vline_arb_color}{color for the arbitrary vertical line that will appear on the plot.}
-
-\item{vline_arb_label}{label for the arbitrary vertical that will appear on the legend.}
 }
 \description{
 validate horizontal line arguments

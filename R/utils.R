@@ -198,19 +198,13 @@ validate_vert_line_args <- function(data,
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 #' @param hline_vars_colors color(s) for the horizontal lines defined by variables that will appear on the plot.
 #' @param hline_vars_labels labels(s) for the horizontal lines defined by variables that will appear on the legend.
-#' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
-#' @param vline_arb_color color for the arbitrary vertical line that will appear on the plot.
-#' @param vline_arb_label label for the arbitrary vertical that will appear on the legend.
 validate_hori_line_args <- function(data,
                                     hline_arb = NULL,
                                     hline_arb_color = "red",
                                     hline_arb_label = NULL,
                                     hline_vars = NULL,
                                     hline_vars_colors = NULL,
-                                    hline_vars_labels = NULL,
-                                    vline_arb = NULL,
-                                    vline_arb_color = "green",
-                                    vline_arb_label = NULL) {
+                                    hline_vars_labels = NULL) {
 
   new_hline_col <- if (!is.null(hline_arb)) {
     if (is.null(hline_arb_color)) {
@@ -272,22 +266,12 @@ validate_hori_line_args <- function(data,
     hline_vars_labels
   }
 
-  if (!is.null(vline_arb)) {
-    if (!is.null(vline_arb_color)) {
-      stopifnot(is_character_single(vline_arb_color))
-    }
-    if (!is.null(vline_arb_label)) {
-      stopifnot(is_character_single(vline_arb_label))
-    }
-    stopifnot(is_numeric_single(vline_arb))
-  }
-
   return(list(new_hline_col = new_hline_col, hline_vars_labels = hline_vars_labels))
 }
 
 #' Add horizontal lines and their legend labels to a plot
 #'
-#' @param plot the ggplot2 plot object which the horizontal lines should be added to
+#' @param plot the ggplot2 plot object which the horizontal and/or vertical lines should be added to
 #' @param plot_data data frame with variables which will be displayed in the plot.
 #' @param agg_label label for the line denoting the Mean or Median.
 #' @param color_comb character denoting the color of the Mean or Median line.
@@ -307,25 +291,25 @@ validate_hori_line_args <- function(data,
 #' @param vline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 #' @param vline_vars_colors color(s) for the vertical lines defined by variables that will appear on the plot.
 #' @param vline_vars_labels labels(s) for the vertical lines defined by variables that will appear on the legend.
-add_horizontal_lines <- function(plot,
-                                 plot_data,
-                                 agg_label = NULL,
-                                 color_comb = NULL,
-                                 new_hline_col = NULL,
-                                 new_vline_col = NULL,
-                                 hline_arb = NULL,
-                                 hline_arb_color = "red",
-                                 hline_arb_label = NULL,
-                                 hline_vars = NULL,
-                                 hline_vars_colors = NULL,
-                                 hline_vars_labels = NULL,
-                                 vline_arb = NULL,
-                                 vline_arb_color = "green",
-                                 vline_arb_label = NULL,
-                                 vline_vars = NULL,
-                                 vline_vars_colors = NULL,
-                                 vline_vars_labels = NULL
-                                 ) {
+add_straight_lines <- function(plot,
+                               plot_data,
+                               agg_label = NULL,
+                               color_comb = NULL,
+                               new_hline_col = NULL,
+                               new_vline_col = NULL,
+                               hline_arb = NULL,
+                               hline_arb_color = "red",
+                               hline_arb_label = NULL,
+                               hline_vars = NULL,
+                               hline_vars_colors = NULL,
+                               hline_vars_labels = NULL,
+                               vline_arb = NULL,
+                               vline_arb_color = "green",
+                               vline_arb_label = NULL,
+                               vline_vars = NULL,
+                               vline_vars_colors = NULL,
+                               vline_vars_labels = NULL
+                               ) {
 
   draw_key_cust <- function(data, params, size) {
     if (data$orientation == "horizontal") {
