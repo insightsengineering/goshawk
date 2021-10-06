@@ -29,7 +29,7 @@ reference:
   - title: Helpers
     desc: These files are helper functions.
     contents:
-      - add_horizontal_lines
+      - add_straight_lines
       - h_caption_loqs_label
       - h_identify_loq_values
       - validate_hori_line_args
