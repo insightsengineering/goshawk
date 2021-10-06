@@ -269,7 +269,7 @@ validate_hori_line_args <- function(data,
   return(list(new_hline_col = new_hline_col, hline_vars_labels = hline_vars_labels))
 }
 
-#' Add horizontal lines and their legend labels to a plot
+#' Add horizontal and/or vertical lines and their legend labels to a plot
 #'
 #' @param plot the ggplot2 plot object which the horizontal and/or vertical lines should be added to
 #' @param plot_data data frame with variables which will be displayed in the plot.
