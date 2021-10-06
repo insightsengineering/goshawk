@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{add_straight_lines}
 \alias{add_straight_lines}
-\title{Add horizontal lines and their legend labels to a plot}
+\title{Add horizontal and/or vertical lines and their legend labels to a plot}
 \usage{
 add_straight_lines(
   plot,
@@ -65,5 +65,5 @@ the arbitrary vertical line}
 \item{vline_vars_labels}{labels(s) for the vertical lines defined by variables that will appear on the legend.}
 }
 \description{
-Add horizontal lines and their legend labels to a plot
+Add horizontal and/or vertical lines and their legend labels to a plot
 }
