@@ -16,7 +16,9 @@
 #' @param color_comb name or hex value for combined treatment color.
 #' @param comb_line display combined treatment line toggle.
 #' @param facet_var variable to use for facetting.
-#' @param hline y-axis value to position a horizontal line.
+#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color for the arbitrary horizontal line.
+#' @param hline_arb_label legend label for the arbitrary horizontal line.
 #' @param facet_ncol number of facets per row.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
@@ -86,9 +88,11 @@
 #'            unit = "AVALU",
 #'            color_manual = color_manual,
 #'            color_comb = "#39ff14",
-#'            comb_line = TRUE,
+#'            comb_line = FALSE,
 #'            facet_var = "AVISITCD",
-#'            hline = NULL,
+#'            hline_arb = 0.05,
+#'            hline_arb_color = "black",
+#'            hline_arb_label = "Horizontal Line Label",
 #'            facet_ncol = 2,
 #'            rotate_xlab = FALSE,
 #'            font_size = 10,
@@ -109,12 +113,21 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         color_comb = "#39ff14",
                                         comb_line = TRUE,
                                         facet_var = "AVISITCD",
-                                        hline = NULL,
+                                        hline_arb = NULL,
+                                        hline_arb_color = "red",
+                                        hline_arb_label = NULL,
                                         facet_ncol = 2,
                                         rotate_xlab = FALSE,
                                         font_size = 12,
                                         line_size = 2,
                                         rug_plot = FALSE) {
+
+  validated_res <- validate_hori_line_args(
+    data = data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label
+  )
+  new_hline_col <- validated_res$new_hline_col
+
   plot_data <- data %>%
     filter(!!sym(param_var) == param)
 
@@ -143,6 +156,31 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
+  if (comb_line) {
+    plot_data <- dplyr::bind_rows(
+      plot_data,
+      plot_data %>%
+        dplyr::mutate(!!sym(trt_group) := "Combined Dose")
+      )
+  }
+
+  color_manual <- if (is.null(color_manual)) {
+    group_names <- unique(plot_data[[trt_group]])
+    color_values <- seq_along(group_names)
+    names(color_values) <- group_names
+    color_values
+  } else {
+    color_manual
+  }
+
+  if (comb_line) {
+    if (!is.null(color_comb)) {
+      color_manual["Combined Dose"] <- color_comb
+    } else if (!"Combined Dose" %in% names(color_manual)) {
+      color_manual["Combined Dose"] <- length(color_manual) + 1
+    }
+  }
+
   # Add footnote to identify LLOQ and ULOQ values pulled from data
   caption_loqs_label <- h_caption_loqs_label(loqs_data = plot_data)
 
@@ -160,26 +198,8 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
     ggtitle(ggtitle_label) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(paste(x_axis_label)) +
-    ylab(paste("Density"))
-
-  # Format treatment color and label legend
-  if (!is.null(color_manual)) {
-    plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = trt_label)
-  }
-
-  # conditionally add combined treatment line
-  if (comb_line) {
-    plot1 <- plot1 +
-      stat_density(
-        aes(x = !!sym(xaxis_var), linetype = "Comb."),
-        color = color_comb,
-        size = line_size,
-        geom = "line",
-        position = "identity"
-        ) +
-      scale_linetype_manual(name = "Combined Dose", values = c(Comb. = "solid", per_dose = "solid"))
-  }
+    ylab(paste("Density")) +
+    scale_color_manual(values = color_manual, name = trt_label)
 
   if (rug_plot) {
     plot1 <- plot1 +
@@ -187,10 +207,14 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   }
 
   # Add horizontal line
-  if (!is.null(hline)) {
-    plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
-  }
+  plot1 <- add_straight_lines(
+    plot = plot1,
+    plot_data = plot_data,
+    agg_label = NULL,
+    color_comb = NULL,
+    new_hline_col = new_hline_col,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label
+  )
 
   # Format font size
   if (!is.null(font_size)) {
