@@ -415,7 +415,7 @@ g_correlationplot <- function(label = "Correlation Plot",
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
 
-  plot1 <- add_horizontal_lines(
+  plot1 <- add_straight_lines(
     plot = plot1,
     plot_data = plot_data,
     new_hline_col = new_hline_col,

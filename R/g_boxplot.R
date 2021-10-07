@@ -273,7 +273,7 @@ g_boxplot <- function(data,
   }
 
   # Add horizontal line for range based on option
-  plot1 <- add_horizontal_lines(
+  plot1 <- add_straight_lines(
     plot = plot1,
     plot_data = data,
     agg_label = NULL,

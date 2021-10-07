@@ -316,7 +316,7 @@ g_spaghettiplot <- function(data,
       scale_color_manual(values = color_manual, name = trt_label)
   }
   # Add horizontal line for range based on option
-  plot <- add_horizontal_lines(
+  plot <- add_straight_lines(
     plot,
     plot_data = plot_data,
     agg_label = agg_label,
