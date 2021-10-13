@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10.9000</span>
       </span>
     </div>
 
@@ -124,62 +124,43 @@
       
     </div>
 
-    <div id="goshawk-0199000" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.9.9000">
-<a href="#goshawk-0199000" class="anchor"></a>goshawk 0.1.9.9000</h1>
+    <div id="goshawk-01109000" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.10.9000">
+<a href="#goshawk-01109000" class="anchor"></a>goshawk 0.1.10.9000</h1>
+</div>
+    <div id="goshawk-0110" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.10">
+<a href="#goshawk-0110" class="anchor"></a>goshawk 0.1.10</h1>
+<div id="new-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New Features</h3>
 <ul>
-<li><p>Update examples and documentations to <code>scda</code> synthetic data replacing <code>random.cdisc.data</code>.</p></li>
-<li><p>Updated license and <code>README.md</code> with appropriate information for migration to public Github.</p></li>
-<li><p>Added <code>error_on_lint: TRUE</code> to <code>.lintr</code>.</p></li>
-<li>
-<p><strong>Breaking Change(s)</strong></p>
-<ul>
-<li>Arbitrary horizontal and vertical line arguments in
-<ul>
-<li><p><code>g_spaghettiplot</code></p></li>
-<li><p><code>g_boxplot</code></p></li>
-<li><p><code>g_correlationplot</code></p></li>
-<li>
-<p>User modifications required</p>
-<ul>
-<li>
-<code>g_spaghettiplot</code> and <code>g_boxplot</code> update from <code>hline</code> argument to
-<ul>
-<li>
-<code>hline_arb</code>, <code>hline_arb_color</code> and <code>hline_arb_label</code>
-</li>
+<li>Lab normal range and <code>LOQs</code> horizontal line feature in <code>g_spaghettiplot</code>, <code>g_boxplot</code> and <code>g_correlationplot</code>.</li>
 </ul>
-</li>
-<li>
-<code>g_correlationplot</code> update from <code>hline</code> and <code>vline</code> arguments to
+</div>
+<div id="breaking-changes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking Changes</h3>
+<ul>
+<li>Allow arbitrary horizontal line arguments in <code>g_spaghettiplot</code>, <code>g_boxplot</code>, <code>g_density_distribution_plot</code> and <code>g_correlationplot</code> and vertical line arguments in <code>g_correlationplot</code>. This functionality has changed the arguments required to use the functions:
 <ul>
 <li>
-<code>hline_arb_var</code>, <code>hline_arb_color</code> and <code>hline_arb_label</code>
-</li>
+<code>hline</code> replaced by <code>hline_arb</code>, <code>hline_arb_color</code> and <code>hline_arb_label</code> in the above functions.</li>
 <li>
-<code>vline_arb_var</code>, <code>vline_arb_color</code> and <code>vline_arb_label</code>
-</li>
+<code>vline</code> replaced by <code>vline_arb_var</code>, <code>vline_arb_color</code> and <code>vline_arb_label</code> in <code>g_correlationplot</code>.</li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>New Feature(s)</strong></p>
+</div>
+<div id="miscellaneous" class="section level3">
+<h3 class="hasAnchor">
+<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
 <ul>
-<li>Lab normal range and LOQs horizontal line feature in
-<ul>
-<li><code>g_spaghettiplot</code></li>
-<li><code>g_boxplot</code></li>
-<li><code>g_correlationplot</code></li>
+<li>Updated <code>LICENCE</code> and <code>README</code> with new package references.</li>
+<li>Updated examples and documentation using <code>scda</code> synthetic data instead of <code>random.cdisc.data</code>.</li>
+<li>Added <code>error_on_lint: TRUE</code> to <code>.lintr</code>.</li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
+</div>
 </div>
     <div id="goshawk-019" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.9">

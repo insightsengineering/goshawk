@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>validate horizontal line arguments — validate_hori_line_args • goshawk</title>
+<title>Add horizontal and/or vertical lines and their legend labels to a plot — add_straight_lines • goshawk</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="validate horizontal line arguments — validate_hori_line_args" />
-<meta property="og:description" content="validate horizontal line arguments" />
+<meta property="og:title" content="Add horizontal and/or vertical lines and their legend labels to a plot — add_straight_lines" />
+<meta property="og:description" content="Add horizontal and/or vertical lines and their legend labels to a plot" />
 
 
 
@@ -121,31 +121,64 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>validate horizontal line arguments</h1>
+    <h1>Add horizontal and/or vertical lines and their legend labels to a plot</h1>
     
-    <div class="hidden name"><code>validate_hori_line_args.Rd</code></div>
+    <div class="hidden name"><code>add_straight_lines.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>validate horizontal line arguments</p>
+    <p>Add horizontal and/or vertical lines and their legend labels to a plot</p>
     </div>
 
-    <pre class="usage"><span class='fu'>validate_hori_line_args</span><span class='op'>(</span>
-  <span class='va'>data</span>,
+    <pre class="usage"><span class='fu'>add_straight_lines</span><span class='op'>(</span>
+  <span class='va'>plot</span>,
+  <span class='va'>plot_data</span>,
+  agg_label <span class='op'>=</span> <span class='cn'>NULL</span>,
+  color_comb <span class='op'>=</span> <span class='cn'>NULL</span>,
+  new_hline_col <span class='op'>=</span> <span class='cn'>NULL</span>,
+  new_vline_col <span class='op'>=</span> <span class='cn'>NULL</span>,
   hline_arb <span class='op'>=</span> <span class='cn'>NULL</span>,
   hline_arb_color <span class='op'>=</span> <span class='st'>"red"</span>,
   hline_arb_label <span class='op'>=</span> <span class='cn'>NULL</span>,
   hline_vars <span class='op'>=</span> <span class='cn'>NULL</span>,
   hline_vars_colors <span class='op'>=</span> <span class='cn'>NULL</span>,
-  hline_vars_labels <span class='op'>=</span> <span class='cn'>NULL</span>
+  hline_vars_labels <span class='op'>=</span> <span class='cn'>NULL</span>,
+  vline_arb <span class='op'>=</span> <span class='cn'>NULL</span>,
+  vline_arb_color <span class='op'>=</span> <span class='st'>"green"</span>,
+  vline_arb_label <span class='op'>=</span> <span class='cn'>NULL</span>,
+  vline_vars <span class='op'>=</span> <span class='cn'>NULL</span>,
+  vline_vars_colors <span class='op'>=</span> <span class='cn'>NULL</span>,
+  vline_vars_labels <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
+      <th>plot</th>
+      <td><p>the ggplot2 plot object which the horizontal and/or vertical lines should be added to</p></td>
+    </tr>
+    <tr>
+      <th>plot_data</th>
       <td><p>data frame with variables which will be displayed in the plot.</p></td>
+    </tr>
+    <tr>
+      <th>agg_label</th>
+      <td><p>label for the line denoting the Mean or Median.</p></td>
+    </tr>
+    <tr>
+      <th>color_comb</th>
+      <td><p>character denoting the color of the Mean or Median line.</p></td>
+    </tr>
+    <tr>
+      <th>new_hline_col</th>
+      <td><p>the name of the column to be added to plot_data that will hold the single value for
+the arbitrary horizontal line</p></td>
+    </tr>
+    <tr>
+      <th>new_vline_col</th>
+      <td><p>the name of the column to be added to plot_data that will hold the single value for
+the arbitrary vertical line</p></td>
     </tr>
     <tr>
       <th>hline_arb</th>
@@ -170,6 +203,30 @@
     <tr>
       <th>hline_vars_labels</th>
       <td><p>labels(s) for the horizontal lines defined by variables that will appear on the legend.</p></td>
+    </tr>
+    <tr>
+      <th>vline_arb</th>
+      <td><p>numeric value identifying intercept for arbitrary vertical line.</p></td>
+    </tr>
+    <tr>
+      <th>vline_arb_color</th>
+      <td><p>color for the arbitrary vertical line that will appear on the plot.</p></td>
+    </tr>
+    <tr>
+      <th>vline_arb_label</th>
+      <td><p>label for the arbitrary vertical that will appear on the legend.</p></td>
+    </tr>
+    <tr>
+      <th>vline_vars</th>
+      <td><p>name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.</p></td>
+    </tr>
+    <tr>
+      <th>vline_vars_colors</th>
+      <td><p>color(s) for the vertical lines defined by variables that will appear on the plot.</p></td>
+    </tr>
+    <tr>
+      <th>vline_vars_labels</th>
+      <td><p>labels(s) for the vertical lines defined by variables that will appear on the legend.</p></td>
     </tr>
     </table>
 

@@ -83,7 +83,7 @@ treatment overlaid." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10.9000</span>
       </span>
     </div>
 
@@ -146,7 +146,9 @@ treatment overlaid.</p>
   color_comb <span class='op'>=</span> <span class='st'>"#39ff14"</span>,
   comb_line <span class='op'>=</span> <span class='cn'>TRUE</span>,
   facet_var <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,
-  hline <span class='op'>=</span> <span class='cn'>NULL</span>,
+  hline_arb <span class='op'>=</span> <span class='cn'>NULL</span>,
+  hline_arb_color <span class='op'>=</span> <span class='st'>"red"</span>,
+  hline_arb_label <span class='op'>=</span> <span class='cn'>NULL</span>,
   facet_ncol <span class='op'>=</span> <span class='fl'>2</span>,
   rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,
   font_size <span class='op'>=</span> <span class='fl'>12</span>,
@@ -210,8 +212,16 @@ treatment overlaid.</p>
       <td><p>variable to use for facetting.</p></td>
     </tr>
     <tr>
-      <th>hline</th>
-      <td><p>y-axis value to position a horizontal line.</p></td>
+      <th>hline_arb</th>
+      <td><p>numeric value identifying intercept for arbitrary horizontal line.</p></td>
+    </tr>
+    <tr>
+      <th>hline_arb_color</th>
+      <td><p>color for the arbitrary horizontal line.</p></td>
+    </tr>
+    <tr>
+      <th>hline_arb_label</th>
+      <td><p>legend label for the arbitrary horizontal line.</p></td>
     </tr>
     <tr>
       <th>facet_ncol</th>
@@ -298,9 +308,11 @@ option is most useful if the data only contains a single treatment group.</p></t
            unit <span class='op'>=</span> <span class='st'>"AVALU"</span>,
            color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,
            color_comb <span class='op'>=</span> <span class='st'>"#39ff14"</span>,
-           comb_line <span class='op'>=</span> <span class='cn'>TRUE</span>,
+           comb_line <span class='op'>=</span> <span class='cn'>FALSE</span>,
            facet_var <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,
-           hline <span class='op'>=</span> <span class='cn'>NULL</span>,
+           hline_arb <span class='op'>=</span> <span class='fl'>0.05</span>,
+           hline_arb_color <span class='op'>=</span> <span class='st'>"black"</span>,
+           hline_arb_label <span class='op'>=</span> <span class='st'>"Horizontal Line Label"</span>,
            facet_ncol <span class='op'>=</span> <span class='fl'>2</span>,
            rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,
            font_size <span class='op'>=</span> <span class='fl'>10</span>,
