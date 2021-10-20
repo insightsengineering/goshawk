@@ -1,5 +1,7 @@
 # goshawk 0.1.10.9000
 
+* Added R version requirement, R >= 3.6.
+
 # goshawk 0.1.10
 
 ### New Features

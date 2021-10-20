@@ -16,7 +16,8 @@ Description: Functions that plot and summarize biomarkers/labs of interest. Visu
     flag variable (LOQFL) is expected with levels 'Y', 'N' or NA.
 Depends: 
     dplyr, 
-    ggplot2
+    ggplot2,
+    R (>= 3.6)
 Imports: 
     cowplot,
     grid, 
