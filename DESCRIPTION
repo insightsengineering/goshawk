@@ -1,38 +1,40 @@
-Package: goshawk
 Type: Package
+Package: goshawk
 Title: Longitudinal visualization functions
+Version: 0.1.10.9001
 Date: 2021-10-13
-Version: 0.1.10.9000
 Authors@R: c(
-  person("Nick", "Paszty", email = "nick.paszty@gene.com", role = c("aut", "cre")),
-  person("Wenyi", "Liu", email = "liu.wenyi@roche.com", role = c("aut")),
-  person("Jeffrey", "Tomlinson", email = "tomlinson.jeffrey@roche.com", role = c("aut")),
-  person("Bali", "Toth", email = "toth.balazs@gene.com", role = c("aut"))
+    person("Nick", "Paszty", , "nick.paszty@gene.com", role = c("aut", "cre")),
+    person("Wenyi", "Liu", , "liu.wenyi@roche.com", role = "aut"),
+    person("Jeffrey", "Tomlinson", , "tomlinson.jeffrey@roche.com", role = "aut"),
+    person("Bali", "Toth", , "toth.balazs@gene.com", role = "aut")
   )
-Description: Functions that plot and summarize biomarkers/labs of interest. Visualizations
-    include: box plot, correlation plot, density distribution, line plot and spaghetti plot.
-    Data are expected in ADaM structure. Requires analysis subject level (ADSL) and
-    analysis laboratory (ADLB) data sets. Beyond core variables, Limit of Quantification
-    flag variable (LOQFL) is expected with levels 'Y', 'N' or NA.
+Description: Functions that plot and summarize biomarkers/labs of
+    interest. Visualizations include: box plot, correlation plot, density
+    distribution, line plot and spaghetti plot.  Data are expected in ADaM
+    structure. Requires analysis subject level (ADSL) and analysis
+    laboratory (ADLB) data sets. Beyond core variables, Limit of
+    Quantification flag variable (LOQFL) is expected with levels 'Y', 'N'
+    or NA.
+License: Apache License 2.0 | file LICENSE
 Depends: 
-    dplyr, 
+    dplyr,
     ggplot2,
     R (>= 3.6)
 Imports: 
     cowplot,
-    grid, 
+    grid,
     magrittr,
     mcr,
     rlang,
     stringr,
     utils.nest (>= 0.2.11)
 Suggests: 
-    scda(>= 0.1.1),
     scda.2021(>= 0.1.1),
+    scda(>= 0.1.1),
     test.nest (>= 0.2.11),
     testthat (>= 2.0),
     tidyr
-License: Apache License 2.0 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
