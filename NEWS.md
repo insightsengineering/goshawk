@@ -1,4 +1,4 @@
-# goshawk 0.1.10.9001
+# goshawk 0.1.10.9002
 
 * Added R version requirement, R >= 3.6.
 
