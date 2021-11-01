@@ -1,4 +1,4 @@
-# goshawk 0.1.10.9002
+# goshawk 0.1.10.9003
 
 * Added R version requirement, R >= 3.6.
 * Renamed `visit_var` as `facet_var` in `t_summarytable` and allow it to be `NULL` when there is no faceting.
