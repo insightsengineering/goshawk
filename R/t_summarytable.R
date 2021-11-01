@@ -175,8 +175,8 @@ t_summarytable <- function(data,
     select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
     ungroup()
 
-    # combine the two data sets and apply some formatting. Note that R coerces treatment group into character since it is
-    # a factor and character
+    # combine the two data sets and apply some formatting. Note that R coerces treatment group into
+    # character since it is a factor and character
     sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
       # reorder variables
       select(Biomarker = param_var, Treatment = trt_group, Facet = facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
@@ -188,8 +188,8 @@ t_summarytable <- function(data,
     select(param_var, trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
     ungroup()
 
-    # combine the two data sets and apply some formatting. Note that R coerces treatment group into character since it is
-    # a factor and character
+    # combine the two data sets and apply some formatting. Note that R coerces treatment group into
+    # character since it is a factor and character
     sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
       # reorder variables
       select(Biomarker = param_var, Treatment = trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
