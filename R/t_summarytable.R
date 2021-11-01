@@ -9,7 +9,8 @@
 #' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
 #' @param param biomarker to visualize e.g. IGG.
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
-#' @param visit_var name of variable containing visit values e.g. AVISITCD.
+#' @param facet_var name of variable facetted on typically containing visit values e.g. AVISITCD.
+#'   If NULL then ignored.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
 #' @param ... additional options
 #'
@@ -67,7 +68,7 @@
 #'                param_var = "PARAMCD",
 #'                param = c("CRP"),
 #'                xaxis_var = "AVAL",
-#'                visit_var = "AVISITCD",
+#'                facet_var = "AVISITCD",
 #'                loq_flag_var = "LOQFL")
 #' tbl
 t_summarytable <- function(data,
@@ -75,12 +76,12 @@ t_summarytable <- function(data,
                            param_var,
                            param,
                            xaxis_var,
-                           visit_var = "AVISITCD",
+                           facet_var = "AVISITCD",
                            loq_flag_var = "LOQFL", ...) {
 
-  if (trt_group == visit_var) {
-    data[paste0(visit_var, "_")] <- data[visit_var]
-    visit_var <- paste0(visit_var, "_")
+  if (!is.null(facet_var) && trt_group == facet_var) {
+    data[paste0(facet_var, "_")] <- data[facet_var]
+    facet_var <- paste0(facet_var, "_")
   }
 
   table_data <- data %>%
@@ -110,9 +111,17 @@ t_summarytable <- function(data,
   }
 
   # by treatment group table
-  sum_data_by_arm <- table_data %>%
-    filter(!!sym(param_var) == param) %>%
-    group_by(!!sym(param_var), !!sym(trt_group), .data$TRTORD, !!sym(visit_var)) %>%
+
+  sum_data_by_arm <- table_data %>% filter(!!sym(param_var) == param)
+  if (!is.null(facet_var)) {
+    sum_data_by_arm <- sum_data_by_arm %>%
+      group_by(!!sym(param_var), !!sym(trt_group), .data$TRTORD, !!sym(facet_var))
+  } else {
+    sum_data_by_arm <- sum_data_by_arm %>%
+      group_by(!!sym(param_var), !!sym(trt_group), .data$TRTORD)
+  }
+
+  sum_data_by_arm <- sum_data_by_arm %>%
     summarise(
       n = sum(!is.na(!!sym(xaxis_var))),
       Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
@@ -122,13 +131,31 @@ t_summarytable <- function(data,
       Max = round(min_max_ignore_na(!!sym(xaxis_var), type = "max"), digits = 2),
       PctMiss = round(100 * sum(is.na(!!sym(xaxis_var))) / length(!!sym(xaxis_var)), digits = 2),
       PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) / length(!!sym(loq_flag_var)), digits = 2)
-    ) %>%
-    select(param_var, trt_group, visit_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
-    ungroup()
+    )
+
+  if (!is.null(facet_var)) {
+    sum_data_by_arm <- sum_data_by_arm %>%
+      select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      ungroup()
+  } else{
+    sum_data_by_arm <- sum_data_by_arm %>%
+      select(param_var, trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      ungroup()
+  }
+
   # by combined treatment group table
   sum_data_combined_arm <- table_data %>%
-    filter(!!sym(param_var) == param) %>%
-    group_by(!!sym(param_var), !!sym(visit_var)) %>%
+    filter(!!sym(param_var) == param)
+
+  if (!is.null(facet_var)) {
+    sum_data_combined_arm <- sum_data_combined_arm %>%
+      group_by(!!sym(param_var), !!sym(facet_var))
+  } else {
+    sum_data_combined_arm <- sum_data_combined_arm %>%
+      group_by(!!sym(param_var))
+  }
+
+  sum_data_combined_arm <- sum_data_combined_arm %>%
     summarise(
       n = sum(!is.na(!!sym(xaxis_var))),
       Mean = round(mean(!!sym(xaxis_var), na.rm = TRUE), digits = 2),
@@ -140,16 +167,35 @@ t_summarytable <- function(data,
       PctLOQ = round(100 * sum(!!sym(loq_flag_var) == "Y", na.rm = TRUE) / length(!!sym(loq_flag_var)), digits = 2),
       MAXTRTORDVIS = max(.data$TRTORD) # identifies the maximum treatment order within visits
     ) %>% # additional use of max function identifies maximum treatment order across all visits.
-    mutate(!!trt_group := "Comb.", TRTORD = max(.data$MAXTRTORDVIS) + 1) %>% # select only those columns needed to prop
-    select(param_var, trt_group, visit_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+    mutate(!!trt_group := "Comb.", TRTORD = max(.data$MAXTRTORDVIS) + 1)
+
+  # select only those columns needed to prop
+  if (!is.null(facet_var)) {
+    sum_data_combined_arm <- sum_data_combined_arm %>%
+    select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
     ungroup()
-  # combine the two data sets and apply some formatting. Note that R coerces treatment group into character since it is
-  # a factor and character
-  sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
-    # reorder variables
-    select(Biomarker = param_var, Treatment = trt_group, Facet = visit_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
-    arrange(.data$Biomarker, .data$Facet, .data$TRTORD) %>% # drop variable
-    select(-.data$TRTORD)
+
+    # combine the two data sets and apply some formatting. Note that R coerces treatment group into character since it is
+    # a factor and character
+    sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
+      # reorder variables
+      select(Biomarker = param_var, Treatment = trt_group, Facet = facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      arrange(.data$Biomarker, .data$Facet, .data$TRTORD) %>% # drop variable
+      select(-.data$TRTORD)
+
+  } else {
+    sum_data_combined_arm <- sum_data_combined_arm %>%
+    select(param_var, trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+    ungroup()
+
+    # combine the two data sets and apply some formatting. Note that R coerces treatment group into character since it is
+    # a factor and character
+    sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
+      # reorder variables
+      select(Biomarker = param_var, Treatment = trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      arrange(.data$Biomarker, .data$TRTORD) %>% # drop variable
+      select(-.data$TRTORD)
+  }
 
   # add analysis variable as first column
   sum_data <- cbind(study_id, anl_var, sum_data)
