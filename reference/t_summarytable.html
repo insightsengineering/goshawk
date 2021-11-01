@@ -84,7 +84,7 @@ n, mean, median, sd, min, max, " />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10.9002</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@ n, mean, median, sd, min, max, <!-- %missing values, % LOQ values. --></p>
   <span class='va'>param_var</span>,
   <span class='va'>param</span>,
   <span class='va'>xaxis_var</span>,
-  visit_var <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,
+  facet_var <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,
   loq_flag_var <span class='op'>=</span> <span class='st'>"LOQFL"</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -169,8 +169,9 @@ n, mean, median, sd, min, max, <!-- %missing values, % LOQ values. --></p>
       <td><p>name of variable containing biomarker results displayed on X-axis e.g. AVAL.</p></td>
     </tr>
     <tr>
-      <th>visit_var</th>
-      <td><p>name of variable containing visit values e.g. AVISITCD.</p></td>
+      <th>facet_var</th>
+      <td><p>name of variable facetted on typically containing visit values e.g. AVISITCD.
+If NULL then ignored.</p></td>
     </tr>
     <tr>
       <th>loq_flag_var</th>
@@ -237,7 +238,7 @@ n, mean, median, sd, min, max, <!-- %missing values, % LOQ values. --></p>
                param_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
                param <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CRP"</span><span class='op'>)</span>,
                xaxis_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-               visit_var <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,
+               facet_var <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,
                loq_flag_var <span class='op'>=</span> <span class='st'>"LOQFL"</span><span class='op'>)</span>
 <span class='va'>tbl</span>
 </div><div class='output co'>#&gt;    StudyID AnlVar Biomarker   Treatment Facet   n  Mean Median StdDev   Min
