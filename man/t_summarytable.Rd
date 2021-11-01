@@ -10,7 +10,7 @@ t_summarytable(
   param_var,
   param,
   xaxis_var,
-  visit_var = "AVISITCD",
+  facet_var = "AVISITCD",
   loq_flag_var = "LOQFL",
   ...
 )
@@ -26,7 +26,8 @@ t_summarytable(
 
 \item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. AVAL.}
 
-\item{visit_var}{name of variable containing visit values e.g. AVISITCD.}
+\item{facet_var}{name of variable facetted on typically containing visit values e.g. AVISITCD.
+If NULL then ignored.}
 
 \item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
 
@@ -87,7 +88,7 @@ tbl <- t_summarytable(data = ADLB,
                param_var = "PARAMCD",
                param = c("CRP"),
                xaxis_var = "AVAL",
-               visit_var = "AVISITCD",
+               facet_var = "AVISITCD",
                loq_flag_var = "LOQFL")
 tbl
 }
