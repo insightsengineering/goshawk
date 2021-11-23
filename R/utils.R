@@ -126,23 +126,33 @@ validate_vert_line_args <- function(data,
                                     vline_vars_labels = NULL) {
 
   new_vline_col <- if (!is.null(vline_arb)) {
+    stopifnot(is_numeric_vector(vline_arb))
     if (is.null(vline_arb_color)) {
-      vline_arb_color <- "red"
+      vline_arb_color <- rep("red", length(vline_arb))
     } else {
-      stopifnot(is_character_single(vline_arb_color))
+      if (is_character_single(vline_arb_color)) {
+        vline_arb_color <- rep(vline_arb_color, length(vline_arb))
+      } else {
+        stopifnot(is_character_vector(vline_arb_color, min_length = length(vline_arb), max_length = length(vline_arb)))
+      }
     }
     if (is.null(vline_arb_label)) {
-      vline_arb_label <- "Arbitrary Vertical Line"
+      vline_arb_label <- rep("Arbitrary Vertical Line", length(vline_arb))
     } else {
-      stopifnot(is_character_single(vline_arb_label))
+      if (is_character_single(vline_arb_label)) {
+        vline_arb_label <- rep(vline_arb_label, length(vline_arb))
+      } else {
+        stopifnot(is_character_vector(vline_arb_label, min_length = length(vline_arb), max_length = length(vline_arb)))
+      }
     }
-    stopifnot(is_numeric_single(vline_arb))
 
-    new_vline_col <- "Arbitrary_Vertical_Line"
-    i <- 1
-    while (new_vline_col %in% names(data)) {
-      new_vline_col <- paste0(new_vline_col, "_", i)
-      i <- i + 1
+    new_vline_col <- paste0("Arbitrary_Vertical_Line_", seq_len(length(vline_arb)))
+    for (index in seq_len(length(vline_arb))) {
+      i <- 1
+      while (new_vline_col[index] %in% names(data)) {
+        new_vline_col[index] <- paste0(new_vline_col[index], "_", i)
+        i <- i + 1
+      }
     }
     new_vline_col
   }
@@ -186,7 +196,14 @@ validate_vert_line_args <- function(data,
     vline_vars_labels
   }
 
-  return(list(new_vline_col = new_vline_col, vline_vars_labels = vline_vars_labels))
+  return(
+    list(
+      new_vline_col = new_vline_col,
+      vline_vars_labels = vline_vars_labels,
+      vline_arb_color = vline_arb_color,
+      vline_arb_label = vline_arb_label
+    )
+  )
 }
 
 #' validate horizontal line arguments
@@ -207,23 +224,33 @@ validate_hori_line_args <- function(data,
                                     hline_vars_labels = NULL) {
 
   new_hline_col <- if (!is.null(hline_arb)) {
+    stopifnot(is_numeric_vector(hline_arb))
     if (is.null(hline_arb_color)) {
-      hline_arb_color <- "red"
+      hline_arb_color <- rep("red", length(hline_arb))
     } else {
-      stopifnot(is_character_single(hline_arb_color))
+      if (is_character_single(hline_arb_color)) {
+        hline_arb_color <- rep(hline_arb_color, length(hline_arb))
+      } else {
+        stopifnot(is_character_vector(hline_arb_color, min_length = length(hline_arb), max_length = length(hline_arb)))
+      }
     }
     if (is.null(hline_arb_label)) {
-      hline_arb_label <- "Arbitrary Horizontal Line"
+      hline_arb_label <- rep("Arbitrary Horizontal Line", length(hline_arb))
     } else {
-      stopifnot(is_character_single(hline_arb_label))
+      if (is_character_single(hline_arb_label)) {
+        hline_arb_label <- rep(hline_arb_label, length(hline_arb))
+      } else {
+        stopifnot(is_character_vector(hline_arb_label, min_length = length(hline_arb), max_length = length(hline_arb)))
+      }
     }
-    stopifnot(is_numeric_single(hline_arb))
 
-    new_hline_col <- "Arbitrary_Horizontal_Line"
-    i <- 1
-    while (new_hline_col %in% names(data)) {
-      new_hline_col <- paste0(new_hline_col, "_", i)
-      i <- i + 1
+    new_hline_col <- paste0("Arbitrary_Horizontal_Line_", seq_len(length(hline_arb)))
+    for (index in seq_len(length(hline_arb))) {
+      i <- 1
+      while (new_hline_col[index] %in% names(data)) {
+        new_hline_col[index] <- paste0(new_hline_col[index], "_", i)
+        i <- i + 1
+      }
     }
     new_hline_col
   }
@@ -266,7 +293,12 @@ validate_hori_line_args <- function(data,
     hline_vars_labels
   }
 
-  return(list(new_hline_col = new_hline_col, hline_vars_labels = hline_vars_labels))
+  return(list(
+    new_hline_col = new_hline_col,
+    hline_vars_labels = hline_vars_labels,
+    hline_arb_color = hline_arb_color,
+    hline_arb_label = hline_arb_label
+  ))
 }
 
 #' Add horizontal and/or vertical lines and their legend labels to a plot
@@ -326,7 +358,9 @@ add_straight_lines <- function(plot,
   )
   if (!is.null(hline_arb)) {
     hline_vars <- c(hline_vars, new_hline_col)
-    plot_data[new_hline_col] <- hline_arb
+    for (index in seq_len(length(hline_arb))) {
+      plot_data[new_hline_col[index]] <- hline_arb[index]
+    }
   }
 
   j <- 1
@@ -350,7 +384,9 @@ add_straight_lines <- function(plot,
   )
   if (!is.null(vline_arb)) {
     vline_vars <- c(vline_vars, new_vline_col)
-    plot_data[new_vline_col] <- vline_arb
+    for (index in seq_len(length(vline_arb))) {
+      plot_data[new_vline_col[index]] <- vline_arb[index]
+    }
   }
   j <- 1
   for (i in vline_vars) {

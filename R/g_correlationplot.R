@@ -32,12 +32,16 @@
 #' @param facet_var variable to use for treatment facetting.
 #' @param reg_line include regression line and annotations for slope and coefficient.
 #' Use with facet = TRUE.
-#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for the arbitrary horizontal line.
-#' @param hline_arb_label legend label for the arbitrary horizontal line.
-#' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
-#' @param vline_arb_color color for the arbitrary vertical line.
-#' @param vline_arb_label legend label for the arbitrary vertical.
+#' @param hline_arb numeric vector identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color, character vector with length equal to `(hline_arb)` or one,
+#' for the arbitrary horizontal line.
+#' @param hline_arb_label legend, character vector with length equal to `(hline_arb)` or one,
+#' label for the arbitrary horizontal line.
+#' @param vline_arb numeric vector identifying intercept for arbitrary vertical line.
+#' @param vline_arb_color color, character vector with length equal to `(vline_arb)` or one,
+#' for the arbitrary vertical line.
+#' @param vline_arb_label legend, character vector with length equal to `(vline_arb)` or one,
+#' label for the arbitrary vertical.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 #' @param hline_vars_colors color(s) for the hline_vars.
 #' @param hline_vars_labels legend label(s) for the hline_vars.
@@ -183,12 +187,12 @@
 #'   facet = FALSE,
 #'   facet_var = "ARM",
 #'   reg_line = FALSE,
-#'   hline_arb = 70,
+#'   hline_arb = c(60, 70),
 #'   hline_arb_color = "gray",
 #'   hline_arb_label = "Hori_line_label",
-#'   vline_arb = 50,
-#'   vline_arb_color = "black",
-#'   vline_arb_label = "Vertical Line",
+#'   vline_arb = c(45, 50),
+#'   vline_arb_color = c("red", "black"),
+#'   vline_arb_label = c("Vertical Line A", "Vertical Line B"),
 #'   hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
 #'   hline_vars_colors = c("green", "blue", "purple", "cyan"),
 #'   hline_vars_label =  c("ANRHI ALT Label", "ANRLO ALT Label",
@@ -261,6 +265,8 @@ g_correlationplot <- function(label = "Correlation Plot",
   )
   new_hline_col <- validated_res$new_hline_col
   hline_vars_labels <- validated_res$hline_vars_labels
+  hline_arb_color <- validated_res$hline_arb_color
+  hline_arb_label <- validated_res$hline_arb_label
 
   validated_res_vert <- validate_vert_line_args(
     data = data,
@@ -269,6 +275,8 @@ g_correlationplot <- function(label = "Correlation Plot",
   )
   new_vline_col <- validated_res_vert$new_vline_col
   vline_vars_labels <- validated_res_vert$vline_vars_labels
+  vline_arb_color <- validated_res_vert$vline_arb_color
+  vline_arb_label <- validated_res_vert$vline_arb_label
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data

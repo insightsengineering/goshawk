@@ -55,11 +55,13 @@ g_density_distribution_plot(
 
 \item{facet_var}{variable to use for facetting.}
 
-\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+\item{hline_arb}{numeric vector identifying intercept for arbitrary horizontal line.}
 
-\item{hline_arb_color}{color for the arbitrary horizontal line.}
+\item{hline_arb_color}{color, character vector with length equal to `(hline_arb)` or one,
+for the arbitrary horizontal line.}
 
-\item{hline_arb_label}{legend label for the arbitrary horizontal line.}
+\item{hline_arb_label}{legend, character vector with length equal to `(hline_arb)` or one,
+label for the arbitrary horizontal line.}
 
 \item{facet_ncol}{number of facets per row.}
 
@@ -135,9 +137,9 @@ g_density_distribution_plot(label = "Density Distribution Plot",
            color_comb = "#39ff14",
            comb_line = FALSE,
            facet_var = "AVISITCD",
-           hline_arb = 0.05,
-           hline_arb_color = "black",
-           hline_arb_label = "Horizontal Line Label",
+           hline_arb = c(0.04, 0.05),
+           hline_arb_color = c("black", "red"),
+           hline_arb_label = c("Horizontal Line A", "Horizontal Line B"),
            facet_ncol = 2,
            rotate_xlab = FALSE,
            font_size = 10,

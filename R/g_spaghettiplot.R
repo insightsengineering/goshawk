@@ -27,9 +27,11 @@
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
-#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for the arbitrary horizontal line.
-#' @param hline_arb_label legend label for the arbitrary horizontal line.
+#' @param hline_arb numeric vector identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color, character vector with length equal to `(hline_arb)` or one,
+#' for the arbitrary horizontal line.
+#' @param hline_arb_label legend, character vector with length equal to `(hline_arb)` or one,
+#' label for the arbitrary horizontal line.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 #' @param hline_vars_colors color(s) for the hline_vars.
 #' @param hline_vars_labels legend label(s) for the hline_vars.
@@ -138,7 +140,7 @@
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median",
-#'                 hline_arb = NULL,
+#'                 hline_arb = 55,
 #'                 hline_arb_color = NULL,
 #'                 hline_arb_label = NULL,
 #'                 hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
@@ -160,9 +162,9 @@
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median",
-#'                 hline_arb = NULL,
-#'                 hline_arb_color = NULL,
-#'                 hline_arb_label = NULL,
+#'                 hline_arb = c(40, 50, 60),
+#'                 hline_arb_color = c("blue", "red", "green"),
+#'                 hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
 #'                 hline_vars = c("ANRHI", "ANRLO"),
 #'                 hline_vars_colors = NULL,
 #'                 hline_vars_labels = NULL,
@@ -204,6 +206,8 @@ g_spaghettiplot <- function(data,
 
   new_hline_col <- validated_res$new_hline_col
   hline_vars_labels <- validated_res$hline_vars_labels
+  hline_arb_color <- validated_res$hline_arb_color
+  hline_arb_label <- validated_res$hline_arb_label
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")

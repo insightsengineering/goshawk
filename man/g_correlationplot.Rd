@@ -109,17 +109,21 @@ g_correlationplot(
 \item{reg_line}{include regression line and annotations for slope and coefficient.
 Use with facet = TRUE.}
 
-\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+\item{hline_arb}{numeric vector identifying intercept for arbitrary horizontal line.}
 
-\item{hline_arb_color}{color for the arbitrary horizontal line.}
+\item{hline_arb_color}{color, character vector with length equal to `(hline_arb)` or one,
+for the arbitrary horizontal line.}
 
-\item{hline_arb_label}{legend label for the arbitrary horizontal line.}
+\item{hline_arb_label}{legend, character vector with length equal to `(hline_arb)` or one,
+label for the arbitrary horizontal line.}
 
-\item{vline_arb}{numeric value identifying intercept for arbitrary vertical line.}
+\item{vline_arb}{numeric vector identifying intercept for arbitrary vertical line.}
 
-\item{vline_arb_color}{color for the arbitrary vertical line.}
+\item{vline_arb_color}{color, character vector with length equal to `(vline_arb)` or one,
+for the arbitrary vertical line.}
 
-\item{vline_arb_label}{legend label for the arbitrary vertical.}
+\item{vline_arb_label}{legend, character vector with length equal to `(vline_arb)` or one,
+label for the arbitrary vertical.}
 
 \item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
 
@@ -275,12 +279,12 @@ g_correlationplot(
   facet = FALSE,
   facet_var = "ARM",
   reg_line = FALSE,
-  hline_arb = 70,
+  hline_arb = c(60, 70),
   hline_arb_color = "gray",
   hline_arb_label = "Hori_line_label",
-  vline_arb = 50,
-  vline_arb_color = "black",
-  vline_arb_label = "Vertical Line",
+  vline_arb = c(45, 50),
+  vline_arb_color = c("red", "black"),
+  vline_arb_label = c("Vertical Line A", "Vertical Line B"),
   hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
   hline_vars_colors = c("green", "blue", "purple", "cyan"),
   hline_vars_label =  c("ANRHI ALT Label", "ANRLO ALT Label",

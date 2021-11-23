@@ -34,9 +34,11 @@
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
-#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for the arbitrary horizontal line.
-#' @param hline_arb_label legend label for the arbitrary horizontal line.
+#' @param hline_arb numeric vector identifying intercept for arbitrary horizontal line.
+#' @param hline_arb_color color, character vector with length equal to `(hline_arb)` or one,
+#' for the arbitrary horizontal line.
+#' @param hline_arb_label legend, character vector with length equal to `(hline_arb)` or one,
+#' label for the arbitrary horizontal line.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 #' @param hline_vars_colors color(s) for the hline_vars.
 #' @param hline_vars_labels legend label(s) for the hline_vars.
@@ -112,7 +114,7 @@
 #'           xaxis_var = "STUDYID",
 #'           alpha = 0.5,
 #'           rotate_xlab = TRUE,
-#'           hline_arb = 30,
+#'           hline_arb = c(30, 40),
 #'           hline_arb_color = "blue",
 #'           hline_arb_label = "Hori_line_label",
 #'           hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
@@ -161,6 +163,8 @@ g_boxplot <- function(data,
 
   new_hline_col <- validated_res$new_hline_col
   hline_vars_labels <- validated_res$hline_vars_labels
+  hline_arb_color <- validated_res$hline_arb_color
+  hline_arb_label <- validated_res$hline_arb_label
 
   # filter input data
   data <- data %>%
