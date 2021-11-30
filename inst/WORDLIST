@@ -30,6 +30,7 @@ CDISC
 CMD
 colour
 correla
+correlationplot
 covr
 dataname
 datanames
