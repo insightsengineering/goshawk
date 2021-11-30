@@ -123,12 +123,13 @@ h_caption_loqs_label <- function(loqs_data) {
 #'
 #' @return ('list')
 validate_line_args <- function(data,
-                                    line_arb = NULL,
-                                    line_arb_color = "red",
-                                    line_arb_label = NULL,
-                                    line_vars = NULL,
-                                    line_vars_colors = NULL,
-                                    line_vars_labels = NULL) {
+                               line_arb = NULL,
+                               line_arb_color = "red",
+                               line_arb_label = NULL,
+                               line_vars = NULL,
+                               line_vars_colors = NULL,
+                               line_vars_labels = NULL
+                               ) {
 
   new_line_col <- if (!is.null(line_arb)) {
     stopifnot(is_numeric_vector(line_arb))
