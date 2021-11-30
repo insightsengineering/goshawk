@@ -27,14 +27,7 @@
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
-#' @param hline_arb numeric vector identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color, character vector with length equal to `(hline_arb)` or one,
-#' for the arbitrary horizontal line.
-#' @param hline_arb_label legend, character vector with length equal to `(hline_arb)` or one,
-#' label for the arbitrary horizontal line.
 #' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the hline_vars.
-#' @param hline_vars_labels legend label(s) for the hline_vars.
 #'
 #'
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -116,14 +109,18 @@
 #'                 alpha = .02,
 #'                 xtick = c("BL", "W 1", "W 4"),
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
-#'                 rotate_xlab = FALSE,
-#'                 group_stats = "median",
-#'                 hline_arb = NULL,
-#'                 hline_arb_color = NULL,
-#'                 hline_arb_label = NULL,
 #'                 hline_vars = c("ANRHI", "ANRLO"),
-#'                 hline_vars_colors = c("pink", "brown"),
-#'                 hline_vars_labels = NULL,
+#'                 rotate_xlab = FALSE,
+#'                 group_stats = "median"
+#'                 ) %>% add_straight_lines(
+#'                   agg_label = "Group Median",
+#'                   color_comb = "#39ff14",
+#'                   hline_arb = NULL,
+#'                   hline_arb_color = NULL,
+#'                   hline_arb_label = NULL,
+#'                   hline_vars = c("ANRHI", "ANRLO"),
+#'                   hline_vars_colors = c("pink", "brown"),
+#'                   hline_vars_labels = NULL
 #'                 )
 #'
 #' g_spaghettiplot(data = ADLB,
@@ -140,12 +137,16 @@
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median",
-#'                 hline_arb = 55,
-#'                 hline_arb_color = NULL,
-#'                 hline_arb_label = NULL,
 #'                 hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-#'                 hline_vars_colors = c("pink", "brown", "purple", "gray"),
-#'                 hline_vars_labels = NULL,
+#'                 ) %>% add_straight_lines(
+#'                   agg_label = "Group Median",
+#'                   color_comb = "#39ff14",
+#'                   hline_arb = 55,
+#'                   hline_arb_color = NULL,
+#'                   hline_arb_label = NULL,
+#'                   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
+#'                   hline_vars_colors = c("pink", "brown", "purple", "gray"),
+#'                   hline_vars_labels = NULL,
 #'                 )
 #'
 #' g_spaghettiplot(data = ADLB,
@@ -162,12 +163,16 @@
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median",
-#'                 hline_arb = c(40, 50, 60),
-#'                 hline_arb_color = c("blue", "red", "green"),
-#'                 hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
 #'                 hline_vars = c("ANRHI", "ANRLO"),
-#'                 hline_vars_colors = NULL,
-#'                 hline_vars_labels = NULL,
+#'                 ) %>% add_straight_lines(
+#'                   agg_label = "Group Median",
+#'                   color_comb = "#39ff14",
+#'                   hline_arb = c(40, 50, 60),
+#'                   hline_arb_color = c("blue", "red", "green"),
+#'                   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
+#'                   hline_vars = c("ANRHI", "ANRLO"),
+#'                   hline_vars_colors = NULL,
+#'                   hline_vars_labels = NULL,
 #'                 )
 #'
 g_spaghettiplot <- function(data,
@@ -191,23 +196,7 @@ g_spaghettiplot <- function(data,
                             rotate_xlab = FALSE,
                             font_size = 12,
                             group_stats = "NONE",
-                            hline_arb = NULL,
-                            hline_arb_color = "red",
-                            hline_arb_label = NULL,
-                            hline_vars = NULL,
-                            hline_vars_colors = NULL,
-                            hline_vars_labels = NULL) {
-
-  validated_res <- validate_hori_line_args(
-    data = data,
-    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
-    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
-  )
-
-  new_hline_col <- validated_res$new_hline_col
-  hline_vars_labels <- validated_res$hline_vars_labels
-  hline_arb_color <- validated_res$hline_arb_color
-  hline_arb_label <- validated_res$hline_arb_label
+                            hline_vars = NULL) {
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
@@ -319,16 +308,6 @@ g_spaghettiplot <- function(data,
     plot <- plot +
       scale_color_manual(values = color_manual, name = trt_label)
   }
-  # Add horizontal line for range based on option
-  plot <- add_straight_lines(
-    plot,
-    plot_data = plot_data,
-    agg_label = agg_label,
-    color_comb = color_comb,
-    new_hline_col = new_hline_col,
-    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
-    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
-  )
 
   # Format font size
   if (!is.null(font_size)) {

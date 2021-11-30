@@ -24,13 +24,7 @@ g_boxplot(
   facet_ncol = NULL,
   rotate_xlab = FALSE,
   font_size = NULL,
-  facet_var = NULL,
-  hline_arb = NULL,
-  hline_arb_color = "red",
-  hline_arb_label = NULL,
-  hline_vars = NULL,
-  hline_vars_colors = NULL,
-  hline_vars_labels = NULL
+  facet_var = NULL
 )
 }
 \arguments{
@@ -75,20 +69,6 @@ Y-axis e.g. AVAL.}
 
 \item{facet_var}{variable to facet the plot by, or "None" if no faceting
 required.}
-
-\item{hline_arb}{numeric vector identifying intercept for arbitrary horizontal line.}
-
-\item{hline_arb_color}{color, character vector with length equal to `(hline_arb)` or one,
-for the arbitrary horizontal line.}
-
-\item{hline_arb_label}{legend, character vector with length equal to `(hline_arb)` or one,
-label for the arbitrary horizontal line.}
-
-\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
-
-\item{hline_vars_colors}{color(s) for the hline_vars.}
-
-\item{hline_vars_labels}{legend label(s) for the hline_vars.}
 }
 \value{
 \code{ggplot} object
@@ -167,13 +147,14 @@ g_boxplot(ADLB,
           facet_var = "AVISIT",
           xaxis_var = "STUDYID",
           alpha = 0.5,
-          rotate_xlab = TRUE,
-          hline_arb = c(30, 40),
-          hline_arb_color = "blue",
-          hline_arb_label = "Hori_line_label",
-          hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-          hline_vars_colors = c("pink", "brown", "purple", "gray"),
-          hline_vars_labels =  NULL
+          rotate_xlab = TRUE
+          ) \%>\% add_straight_lines(
+            hline_arb = c(30, 40),
+            hline_arb_color = "blue",
+            hline_arb_label = "Hori_line_label",
+            hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
+            hline_vars_colors = c("pink", "brown", "purple", "gray"),
+            hline_vars_labels = NULL
           )
 
 }

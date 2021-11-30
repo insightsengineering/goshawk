@@ -6,11 +6,8 @@
 \usage{
 add_straight_lines(
   plot,
-  plot_data,
   agg_label = NULL,
   color_comb = NULL,
-  new_hline_col = NULL,
-  new_vline_col = NULL,
   hline_arb = NULL,
   hline_arb_color = "red",
   hline_arb_label = NULL,
@@ -26,44 +23,51 @@ add_straight_lines(
 )
 }
 \arguments{
-\item{plot}{the ggplot2 plot object which the horizontal and/or vertical lines should be added to}
+\item{plot}{('ggplot2 object') which the horizontal and/or vertical lines should be added to}
 
-\item{plot_data}{data frame with variables which will be displayed in the plot.}
+\item{agg_label}{('character') label for the line denoting the Mean or Median.}
 
-\item{agg_label}{label for the line denoting the Mean or Median.}
+\item{color_comb}{('character') denoting the color of the Mean or Median line.}
 
-\item{color_comb}{character denoting the color of the Mean or Median line.}
+\item{hline_arb}{('numeric vector') value identifying intercept for arbitrary horizontal lines.}
 
-\item{new_hline_col}{the name of the column to be added to plot_data that will hold the single value for
-the arbitrary horizontal line}
+\item{hline_arb_color}{('character vector') optional, color for the arbitrary horizontal lines.}
 
-\item{new_vline_col}{the name of the column to be added to plot_data that will hold the single value for
-the arbitrary vertical line}
+\item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
-\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+\item{hline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+The data inside of the ggplot2 object must also contain the columns with these variable names}
 
-\item{hline_arb_color}{color for the arbitrary horizontal line that will appear on the plot.}
+\item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 
-\item{hline_arb_label}{label for the arbitrary horizontal line that will appear on the legend.}
+\item{hline_vars_labels}{('character vector') labels for the legend to the horizontal lines defined by variables.}
 
-\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+\item{vline_arb}{('numeric vector') value identifying intercept for arbitrary vertical lines.}
 
-\item{hline_vars_colors}{color(s) for the horizontal lines defined by variables that will appear on the plot.}
+\item{vline_arb_color}{('character vector') optional, color for the arbitrary vertical lines.}
 
-\item{hline_vars_labels}{labels(s) for the horizontal lines defined by variables that will appear on the legend.}
+\item{vline_arb_label}{('character vector') optional, label for the legend to the arbitrary vertical lines.}
 
-\item{vline_arb}{numeric value identifying intercept for arbitrary vertical line.}
+\item{vline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+The data inside of the ggplot2 object must also contain the columns with these variable names}
 
-\item{vline_arb_color}{color for the arbitrary vertical line that will appear on the plot.}
+\item{vline_vars_colors}{('character vector') colors for the vertical lines defined by variables.}
 
-\item{vline_arb_label}{label for the arbitrary vertical that will appear on the legend.}
-
-\item{vline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
-
-\item{vline_vars_colors}{color(s) for the vertical lines defined by variables that will appear on the plot.}
-
-\item{vline_vars_labels}{labels(s) for the vertical lines defined by variables that will appear on the legend.}
+\item{vline_vars_labels}{('character vector') labels for the legend to the vertical lines defined by variables.}
+}
+\value{
+\code{ggplot} object
 }
 \description{
-Add horizontal and/or vertical lines and their legend labels to a plot
+This function is currently designed to be used with ('g_boxplot'), ('g_correlationplot'), ('g_spaghettiplot'),
+and ('g_density_distribution_plot'), but may also work in general.
+}
+\examples{
+p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+p \%>\% add_straight_lines(
+  hline_arb = c(20, 25, 30),
+  hline_arb_color = "red",
+  hline_arb_label = "Hori Line"
+)
+
 }

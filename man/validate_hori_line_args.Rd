@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{validate_hori_line_args}
 \alias{validate_hori_line_args}
-\title{validate horizontal line arguments}
+\title{validate vertical line arguments given in the parameters against the data.}
 \usage{
 validate_hori_line_args(
   data,
@@ -15,20 +15,24 @@ validate_hori_line_args(
 )
 }
 \arguments{
-\item{data}{data frame with variables which will be displayed in the plot.}
+\item{data}{('data.frame') with variables which will be used to create the plot.}
 
-\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+\item{hline_arb}{('numeric vector') value identifying intercept for arbitrary horizontal lines.}
 
-\item{hline_arb_color}{color for the arbitrary horizontal line that will appear on the plot.}
+\item{hline_arb_color}{('character vector') optional, color for the arbitrary horizontal lines.}
 
-\item{hline_arb_label}{label for the arbitrary horizontal line that will appear on the legend.}
+\item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
-\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+\item{hline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+The data must also contain the columns with these variable names}
 
-\item{hline_vars_colors}{color(s) for the horizontal lines defined by variables that will appear on the plot.}
+\item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 
-\item{hline_vars_labels}{labels(s) for the horizontal lines defined by variables that will appear on the legend.}
+\item{hline_vars_labels}{('character vector') labels for the legend to the horizontal lines defined by variables.}
+}
+\value{
+('list')
 }
 \description{
-validate horizontal line arguments
+helper function to be called by add_straight_lines
 }

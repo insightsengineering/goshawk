@@ -26,12 +26,7 @@ g_spaghettiplot(
   rotate_xlab = FALSE,
   font_size = 12,
   group_stats = "NONE",
-  hline_arb = NULL,
-  hline_arb_color = "red",
-  hline_arb_label = NULL,
-  hline_vars = NULL,
-  hline_vars_colors = NULL,
-  hline_vars_labels = NULL
+  hline_vars = NULL
 )
 }
 \arguments{
@@ -81,19 +76,7 @@ value is waiver().}
 
 \item{group_stats}{control group mean or median overlay.}
 
-\item{hline_arb}{numeric vector identifying intercept for arbitrary horizontal line.}
-
-\item{hline_arb_color}{color, character vector with length equal to `(hline_arb)` or one,
-for the arbitrary horizontal line.}
-
-\item{hline_arb_label}{legend, character vector with length equal to `(hline_arb)` or one,
-label for the arbitrary horizontal line.}
-
 \item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
-
-\item{hline_vars_colors}{color(s) for the hline_vars.}
-
-\item{hline_vars_labels}{legend label(s) for the hline_vars.}
 }
 \value{
 \code{ggplot} object
@@ -172,14 +155,18 @@ g_spaghettiplot(data = ADLB,
                 alpha = .02,
                 xtick = c("BL", "W 1", "W 4"),
                 xlabel = c("Baseline", "Week 1", "Week 4"),
-                rotate_xlab = FALSE,
-                group_stats = "median",
-                hline_arb = NULL,
-                hline_arb_color = NULL,
-                hline_arb_label = NULL,
                 hline_vars = c("ANRHI", "ANRLO"),
-                hline_vars_colors = c("pink", "brown"),
-                hline_vars_labels = NULL,
+                rotate_xlab = FALSE,
+                group_stats = "median"
+                ) \%>\% add_straight_lines(
+                  agg_label = "Group Median",
+                  color_comb = "#39ff14",
+                  hline_arb = NULL,
+                  hline_arb_color = NULL,
+                  hline_arb_label = NULL,
+                  hline_vars = c("ANRHI", "ANRLO"),
+                  hline_vars_colors = c("pink", "brown"),
+                  hline_vars_labels = NULL
                 )
 
 g_spaghettiplot(data = ADLB,
@@ -196,12 +183,16 @@ g_spaghettiplot(data = ADLB,
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
                 group_stats = "median",
-                hline_arb = 55,
-                hline_arb_color = NULL,
-                hline_arb_label = NULL,
                 hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-                hline_vars_colors = c("pink", "brown", "purple", "gray"),
-                hline_vars_labels = NULL,
+                ) \%>\% add_straight_lines(
+                  agg_label = "Group Median",
+                  color_comb = "#39ff14",
+                  hline_arb = 55,
+                  hline_arb_color = NULL,
+                  hline_arb_label = NULL,
+                  hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
+                  hline_vars_colors = c("pink", "brown", "purple", "gray"),
+                  hline_vars_labels = NULL,
                 )
 
 g_spaghettiplot(data = ADLB,
@@ -218,12 +209,16 @@ g_spaghettiplot(data = ADLB,
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
                 group_stats = "median",
-                hline_arb = c(40, 50, 60),
-                hline_arb_color = c("blue", "red", "green"),
-                hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
                 hline_vars = c("ANRHI", "ANRLO"),
-                hline_vars_colors = NULL,
-                hline_vars_labels = NULL,
+                ) \%>\% add_straight_lines(
+                  agg_label = "Group Median",
+                  color_comb = "#39ff14",
+                  hline_arb = c(40, 50, 60),
+                  hline_arb_color = c("blue", "red", "green"),
+                  hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
+                  hline_vars = c("ANRHI", "ANRLO"),
+                  hline_vars_colors = NULL,
+                  hline_vars_labels = NULL,
                 )
 
 }

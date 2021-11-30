@@ -108,15 +108,20 @@ h_caption_loqs_label <- function(loqs_data) {
 
 }
 
-#' validate vertical line arguments
+#' validate vertical line arguments given in the parameters against the data.
 #'
-#' @param data data frame with variables which will be displayed in the plot.
-#' @param vline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param vline_arb_color color for the arbitrary horizontal line that will appear on the plot.
-#' @param vline_arb_label label for the arbitrary horizontal line that will appear on the legend.
-#' @param vline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param vline_vars_colors color(s) for the horizontal lines defined by variables that will appear on the plot.
-#' @param vline_vars_labels labels(s) for the horizontal lines defined by variables that will appear on the legend.
+#' helper function to be called by add_straight_lines
+#'
+#' @param data ('data.frame') with variables which will be used to create the plot.
+#' @param vline_arb ('numeric vector') value identifying intercept for arbitrary vertical lines.
+#' @param vline_arb_color ('character vector') optional, color for the arbitrary vertical lines.
+#' @param vline_arb_label ('character vector') optional, label for the legend to the arbitrary vertical lines.
+#' @param vline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data must also contain the columns with these variable names
+#' @param vline_vars_colors ('character vector') colors for the vertical lines defined by variables.
+#' @param vline_vars_labels ('character vector') labels for the legend to the vertical lines defined by variables.
+#'
+#' @return ('list')
 validate_vert_line_args <- function(data,
                                     vline_arb = NULL,
                                     vline_arb_color = "red",
@@ -206,15 +211,20 @@ validate_vert_line_args <- function(data,
   )
 }
 
-#' validate horizontal line arguments
+#' validate vertical line arguments given in the parameters against the data.
 #'
-#' @param data data frame with variables which will be displayed in the plot.
-#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for the arbitrary horizontal line that will appear on the plot.
-#' @param hline_arb_label label for the arbitrary horizontal line that will appear on the legend.
-#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the horizontal lines defined by variables that will appear on the plot.
-#' @param hline_vars_labels labels(s) for the horizontal lines defined by variables that will appear on the legend.
+#' helper function to be called by add_straight_lines
+#'
+#' @param data ('data.frame') with variables which will be used to create the plot.
+#' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
+#' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
+#' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
+#' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data must also contain the columns with these variable names
+#' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
+#' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
+#'
+#' @return ('list')
 validate_hori_line_args <- function(data,
                                     hline_arb = NULL,
                                     hline_arb_color = "red",
@@ -303,32 +313,41 @@ validate_hori_line_args <- function(data,
 
 #' Add horizontal and/or vertical lines and their legend labels to a plot
 #'
-#' @param plot the ggplot2 plot object which the horizontal and/or vertical lines should be added to
-#' @param plot_data data frame with variables which will be displayed in the plot.
-#' @param agg_label label for the line denoting the Mean or Median.
-#' @param color_comb character denoting the color of the Mean or Median line.
-#' @param new_hline_col the name of the column to be added to plot_data that will hold the single value for
-#'  the arbitrary horizontal line
-#' @param new_vline_col the name of the column to be added to plot_data that will hold the single value for
-#'  the arbitrary vertical line
-#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for the arbitrary horizontal line that will appear on the plot.
-#' @param hline_arb_label label for the arbitrary horizontal line that will appear on the legend.
-#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the horizontal lines defined by variables that will appear on the plot.
-#' @param hline_vars_labels labels(s) for the horizontal lines defined by variables that will appear on the legend.
-#' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
-#' @param vline_arb_color color for the arbitrary vertical line that will appear on the plot.
-#' @param vline_arb_label label for the arbitrary vertical that will appear on the legend.
-#' @param vline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param vline_vars_colors color(s) for the vertical lines defined by variables that will appear on the plot.
-#' @param vline_vars_labels labels(s) for the vertical lines defined by variables that will appear on the legend.
+#' This function is currently designed to be used with ('g_boxplot'), ('g_correlationplot'), ('g_spaghettiplot'),
+#' and ('g_density_distribution_plot'), but may also work in general.
+#'
+#' @param plot ('ggplot2 object') which the horizontal and/or vertical lines should be added to
+#' @param agg_label ('character') label for the line denoting the Mean or Median.
+#' @param color_comb ('character') denoting the color of the Mean or Median line.
+#' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
+#' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
+#' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
+#' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
+#' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
+#' @param vline_arb ('numeric vector') value identifying intercept for arbitrary vertical lines.
+#' @param vline_arb_color ('character vector') optional, color for the arbitrary vertical lines.
+#' @param vline_arb_label ('character vector') optional, label for the legend to the arbitrary vertical lines.
+#' @param vline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#' @param vline_vars_colors ('character vector') colors for the vertical lines defined by variables.
+#' @param vline_vars_labels ('character vector') labels for the legend to the vertical lines defined by variables.
+#'
+#' @examples
+#' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+#' p %>% add_straight_lines(
+#'   hline_arb = c(20, 25, 30),
+#'   hline_arb_color = "red",
+#'   hline_arb_label = "Hori Line"
+#' )
+#'
+#' @return \code{ggplot} object
+#'
+#' @export
 add_straight_lines <- function(plot,
-                               plot_data,
                                agg_label = NULL,
                                color_comb = NULL,
-                               new_hline_col = NULL,
-                               new_vline_col = NULL,
                                hline_arb = NULL,
                                hline_arb_color = "red",
                                hline_arb_label = NULL,
@@ -342,6 +361,29 @@ add_straight_lines <- function(plot,
                                vline_vars_colors = NULL,
                                vline_vars_labels = NULL
                                ) {
+
+  plot_data <- ggplot_build(plot)$plot$data
+
+  validated_res <- validate_hori_line_args(
+    data = plot_data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
+
+  new_hline_col <- validated_res$new_hline_col
+  hline_vars_labels <- validated_res$hline_vars_labels
+  hline_arb_color <- validated_res$hline_arb_color
+  hline_arb_label <- validated_res$hline_arb_label
+
+  validated_res_vert <- validate_vert_line_args(
+    data = plot_data,
+    vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label,
+    vline_vars = vline_vars, vline_vars_colors = vline_vars_colors, vline_vars_labels = vline_vars_labels
+  )
+  new_vline_col <- validated_res_vert$new_vline_col
+  vline_vars_labels <- validated_res_vert$vline_vars_labels
+  vline_arb_color <- validated_res_vert$vline_arb_color
+  vline_arb_label <- validated_res_vert$vline_arb_label
 
   draw_key_cust <- function(data, params, size) {
     if (data$orientation == "horizontal") {

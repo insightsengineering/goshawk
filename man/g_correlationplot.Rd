@@ -33,18 +33,6 @@ g_correlationplot(
   facet = FALSE,
   facet_var = "ARM",
   reg_line = FALSE,
-  hline_arb = NULL,
-  hline_arb_color = "red",
-  hline_arb_label = NULL,
-  vline_arb = NULL,
-  vline_arb_color = "green",
-  vline_arb_label = NULL,
-  hline_vars = NULL,
-  hline_vars_colors = NULL,
-  hline_vars_labels = NULL,
-  vline_vars = NULL,
-  vline_vars_colors = NULL,
-  vline_vars_labels = NULL,
   rotate_xlab = FALSE,
   font_size = 12,
   dot_size = 2,
@@ -108,34 +96,6 @@ g_correlationplot(
 
 \item{reg_line}{include regression line and annotations for slope and coefficient.
 Use with facet = TRUE.}
-
-\item{hline_arb}{numeric vector identifying intercept for arbitrary horizontal line.}
-
-\item{hline_arb_color}{color, character vector with length equal to `(hline_arb)` or one,
-for the arbitrary horizontal line.}
-
-\item{hline_arb_label}{legend, character vector with length equal to `(hline_arb)` or one,
-label for the arbitrary horizontal line.}
-
-\item{vline_arb}{numeric vector identifying intercept for arbitrary vertical line.}
-
-\item{vline_arb_color}{color, character vector with length equal to `(vline_arb)` or one,
-for the arbitrary vertical line.}
-
-\item{vline_arb_label}{legend, character vector with length equal to `(vline_arb)` or one,
-label for the arbitrary vertical.}
-
-\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
-
-\item{hline_vars_colors}{color(s) for the hline_vars.}
-
-\item{hline_vars_labels}{legend label(s) for the hline_vars.}
-
-\item{vline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
-
-\item{vline_vars_colors}{color(s) for the vline_vars.}
-
-\item{vline_vars_labels}{legend label(s) for the vline_vars.}
 
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
@@ -279,24 +239,23 @@ g_correlationplot(
   facet = FALSE,
   facet_var = "ARM",
   reg_line = FALSE,
-  hline_arb = c(60, 70),
-  hline_arb_color = "gray",
-  hline_arb_label = "Hori_line_label",
-  vline_arb = c(45, 50),
-  vline_arb_color = c("red", "black"),
-  vline_arb_label = c("Vertical Line A", "Vertical Line B"),
-  hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
-  hline_vars_colors = c("green", "blue", "purple", "cyan"),
-  hline_vars_label =  c("ANRHI ALT Label", "ANRLO ALT Label",
-  "ULOQN ALT Label", "LLOQN ALT Label"),
-  vline_vars = c("ANRHI.CRP", "ANRLO.CRP", "ULOQN.CRP", "LLOQN.CRP"),
-  vline_vars_colors = c("yellow", "orange", "brown", "gold"),
-  vline_vars_labels =  c("ANRHI CRP Label", "ANRLO CRP Label",
-  "ULOQN CRP Label", "LLOQN CRP Label"),
   rotate_xlab = FALSE,
   font_size = 14,
   dot_size = 2,
   reg_text_size = 3
+) \%>\% add_straight_lines(
+    hline_arb = c(60, 70),
+    hline_arb_color = "gray",
+    hline_arb_label = "Hori_line_label",
+    vline_arb = c(45, 50),
+    vline_arb_color = c("red", "black"),
+    vline_arb_label = c("Vertical Line A", "Vertical Line B"),
+    hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
+    hline_vars_colors = c("green", "blue", "purple", "cyan"),
+    hline_vars_label = c("ANRHI ALT Label", "ANRLO ALT Label", "ULOQN ALT Label", "LLOQN ALT Label"),
+    vline_vars = c("ANRHI.CRP", "ANRLO.CRP", "ULOQN.CRP", "LLOQN.CRP"),
+    vline_vars_colors = c("yellow", "orange", "brown", "gold"),
+    vline_vars_labels = c("ANRHI CRP Label", "ANRLO CRP Label", "ULOQN CRP Label", "LLOQN CRP Label")
 )
 
 }
