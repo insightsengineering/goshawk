@@ -108,207 +108,106 @@ h_caption_loqs_label <- function(loqs_data) {
 
 }
 
-#' validate vertical line arguments given in the parameters against the data.
+#' validate line arguments given in the parameters against the data.
 #'
 #' helper function to be called by add_straight_lines
 #'
 #' @param data ('data.frame') with variables which will be used to create the plot.
-#' @param vline_arb ('numeric vector') value identifying intercept for arbitrary vertical lines.
-#' @param vline_arb_color ('character vector') optional, color for the arbitrary vertical lines.
-#' @param vline_arb_label ('character vector') optional, label for the legend to the arbitrary vertical lines.
-#' @param vline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#' @param line_arb ('numeric vector') value identifying intercept for arbitrary lines.
+#' @param line_arb_color ('character vector') optional, color for the arbitrary lines.
+#' @param line_arb_label ('character vector') optional, label for the legend to the arbitrary lines.
+#' @param line_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 #'   The data must also contain the columns with these variable names
-#' @param vline_vars_colors ('character vector') colors for the vertical lines defined by variables.
-#' @param vline_vars_labels ('character vector') labels for the legend to the vertical lines defined by variables.
+#' @param line_vars_colors ('character vector') colors for the lines defined by variables.
+#' @param line_vars_labels ('character vector') labels for the legend to the lines defined by variables.
 #'
 #' @return ('list')
-validate_vert_line_args <- function(data,
-                                    vline_arb = NULL,
-                                    vline_arb_color = "red",
-                                    vline_arb_label = NULL,
-                                    vline_vars = NULL,
-                                    vline_vars_colors = NULL,
-                                    vline_vars_labels = NULL) {
+validate_line_args <- function(data,
+                                    line_arb = NULL,
+                                    line_arb_color = "red",
+                                    line_arb_label = NULL,
+                                    line_vars = NULL,
+                                    line_vars_colors = NULL,
+                                    line_vars_labels = NULL) {
 
-  new_vline_col <- if (!is.null(vline_arb)) {
-    stopifnot(is_numeric_vector(vline_arb))
-    if (is.null(vline_arb_color)) {
-      vline_arb_color <- rep("red", length(vline_arb))
+  new_line_col <- if (!is.null(line_arb)) {
+    stopifnot(is_numeric_vector(line_arb))
+    if (is.null(line_arb_color)) {
+      line_arb_color <- rep("red", length(line_arb))
     } else {
-      if (is_character_single(vline_arb_color)) {
-        vline_arb_color <- rep(vline_arb_color, length(vline_arb))
+      if (is_character_single(line_arb_color)) {
+        line_arb_color <- rep(line_arb_color, length(line_arb))
       } else {
-        stopifnot(is_character_vector(vline_arb_color, min_length = length(vline_arb), max_length = length(vline_arb)))
+        stopifnot(is_character_vector(line_arb_color, min_length = length(line_arb), max_length = length(line_arb)))
       }
     }
-    if (is.null(vline_arb_label)) {
-      vline_arb_label <- rep("Arbitrary Vertical Line", length(vline_arb))
+    if (is.null(line_arb_label)) {
+      line_arb_label <- rep("Arbitrary Vertical Line", length(line_arb))
     } else {
-      if (is_character_single(vline_arb_label)) {
-        vline_arb_label <- rep(vline_arb_label, length(vline_arb))
+      if (is_character_single(line_arb_label)) {
+        line_arb_label <- rep(line_arb_label, length(line_arb))
       } else {
-        stopifnot(is_character_vector(vline_arb_label, min_length = length(vline_arb), max_length = length(vline_arb)))
+        stopifnot(is_character_vector(line_arb_label, min_length = length(line_arb), max_length = length(line_arb)))
       }
     }
 
-    new_vline_col <- paste0("Arbitrary_Vertical_Line_", seq_len(length(vline_arb)))
-    for (index in seq_len(length(vline_arb))) {
+    new_line_col <- paste0("Arbitrary_Vertical_Line_", seq_len(length(line_arb)))
+    for (index in seq_len(length(line_arb))) {
       i <- 1
-      while (new_vline_col[index] %in% names(data)) {
-        new_vline_col[index] <- paste0(new_vline_col[index], "_", i)
+      while (new_line_col[index] %in% names(data)) {
+        new_line_col[index] <- paste0(new_line_col[index], "_", i)
         i <- i + 1
       }
     }
-    new_vline_col
+    new_line_col
   }
 
-  vline_vars_labels <- if (!is.null(vline_vars)) {
-    stopifnot(is_character_vector(vline_vars, min_length = 1, max_length = length(data)))
-    stopifnot(all(vline_vars %in% names(data)))
+  line_vars_labels <- if (!is.null(line_vars)) {
+    stopifnot(is_character_vector(line_vars, min_length = 1, max_length = length(data)))
+    stopifnot(all(line_vars %in% names(data)))
     stopifnot(
       all(vapply(
-        vline_vars,
+        line_vars,
         FUN = function(x) is.numeric(data[[x]]) == 1,
         FUN.VALUE = logical(1)
-      )
-      )
+      ))
     )
 
-    if (!is.null(vline_vars_labels)) {
+    if (!is.null(line_vars_labels)) {
       stopifnot(is_character_vector(
-        vline_vars_labels, min_length = length(vline_vars),
-        max_length = (length(vline_vars)))
+        line_vars_labels, min_length = length(line_vars),
+        max_length = (length(line_vars)))
       )
     } else {
-      vline_vars_labels <- vapply(
-        vline_vars,
+      line_vars_labels <- vapply(
+        line_vars,
         FUN = function(x) if_null(attributes(data[[x]])$label, ""),
         FUN.VALUE = character(1)
       )
-      vline_vars_labels <- vapply(
-        seq_along(vline_vars_labels),
-        FUN = function(x) `if`(vline_vars_labels[x] == "", vline_vars[x], vline_vars_labels[x]),
+      line_vars_labels <- vapply(
+        seq_along(line_vars_labels),
+        FUN = function(x) `if`(line_vars_labels[x] == "", line_vars[x], line_vars_labels[x]),
         FUN.VALUE = character(1)
       )
     }
-    if (!is.null(vline_vars_colors)) {
+    if (!is.null(line_vars_colors)) {
       stopifnot(is_character_vector(
-        vline_vars_colors,
-        min_length = length(vline_vars),
-        max_length = (length(vline_vars)))
+        line_vars_colors,
+        min_length = length(line_vars),
+        max_length = (length(line_vars)))
       )
     }
-    vline_vars_labels
+    line_vars_labels
   }
 
   return(
     list(
-      new_vline_col = new_vline_col,
-      vline_vars_labels = vline_vars_labels,
-      vline_arb_color = vline_arb_color,
-      vline_arb_label = vline_arb_label
+      new_line_col = new_line_col,
+      line_vars_labels = line_vars_labels,
+      line_arb_color = line_arb_color,
+      line_arb_label = line_arb_label
     )
   )
-}
-
-#' validate vertical line arguments given in the parameters against the data.
-#'
-#' helper function to be called by add_straight_lines
-#'
-#' @param data ('data.frame') with variables which will be used to create the plot.
-#' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
-#' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
-#' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
-#' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#'   The data must also contain the columns with these variable names
-#' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
-#' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
-#'
-#' @return ('list')
-validate_hori_line_args <- function(data,
-                                    hline_arb = NULL,
-                                    hline_arb_color = "red",
-                                    hline_arb_label = NULL,
-                                    hline_vars = NULL,
-                                    hline_vars_colors = NULL,
-                                    hline_vars_labels = NULL) {
-
-  new_hline_col <- if (!is.null(hline_arb)) {
-    stopifnot(is_numeric_vector(hline_arb))
-    if (is.null(hline_arb_color)) {
-      hline_arb_color <- rep("red", length(hline_arb))
-    } else {
-      if (is_character_single(hline_arb_color)) {
-        hline_arb_color <- rep(hline_arb_color, length(hline_arb))
-      } else {
-        stopifnot(is_character_vector(hline_arb_color, min_length = length(hline_arb), max_length = length(hline_arb)))
-      }
-    }
-    if (is.null(hline_arb_label)) {
-      hline_arb_label <- rep("Arbitrary Horizontal Line", length(hline_arb))
-    } else {
-      if (is_character_single(hline_arb_label)) {
-        hline_arb_label <- rep(hline_arb_label, length(hline_arb))
-      } else {
-        stopifnot(is_character_vector(hline_arb_label, min_length = length(hline_arb), max_length = length(hline_arb)))
-      }
-    }
-
-    new_hline_col <- paste0("Arbitrary_Horizontal_Line_", seq_len(length(hline_arb)))
-    for (index in seq_len(length(hline_arb))) {
-      i <- 1
-      while (new_hline_col[index] %in% names(data)) {
-        new_hline_col[index] <- paste0(new_hline_col[index], "_", i)
-        i <- i + 1
-      }
-    }
-    new_hline_col
-  }
-
-  hline_vars_labels <- if (!is.null(hline_vars)) {
-    stopifnot(is_character_vector(hline_vars, min_length = 1, max_length = length(data)))
-    stopifnot(all(hline_vars %in% names(data)))
-    stopifnot(
-      all(vapply(
-        hline_vars,
-        FUN = function(x) is.numeric(data[[x]]) == 1,
-        FUN.VALUE = logical(1)
-      )
-      )
-    )
-    if (!is.null(hline_vars_labels)) {
-      stopifnot(is_character_vector(
-        hline_vars_labels, min_length = length(hline_vars),
-        max_length = (length(hline_vars)))
-      )
-    } else {
-      hline_vars_labels <- vapply(
-        hline_vars,
-        FUN = function(x) if_null(attributes(data[[x]])$label, ""),
-        FUN.VALUE = character(1)
-      )
-      hline_vars_labels <- vapply(
-        seq_along(hline_vars_labels),
-        FUN = function(x) `if`(hline_vars_labels[x] == "", hline_vars[x], hline_vars_labels[x]),
-        FUN.VALUE = character(1)
-      )
-    }
-    if (!is.null(hline_vars_colors)) {
-      stopifnot(is_character_vector(
-        hline_vars_colors,
-        min_length = length(hline_vars),
-        max_length = (length(hline_vars)))
-      )
-    }
-    hline_vars_labels
-  }
-
-  return(list(
-    new_hline_col = new_hline_col,
-    hline_vars_labels = hline_vars_labels,
-    hline_arb_color = hline_arb_color,
-    hline_arb_label = hline_arb_label
-  ))
 }
 
 #' Add horizontal and/or vertical lines and their legend labels to a plot
@@ -364,26 +263,26 @@ add_straight_lines <- function(plot,
 
   plot_data <- ggplot_build(plot)$plot$data
 
-  validated_res <- validate_hori_line_args(
+  validated_res <- validate_line_args(
     data = plot_data,
-    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
-    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+    line_arb = hline_arb, line_arb_color = hline_arb_color, line_arb_label = hline_arb_label,
+    line_vars = hline_vars, line_vars_colors = hline_vars_colors, line_vars_labels = hline_vars_labels
   )
 
-  new_hline_col <- validated_res$new_hline_col
-  hline_vars_labels <- validated_res$hline_vars_labels
-  hline_arb_color <- validated_res$hline_arb_color
-  hline_arb_label <- validated_res$hline_arb_label
+  new_hline_col <- validated_res$new_line_col
+  hline_vars_labels <- validated_res$line_vars_labels
+  hline_arb_color <- validated_res$line_arb_color
+  hline_arb_label <- validated_res$line_arb_label
 
-  validated_res_vert <- validate_vert_line_args(
+  validated_res_vert <- validate_line_args(
     data = plot_data,
-    vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label,
-    vline_vars = vline_vars, vline_vars_colors = vline_vars_colors, vline_vars_labels = vline_vars_labels
+    line_arb = vline_arb, line_arb_color = vline_arb_color, line_arb_label = vline_arb_label,
+    line_vars = vline_vars, line_vars_colors = vline_vars_colors, line_vars_labels = vline_vars_labels
   )
-  new_vline_col <- validated_res_vert$new_vline_col
-  vline_vars_labels <- validated_res_vert$vline_vars_labels
-  vline_arb_color <- validated_res_vert$vline_arb_color
-  vline_arb_label <- validated_res_vert$vline_arb_label
+  new_vline_col <- validated_res_vert$new_line_col
+  vline_vars_labels <- validated_res_vert$line_vars_labels
+  vline_arb_color <- validated_res_vert$line_arb_color
+  vline_arb_label <- validated_res_vert$line_arb_label
 
   draw_key_cust <- function(data, params, size) {
     if (data$orientation == "horizontal") {
