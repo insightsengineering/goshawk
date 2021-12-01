@@ -32,6 +32,20 @@
 #' @param facet_var variable to use for treatment facetting.
 #' @param reg_line include regression line and annotations for slope and coefficient.
 #' Use with facet = TRUE.
+#' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
+#' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
+#' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
+#' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
+#' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
+#' @param vline_arb ('numeric vector') value identifying intercept for arbitrary vertical lines.
+#' @param vline_arb_color ('character vector') optional, color for the arbitrary vertical lines.
+#' @param vline_arb_label ('character vector') optional, label for the legend to the arbitrary vertical lines.
+#' @param vline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#' @param vline_vars_colors ('character vector') colors for the vertical lines defined by variables.
+#' @param vline_vars_labels ('character vector') labels for the legend to the vertical lines defined by variables.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param dot_size plot dot size.
@@ -171,23 +185,22 @@
 #'   facet = FALSE,
 #'   facet_var = "ARM",
 #'   reg_line = FALSE,
+#'   hline_arb = c(60, 70),
+#'   hline_arb_color = "gray",
+#'   hline_arb_label = "Hori_line_label",
+#'   vline_arb = c(45, 50),
+#'   vline_arb_color = c("red", "black"),
+#'   vline_arb_label = c("Vertical Line A", "Vertical Line B"),
+#'   hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
+#'   hline_vars_colors = c("green", "blue", "purple", "cyan"),
+#'   hline_vars_label = c("ANRHI ALT Label", "ANRLO ALT Label", "ULOQN ALT Label", "LLOQN ALT Label"),
+#'   vline_vars = c("ANRHI.CRP", "ANRLO.CRP", "ULOQN.CRP", "LLOQN.CRP"),
+#'   vline_vars_colors = c("yellow", "orange", "brown", "gold"),
+#'   vline_vars_labels = c("ANRHI CRP Label", "ANRLO CRP Label", "ULOQN CRP Label", "LLOQN CRP Label"),
 #'   rotate_xlab = FALSE,
 #'   font_size = 14,
 #'   dot_size = 2,
 #'   reg_text_size = 3
-#' ) %>% add_straight_lines(
-#'     hline_arb = c(60, 70),
-#'     hline_arb_color = "gray",
-#'     hline_arb_label = "Hori_line_label",
-#'     vline_arb = c(45, 50),
-#'     vline_arb_color = c("red", "black"),
-#'     vline_arb_label = c("Vertical Line A", "Vertical Line B"),
-#'     hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
-#'     hline_vars_colors = c("green", "blue", "purple", "cyan"),
-#'     hline_vars_label = c("ANRHI ALT Label", "ANRLO ALT Label", "ULOQN ALT Label", "LLOQN ALT Label"),
-#'     vline_vars = c("ANRHI.CRP", "ANRLO.CRP", "ULOQN.CRP", "LLOQN.CRP"),
-#'     vline_vars_colors = c("yellow", "orange", "brown", "gold"),
-#'     vline_vars_labels = c("ANRHI CRP Label", "ANRLO CRP Label", "ULOQN CRP Label", "LLOQN CRP Label")
 #' )
 #'
 g_correlationplot <- function(label = "Correlation Plot",
@@ -218,6 +231,18 @@ g_correlationplot <- function(label = "Correlation Plot",
                               facet = FALSE,
                               facet_var = "ARM",
                               reg_line = FALSE,
+                              hline_arb = NULL,
+                              hline_arb_color = "red",
+                              hline_arb_label = NULL,
+                              vline_arb = NULL,
+                              vline_arb_color = "green",
+                              vline_arb_label = NULL,
+                              hline_vars = NULL,
+                              hline_vars_colors = NULL,
+                              hline_vars_labels = NULL,
+                              vline_vars = NULL,
+                              vline_vars_colors = NULL,
+                              vline_vars_labels = NULL,
                               rotate_xlab = FALSE,
                               font_size = 12,
                               dot_size = 2,
@@ -373,6 +398,14 @@ g_correlationplot <- function(label = "Correlation Plot",
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
+
+  plot1 <- add_straight_lines(
+    plot = plot1,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels,
+    vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label,
+    vline_vars = vline_vars, vline_vars_colors = vline_vars_colors, vline_vars_labels = vline_vars_labels,
+  )
 
   plot1
 }

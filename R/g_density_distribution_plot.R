@@ -16,6 +16,9 @@
 #' @param color_comb name or hex value for combined treatment color.
 #' @param comb_line display combined treatment line toggle.
 #' @param facet_var variable to use for facetting.
+#' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
+#' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
+#' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
 #' @param facet_ncol number of facets per row.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
@@ -87,16 +90,14 @@
 #'            color_comb = "#39ff14",
 #'            comb_line = FALSE,
 #'            facet_var = "AVISITCD",
+#'            hline_arb = c(0.04, 0.05),
+#'            hline_arb_color = c("black", "red"),
+#'            hline_arb_label = c("Horizontal Line A", "Horizontal Line B"),
 #'            facet_ncol = 2,
 #'            rotate_xlab = FALSE,
 #'            font_size = 10,
 #'            line_size = .5
-#'            ) %>% add_straight_lines(
-#'              hline_arb = c(0.04, 0.05),
-#'              hline_arb_color = c("black", "red"),
-#'              hline_arb_label = c("Horizontal Line A", "Horizontal Line B")
 #'            )
-#'
 #'
 g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         data,
@@ -111,6 +112,9 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         color_comb = "#39ff14",
                                         comb_line = TRUE,
                                         facet_var = "AVISITCD",
+                                        hline_arb = NULL,
+                                        hline_arb_color = "red",
+                                        hline_arb_label = NULL,
                                         facet_ncol = 2,
                                         rotate_xlab = FALSE,
                                         font_size = 12,
@@ -194,6 +198,14 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
     plot1 <- plot1 +
       geom_rug(aes(x = !!sym(xaxis_var), colour = !!sym(trt_group)))
   }
+
+  # Add horizontal line
+  plot1 <- add_straight_lines(
+    plot = plot1,
+    hline_arb = hline_arb,
+    hline_arb_color = hline_arb_color,
+    hline_arb_label = hline_arb_label
+  )
 
   # Format font size
   if (!is.null(font_size)) {

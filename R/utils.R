@@ -236,7 +236,7 @@ validate_line_args <- function(data,
 #'
 #' @examples
 #' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
-#' p %>% add_straight_lines(
+#' p %>% goshawk:::add_straight_lines(
 #'   hline_arb = c(20, 25, 30),
 #'   hline_arb_color = "red",
 #'   hline_arb_label = "Hori Line"
@@ -244,7 +244,6 @@ validate_line_args <- function(data,
 #'
 #' @return \code{ggplot} object
 #'
-#' @export
 add_straight_lines <- function(plot,
                                agg_label = NULL,
                                color_comb = NULL,

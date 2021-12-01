@@ -34,6 +34,13 @@
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
+#' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
+#' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
+#' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
+#' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
+#' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
 #'
 #' @importFrom utils.nest stop_if_not if_null
 #'
@@ -105,15 +112,14 @@
 #'           facet_var = "AVISIT",
 #'           xaxis_var = "STUDYID",
 #'           alpha = 0.5,
-#'           rotate_xlab = TRUE
-#'           ) %>% add_straight_lines(
-#'             hline_arb = c(30, 40),
-#'             hline_arb_color = "blue",
-#'             hline_arb_label = "Hori_line_label",
-#'             hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-#'             hline_vars_colors = c("pink", "brown", "purple", "gray"),
-#'             hline_vars_labels = NULL
-#'           )
+#'           rotate_xlab = TRUE,
+#'           hline_arb = c(30, 40),
+#'           hline_arb_color = "blue",
+#'           hline_arb_label = "Hori_line_label",
+#'           hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
+#'           hline_vars_colors = c("pink", "brown", "purple", "gray"),
+#'           hline_vars_labels = NULL
+#'          )
 #'
 g_boxplot <- function(data,
                       biomarker,
@@ -134,8 +140,13 @@ g_boxplot <- function(data,
                       facet_ncol = NULL,
                       rotate_xlab = FALSE,
                       font_size = NULL,
-                      facet_var = NULL
-) {
+                      facet_var = NULL,
+                      hline_arb = NULL,
+                      hline_arb_color = "red",
+                      hline_arb_label = NULL,
+                      hline_vars = NULL,
+                      hline_vars_colors = NULL,
+                      hline_vars_labels = NULL) {
   stop_if_not(list(!is.null(data[[param_var]]), paste("param_var", param_var, "is not in data.")))
   stop_if_not(list(
     any(data[[param_var]] == biomarker), paste("biomarker", biomarker, "is not found in param_var", param_var, ".")))
@@ -251,6 +262,13 @@ g_boxplot <- function(data,
       }
     }
   }
+
+  # Add horizontal line for range based on option
+  plot1 <- add_straight_lines(
+    plot = plot1,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
 
   # Format font size
   if (is_finite(font_size)) {

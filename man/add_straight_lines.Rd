@@ -64,7 +64,7 @@ and ('g_density_distribution_plot'), but may also work in general.
 }
 \examples{
 p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
-p \%>\% add_straight_lines(
+p \%>\% goshawk:::add_straight_lines(
   hline_arb = c(20, 25, 30),
   hline_arb_color = "red",
   hline_arb_label = "Hori Line"

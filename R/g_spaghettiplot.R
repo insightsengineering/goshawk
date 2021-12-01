@@ -27,7 +27,13 @@
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
-#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
+#' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
+#' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
+#' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
+#' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
 #'
 #'
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -109,19 +115,15 @@
 #'                 alpha = .02,
 #'                 xtick = c("BL", "W 1", "W 4"),
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
-#'                 hline_vars = c("ANRHI", "ANRLO"),
 #'                 rotate_xlab = FALSE,
-#'                 group_stats = "median"
-#'                 ) %>% add_straight_lines(
-#'                   agg_label = "Group Median",
-#'                   color_comb = "#39ff14",
-#'                   hline_arb = NULL,
-#'                   hline_arb_color = NULL,
-#'                   hline_arb_label = NULL,
-#'                   hline_vars = c("ANRHI", "ANRLO"),
-#'                   hline_vars_colors = c("pink", "brown"),
-#'                   hline_vars_labels = NULL
-#'                 )
+#'                 group_stats = "median",
+#'                 hline_arb = NULL,
+#'                 hline_arb_color = NULL,
+#'                 hline_arb_label = NULL,
+#'                 hline_vars = c("ANRHI", "ANRLO"),
+#'                 hline_vars_colors = c("pink", "brown"),
+#'                 hline_vars_labels = NULL
+#'                )
 #'
 #' g_spaghettiplot(data = ADLB,
 #'                 subj_id = "USUBJID",
@@ -137,17 +139,13 @@
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median",
+#'                 hline_arb = 55,
+#'                 hline_arb_color = NULL,
+#'                 hline_arb_label = NULL,
 #'                 hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-#'                 ) %>% add_straight_lines(
-#'                   agg_label = "Group Median",
-#'                   color_comb = "#39ff14",
-#'                   hline_arb = 55,
-#'                   hline_arb_color = NULL,
-#'                   hline_arb_label = NULL,
-#'                   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-#'                   hline_vars_colors = c("pink", "brown", "purple", "gray"),
-#'                   hline_vars_labels = NULL,
-#'                 )
+#'                 hline_vars_colors = c("pink", "brown", "purple", "gray"),
+#'                 hline_vars_labels = NULL
+#'                )
 #'
 #' g_spaghettiplot(data = ADLB,
 #'                 subj_id = "USUBJID",
@@ -163,17 +161,13 @@
 #'                 xlabel = c("Baseline", "Week 1", "Week 4"),
 #'                 rotate_xlab = FALSE,
 #'                 group_stats = "median",
+#'                 hline_arb = c(40, 50, 60),
+#'                 hline_arb_color = c("blue", "red", "green"),
+#'                 hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
 #'                 hline_vars = c("ANRHI", "ANRLO"),
-#'                 ) %>% add_straight_lines(
-#'                   agg_label = "Group Median",
-#'                   color_comb = "#39ff14",
-#'                   hline_arb = c(40, 50, 60),
-#'                   hline_arb_color = c("blue", "red", "green"),
-#'                   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
-#'                   hline_vars = c("ANRHI", "ANRLO"),
-#'                   hline_vars_colors = NULL,
-#'                   hline_vars_labels = NULL,
-#'                 )
+#'                 hline_vars_colors = NULL,
+#'                 hline_vars_labels = NULL
+#'                )
 #'
 g_spaghettiplot <- function(data,
                             subj_id = "USUBJID",
@@ -196,7 +190,12 @@ g_spaghettiplot <- function(data,
                             rotate_xlab = FALSE,
                             font_size = 12,
                             group_stats = "NONE",
-                            hline_vars = NULL) {
+                            hline_arb = NULL,
+                            hline_arb_color = "red",
+                            hline_arb_label = NULL,
+                            hline_vars = NULL,
+                            hline_vars_colors = NULL,
+                            hline_vars_labels = NULL) {
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
@@ -219,18 +218,7 @@ g_spaghettiplot <- function(data,
 
   # Plot
   plot_data <- data %>%
-    filter(!!sym(biomarker_var) %in% biomarker) %>%
-    select(
-      !!sym(time),
-      !!sym(value_var),
-      !!sym(trt_group),
-      !!sym(subj_id),
-      !!sym(unit_var),
-      !!sym(biomarker_var),
-      !!sym(biomarker_var_label),
-      !!!syms(hline_vars),
-      .data$LBSTRESC
-    )
+    filter(!!sym(biomarker_var) %in% biomarker)
   unit <- plot_data %>%
     select(!!sym(unit_var)) %>%
     unique() %>%
@@ -308,6 +296,19 @@ g_spaghettiplot <- function(data,
     plot <- plot +
       scale_color_manual(values = color_manual, name = trt_label)
   }
+
+  # Add horizontal line for range based on option
+  plot <- add_straight_lines(
+    plot,
+    agg_label = agg_label,
+    color_comb = color_comb,
+    hline_arb = hline_arb,
+    hline_arb_color = hline_arb_color,
+    hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars,
+    hline_vars_colors = hline_vars_colors,
+    hline_vars_labels = hline_vars_labels
+  )
 
   # Format font size
   if (!is.null(font_size)) {

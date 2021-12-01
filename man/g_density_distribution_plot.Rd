@@ -18,6 +18,9 @@ g_density_distribution_plot(
   color_comb = "#39ff14",
   comb_line = TRUE,
   facet_var = "AVISITCD",
+  hline_arb = NULL,
+  hline_arb_color = "red",
+  hline_arb_label = NULL,
   facet_ncol = 2,
   rotate_xlab = FALSE,
   font_size = 12,
@@ -51,6 +54,12 @@ g_density_distribution_plot(
 \item{comb_line}{display combined treatment line toggle.}
 
 \item{facet_var}{variable to use for facetting.}
+
+\item{hline_arb}{('numeric vector') value identifying intercept for arbitrary horizontal lines.}
+
+\item{hline_arb_color}{('character vector') optional, color for the arbitrary horizontal lines.}
+
+\item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
 \item{facet_ncol}{number of facets per row.}
 
@@ -126,16 +135,14 @@ g_density_distribution_plot(label = "Density Distribution Plot",
            color_comb = "#39ff14",
            comb_line = FALSE,
            facet_var = "AVISITCD",
+           hline_arb = c(0.04, 0.05),
+           hline_arb_color = c("black", "red"),
+           hline_arb_label = c("Horizontal Line A", "Horizontal Line B"),
            facet_ncol = 2,
            rotate_xlab = FALSE,
            font_size = 10,
            line_size = .5
-           ) \%>\% add_straight_lines(
-             hline_arb = c(0.04, 0.05),
-             hline_arb_color = c("black", "red"),
-             hline_arb_label = c("Horizontal Line A", "Horizontal Line B")
            )
-
 
 }
 \author{
