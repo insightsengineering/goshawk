@@ -143,7 +143,7 @@ validate_line_args <- function(data,
       }
     }
     if (is.null(line_arb_label)) {
-      line_arb_label <- rep("Arbitrary Vertical Line", length(line_arb))
+      line_arb_label <- rep("Arbitrary Line", length(line_arb))
     } else {
       if (is_character_single(line_arb_label)) {
         line_arb_label <- rep(line_arb_label, length(line_arb))
@@ -152,7 +152,7 @@ validate_line_args <- function(data,
       }
     }
 
-    new_line_col <- paste0("Arbitrary_Vertical_Line_", seq_len(length(line_arb)))
+    new_line_col <- paste0("Arbitrary_Line_", seq_len(length(line_arb)))
     for (index in seq_len(length(line_arb))) {
       i <- 1
       while (new_line_col[index] %in% names(data)) {
