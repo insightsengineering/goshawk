@@ -260,13 +260,6 @@ add_straight_lines <- function(plot,
       aes(yintercept = values, color = labels, linetype  = labels)
     )
 
-  plot1 +
-    scale_linetype_manual(
-      name = paste0("Description of Horizontal ", if_not_null(vline_vars, "and Vertical "),  "Line(s)"),
-      label = c(agg_label, validated_res$labels),
-      values = c(rep(2, length(validated_res$values)), if_not_null(agg_label, 1))
-    )
-
   # handling vertical lines--------------------------------------------------------
   validated_res_vert <- validate_line_args(
     data = plot_data,
@@ -278,9 +271,6 @@ add_straight_lines <- function(plot,
     line_vars_label = vline_vars_label
   )
 
-  validated_res_vert$linetype = "Horizontal"
-  validated_res_vert$name <- c("horiz", hline_vars)
-
   plot <- plot +
     geom_vline(
       data = as.data.frame(validated_res_vert),
@@ -290,7 +280,6 @@ add_straight_lines <- function(plot,
 
   # plotting ---------------------------------------------------------------------------
   if (length(hline_vars) > 0 || length(vline_vars) > 0) {
-    browser()
     plot +
       scale_linetype_manual(
         name = paste0("Description of Horizontal ", if_not_null(vline_vars, "and Vertical "),  "Line(s)"),
