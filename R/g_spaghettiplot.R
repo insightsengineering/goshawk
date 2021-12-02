@@ -190,12 +190,12 @@ g_spaghettiplot <- function(data,
                             rotate_xlab = FALSE,
                             font_size = 12,
                             group_stats = "NONE",
-                            hline_arb = NULL,
+                            hline_arb = numeric(0),
                             hline_arb_color = "red",
-                            hline_arb_label = NULL,
-                            hline_vars = NULL,
-                            hline_vars_colors = NULL,
-                            hline_vars_labels = NULL) {
+                            hline_arb_label = "Horizontal line",
+                            hline_vars = character(0),
+                            hline_vars_color = character(0),
+                            hline_vars_label = hline_vars) {
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
@@ -306,8 +306,8 @@ g_spaghettiplot <- function(data,
     hline_arb_color = hline_arb_color,
     hline_arb_label = hline_arb_label,
     hline_vars = hline_vars,
-    hline_vars_colors = hline_vars_colors,
-    hline_vars_labels = hline_vars_labels
+    hline_vars_color = hline_vars_color,
+    hline_vars_label = hline_vars_label
   )
 
   # Format font size
