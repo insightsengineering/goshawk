@@ -121,7 +121,8 @@ h_caption_loqs_label <- function(loqs_data) {
 #' @param line_vars_colors ('character vector') colors for the lines defined by variables.
 #' @param line_vars_labels ('character vector') labels for the legend to the lines defined by variables.
 #'
-#' @return ('list')
+#' @return ('list') containing the `values`,`colors` and `labels` fields defining attributes
+#' for horizontal or vertical lines.
 validate_line_args <- function(data,
                                line_arb = numeric(0),
                                line_arb_color = "red",

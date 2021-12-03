@@ -31,7 +31,8 @@ The data must also contain the columns with these variable names}
 \item{line_vars_labels}{('character vector') labels for the legend to the lines defined by variables.}
 }
 \value{
-('list')
+('list') containing the `values`,`colors` and `labels` fields defining attributes
+for horizontal or vertical lines.
 }
 \description{
 helper function to be called by add_straight_lines
