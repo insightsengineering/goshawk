@@ -118,8 +118,8 @@
 #'           hline_arb_label = "Hori_line_label",
 #'           hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
 #'           hline_vars_colors = c("pink", "brown", "purple", "gray"),
-#'           hline_vars_labels = NULL
-#'          )
+#'           hline_vars_labels = c("A", "B", "C", "D")
+#' )
 #'
 g_boxplot <- function(data,
                       biomarker,
@@ -141,12 +141,12 @@ g_boxplot <- function(data,
                       rotate_xlab = FALSE,
                       font_size = NULL,
                       facet_var = NULL,
-                      hline_arb = NULL,
+                      hline_arb = numeric(0),
                       hline_arb_color = "red",
-                      hline_arb_label = NULL,
-                      hline_vars = NULL,
-                      hline_vars_colors = NULL,
-                      hline_vars_labels = NULL) {
+                      hline_arb_label = "Horizontal line",
+                      hline_vars = character(0),
+                      hline_vars_colors = "green",
+                      hline_vars_labels = hline_vars) {
   stop_if_not(list(!is.null(data[[param_var]]), paste("param_var", param_var, "is not in data.")))
   stop_if_not(list(
     any(data[[param_var]] == biomarker), paste("biomarker", biomarker, "is not found in param_var", param_var, ".")))

@@ -6,12 +6,12 @@
 \usage{
 validate_line_args(
   data,
-  line_arb = NULL,
+  line_arb = numeric(0),
   line_arb_color = "red",
-  line_arb_label = NULL,
-  line_vars = NULL,
-  line_vars_colors = NULL,
-  line_vars_labels = NULL
+  line_arb_label = "Arbitrary line",
+  line_vars = character(0),
+  line_vars_colors = "green",
+  line_vars_labels = line_vars
 )
 }
 \arguments{
