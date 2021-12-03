@@ -289,7 +289,7 @@ g_spaghettiplot <- function(data,
   }
 
   # Add horizontal line for range based on option
-  plot <- add_straight_lines(
+  plot <- add_axes_lines(
     plot,
     agg_label = agg_label,
     color_comb = color_comb,

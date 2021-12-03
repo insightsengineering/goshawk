@@ -216,7 +216,7 @@ validate_line_args <- function(data,
 #'
 #' @examples
 #' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
-#' p %>% goshawk:::add_straight_lines(
+#' p %>% goshawk:::add_axes_lines(
 #'   hline_arb = c(20, 25, 30),
 #'   hline_arb_color = "red",
 #'   hline_arb_label = "Hori Line"
@@ -224,22 +224,22 @@ validate_line_args <- function(data,
 #'
 #' @return \code{ggplot} object
 #'
-add_straight_lines <- function(plot,
-                               agg_label = NULL,
-                               color_comb = NULL,
-                               hline_arb = numeric(0),
-                               hline_arb_color = "red",
-                               hline_arb_label = "Horizontal line",
-                               hline_vars = character(0),
-                               hline_vars_colors = "green",
-                               hline_vars_labels = hline_vars,
-                               vline_arb = numeric(0),
-                               vline_arb_color = "red",
-                               vline_arb_label = "Vertical line",
-                               vline_vars = character(0),
-                               vline_vars_colors = "green",
-                               vline_vars_labels = vline_vars
-                               ) {
+add_axes_lines <- function(plot,
+                           agg_label = NULL,
+                           color_comb = NULL,
+                           hline_arb = numeric(0),
+                           hline_arb_color = "red",
+                           hline_arb_label = "Horizontal line",
+                           hline_vars = character(0),
+                           hline_vars_colors = "green",
+                           hline_vars_labels = hline_vars,
+                           vline_arb = numeric(0),
+                           vline_arb_color = "red",
+                           vline_arb_label = "Vertical line",
+                           vline_vars = character(0),
+                           vline_vars_colors = "green",
+                           vline_vars_labels = vline_vars
+                           ) {
 
   plot_data <- ggplot_build(plot)$plot$data
   draw_key_cust <- function(data, params, size) {
