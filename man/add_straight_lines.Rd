@@ -8,18 +8,18 @@ add_straight_lines(
   plot,
   agg_label = NULL,
   color_comb = NULL,
-  hline_arb = NULL,
+  hline_arb = numeric(0),
   hline_arb_color = "red",
-  hline_arb_label = NULL,
-  hline_vars = NULL,
-  hline_vars_colors = NULL,
-  hline_vars_labels = NULL,
-  vline_arb = NULL,
-  vline_arb_color = "green",
-  vline_arb_label = NULL,
-  vline_vars = NULL,
-  vline_vars_colors = NULL,
-  vline_vars_labels = NULL
+  hline_arb_label = "Horizontal line",
+  hline_vars = character(0),
+  hline_vars_colors = "green",
+  hline_vars_labels = hline_vars,
+  vline_arb = numeric(0),
+  vline_arb_color = "red",
+  vline_arb_label = "Vertical line",
+  vline_vars = character(0),
+  vline_vars_colors = "green",
+  vline_vars_labels = vline_vars
 )
 }
 \arguments{

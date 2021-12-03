@@ -26,12 +26,12 @@ g_spaghettiplot(
   rotate_xlab = FALSE,
   font_size = 12,
   group_stats = "NONE",
-  hline_arb = NULL,
+  hline_arb = numeric(0),
   hline_arb_color = "red",
-  hline_arb_label = NULL,
-  hline_vars = NULL,
-  hline_vars_colors = NULL,
-  hline_vars_labels = NULL
+  hline_arb_label = "Horizontal line",
+  hline_vars = character(0),
+  hline_vars_colors = "green",
+  hline_vars_labels = hline_vars
 )
 }
 \arguments{
@@ -173,13 +173,9 @@ g_spaghettiplot(data = ADLB,
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
                 group_stats = "median",
-                hline_arb = NULL,
-                hline_arb_color = NULL,
-                hline_arb_label = NULL,
                 hline_vars = c("ANRHI", "ANRLO"),
-                hline_vars_colors = c("pink", "brown"),
-                hline_vars_labels = NULL
-               )
+                hline_vars_colors = c("pink", "brown")
+)
 
 g_spaghettiplot(data = ADLB,
                 subj_id = "USUBJID",
@@ -196,12 +192,9 @@ g_spaghettiplot(data = ADLB,
                 rotate_xlab = FALSE,
                 group_stats = "median",
                 hline_arb = 55,
-                hline_arb_color = NULL,
-                hline_arb_label = NULL,
                 hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-                hline_vars_colors = c("pink", "brown", "purple", "gray"),
-                hline_vars_labels = NULL
-               )
+                hline_vars_colors = c("pink", "brown", "purple", "gray")
+)
 
 g_spaghettiplot(data = ADLB,
                 subj_id = "USUBJID",
@@ -220,10 +213,8 @@ g_spaghettiplot(data = ADLB,
                 hline_arb = c(40, 50, 60),
                 hline_arb_color = c("blue", "red", "green"),
                 hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
-                hline_vars = c("ANRHI", "ANRLO"),
-                hline_vars_colors = NULL,
-                hline_vars_labels = NULL
-               )
+                hline_vars = c("ANRHI", "ANRLO")
+)
 
 }
 \author{

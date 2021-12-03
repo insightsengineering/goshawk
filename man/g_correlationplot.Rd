@@ -33,18 +33,18 @@ g_correlationplot(
   facet = FALSE,
   facet_var = "ARM",
   reg_line = FALSE,
-  hline_arb = NULL,
+  hline_arb = numeric(0),
   hline_arb_color = "red",
-  hline_arb_label = NULL,
-  vline_arb = NULL,
-  vline_arb_color = "green",
-  vline_arb_label = NULL,
-  hline_vars = NULL,
-  hline_vars_colors = NULL,
-  hline_vars_labels = NULL,
-  vline_vars = NULL,
-  vline_vars_colors = NULL,
-  vline_vars_labels = NULL,
+  hline_arb_label = "Horizontal line",
+  hline_vars = character(0),
+  hline_vars_colors = "green",
+  hline_vars_labels = hline_vars,
+  vline_arb = numeric(0),
+  vline_arb_color = "red",
+  vline_arb_label = "Vertical line",
+  vline_vars = character(0),
+  vline_vars_colors = "green",
+  vline_vars_labels = vline_vars,
   rotate_xlab = FALSE,
   font_size = 12,
   dot_size = 2,
@@ -115,18 +115,18 @@ Use with facet = TRUE.}
 
 \item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
-\item{vline_arb}{('numeric vector') value identifying intercept for arbitrary vertical lines.}
-
-\item{vline_arb_color}{('character vector') optional, color for the arbitrary vertical lines.}
-
-\item{vline_arb_label}{('character vector') optional, label for the legend to the arbitrary vertical lines.}
-
 \item{hline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 The data inside of the ggplot2 object must also contain the columns with these variable names}
 
 \item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 
 \item{hline_vars_labels}{('character vector') labels for the legend to the horizontal lines defined by variables.}
+
+\item{vline_arb}{('numeric vector') value identifying intercept for arbitrary vertical lines.}
+
+\item{vline_arb_color}{('character vector') optional, color for the arbitrary vertical lines.}
+
+\item{vline_arb_label}{('character vector') optional, label for the legend to the arbitrary vertical lines.}
 
 \item{vline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
 The data inside of the ggplot2 object must also contain the columns with these variable names}
