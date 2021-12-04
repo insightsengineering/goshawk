@@ -4,7 +4,7 @@
     <loc>https://insightsengineering.github.io/goshawk/index.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/goshawk/reference/add_straight_lines.html</loc>
+    <loc>https://insightsengineering.github.io/goshawk/reference/add_axes_lines.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/g_boxplot.html</loc>
@@ -37,9 +37,6 @@
     <loc>https://insightsengineering.github.io/goshawk/reference/t_summarytable.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/goshawk/reference/validate_hori_line_args.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/goshawk/reference/validate_vert_line_args.html</loc>
+    <loc>https://insightsengineering.github.io/goshawk/reference/validate_line_args.html</loc>
   </url>
 </urlset>

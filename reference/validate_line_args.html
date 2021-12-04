@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The goshawk package provides longitudinal visualizations of lab/biomarker data — goshawk • goshawk</title>
+<title>validate line arguments given in the parameters against the data. — validate_line_args • goshawk</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="The goshawk package provides longitudinal visualizations of lab/biomarker data — goshawk" />
-<meta property="og:description" content="The goshawk package provides longitudinal visualizations of lab/biomarker data" />
+<meta property="og:title" content="validate line arguments given in the parameters against the data. — validate_line_args" />
+<meta property="og:description" content="helper function to be called by add_straight_lines" />
 
 
 
@@ -121,17 +121,63 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>The goshawk package provides longitudinal visualizations of lab/biomarker data</h1>
+    <h1>validate line arguments given in the parameters against the data.</h1>
     
-    <div class="hidden name"><code>goshawk.Rd</code></div>
+    <div class="hidden name"><code>validate_line_args.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The goshawk package provides longitudinal visualizations of lab/biomarker data</p>
+    <p>helper function to be called by add_straight_lines</p>
     </div>
 
+    <pre class="usage"><span class='fu'>validate_line_args</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  line_arb <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>,
+  line_arb_color <span class='op'>=</span> <span class='st'>"red"</span>,
+  line_arb_label <span class='op'>=</span> <span class='st'>"Arbitrary line"</span>,
+  line_vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>,
+  line_vars_colors <span class='op'>=</span> <span class='st'>"green"</span>,
+  line_vars_labels <span class='op'>=</span> <span class='va'>line_vars</span>
+<span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>('data.frame') with variables which will be used to create the plot.</p></td>
+    </tr>
+    <tr>
+      <th>line_arb</th>
+      <td><p>('numeric vector') value identifying intercept for arbitrary lines.</p></td>
+    </tr>
+    <tr>
+      <th>line_arb_color</th>
+      <td><p>('character vector') optional, color for the arbitrary lines.</p></td>
+    </tr>
+    <tr>
+      <th>line_arb_label</th>
+      <td><p>('character vector') optional, label for the legend to the arbitrary lines.</p></td>
+    </tr>
+    <tr>
+      <th>line_vars</th>
+      <td><p>('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+The data must also contain the columns with these variable names</p></td>
+    </tr>
+    <tr>
+      <th>line_vars_colors</th>
+      <td><p>('character vector') colors for the lines defined by variables.</p></td>
+    </tr>
+    <tr>
+      <th>line_vars_labels</th>
+      <td><p>('character vector') labels for the legend to the lines defined by variables.</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>('list') containing the `values`,`colors` and `labels` fields defining attributes
+for horizontal or vertical lines.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

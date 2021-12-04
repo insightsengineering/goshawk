@@ -83,7 +83,7 @@ attributed LOQ values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10.9007</span>
       </span>
     </div>
 
@@ -280,78 +280,79 @@ visualization. Use with facet = TRUE.</p></td>
 <p>Balazs Toth (tothb2)  toth.balazs@gene.com</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Example using ADaM structure analysis dataset.</span>
-
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://stringr.tidyverse.org'>stringr</a></span><span class='op'>)</span>
-
-<span class='co'># original ARM value = dose value</span>
-<span class='va'>arm_mapping</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"A: Drug X"</span> <span class='op'>=</span> <span class='st'>"150mg QD"</span>, <span class='st'>"B: Placebo"</span> <span class='op'>=</span> <span class='st'>"Placebo"</span>,
-<span class='st'>"C: Combination"</span> <span class='op'>=</span> <span class='st'>"Combination"</span><span class='op'>)</span>
-<span class='va'>color_manual</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"150mg QD"</span> <span class='op'>=</span> <span class='st'>"#000000"</span>, <span class='st'>"Placebo"</span> <span class='op'>=</span> <span class='st'>"#3498DB"</span>, <span class='st'>"Combination"</span> <span class='op'>=</span> <span class='st'>"#E74C3C"</span><span class='op'>)</span>
-<span class='co'># assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"</span>
-<span class='va'>shape_manual</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"N"</span> <span class='op'>=</span> <span class='fl'>1</span>, <span class='st'>"Y"</span> <span class='op'>=</span> <span class='fl'>2</span>, <span class='st'>"NA"</span> <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
-
-<span class='va'>ASL</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span>
-<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span>
-<span class='va'>var_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>$</span><span class='va'>label</span><span class='op'>)</span>
-<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='va'>ADLB</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITCD <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span>
-    <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"SCREENING"</span> <span class='op'>~</span> <span class='st'>"SCR"</span>,
-    <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"BASELINE"</span> <span class='op'>~</span> <span class='st'>"BL"</span>,
-    <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"WEEK"</span>, <span class='va'>AVISIT</span><span class='op'>)</span> <span class='op'>~</span>
-      <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span>
-        <span class='st'>"W"</span>,
-        <span class='fu'><a href='https://rdrr.io/r/base/trimws.html'>trimws</a></span><span class='op'>(</span>
-          <span class='fu'><a href='https://rdrr.io/r/base/substr.html'>substr</a></span><span class='op'>(</span>
-            <span class='va'>AVISIT</span>,
-            start <span class='op'>=</span> <span class='fl'>6</span>,
-            stop <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_locate.html'>str_locate</a></span><span class='op'>(</span><span class='va'>AVISIT</span>, <span class='st'>"DAY"</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1</span>
-          <span class='op'>)</span>
-        <span class='op'>)</span>
-      <span class='op'>)</span>,
-    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='cn'>NA_character_</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITCDN <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span>
-    <span class='va'>AVISITCD</span> <span class='op'>==</span> <span class='st'>"SCR"</span> <span class='op'>~</span> <span class='op'>-</span><span class='fl'>2</span>,
-    <span class='va'>AVISITCD</span> <span class='op'>==</span> <span class='st'>"BL"</span> <span class='op'>~</span> <span class='fl'>0</span>,
-    <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"W"</span>, <span class='va'>AVISITCD</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span><span class='op'>(</span><span class='st'>"\\D+"</span>, <span class='st'>""</span>, <span class='va'>AVISITCD</span><span class='op'>)</span><span class='op'>)</span>,
-    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='cn'>NA_real_</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># use ARMCD values to order treatment in visualization legend</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>TRTORD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"C"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>1</span>,
-    <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>2</span>,
-      <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>3</span>, <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span><span class='op'>(</span><span class='va'>ARM</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>ARM</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>TRTORD</span><span class='op'>)</span><span class='op'>)</span>
- <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>ADLB</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>var_labels</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>
-
-<span class='fu'>g_scatterplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Scatter Plot"</span>,
-           data <span class='op'>=</span> <span class='va'>ADLB</span>,
-           param_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
-           param <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ALT"</span><span class='op'>)</span>,
-           xaxis_var <span class='op'>=</span> <span class='st'>"BASE"</span>,
-           yaxis_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,
-           visit <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,
-           loq_flag_var <span class='op'>=</span> <span class='st'>"LOQFL"</span>,
-           unit <span class='op'>=</span> <span class='st'>"AVALU"</span>,
-           xmin <span class='op'>=</span> <span class='fl'>0</span>,
-           xmax <span class='op'>=</span> <span class='fl'>200</span>,
-           ymin <span class='op'>=</span> <span class='fl'>0</span>,
-           ymax <span class='op'>=</span> <span class='fl'>200</span>,
-           color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,
-           shape_manual <span class='op'>=</span> <span class='va'>shape_manual</span>,
-           facet_ncol <span class='op'>=</span> <span class='fl'>2</span>,
-           facet <span class='op'>=</span> <span class='cn'>TRUE</span>,
-           facet_var <span class='op'>=</span> <span class='st'>"ARM"</span>,
-           reg_line <span class='op'>=</span> <span class='cn'>TRUE</span>,
-           hline <span class='op'>=</span> <span class='cn'>NULL</span>,
-           vline <span class='op'>=</span> <span class='fl'>.5</span>,
-           rotate_xlab <span class='op'>=</span> <span class='cn'>TRUE</span>,
-           font_size <span class='op'>=</span> <span class='fl'>14</span>,
-           dot_size <span class='op'>=</span> <span class='fl'>2</span>,
-           reg_text_size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='img'><img src='g_scatterplot-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Example using ADaM structure analysis dataset.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://stringr.tidyverse.org'>stringr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># original ARM value = dose value</span></span>
+<span class='r-in'><span class='va'>arm_mapping</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"A: Drug X"</span> <span class='op'>=</span> <span class='st'>"150mg QD"</span>, <span class='st'>"B: Placebo"</span> <span class='op'>=</span> <span class='st'>"Placebo"</span>,</span>
+<span class='r-in'><span class='st'>"C: Combination"</span> <span class='op'>=</span> <span class='st'>"Combination"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>color_manual</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"150mg QD"</span> <span class='op'>=</span> <span class='st'>"#000000"</span>, <span class='st'>"Placebo"</span> <span class='op'>=</span> <span class='st'>"#3498DB"</span>, <span class='st'>"Combination"</span> <span class='op'>=</span> <span class='st'>"#E74C3C"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"</span></span>
+<span class='r-in'><span class='va'>shape_manual</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"N"</span> <span class='op'>=</span> <span class='fl'>1</span>, <span class='st'>"Y"</span> <span class='op'>=</span> <span class='fl'>2</span>, <span class='st'>"NA"</span> <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ASL</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span></span>
+<span class='r-in'><span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span></span>
+<span class='r-in'><span class='va'>var_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>$</span><span class='va'>label</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='va'>ADLB</span> <span class='op'><a href='https://stringr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITCD <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"SCREENING"</span> <span class='op'>~</span> <span class='st'>"SCR"</span>,</span>
+<span class='r-in'>    <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"BASELINE"</span> <span class='op'>~</span> <span class='st'>"BL"</span>,</span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"WEEK"</span>, <span class='va'>AVISIT</span><span class='op'>)</span> <span class='op'>~</span></span>
+<span class='r-in'>      <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span></span>
+<span class='r-in'>        <span class='st'>"W"</span>,</span>
+<span class='r-in'>        <span class='fu'><a href='https://rdrr.io/r/base/trimws.html'>trimws</a></span><span class='op'>(</span></span>
+<span class='r-in'>          <span class='fu'><a href='https://rdrr.io/r/base/substr.html'>substr</a></span><span class='op'>(</span></span>
+<span class='r-in'>            <span class='va'>AVISIT</span>,</span>
+<span class='r-in'>            start <span class='op'>=</span> <span class='fl'>6</span>,</span>
+<span class='r-in'>            stop <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_locate.html'>str_locate</a></span><span class='op'>(</span><span class='va'>AVISIT</span>, <span class='st'>"DAY"</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1</span></span>
+<span class='r-in'>          <span class='op'>)</span></span>
+<span class='r-in'>        <span class='op'>)</span></span>
+<span class='r-in'>      <span class='op'>)</span>,</span>
+<span class='r-in'>    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='cn'>NA_character_</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://stringr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITCDN <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>AVISITCD</span> <span class='op'>==</span> <span class='st'>"SCR"</span> <span class='op'>~</span> <span class='op'>-</span><span class='fl'>2</span>,</span>
+<span class='r-in'>    <span class='va'>AVISITCD</span> <span class='op'>==</span> <span class='st'>"BL"</span> <span class='op'>~</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"W"</span>, <span class='va'>AVISITCD</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span><span class='op'>(</span><span class='st'>"\\D+"</span>, <span class='st'>""</span>, <span class='va'>AVISITCD</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='cn'>NA_real_</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://stringr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># use ARMCD values to order treatment in visualization legend</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>TRTORD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"C"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>1</span>,</span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>2</span>,</span>
+<span class='r-in'>      <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>3</span>, <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://stringr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span><span class='op'>(</span><span class='va'>ARM</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://stringr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>ARM</span><span class='op'>)</span> <span class='op'><a href='https://stringr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>TRTORD</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>ADLB</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>var_labels</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_scatterplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Scatter Plot"</span>,</span>
+<span class='r-in'>           data <span class='op'>=</span> <span class='va'>ADLB</span>,</span>
+<span class='r-in'>           param_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,</span>
+<span class='r-in'>           param <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ALT"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           xaxis_var <span class='op'>=</span> <span class='st'>"BASE"</span>,</span>
+<span class='r-in'>           yaxis_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>           visit <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,</span>
+<span class='r-in'>           loq_flag_var <span class='op'>=</span> <span class='st'>"LOQFL"</span>,</span>
+<span class='r-in'>           unit <span class='op'>=</span> <span class='st'>"AVALU"</span>,</span>
+<span class='r-in'>           xmin <span class='op'>=</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>           xmax <span class='op'>=</span> <span class='fl'>200</span>,</span>
+<span class='r-in'>           ymin <span class='op'>=</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>           ymax <span class='op'>=</span> <span class='fl'>200</span>,</span>
+<span class='r-in'>           color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,</span>
+<span class='r-in'>           shape_manual <span class='op'>=</span> <span class='va'>shape_manual</span>,</span>
+<span class='r-in'>           facet_ncol <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span class='r-in'>           facet <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>           facet_var <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>           reg_line <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>           hline <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>           vline <span class='op'>=</span> <span class='fl'>.5</span>,</span>
+<span class='r-in'>           rotate_xlab <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>           font_size <span class='op'>=</span> <span class='fl'>14</span>,</span>
+<span class='r-in'>           dot_size <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span class='r-in'>           reg_text_size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_scatterplot-1.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

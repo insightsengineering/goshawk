@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10.9007</span>
       </span>
     </div>
 
@@ -293,160 +293,167 @@ quartile.</p>
 <p>Wenyi Liu (wenyi.liu@roche.com)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-
-<span class='co'># Example using ADaM structure analysis dataset.</span>
-
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://stringr.tidyverse.org'>stringr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='co'># original ARM value = dose value</span>
-<span class='va'>arm_mapping</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"A: Drug X"</span> <span class='op'>=</span> <span class='st'>"150mg QD"</span>, <span class='st'>"B: Placebo"</span> <span class='op'>=</span> <span class='st'>"Placebo"</span>,
-<span class='st'>"C: Combination"</span> <span class='op'>=</span> <span class='st'>"Combination"</span><span class='op'>)</span>
-<span class='va'>color_manual</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"150mg QD"</span> <span class='op'>=</span> <span class='st'>"thistle"</span>, <span class='st'>"Placebo"</span> <span class='op'>=</span> <span class='st'>"orange"</span>, <span class='st'>"Combination"</span> <span class='op'>=</span> <span class='st'>"steelblue"</span><span class='op'>)</span>
-<span class='va'>type_manual</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"150mg QD"</span> <span class='op'>=</span> <span class='st'>"solid"</span>, <span class='st'>"Placebo"</span> <span class='op'>=</span> <span class='st'>"dashed"</span>, <span class='st'>"Combination"</span> <span class='op'>=</span> <span class='st'>"dotted"</span><span class='op'>)</span>
-
-<span class='va'>ASL</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>(</span><span class='va'>ARM</span> <span class='op'>==</span> <span class='st'>"B: Placebo"</span> <span class='op'>&amp;</span> <span class='va'>AGE</span> <span class='op'>&lt;</span> <span class='fl'>40</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span>
-<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>right_join</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>ASL</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STUDYID"</span>, <span class='st'>"USUBJID"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("STUDYID", "USUBJID")</span></div><div class='input'><span class='va'>var_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>$</span><span class='va'>label</span><span class='op'>)</span>
-
-<span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='va'>ADLB</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITCD <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span>
-    <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"SCREENING"</span> <span class='op'>~</span> <span class='st'>"SCR"</span>,
-    <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"BASELINE"</span> <span class='op'>~</span> <span class='st'>"BL"</span>,
-    <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"WEEK"</span>, <span class='va'>AVISIT</span><span class='op'>)</span> <span class='op'>~</span>
-      <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span>
-        <span class='st'>"W"</span>,
-        <span class='fu'><a href='https://rdrr.io/r/base/trimws.html'>trimws</a></span><span class='op'>(</span>
-          <span class='fu'><a href='https://rdrr.io/r/base/substr.html'>substr</a></span><span class='op'>(</span>
-            <span class='va'>AVISIT</span>,
-            start <span class='op'>=</span> <span class='fl'>6</span>,
-            stop <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_locate.html'>str_locate</a></span><span class='op'>(</span><span class='va'>AVISIT</span>, <span class='st'>"DAY"</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1</span>
-          <span class='op'>)</span>
-        <span class='op'>)</span>
-      <span class='op'>)</span>,
-    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='cn'>NA_character_</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITCDN <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span>
-    <span class='va'>AVISITCD</span> <span class='op'>==</span> <span class='st'>"SCR"</span> <span class='op'>~</span> <span class='op'>-</span><span class='fl'>2</span>,
-    <span class='va'>AVISITCD</span> <span class='op'>==</span> <span class='st'>"BL"</span> <span class='op'>~</span> <span class='fl'>0</span>,
-    <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"W"</span>, <span class='va'>AVISITCD</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span><span class='op'>(</span><span class='st'>"\\D+"</span>, <span class='st'>""</span>, <span class='va'>AVISITCD</span><span class='op'>)</span><span class='op'>)</span>,
-    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='cn'>NA_real_</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># use ARMCD values to order treatment in visualization legend</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>TRTORD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"C"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>1</span>,
-    <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>2</span>,
-      <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>3</span>, <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span><span class='op'>(</span><span class='va'>ARM</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>ARM</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>TRTORD</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>ADLB</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>var_labels</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>
-
-<span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='va'>ADLB</span>,
-           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
-           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
-           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,
-           shape <span class='op'>=</span> <span class='cn'>NULL</span>,
-           time <span class='op'>=</span> <span class='st'>"AVISITCDN"</span>,
-           color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,
-           line_type <span class='op'>=</span> <span class='va'>type_manual</span>,
-           median <span class='op'>=</span> <span class='cn'>FALSE</span>,
-           hline <span class='op'>=</span> <span class='fl'>50</span>,
-           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>,
-           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,
-           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,
-           plot_height <span class='op'>=</span> <span class='fl'>600</span><span class='op'>)</span>
-</div><div class='img'><img src='g_lineplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='va'>ADLB</span>,
-           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
-           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
-           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,
-           shape <span class='op'>=</span> <span class='cn'>NULL</span>,
-           time <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,
-           color_manual <span class='op'>=</span> <span class='cn'>NULL</span>,
-           line_type <span class='op'>=</span> <span class='va'>type_manual</span>,
-           median <span class='op'>=</span> <span class='cn'>TRUE</span>,
-           hline <span class='op'>=</span> <span class='fl'>50</span>,
-           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BL"</span>, <span class='st'>"W 1"</span>, <span class='st'>"W 5"</span><span class='op'>)</span>,
-           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,
-           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,
-           plot_height <span class='op'>=</span> <span class='fl'>600</span><span class='op'>)</span>
-</div><div class='img'><img src='g_lineplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='va'>ADLB</span>,
-           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
-           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
-           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,
-           shape <span class='op'>=</span> <span class='cn'>NULL</span>,
-           time <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,
-           color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,
-           line_type <span class='op'>=</span> <span class='va'>type_manual</span>,
-           median <span class='op'>=</span> <span class='cn'>FALSE</span>,
-           hline <span class='op'>=</span> <span class='fl'>50</span>,
-           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BL"</span>, <span class='st'>"W 1"</span>, <span class='st'>"W 5"</span><span class='op'>)</span>,
-           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,
-           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,
-           plot_height <span class='op'>=</span> <span class='fl'>600</span>,
-           count_threshold <span class='op'>=</span> <span class='fl'>90</span>,
-           table_font_size <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span>
-</div><div class='img'><img src='g_lineplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='va'>ADLB</span>,
-           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
-           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
-           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,
-           shape <span class='op'>=</span> <span class='cn'>NULL</span>,
-           time <span class='op'>=</span> <span class='st'>"AVISITCDN"</span>,
-           color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,
-           line_type <span class='op'>=</span> <span class='va'>type_manual</span>,
-           median <span class='op'>=</span> <span class='cn'>TRUE</span>,
-           hline <span class='op'>=</span> <span class='fl'>50</span>,
-           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>,
-           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,
-           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,
-           plot_height <span class='op'>=</span> <span class='fl'>600</span><span class='op'>)</span>
-</div><div class='img'><img src='g_lineplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>SEX</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"M"</span>, <span class='st'>"F"</span><span class='op'>)</span><span class='op'>)</span>,
-           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
-           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
-           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,
-           shape <span class='op'>=</span> <span class='st'>"SEX"</span>,
-           time <span class='op'>=</span> <span class='st'>"AVISITCDN"</span>,
-           color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,
-           line_type <span class='op'>=</span> <span class='va'>type_manual</span>,
-           median <span class='op'>=</span> <span class='cn'>FALSE</span>,
-           hline <span class='op'>=</span> <span class='fl'>50</span>,
-           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>,
-           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,
-           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,
-           plot_height <span class='op'>=</span> <span class='fl'>1500</span><span class='op'>)</span>
-</div><div class='img'><img src='g_lineplot-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,
-           data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>SEX</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"M"</span>, <span class='st'>"F"</span><span class='op'>)</span><span class='op'>)</span>,
-           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,
-           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,
-           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,
-           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,
-           shape <span class='op'>=</span> <span class='st'>"SEX"</span>,
-           time <span class='op'>=</span> <span class='st'>"AVISITCDN"</span>,
-           color_manual <span class='op'>=</span> <span class='cn'>NULL</span>,
-           median <span class='op'>=</span> <span class='cn'>FALSE</span>,
-           hline <span class='op'>=</span> <span class='fl'>50</span>,
-           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>,
-           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,
-           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,
-           plot_height <span class='op'>=</span> <span class='fl'>1500</span><span class='op'>)</span>
-</div><div class='img'><img src='g_lineplot-6.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Example using ADaM structure analysis dataset.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scda</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://stringr.tidyverse.org'>stringr</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># original ARM value = dose value</span></span>
+<span class='r-in'><span class='va'>arm_mapping</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"A: Drug X"</span> <span class='op'>=</span> <span class='st'>"150mg QD"</span>, <span class='st'>"B: Placebo"</span> <span class='op'>=</span> <span class='st'>"Placebo"</span>,</span>
+<span class='r-in'><span class='st'>"C: Combination"</span> <span class='op'>=</span> <span class='st'>"Combination"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>color_manual</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"150mg QD"</span> <span class='op'>=</span> <span class='st'>"thistle"</span>, <span class='st'>"Placebo"</span> <span class='op'>=</span> <span class='st'>"orange"</span>, <span class='st'>"Combination"</span> <span class='op'>=</span> <span class='st'>"steelblue"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>type_manual</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"150mg QD"</span> <span class='op'>=</span> <span class='st'>"solid"</span>, <span class='st'>"Placebo"</span> <span class='op'>=</span> <span class='st'>"dashed"</span>, <span class='st'>"Combination"</span> <span class='op'>=</span> <span class='st'>"dotted"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ASL</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adsl</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>(</span><span class='va'>ARM</span> <span class='op'>==</span> <span class='st'>"B: Placebo"</span> <span class='op'>&amp;</span> <span class='va'>AGE</span> <span class='op'>&lt;</span> <span class='fl'>40</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html'>synthetic_cdisc_data</a></span><span class='op'>(</span><span class='st'>"latest"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>adlb</span></span>
+<span class='r-in'><span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>right_join</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>ASL</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"STUDYID"</span>, <span class='st'>"USUBJID"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Joining, by = c("STUDYID", "USUBJID")</span>
+<span class='r-in'><span class='va'>var_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>$</span><span class='va'>label</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>ADLB</span> <span class='op'>&lt;-</span> <span class='va'>ADLB</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITCD <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"SCREENING"</span> <span class='op'>~</span> <span class='st'>"SCR"</span>,</span>
+<span class='r-in'>    <span class='va'>AVISIT</span> <span class='op'>==</span> <span class='st'>"BASELINE"</span> <span class='op'>~</span> <span class='st'>"BL"</span>,</span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"WEEK"</span>, <span class='va'>AVISIT</span><span class='op'>)</span> <span class='op'>~</span></span>
+<span class='r-in'>      <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span></span>
+<span class='r-in'>        <span class='st'>"W"</span>,</span>
+<span class='r-in'>        <span class='fu'><a href='https://rdrr.io/r/base/trimws.html'>trimws</a></span><span class='op'>(</span></span>
+<span class='r-in'>          <span class='fu'><a href='https://rdrr.io/r/base/substr.html'>substr</a></span><span class='op'>(</span></span>
+<span class='r-in'>            <span class='va'>AVISIT</span>,</span>
+<span class='r-in'>            start <span class='op'>=</span> <span class='fl'>6</span>,</span>
+<span class='r-in'>            stop <span class='op'>=</span> <span class='fu'><a href='https://stringr.tidyverse.org/reference/str_locate.html'>str_locate</a></span><span class='op'>(</span><span class='va'>AVISIT</span>, <span class='st'>"DAY"</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1</span></span>
+<span class='r-in'>          <span class='op'>)</span></span>
+<span class='r-in'>        <span class='op'>)</span></span>
+<span class='r-in'>      <span class='op'>)</span>,</span>
+<span class='r-in'>    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='cn'>NA_character_</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>AVISITCDN <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>AVISITCD</span> <span class='op'>==</span> <span class='st'>"SCR"</span> <span class='op'>~</span> <span class='op'>-</span><span class='fl'>2</span>,</span>
+<span class='r-in'>    <span class='va'>AVISITCD</span> <span class='op'>==</span> <span class='st'>"BL"</span> <span class='op'>~</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"W"</span>, <span class='va'>AVISITCD</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span><span class='op'>(</span><span class='st'>"\\D+"</span>, <span class='st'>""</span>, <span class='va'>AVISITCD</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='cn'>NA_real_</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># use ARMCD values to order treatment in visualization legend</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>TRTORD <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"C"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>1</span>,</span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>2</span>,</span>
+<span class='r-in'>      <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='va'>ARMCD</span><span class='op'>)</span>, <span class='fl'>3</span>, <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span><span class='op'>(</span><span class='va'>ARM</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>arm_mapping</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ARM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>ARM</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>TRTORD</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>ADLB</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span>, <span class='st'>"label"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>var_labels</span><span class='op'>[[</span><span class='st'>"ARM"</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,</span>
+<span class='r-in'>           data <span class='op'>=</span> <span class='va'>ADLB</span>,</span>
+<span class='r-in'>           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,</span>
+<span class='r-in'>           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,</span>
+<span class='r-in'>           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>           shape <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>           time <span class='op'>=</span> <span class='st'>"AVISITCDN"</span>,</span>
+<span class='r-in'>           color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,</span>
+<span class='r-in'>           line_type <span class='op'>=</span> <span class='va'>type_manual</span>,</span>
+<span class='r-in'>           median <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>           hline <span class='op'>=</span> <span class='fl'>50</span>,</span>
+<span class='r-in'>           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>,</span>
+<span class='r-in'>           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>           plot_height <span class='op'>=</span> <span class='fl'>600</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_lineplot-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,</span>
+<span class='r-in'>           data <span class='op'>=</span> <span class='va'>ADLB</span>,</span>
+<span class='r-in'>           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,</span>
+<span class='r-in'>           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,</span>
+<span class='r-in'>           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>           shape <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>           time <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,</span>
+<span class='r-in'>           color_manual <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>           line_type <span class='op'>=</span> <span class='va'>type_manual</span>,</span>
+<span class='r-in'>           median <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>           hline <span class='op'>=</span> <span class='fl'>50</span>,</span>
+<span class='r-in'>           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BL"</span>, <span class='st'>"W 1"</span>, <span class='st'>"W 5"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>           plot_height <span class='op'>=</span> <span class='fl'>600</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_lineplot-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,</span>
+<span class='r-in'>           data <span class='op'>=</span> <span class='va'>ADLB</span>,</span>
+<span class='r-in'>           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,</span>
+<span class='r-in'>           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,</span>
+<span class='r-in'>           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>           shape <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>           time <span class='op'>=</span> <span class='st'>"AVISITCD"</span>,</span>
+<span class='r-in'>           color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,</span>
+<span class='r-in'>           line_type <span class='op'>=</span> <span class='va'>type_manual</span>,</span>
+<span class='r-in'>           median <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>           hline <span class='op'>=</span> <span class='fl'>50</span>,</span>
+<span class='r-in'>           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BL"</span>, <span class='st'>"W 1"</span>, <span class='st'>"W 5"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>           plot_height <span class='op'>=</span> <span class='fl'>600</span>,</span>
+<span class='r-in'>           count_threshold <span class='op'>=</span> <span class='fl'>90</span>,</span>
+<span class='r-in'>           table_font_size <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_lineplot-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,</span>
+<span class='r-in'>           data <span class='op'>=</span> <span class='va'>ADLB</span>,</span>
+<span class='r-in'>           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,</span>
+<span class='r-in'>           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,</span>
+<span class='r-in'>           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>           shape <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>           time <span class='op'>=</span> <span class='st'>"AVISITCDN"</span>,</span>
+<span class='r-in'>           color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,</span>
+<span class='r-in'>           line_type <span class='op'>=</span> <span class='va'>type_manual</span>,</span>
+<span class='r-in'>           median <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>           hline <span class='op'>=</span> <span class='fl'>50</span>,</span>
+<span class='r-in'>           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>,</span>
+<span class='r-in'>           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>           plot_height <span class='op'>=</span> <span class='fl'>600</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_lineplot-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,</span>
+<span class='r-in'>           data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>SEX</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"M"</span>, <span class='st'>"F"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,</span>
+<span class='r-in'>           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,</span>
+<span class='r-in'>           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>           shape <span class='op'>=</span> <span class='st'>"SEX"</span>,</span>
+<span class='r-in'>           time <span class='op'>=</span> <span class='st'>"AVISITCDN"</span>,</span>
+<span class='r-in'>           color_manual <span class='op'>=</span> <span class='va'>color_manual</span>,</span>
+<span class='r-in'>           line_type <span class='op'>=</span> <span class='va'>type_manual</span>,</span>
+<span class='r-in'>           median <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>           hline <span class='op'>=</span> <span class='fl'>50</span>,</span>
+<span class='r-in'>           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>,</span>
+<span class='r-in'>           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>           plot_height <span class='op'>=</span> <span class='fl'>1500</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_lineplot-5.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>g_lineplot</span><span class='op'>(</span>label <span class='op'>=</span> <span class='st'>"Line Plot"</span>,</span>
+<span class='r-in'>           data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>ADLB</span>, <span class='va'>SEX</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"M"</span>, <span class='st'>"F"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>           biomarker_var <span class='op'>=</span> <span class='st'>"PARAMCD"</span>,</span>
+<span class='r-in'>           biomarker <span class='op'>=</span> <span class='st'>"CRP"</span>,</span>
+<span class='r-in'>           value_var <span class='op'>=</span> <span class='st'>"AVAL"</span>,</span>
+<span class='r-in'>           trt_group <span class='op'>=</span> <span class='st'>"ARM"</span>,</span>
+<span class='r-in'>           shape <span class='op'>=</span> <span class='st'>"SEX"</span>,</span>
+<span class='r-in'>           time <span class='op'>=</span> <span class='st'>"AVISITCDN"</span>,</span>
+<span class='r-in'>           color_manual <span class='op'>=</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>           median <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>           hline <span class='op'>=</span> <span class='fl'>50</span>,</span>
+<span class='r-in'>           xtick <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>,</span>
+<span class='r-in'>           xlabel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Baseline"</span>, <span class='st'>"Week 1"</span>, <span class='st'>"Week 5"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           rotate_xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>           plot_height <span class='op'>=</span> <span class='fl'>1500</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='g_lineplot-6.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
