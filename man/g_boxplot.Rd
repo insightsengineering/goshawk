@@ -25,12 +25,12 @@ g_boxplot(
   rotate_xlab = FALSE,
   font_size = NULL,
   facet_var = NULL,
-  hline_arb = NULL,
+  hline_arb = numeric(0),
   hline_arb_color = "red",
-  hline_arb_label = NULL,
-  hline_vars = NULL,
-  hline_vars_colors = NULL,
-  hline_vars_labels = NULL
+  hline_arb_label = "Horizontal line",
+  hline_vars = character(0),
+  hline_vars_colors = "green",
+  hline_vars_labels = hline_vars
 )
 }
 \arguments{
@@ -76,17 +76,18 @@ Y-axis e.g. AVAL.}
 \item{facet_var}{variable to facet the plot by, or "None" if no faceting
 required.}
 
-\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+\item{hline_arb}{('numeric vector') value identifying intercept for arbitrary horizontal lines.}
 
-\item{hline_arb_color}{color for the arbitrary horizontal line.}
+\item{hline_arb_color}{('character vector') optional, color for the arbitrary horizontal lines.}
 
-\item{hline_arb_label}{legend label for the arbitrary horizontal line.}
+\item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
-\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+\item{hline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+The data inside of the ggplot2 object must also contain the columns with these variable names}
 
-\item{hline_vars_colors}{color(s) for the hline_vars.}
+\item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 
-\item{hline_vars_labels}{legend label(s) for the hline_vars.}
+\item{hline_vars_labels}{('character vector') labels for the legend to the horizontal lines defined by variables.}
 }
 \value{
 \code{ggplot} object
@@ -166,13 +167,13 @@ g_boxplot(ADLB,
           xaxis_var = "STUDYID",
           alpha = 0.5,
           rotate_xlab = TRUE,
-          hline_arb = 30,
+          hline_arb = c(30, 40),
           hline_arb_color = "blue",
           hline_arb_label = "Hori_line_label",
           hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
           hline_vars_colors = c("pink", "brown", "purple", "gray"),
-          hline_vars_labels =  NULL
-          )
+          hline_vars_labels = c("A", "B", "C", "D")
+)
 
 }
 \author{

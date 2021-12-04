@@ -26,12 +26,12 @@ g_spaghettiplot(
   rotate_xlab = FALSE,
   font_size = 12,
   group_stats = "NONE",
-  hline_arb = NULL,
+  hline_arb = numeric(0),
   hline_arb_color = "red",
-  hline_arb_label = NULL,
-  hline_vars = NULL,
-  hline_vars_colors = NULL,
-  hline_vars_labels = NULL
+  hline_arb_label = "Horizontal line",
+  hline_vars = character(0),
+  hline_vars_colors = "green",
+  hline_vars_labels = hline_vars
 )
 }
 \arguments{
@@ -81,17 +81,18 @@ value is waiver().}
 
 \item{group_stats}{control group mean or median overlay.}
 
-\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+\item{hline_arb}{('numeric vector') value identifying intercept for arbitrary horizontal lines.}
 
-\item{hline_arb_color}{color for the arbitrary horizontal line.}
+\item{hline_arb_color}{('character vector') optional, color for the arbitrary horizontal lines.}
 
-\item{hline_arb_label}{legend label for the arbitrary horizontal line.}
+\item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
-\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+\item{hline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+The data inside of the ggplot2 object must also contain the columns with these variable names}
 
-\item{hline_vars_colors}{color(s) for the hline_vars.}
+\item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 
-\item{hline_vars_labels}{legend label(s) for the hline_vars.}
+\item{hline_vars_labels}{('character vector') labels for the legend to the horizontal lines defined by variables.}
 }
 \value{
 \code{ggplot} object
@@ -172,13 +173,9 @@ g_spaghettiplot(data = ADLB,
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
                 group_stats = "median",
-                hline_arb = NULL,
-                hline_arb_color = NULL,
-                hline_arb_label = NULL,
                 hline_vars = c("ANRHI", "ANRLO"),
-                hline_vars_colors = c("pink", "brown"),
-                hline_vars_labels = NULL,
-                )
+                hline_vars_colors = c("pink", "brown")
+)
 
 g_spaghettiplot(data = ADLB,
                 subj_id = "USUBJID",
@@ -194,13 +191,10 @@ g_spaghettiplot(data = ADLB,
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
                 group_stats = "median",
-                hline_arb = NULL,
-                hline_arb_color = NULL,
-                hline_arb_label = NULL,
+                hline_arb = 55,
                 hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-                hline_vars_colors = c("pink", "brown", "purple", "gray"),
-                hline_vars_labels = NULL,
-                )
+                hline_vars_colors = c("pink", "brown", "purple", "gray")
+)
 
 g_spaghettiplot(data = ADLB,
                 subj_id = "USUBJID",
@@ -216,13 +210,11 @@ g_spaghettiplot(data = ADLB,
                 xlabel = c("Baseline", "Week 1", "Week 4"),
                 rotate_xlab = FALSE,
                 group_stats = "median",
-                hline_arb = NULL,
-                hline_arb_color = NULL,
-                hline_arb_label = NULL,
-                hline_vars = c("ANRHI", "ANRLO"),
-                hline_vars_colors = NULL,
-                hline_vars_labels = NULL,
-                )
+                hline_arb = c(40, 50, 60),
+                hline_arb_color = c("blue", "red", "green"),
+                hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
+                hline_vars = c("ANRHI", "ANRLO")
+)
 
 }
 \author{

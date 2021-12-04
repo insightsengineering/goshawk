@@ -33,18 +33,18 @@ g_correlationplot(
   facet = FALSE,
   facet_var = "ARM",
   reg_line = FALSE,
-  hline_arb = NULL,
+  hline_arb = numeric(0),
   hline_arb_color = "red",
-  hline_arb_label = NULL,
-  vline_arb = NULL,
-  vline_arb_color = "green",
-  vline_arb_label = NULL,
-  hline_vars = NULL,
-  hline_vars_colors = NULL,
-  hline_vars_labels = NULL,
-  vline_vars = NULL,
-  vline_vars_colors = NULL,
-  vline_vars_labels = NULL,
+  hline_arb_label = "Horizontal line",
+  hline_vars = character(0),
+  hline_vars_colors = "green",
+  hline_vars_labels = hline_vars,
+  vline_arb = numeric(0),
+  vline_arb_color = "red",
+  vline_arb_label = "Vertical line",
+  vline_vars = character(0),
+  vline_vars_colors = "green",
+  vline_vars_labels = vline_vars,
   rotate_xlab = FALSE,
   font_size = 12,
   dot_size = 2,
@@ -109,29 +109,31 @@ g_correlationplot(
 \item{reg_line}{include regression line and annotations for slope and coefficient.
 Use with facet = TRUE.}
 
-\item{hline_arb}{numeric value identifying intercept for arbitrary horizontal line.}
+\item{hline_arb}{('numeric vector') value identifying intercept for arbitrary horizontal lines.}
 
-\item{hline_arb_color}{color for the arbitrary horizontal line.}
+\item{hline_arb_color}{('character vector') optional, color for the arbitrary horizontal lines.}
 
-\item{hline_arb_label}{legend label for the arbitrary horizontal line.}
+\item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
-\item{vline_arb}{numeric value identifying intercept for arbitrary vertical line.}
+\item{hline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+The data inside of the ggplot2 object must also contain the columns with these variable names}
 
-\item{vline_arb_color}{color for the arbitrary vertical line.}
+\item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 
-\item{vline_arb_label}{legend label for the arbitrary vertical.}
+\item{hline_vars_labels}{('character vector') labels for the legend to the horizontal lines defined by variables.}
 
-\item{hline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+\item{vline_arb}{('numeric vector') value identifying intercept for arbitrary vertical lines.}
 
-\item{hline_vars_colors}{color(s) for the hline_vars.}
+\item{vline_arb_color}{('character vector') optional, color for the arbitrary vertical lines.}
 
-\item{hline_vars_labels}{legend label(s) for the hline_vars.}
+\item{vline_arb_label}{('character vector') optional, label for the legend to the arbitrary vertical lines.}
 
-\item{vline_vars}{name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+\item{vline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+The data inside of the ggplot2 object must also contain the columns with these variable names}
 
-\item{vline_vars_colors}{color(s) for the vline_vars.}
+\item{vline_vars_colors}{('character vector') colors for the vertical lines defined by variables.}
 
-\item{vline_vars_labels}{legend label(s) for the vline_vars.}
+\item{vline_vars_labels}{('character vector') labels for the legend to the vertical lines defined by variables.}
 
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
@@ -275,20 +277,18 @@ g_correlationplot(
   facet = FALSE,
   facet_var = "ARM",
   reg_line = FALSE,
-  hline_arb = 70,
+  hline_arb = c(60, 70),
   hline_arb_color = "gray",
   hline_arb_label = "Hori_line_label",
-  vline_arb = 50,
-  vline_arb_color = "black",
-  vline_arb_label = "Vertical Line",
+  vline_arb = c(45, 50),
+  vline_arb_color = c("red", "black"),
+  vline_arb_label = c("Vertical Line A", "Vertical Line B"),
   hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
   hline_vars_colors = c("green", "blue", "purple", "cyan"),
-  hline_vars_label =  c("ANRHI ALT Label", "ANRLO ALT Label",
-  "ULOQN ALT Label", "LLOQN ALT Label"),
+  hline_vars_label = c("ANRHI ALT Label", "ANRLO ALT Label", "ULOQN ALT Label", "LLOQN ALT Label"),
   vline_vars = c("ANRHI.CRP", "ANRLO.CRP", "ULOQN.CRP", "LLOQN.CRP"),
   vline_vars_colors = c("yellow", "orange", "brown", "gold"),
-  vline_vars_labels =  c("ANRHI CRP Label", "ANRLO CRP Label",
-  "ULOQN CRP Label", "LLOQN CRP Label"),
+  vline_vars_labels = c("ANRHI CRP Label", "ANRLO CRP Label", "ULOQN CRP Label", "LLOQN CRP Label"),
   rotate_xlab = FALSE,
   font_size = 14,
   dot_size = 2,

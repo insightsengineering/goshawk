@@ -108,209 +108,140 @@ h_caption_loqs_label <- function(loqs_data) {
 
 }
 
-#' validate vertical line arguments
+#' validate line arguments given in the parameters against the data.
 #'
-#' @param data data frame with variables which will be displayed in the plot.
-#' @param vline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param vline_arb_color color for the arbitrary horizontal line that will appear on the plot.
-#' @param vline_arb_label label for the arbitrary horizontal line that will appear on the legend.
-#' @param vline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param vline_vars_colors color(s) for the horizontal lines defined by variables that will appear on the plot.
-#' @param vline_vars_labels labels(s) for the horizontal lines defined by variables that will appear on the legend.
-validate_vert_line_args <- function(data,
-                                    vline_arb = NULL,
-                                    vline_arb_color = "red",
-                                    vline_arb_label = NULL,
-                                    vline_vars = NULL,
-                                    vline_vars_colors = NULL,
-                                    vline_vars_labels = NULL) {
+#' helper function to be called by add_straight_lines
+#'
+#' @param data ('data.frame') with variables which will be used to create the plot.
+#' @param line_arb ('numeric vector') value identifying intercept for arbitrary lines.
+#' @param line_arb_color ('character vector') optional, color for the arbitrary lines.
+#' @param line_arb_label ('character vector') optional, label for the legend to the arbitrary lines.
+#' @param line_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data must also contain the columns with these variable names
+#' @param line_vars_colors ('character vector') colors for the lines defined by variables.
+#' @param line_vars_labels ('character vector') labels for the legend to the lines defined by variables.
+#'
+#' @return ('list') containing the `values`,`colors` and `labels` fields defining attributes
+#' for horizontal or vertical lines.
+validate_line_args <- function(data,
+                               line_arb = numeric(0),
+                               line_arb_color = "red",
+                               line_arb_label = "Arbitrary line",
+                               line_vars = character(0),
+                               line_vars_colors = "green",
+                               line_vars_labels = line_vars
+                               ) {
+  if (length(line_arb) > 0) {
+    stopifnot(is_numeric_vector(line_arb))
+    stopifnot(length(line_arb_color) == 1 || length(line_arb_color) == length(line_arb))
+    stopifnot(length(line_arb_label) == 1 || length(line_arb_label) == length(line_arb))
 
-  new_vline_col <- if (!is.null(vline_arb)) {
-    if (is.null(vline_arb_color)) {
-      vline_arb_color <- "red"
-    } else {
-      stopifnot(is_character_single(vline_arb_color))
+    if (length(line_arb_color) == 1) {
+      line_arb_color <- rep(line_arb_color, length(line_arb))
     }
-    if (is.null(vline_arb_label)) {
-      vline_arb_label <- "Arbitrary Vertical Line"
-    } else {
-      stopifnot(is_character_single(vline_arb_label))
-    }
-    stopifnot(is_numeric_single(vline_arb))
 
-    new_vline_col <- "Arbitrary_Vertical_Line"
-    i <- 1
-    while (new_vline_col %in% names(data)) {
-      new_vline_col <- paste0(new_vline_col, "_", i)
-      i <- i + 1
+    if (length(line_arb_label) == 1) {
+      line_arb_label <- rep(line_arb_label, length(line_arb))
     }
-    new_vline_col
+  } else {
+    line_arb <- numeric(0)
+    line_arb_color <- character(0)
+    line_arb_label <- character(0)
   }
 
-  vline_vars_labels <- if (!is.null(vline_vars)) {
-    stopifnot(is_character_vector(vline_vars, min_length = 1, max_length = length(data)))
-    stopifnot(all(vline_vars %in% names(data)))
-    stopifnot(
-      all(vapply(
-        vline_vars,
-        FUN = function(x) is.numeric(data[[x]]) == 1,
-        FUN.VALUE = logical(1)
-      )
-      )
+  if (length(line_vars) > 0) {
+    stopifnot(all(line_vars %in% names(data)))
+    stopifnot(is_class_list(class_name = "numeric")(data[line_vars]))
+    stopifnot(length(line_vars_labels) == length(line_vars))
+    if (length(line_vars_colors) == 1) {
+      line_vars_colors <- rep(line_vars_colors, length(line_vars))
+    } else {
+      stopifnot(length(line_vars_colors) == length(line_vars))
+    }
+
+    line_vars_labels <- vapply(
+      line_vars,
+      FUN.VALUE = character(1),
+      USE.NAMES = FALSE,
+      FUN = function(x) if_null(attributes(data[[x]])$label, x)
     )
 
-    if (!is.null(vline_vars_labels)) {
-      stopifnot(is_character_vector(
-        vline_vars_labels, min_length = length(vline_vars),
-        max_length = (length(vline_vars)))
-      )
-    } else {
-      vline_vars_labels <- vapply(
-        vline_vars,
-        FUN = function(x) if_null(attributes(data[[x]])$label, ""),
-        FUN.VALUE = character(1)
-      )
-      vline_vars_labels <- vapply(
-        seq_along(vline_vars_labels),
-        FUN = function(x) `if`(vline_vars_labels[x] == "", vline_vars[x], vline_vars_labels[x]),
-        FUN.VALUE = character(1)
-      )
-    }
-    if (!is.null(vline_vars_colors)) {
-      stopifnot(is_character_vector(
-        vline_vars_colors,
-        min_length = length(vline_vars),
-        max_length = (length(vline_vars)))
-      )
-    }
-    vline_vars_labels
-  }
-
-  return(list(new_vline_col = new_vline_col, vline_vars_labels = vline_vars_labels))
-}
-
-#' validate horizontal line arguments
-#'
-#' @param data data frame with variables which will be displayed in the plot.
-#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for the arbitrary horizontal line that will appear on the plot.
-#' @param hline_arb_label label for the arbitrary horizontal line that will appear on the legend.
-#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the horizontal lines defined by variables that will appear on the plot.
-#' @param hline_vars_labels labels(s) for the horizontal lines defined by variables that will appear on the legend.
-validate_hori_line_args <- function(data,
-                                    hline_arb = NULL,
-                                    hline_arb_color = "red",
-                                    hline_arb_label = NULL,
-                                    hline_vars = NULL,
-                                    hline_vars_colors = NULL,
-                                    hline_vars_labels = NULL) {
-
-  new_hline_col <- if (!is.null(hline_arb)) {
-    if (is.null(hline_arb_color)) {
-      hline_arb_color <- "red"
-    } else {
-      stopifnot(is_character_single(hline_arb_color))
-    }
-    if (is.null(hline_arb_label)) {
-      hline_arb_label <- "Arbitrary Horizontal Line"
-    } else {
-      stopifnot(is_character_single(hline_arb_label))
-    }
-    stopifnot(is_numeric_single(hline_arb))
-
-    new_hline_col <- "Arbitrary_Horizontal_Line"
-    i <- 1
-    while (new_hline_col %in% names(data)) {
-      new_hline_col <- paste0(new_hline_col, "_", i)
-      i <- i + 1
-    }
-    new_hline_col
-  }
-
-  hline_vars_labels <- if (!is.null(hline_vars)) {
-    stopifnot(is_character_vector(hline_vars, min_length = 1, max_length = length(data)))
-    stopifnot(all(hline_vars %in% names(data)))
-    stopifnot(
-      all(vapply(
-        hline_vars,
-        FUN = function(x) is.numeric(data[[x]]) == 1,
-        FUN.VALUE = logical(1)
-      )
-      )
+    line_vars <- sapply(
+      line_vars,
+      USE.NAMES = FALSE,
+      function(name) {
+        x <- data[[name]]
+        vals <- unique(x)
+        if (!is_numeric_single(vals)) {
+          warning(sprint("First value is taken from variable '%s' to draw the straight line", name))
+        }
+        vals[1]
+      }
     )
-    if (!is.null(hline_vars_labels)) {
-      stopifnot(is_character_vector(
-        hline_vars_labels, min_length = length(hline_vars),
-        max_length = (length(hline_vars)))
-      )
-    } else {
-      hline_vars_labels <- vapply(
-        hline_vars,
-        FUN = function(x) if_null(attributes(data[[x]])$label, ""),
-        FUN.VALUE = character(1)
-      )
-      hline_vars_labels <- vapply(
-        seq_along(hline_vars_labels),
-        FUN = function(x) `if`(hline_vars_labels[x] == "", hline_vars[x], hline_vars_labels[x]),
-        FUN.VALUE = character(1)
-      )
-    }
-    if (!is.null(hline_vars_colors)) {
-      stopifnot(is_character_vector(
-        hline_vars_colors,
-        min_length = length(hline_vars),
-        max_length = (length(hline_vars)))
-      )
-    }
-    hline_vars_labels
+  } else{
+    line_vars <- numeric(0)
+    line_vars_colors <- character(0)
+    line_vars_labels <- character(0)
   }
 
-  return(list(new_hline_col = new_hline_col, hline_vars_labels = hline_vars_labels))
+  list(
+    values = c(line_arb, line_vars),
+    colors = c(line_arb_color, line_vars_colors),
+    labels = c(line_arb_label, line_vars_labels)
+  )
 }
 
 #' Add horizontal and/or vertical lines and their legend labels to a plot
 #'
-#' @param plot the ggplot2 plot object which the horizontal and/or vertical lines should be added to
-#' @param plot_data data frame with variables which will be displayed in the plot.
-#' @param agg_label label for the line denoting the Mean or Median.
-#' @param color_comb character denoting the color of the Mean or Median line.
-#' @param new_hline_col the name of the column to be added to plot_data that will hold the single value for
-#'  the arbitrary horizontal line
-#' @param new_vline_col the name of the column to be added to plot_data that will hold the single value for
-#'  the arbitrary vertical line
-#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for the arbitrary horizontal line that will appear on the plot.
-#' @param hline_arb_label label for the arbitrary horizontal line that will appear on the legend.
-#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the horizontal lines defined by variables that will appear on the plot.
-#' @param hline_vars_labels labels(s) for the horizontal lines defined by variables that will appear on the legend.
-#' @param vline_arb numeric value identifying intercept for arbitrary vertical line.
-#' @param vline_arb_color color for the arbitrary vertical line that will appear on the plot.
-#' @param vline_arb_label label for the arbitrary vertical that will appear on the legend.
-#' @param vline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param vline_vars_colors color(s) for the vertical lines defined by variables that will appear on the plot.
-#' @param vline_vars_labels labels(s) for the vertical lines defined by variables that will appear on the legend.
-add_straight_lines <- function(plot,
-                               plot_data,
-                               agg_label = NULL,
-                               color_comb = NULL,
-                               new_hline_col = NULL,
-                               new_vline_col = NULL,
-                               hline_arb = NULL,
-                               hline_arb_color = "red",
-                               hline_arb_label = NULL,
-                               hline_vars = NULL,
-                               hline_vars_colors = NULL,
-                               hline_vars_labels = NULL,
-                               vline_arb = NULL,
-                               vline_arb_color = "green",
-                               vline_arb_label = NULL,
-                               vline_vars = NULL,
-                               vline_vars_colors = NULL,
-                               vline_vars_labels = NULL
-                               ) {
+#' This function is currently designed to be used with ('g_boxplot'), ('g_correlationplot'), ('g_spaghettiplot'),
+#' and ('g_density_distribution_plot'), but may also work in general.
+#'
+#' @param plot ('ggplot2 object') which the horizontal and/or vertical lines should be added to
+#' @param agg_label ('character') label for the line denoting the Mean or Median.
+#' @param color_comb ('character') denoting the color of the Mean or Median line.
+#' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
+#' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
+#' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
+#' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
+#' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
+#' @param vline_arb ('numeric vector') value identifying intercept for arbitrary vertical lines.
+#' @param vline_arb_color ('character vector') optional, color for the arbitrary vertical lines.
+#' @param vline_arb_label ('character vector') optional, label for the legend to the arbitrary vertical lines.
+#' @param vline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#' @param vline_vars_colors ('character vector') colors for the vertical lines defined by variables.
+#' @param vline_vars_labels ('character vector') labels for the legend to the vertical lines defined by variables.
+#'
+#' @examples
+#' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+#' p %>% goshawk:::add_axes_lines(
+#'   hline_arb = c(20, 25, 30),
+#'   hline_arb_color = "red",
+#'   hline_arb_label = "Hori Line"
+#' )
+#'
+#' @return \code{ggplot} object
+#'
+add_axes_lines <- function(plot,
+                           agg_label = NULL,
+                           color_comb = NULL,
+                           hline_arb = numeric(0),
+                           hline_arb_color = "red",
+                           hline_arb_label = "Horizontal line",
+                           hline_vars = character(0),
+                           hline_vars_colors = "green",
+                           hline_vars_labels = hline_vars,
+                           vline_arb = numeric(0),
+                           vline_arb_color = "red",
+                           vline_arb_label = "Vertical line",
+                           vline_vars = character(0),
+                           vline_vars_colors = "green",
+                           vline_vars_labels = vline_vars
+                           ) {
 
+  plot_data <- ggplot_build(plot)$plot$data
   draw_key_cust <- function(data, params, size) {
     if (data$orientation == "horizontal") {
       draw_key_path(data, params, size)
@@ -320,67 +251,81 @@ add_straight_lines <- function(plot,
   }
 
   # handling horizontal lines-------------------------------------------------------
-  range_color <- c(
-    if_null(hline_vars_colors, if_not_null(hline_vars, seq(length(hline_vars)))),
-    if_not_null(hline_arb, hline_arb_color)
+  validated_res <- validate_line_args(
+    data = plot_data,
+    line_arb = hline_arb,
+    line_arb_color = hline_arb_color,
+    line_arb_label = hline_arb_label,
+    line_vars = hline_vars,
+    line_vars_colors = hline_vars_colors,
+    line_vars_labels = hline_vars_labels
   )
-  if (!is.null(hline_arb)) {
-    hline_vars <- c(hline_vars, new_hline_col)
-    plot_data[new_hline_col] <- hline_arb
-  }
 
-  j <- 1
-  for (i in hline_vars) {
+  for (i in seq_along(validated_res$values)) {
     plot <- plot +
       geom_hline(
-        data = plot_data,
-        aes_(yintercept = plot_data[[i]][1], linetype = as.factor(paste0("dashed_", i))),
+        aes_(yintercept = validated_res$values[i], linetype = as.factor(paste0("dashed_", i))),
         size = 0.5,
-        color = range_color[j],
+        color = validated_res$colors[i],
         key_glyph = draw_key_cust
       )
-    j <- j + 1
   }
-  #--------------------------------------------------------------------------------
 
   # handling vertical lines--------------------------------------------------------
-  range_color_vert <- c(
-    if_null(vline_vars_colors, if_not_null(vline_vars, seq(length(vline_vars)))),
-    if_not_null(vline_arb, vline_arb_color)
+  validated_res_vert <- validate_line_args(
+    data = plot_data,
+    line_arb = vline_arb,
+    line_arb_color = vline_arb_color,
+    line_arb_label = vline_arb_label,
+    line_vars = vline_vars,
+    line_vars_colors = vline_vars_colors,
+    line_vars_labels = vline_vars_labels
   )
-  if (!is.null(vline_arb)) {
-    vline_vars <- c(vline_vars, new_vline_col)
-    plot_data[new_vline_col] <- vline_arb
-  }
-  j <- 1
-  for (i in vline_vars) {
+
+
+  for (i in seq_along(validated_res_vert$values)) {
     plot <- plot +
       geom_vline(
-        data = plot_data,
-        aes_(xintercept = plot_data[[i]][1], linetype = as.factor(paste0("vert_dashed_", i))),
+        aes_(xintercept = validated_res_vert$values[i], linetype = as.factor(paste0("vert_dashed_", i))),
         size = 0.5,
-        color = range_color_vert[j],
+        color = validated_res_vert$colors[i],
         key_glyph = draw_key_cust
       )
-    j <- j + 1
   }
-  #------------------------------------------------------------------------------
-  if (length(hline_vars) > 0 || length(vline_vars) > 0) {
+
+  # plotting ---------------------------------------------------------------------------
+  if (length(validated_res$values) > 0 || length(validated_res_vert$values) > 0) {
     plot +
       scale_linetype_manual(
-        name = paste0("Description of Horizontal ", if_not_null(vline_vars, "and Vertical "),  "Line(s)"),
-        label = c(
-          if_null(c(hline_vars_labels, hline_arb_label), hline_vars),
-          agg_label,
-          if_null(c(vline_vars_labels, vline_arb_label), vline_vars)
+        name = paste0(
+          `if`(length(validated_res$values) > 0, "Horizontal ", NULL),
+          `if`(length(validated_res$values) > 0 && length(validated_res_vert$values) > 0, "and ", NULL),
+          `if`(length(validated_res_vert$values) > 0, "Vertical ", NULL),
+          "Line(s)"
         ),
-        values = c(rep(2, length(hline_vars)), if_not_null(agg_label, 1), rep(2, length(vline_vars)))
+        label = c(
+          validated_res$labels,
+          agg_label,
+          validated_res_vert$labels
+        ),
+        values = c(
+          rep(2, length(validated_res$values)),
+          if_not_null(agg_label, 1),
+          rep(2, length(validated_res_vert$values))
+        )
       ) +
       guides(linetype = guide_legend(override.aes =
         list(
-          color = c(range_color, if_not_null(agg_label, color_comb), range_color_vert),
-          orientation = c(rep("horizontal", length(c(hline_vars, agg_label))), rep("vertical", length(vline_vars))))
-      )
+          color = c(
+            validated_res$colors,
+            if_not_null(agg_label, color_comb),
+            validated_res_vert$colors
+          ),
+          orientation = c(
+            rep("horizontal", length(c(validated_res$values, agg_label))),
+            rep("vertical", length(validated_res_vert$values)))
+          )
+        )
       ) +
       theme(legend.key.size = unit(0.5, "in"))
   } else {

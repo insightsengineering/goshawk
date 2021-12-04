@@ -34,12 +34,13 @@
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
-#' @param hline_arb numeric value identifying intercept for arbitrary horizontal line.
-#' @param hline_arb_color color for the arbitrary horizontal line.
-#' @param hline_arb_label legend label for the arbitrary horizontal line.
-#' @param hline_vars name(s) of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param hline_vars_colors color(s) for the hline_vars.
-#' @param hline_vars_labels legend label(s) for the hline_vars.
+#' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
+#' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
+#' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
+#' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
+#' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
 #'
 #' @importFrom utils.nest stop_if_not if_null
 #'
@@ -112,13 +113,13 @@
 #'           xaxis_var = "STUDYID",
 #'           alpha = 0.5,
 #'           rotate_xlab = TRUE,
-#'           hline_arb = 30,
+#'           hline_arb = c(30, 40),
 #'           hline_arb_color = "blue",
 #'           hline_arb_label = "Hori_line_label",
 #'           hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
 #'           hline_vars_colors = c("pink", "brown", "purple", "gray"),
-#'           hline_vars_labels =  NULL
-#'           )
+#'           hline_vars_labels = c("A", "B", "C", "D")
+#' )
 #'
 g_boxplot <- function(data,
                       biomarker,
@@ -140,27 +141,17 @@ g_boxplot <- function(data,
                       rotate_xlab = FALSE,
                       font_size = NULL,
                       facet_var = NULL,
-                      hline_arb = NULL,
+                      hline_arb = numeric(0),
                       hline_arb_color = "red",
-                      hline_arb_label = NULL,
-                      hline_vars = NULL,
-                      hline_vars_colors = NULL,
-                      hline_vars_labels = NULL
-) {
+                      hline_arb_label = "Horizontal line",
+                      hline_vars = character(0),
+                      hline_vars_colors = "green",
+                      hline_vars_labels = hline_vars) {
   stop_if_not(list(!is.null(data[[param_var]]), paste("param_var", param_var, "is not in data.")))
   stop_if_not(list(
     any(data[[param_var]] == biomarker), paste("biomarker", biomarker, "is not found in param_var", param_var, ".")))
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
   stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
-
-  validated_res <- validate_hori_line_args(
-    data = data,
-    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
-    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
-  )
-
-  new_hline_col <- validated_res$new_hline_col
-  hline_vars_labels <- validated_res$hline_vars_labels
 
   # filter input data
   data <- data %>%
@@ -200,7 +191,7 @@ g_boxplot <- function(data,
   # add footnote to identify LLOQ and ULOQ values pulled from data
   caption_loqs_label <- h_caption_loqs_label(loqs_data = data)
   # Base plot
-  plot1 <-  ggplot()
+  plot1 <-  ggplot(data)
   # Add boxes if required
   if (box) {
     plot1 <- plot1 +
@@ -273,12 +264,8 @@ g_boxplot <- function(data,
   }
 
   # Add horizontal line for range based on option
-  plot1 <- add_straight_lines(
+  plot1 <- add_axes_lines(
     plot = plot1,
-    plot_data = data,
-    agg_label = NULL,
-    color_comb = NULL,
-    new_hline_col = new_hline_col,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
   )

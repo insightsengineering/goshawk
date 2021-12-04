@@ -29,11 +29,10 @@ reference:
   - title: Helpers
     desc: These files are helper functions.
     contents:
-      - add_straight_lines
+      - add_axes_lines
       - h_caption_loqs_label
       - h_identify_loq_values
-      - validate_hori_line_args
-      - validate_vert_line_args
+      - validate_line_args
 
   - title: Package Build Related
     desc: These files facilitate package build.
