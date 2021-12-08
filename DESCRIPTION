@@ -17,11 +17,11 @@ Description: Functions that plot and summarize biomarkers/labs of
     Quantification flag variable (LOQFL) is expected with levels 'Y', 'N'
     or NA.
 License: Apache License 2.0 | file LICENSE
-Depends: 
+Depends:
     dplyr,
     ggplot2,
     R (>= 3.6)
-Imports: 
+Imports:
     cowplot,
     grid,
     magrittr,
@@ -29,10 +29,9 @@ Imports:
     rlang,
     stringr,
     utils.nest (>= 0.2.11)
-Suggests: 
+Suggests:
     scda.2021(>= 0.1.1),
     scda(>= 0.1.1),
-    test.nest (>= 0.2.11),
     testthat (>= 2.0),
     tidyr
 Encoding: UTF-8
