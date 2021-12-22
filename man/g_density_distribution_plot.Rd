@@ -85,9 +85,11 @@ library(scda)
 library(stringr)
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
-"C: Combination" = "Combination")
-color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
+arm_mapping <- list(
+  "A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
+  "C: Combination" = "Combination"
+)
+color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 
 ASL <- synthetic_cdisc_data("latest")$adsl
 ADLB <- synthetic_cdisc_data("latest")$adlb
@@ -97,53 +99,57 @@ ADLB <- ADLB \%>\%
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
     grepl("WEEK", AVISIT) ~
-      paste(
-        "W",
-        trimws(
-          substr(
-            AVISIT,
-            start = 6,
-            stop = str_locate(AVISIT, "DAY") - 1
-          )
+    paste(
+      "W",
+      trimws(
+        substr(
+          AVISIT,
+          start = 6,
+          stop = str_locate(AVISIT, "DAY") - 1
         )
-      ),
-    TRUE ~ NA_character_)) \%>\%
+      )
+    ),
+    TRUE ~ NA_character_
+  )) \%>\%
   mutate(AVISITCDN = case_when(
     AVISITCD == "SCR" ~ -2,
     AVISITCD == "BL" ~ 0,
     grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
-    TRUE ~ NA_real_)) \%>\%
+    TRUE ~ NA_real_
+  )) \%>\%
   # use ARMCD values to order treatment in visualization legend
   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
     ifelse(grepl("B", ARMCD), 2,
-      ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
+      ifelse(grepl("A", ARMCD), 3, NA)
+    )
+  )) \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
-  reorder(TRTORD))
+    reorder(TRTORD))
 attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 
-g_density_distribution_plot(label = "Density Distribution Plot",
-           data = ADLB,
-           param_var = "PARAMCD",
-           param = c("CRP"),
-           xaxis_var = "AVAL",
-           trt_group = "ARM",
-           xmin = 0,
-           xmax = 200,
-           unit = "AVALU",
-           color_manual = color_manual,
-           color_comb = "#39ff14",
-           comb_line = FALSE,
-           facet_var = "AVISITCD",
-           hline_arb = c(0.04, 0.05),
-           hline_arb_color = c("black", "red"),
-           hline_arb_label = c("Horizontal Line A", "Horizontal Line B"),
-           facet_ncol = 2,
-           rotate_xlab = FALSE,
-           font_size = 10,
-           line_size = .5
-           )
-
+g_density_distribution_plot(
+  label = "Density Distribution Plot",
+  data = ADLB,
+  param_var = "PARAMCD",
+  param = c("CRP"),
+  xaxis_var = "AVAL",
+  trt_group = "ARM",
+  xmin = 0,
+  xmax = 200,
+  unit = "AVALU",
+  color_manual = color_manual,
+  color_comb = "#39ff14",
+  comb_line = FALSE,
+  facet_var = "AVISITCD",
+  hline_arb = c(0.04, 0.05),
+  hline_arb_color = c("black", "red"),
+  hline_arb_label = c("Horizontal Line A", "Horizontal Line B"),
+  facet_ncol = 2,
+  rotate_xlab = FALSE,
+  font_size = 10,
+  line_size = .5
+)
 }
 \author{
 Nick Paszty (npaszty) paszty.nicholas@gene.com

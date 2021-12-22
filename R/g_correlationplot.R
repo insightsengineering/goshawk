@@ -83,50 +83,57 @@
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
 #'     grepl("WEEK", AVISIT) ~
-#'       paste(
-#'         "W",
-#'         trimws(
-#'           substr(
-#'             AVISIT,
-#'             start = 6,
-#'             stop = str_locate(AVISIT, "DAY") - 1
-#'           )
+#'     paste(
+#'       "W",
+#'       trimws(
+#'         substr(
+#'           AVISIT,
+#'           start = 6,
+#'           stop = str_locate(AVISIT, "DAY") - 1
 #'         )
-#'       ),
-#'     TRUE ~ NA_character_)) %>%
+#'       )
+#'     ),
+#'     TRUE ~ NA_character_
+#'   )) %>%
 #'   mutate(AVISITCDN = case_when(
 #'     AVISITCD == "SCR" ~ -2,
 #'     AVISITCD == "BL" ~ 0,
 #'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
-#'     TRUE ~ NA_real_)) %>%
-#'   # use ARMCD values to order treatment in visualization legend
-#'   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
-#'                          ifelse(grepl("B", ARMCD), 2,
-#'                                 ifelse(grepl("A", ARMCD), 3, NA)))) %>%
-#'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
-#'   mutate(ARM = factor(ARM) %>%
-#'            reorder(TRTORD)) %>%
-#'   mutate(
-#'   ANRHI = case_when(
-#'     PARAMCD == "ALT" ~ 60,
-#'     PARAMCD == "CRP" ~ 70,
-#'     PARAMCD == "IGA" ~ 80,
-#'     TRUE ~ NA_real_
-#'   ),
-#'   ANRLO = case_when(
-#'     PARAMCD == "ALT" ~ 20,
-#'     PARAMCD == "CRP" ~ 30,
-#'     PARAMCD == "IGA" ~ 40,
 #'     TRUE ~ NA_real_
 #'   )) %>%
+#'   # use ARMCD values to order treatment in visualization legend
+#'   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+#'     ifelse(grepl("B", ARMCD), 2,
+#'       ifelse(grepl("A", ARMCD), 3, NA)
+#'     )
+#'   )) %>%
+#'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
+#'   mutate(ARM = factor(ARM) %>%
+#'     reorder(TRTORD)) %>%
+#'   mutate(
+#'     ANRHI = case_when(
+#'       PARAMCD == "ALT" ~ 60,
+#'       PARAMCD == "CRP" ~ 70,
+#'       PARAMCD == "IGA" ~ 80,
+#'       TRUE ~ NA_real_
+#'     ),
+#'     ANRLO = case_when(
+#'       PARAMCD == "ALT" ~ 20,
+#'       PARAMCD == "CRP" ~ 30,
+#'       PARAMCD == "IGA" ~ 40,
+#'       TRUE ~ NA_real_
+#'     )
+#'   ) %>%
 #'   rowwise() %>%
 #'   group_by(PARAMCD) %>%
 #'   mutate(LBSTRESC = ifelse(
 #'     USUBJID %in% sample(USUBJID, 1, replace = TRUE),
-#'     paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) %>%
+#'     paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC
+#'   )) %>%
 #'   mutate(LBSTRESC = ifelse(
 #'     USUBJID %in% sample(USUBJID, 1, replace = TRUE),
-#'     paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) %>%
+#'     paste(">", round(runif(1, min = 70, max = 75))), LBSTRESC
+#'   )) %>%
 #'   ungroup()
 #' attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 #' attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
@@ -138,11 +145,14 @@
 #'
 #' # given the 2 param and 2 analysis vars we need to transform the data
 #' plot_data_t1 <- ADLB %>%
-#'   gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL,
-#'   ANRHI, ANRLO, ULOQN, LLOQN) %>%
+#'   gather(
+#'     ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL,
+#'     ANRHI, ANRLO, ULOQN, LLOQN
+#'   ) %>%
 #'   mutate(ANL.PARAM = ifelse(ANLVARS %in% c("PARAM", "LBSTRESC", "LOQFL"),
-#'                             paste0(ANLVARS, "_", PARAMCD),
-#'                             paste0(ANLVARS, ".", PARAMCD))) %>%
+#'     paste0(ANLVARS, "_", PARAMCD),
+#'     paste0(ANLVARS, ".", PARAMCD)
+#'   )) %>%
 #'   select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
 #'   spread(ANL.PARAM, ANLVALS)
 #'
@@ -202,7 +212,6 @@
 #'   dot_size = 2,
 #'   reg_text_size = 3
 #' )
-#'
 g_correlationplot <- function(label = "Correlation Plot",
                               data,
                               param_var = "PARAMCD",
@@ -247,12 +256,11 @@ g_correlationplot <- function(label = "Correlation Plot",
                               font_size = 12,
                               dot_size = 2,
                               reg_text_size = 3) {
-
   stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
   stop_if_not(
     list(is_numeric_single(dot_size), "dot_size must be numeric."),
     list(dot_size >= 1, "dot_size must not be less than 1.")
-    )
+  )
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
@@ -336,8 +344,8 @@ g_correlationplot <- function(label = "Correlation Plot",
       mutate(corr = ifelse(
         slope(!!sym(yvar), !!sym(xvar))[3],
         cor(!!sym(yvar), !!sym(xvar), method = "spearman", use = "complete.obs"),
-        NA)
-      )
+        NA
+      ))
     plot1 <- plot1 +
       geom_abline(
         data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by
@@ -353,15 +361,17 @@ g_correlationplot <- function(label = "Correlation Plot",
           label = ~ ifelse(
             !is.na(intercept) & !is.na(slope) & !is.na(corr),
             sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
-            paste0("Insufficient Data For Regression")),
-          color = sym(trt_group)),
+            paste0("Insufficient Data For Regression")
+          ),
+          color = sym(trt_group)
+        ),
         size = reg_text_size,
         show.legend = FALSE
       ) +
       labs(caption = paste0(
         "Deming Regression Model, Spearman Correlation Method.\n",
-        caption_loqs_label_x_y)
-      )
+        caption_loqs_label_x_y
+      ))
   }
   # Format font size
   if (!is.null(font_size)) {

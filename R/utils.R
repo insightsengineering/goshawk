@@ -16,16 +16,17 @@
 #' ADLB <- synthetic_cdisc_data("latest")$adlb
 #'
 #' goshawk:::h_identify_loq_values(loqs_data = ADLB)
-#'
 h_identify_loq_values <- function(loqs_data) {
   ifelse(
     !grep("PARAM", names(loqs_data)),
     stop("Assay dataset must include variable PARAM to use the caption_loqs_label function."),
-    1)
+    1
+  )
   ifelse(
     !grep("LBSTRESC", names(loqs_data)),
     stop("Assay dataset must include variable LBSTRESC to use the caption_loqs_label function."),
-    1)
+    1
+  )
 
   # get LLOQ value
   lloq <- loqs_data %>%
@@ -34,7 +35,7 @@ h_identify_loq_values <- function(loqs_data) {
     mutate(LLOQC = .data$LBSTRESC, LLOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
     group_by(.data$PARAM) %>%
     slice(1) %>%
-    ungroup %>%
+    ungroup() %>%
     select(-.data$LBSTRESC)
 
   # get ULOQ value
@@ -44,7 +45,7 @@ h_identify_loq_values <- function(loqs_data) {
     mutate(ULOQC = .data$LBSTRESC, ULOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
     group_by(.data$PARAM) %>%
     slice(1) %>%
-    ungroup %>%
+    ungroup() %>%
     select(-.data$LBSTRESC)
 
   # return LOQ data
@@ -78,9 +79,7 @@ h_identify_loq_values <- function(loqs_data) {
 #' library(scda)
 #' ADLB <- synthetic_cdisc_data("latest")$adlb
 #' caption_label <- goshawk:::h_caption_loqs_label(loqs_data = ADLB)
-#'
 h_caption_loqs_label <- function(loqs_data) {
-
   loq_values <- h_identify_loq_values(loqs_data)
 
   if (is.na(loq_values$LLOQC)) {
@@ -102,10 +101,10 @@ h_caption_loqs_label <- function(loqs_data) {
     ": LLOQ is ",
     lloq_value,
     ", ULOQ is ",
-    uloq_value)
+    uloq_value
+  )
 
   return(caption_loqs_label)
-
 }
 
 #' validate line arguments given in the parameters against the data.
@@ -129,8 +128,7 @@ validate_line_args <- function(data,
                                line_arb_label = "Arbitrary line",
                                line_vars = character(0),
                                line_vars_colors = "green",
-                               line_vars_labels = line_vars
-                               ) {
+                               line_vars_labels = line_vars) {
   if (length(line_arb) > 0) {
     stopifnot(is_numeric_vector(line_arb))
     stopifnot(length(line_arb_color) == 1 || length(line_arb_color) == length(line_arb))
@@ -178,7 +176,7 @@ validate_line_args <- function(data,
         vals[1]
       }
     )
-  } else{
+  } else {
     line_vars <- numeric(0)
     line_vars_colors <- character(0)
     line_vars_labels <- character(0)
@@ -215,13 +213,13 @@ validate_line_args <- function(data,
 #' @param vline_vars_labels ('character vector') labels for the legend to the vertical lines defined by variables.
 #'
 #' @examples
-#' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+#' p <- ggplot(mtcars, aes(wt, mpg)) +
+#'   geom_point()
 #' p %>% goshawk:::add_axes_lines(
 #'   hline_arb = c(20, 25, 30),
 #'   hline_arb_color = "red",
 #'   hline_arb_label = "Hori Line"
 #' )
-#'
 #' @return \code{ggplot} object
 #'
 add_axes_lines <- function(plot,
@@ -238,9 +236,7 @@ add_axes_lines <- function(plot,
                            vline_arb_label = "Vertical line",
                            vline_vars = character(0),
                            vline_vars_colors = "green",
-                           vline_vars_labels = vline_vars
-                           ) {
-
+                           vline_vars_labels = vline_vars) {
   plot_data <- ggplot_build(plot)$plot$data
   draw_key_cust <- function(data, params, size) {
     if (data$orientation == "horizontal") {
@@ -314,19 +310,20 @@ add_axes_lines <- function(plot,
           rep(2, length(validated_res_vert$values))
         )
       ) +
-      guides(linetype = guide_legend(override.aes =
-        list(
-          color = c(
-            validated_res$colors,
-            if_not_null(agg_label, color_comb),
-            validated_res_vert$colors
-          ),
-          orientation = c(
-            rep("horizontal", length(c(validated_res$values, agg_label))),
-            rep("vertical", length(validated_res_vert$values)))
+      guides(linetype = guide_legend(
+        override.aes =
+          list(
+            color = c(
+              validated_res$colors,
+              if_not_null(agg_label, color_comb),
+              validated_res_vert$colors
+            ),
+            orientation = c(
+              rep("horizontal", length(c(validated_res$values, agg_label))),
+              rep("vertical", length(validated_res_vert$values))
+            )
           )
-        )
-      ) +
+      )) +
       theme(legend.key.size = unit(0.5, "in"))
   } else {
     plot
