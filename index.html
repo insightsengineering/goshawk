@@ -31,6 +31,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -43,47 +45,22 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10.9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.10.9010</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
   <a href="news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="index.html">latest</a></li>
-   <li><a href="pre-release/index.html">pre-release</a></li>
-   <li><a href="v0.1.10/index.html">v0.1.10</a></li>
-   <li><a href="v0.1.9/index.html">v0.1.9</a></li>
-   <li><a href="v0.1.8/index.html">v0.1.8</a></li>
-   <li><a href="v0.1.7/index.html">v0.1.7</a></li>
-   <li><a href="v0.1.6/index.html">v0.1.6</a></li>
-   <li><a href="v0.1.5/index.html">v0.1.5</a></li>
-   <li><a href="v0.1.4/index.html">v0.1.4</a></li>
-   <li><a href="v0.1.3/index.html">v0.1.3</a></li>
-   <li><a href="v0.1.2/index.html">v0.1.2</a></li>
-   <li><a href="v0.1.1/index.html">v0.1.1</a></li>
-</ul></li>
-<!-- end_releases -->
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/insightsengineering/goshawk">
+  <a href="https://github.com/insightsengineering/goshawk" class="external-link">
     <span class="fa fa-github"></span>
      
   </a>
@@ -101,14 +78,14 @@ Other releases
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="goshawk-r-package" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#goshawk-r-package" class="anchor"></a>goshawk R package</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="goshawk-r-package">goshawk R package<a class="anchor" aria-label="anchor" href="#goshawk-r-package"></a>
+</h1></div>
 <p>Longitudinal biomarker/lab visualizations functions. These can be used stand alone or with the teal.goshawk package.</p>
 </div>
-<div id="functions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#functions" class="anchor"></a>Functions</h1>
+<div class="section level1">
+<h1 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
+</h1>
 <ul>
 <li><code>g_boxplot</code></li>
 <li><code>g_correlationplot</code></li>
@@ -119,17 +96,17 @@ Other releases
 <li><code>t_summarytable</code></li>
 </ul>
 </div>
-<div id="installation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h1>
-<div id="clone-and-install-manually" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clone-and-install-manually" class="anchor"></a>Clone and install manually</h2>
-<ol>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
+<div class="section level2">
+<h2 id="clone-and-install-manually">Clone and install manually<a class="anchor" aria-label="anchor" href="#clone-and-install-manually"></a>
+</h2>
+<ol style="list-style-type: decimal">
 <li>
 <p>Clone the repository</p>
-<p>The repository can be downloaded directly from the <code>github.com</code> site as an archive (see <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository">Github tutorial on cloning to learn more</a>). Alternatively, Git command line tools offer the same functionality, without the need for manual downloading and unpacking the archive, but require to authenticate to Github. You can authenticate using a key pair or a Personal Access Token (PAT). Please refer to excellent Github tutorials on <a href="https://docs.github.com/en/github/authenticating-to-github">connecting to Github using SSH</a> or <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token">creating and using PAT</a>.</p>
-<ol>
+<p>The repository can be downloaded directly from the <code>github.com</code> site as an archive (see <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository" class="external-link">Github tutorial on cloning to learn more</a>). Alternatively, Git command line tools offer the same functionality, without the need for manual downloading and unpacking the archive, but require to authenticate to Github. You can authenticate using a key pair or a Personal Access Token (PAT). Please refer to excellent Github tutorials on <a href="https://docs.github.com/en/github/authenticating-to-github" class="external-link">connecting to Github using SSH</a> or <a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external-link">creating and using PAT</a>.</p>
+<ol style="list-style-type: decimal">
 <li>
 <p>Using PAT. Input in the Git Bash console, PowerShell or any Linux shell:</p>
 <pre><code>$ git clone https://github.com/insightsengineering/goshawk.git
@@ -159,14 +136,23 @@ Password: your_token_goes_here</code></pre>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>Apache License 2.0 | file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing goshawk</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Nick Paszty <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Wenyi Liu <br><small class="roles"> Author </small>  </li>
@@ -175,16 +161,20 @@ Password: your_token_goes_here</code></pre>
 </ul>
 </div>
 
+
+
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Nick Paszty, Wenyi Liu, Jeffrey Tomlinson, Bali Toth.</p>
+  <p></p>
+<p>Developed by Nick Paszty, Wenyi Liu, Jeffrey Tomlinson, Bali Toth.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -192,6 +182,8 @@ Password: your_token_goes_here</code></pre>
 
   
 
+
+  
 
   </body>
 </html>
