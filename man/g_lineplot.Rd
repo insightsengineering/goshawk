@@ -116,8 +116,7 @@ library(stringr)
 library(dplyr)
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
-"C: Combination" = "Combination")
+arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
 color_manual <- c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
 type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "dotted")
 
@@ -132,134 +131,149 @@ ADLB <- ADLB \%>\%
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
     grepl("WEEK", AVISIT) ~
-      paste(
-        "W",
-        trimws(
-          substr(
-            AVISIT,
-            start = 6,
-            stop = str_locate(AVISIT, "DAY") - 1
-          )
+    paste(
+      "W",
+      trimws(
+        substr(
+          AVISIT,
+          start = 6,
+          stop = str_locate(AVISIT, "DAY") - 1
         )
-      ),
-    TRUE ~ NA_character_)) \%>\%
+      )
+    ),
+    TRUE ~ NA_character_
+  )) \%>\%
   mutate(AVISITCDN = case_when(
     AVISITCD == "SCR" ~ -2,
     AVISITCD == "BL" ~ 0,
     grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
-    TRUE ~ NA_real_)) \%>\%
+    TRUE ~ NA_real_
+  )) \%>\%
   # use ARMCD values to order treatment in visualization legend
   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
     ifelse(grepl("B", ARMCD), 2,
-      ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
+      ifelse(grepl("A", ARMCD), 3, NA)
+    )
+  )) \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
-  reorder(TRTORD))
+    reorder(TRTORD))
 attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 
-g_lineplot(label = "Line Plot",
-           data = ADLB,
-           biomarker_var = "PARAMCD",
-           biomarker = "CRP",
-           value_var = "AVAL",
-           trt_group = "ARM",
-           shape = NULL,
-           time = "AVISITCDN",
-           color_manual = color_manual,
-           line_type = type_manual,
-           median = FALSE,
-           hline = 50,
-           xtick = c(0, 1, 5),
-           xlabel = c("Baseline", "Week 1", "Week 5"),
-           rotate_xlab = FALSE,
-           plot_height = 600)
+g_lineplot(
+  label = "Line Plot",
+  data = ADLB,
+  biomarker_var = "PARAMCD",
+  biomarker = "CRP",
+  value_var = "AVAL",
+  trt_group = "ARM",
+  shape = NULL,
+  time = "AVISITCDN",
+  color_manual = color_manual,
+  line_type = type_manual,
+  median = FALSE,
+  hline = 50,
+  xtick = c(0, 1, 5),
+  xlabel = c("Baseline", "Week 1", "Week 5"),
+  rotate_xlab = FALSE,
+  plot_height = 600
+)
 
-g_lineplot(label = "Line Plot",
-           data = ADLB,
-           biomarker_var = "PARAMCD",
-           biomarker = "CRP",
-           value_var = "AVAL",
-           trt_group = "ARM",
-           shape = NULL,
-           time = "AVISITCD",
-           color_manual = NULL,
-           line_type = type_manual,
-           median = TRUE,
-           hline = 50,
-           xtick = c("BL", "W 1", "W 5"),
-           xlabel = c("Baseline", "Week 1", "Week 5"),
-           rotate_xlab = FALSE,
-           plot_height = 600)
+g_lineplot(
+  label = "Line Plot",
+  data = ADLB,
+  biomarker_var = "PARAMCD",
+  biomarker = "CRP",
+  value_var = "AVAL",
+  trt_group = "ARM",
+  shape = NULL,
+  time = "AVISITCD",
+  color_manual = NULL,
+  line_type = type_manual,
+  median = TRUE,
+  hline = 50,
+  xtick = c("BL", "W 1", "W 5"),
+  xlabel = c("Baseline", "Week 1", "Week 5"),
+  rotate_xlab = FALSE,
+  plot_height = 600
+)
 
-g_lineplot(label = "Line Plot",
-           data = ADLB,
-           biomarker_var = "PARAMCD",
-           biomarker = "CRP",
-           value_var = "AVAL",
-           trt_group = "ARM",
-           shape = NULL,
-           time = "AVISITCD",
-           color_manual = color_manual,
-           line_type = type_manual,
-           median = FALSE,
-           hline = 50,
-           xtick = c("BL", "W 1", "W 5"),
-           xlabel = c("Baseline", "Week 1", "Week 5"),
-           rotate_xlab = FALSE,
-           plot_height = 600,
-           count_threshold = 90,
-           table_font_size = 15)
+g_lineplot(
+  label = "Line Plot",
+  data = ADLB,
+  biomarker_var = "PARAMCD",
+  biomarker = "CRP",
+  value_var = "AVAL",
+  trt_group = "ARM",
+  shape = NULL,
+  time = "AVISITCD",
+  color_manual = color_manual,
+  line_type = type_manual,
+  median = FALSE,
+  hline = 50,
+  xtick = c("BL", "W 1", "W 5"),
+  xlabel = c("Baseline", "Week 1", "Week 5"),
+  rotate_xlab = FALSE,
+  plot_height = 600,
+  count_threshold = 90,
+  table_font_size = 15
+)
 
-g_lineplot(label = "Line Plot",
-           data = ADLB,
-           biomarker_var = "PARAMCD",
-           biomarker = "CRP",
-           value_var = "AVAL",
-           trt_group = "ARM",
-           shape = NULL,
-           time = "AVISITCDN",
-           color_manual = color_manual,
-           line_type = type_manual,
-           median = TRUE,
-           hline = 50,
-           xtick = c(0, 1, 5),
-           xlabel = c("Baseline", "Week 1", "Week 5"),
-           rotate_xlab = FALSE,
-           plot_height = 600)
+g_lineplot(
+  label = "Line Plot",
+  data = ADLB,
+  biomarker_var = "PARAMCD",
+  biomarker = "CRP",
+  value_var = "AVAL",
+  trt_group = "ARM",
+  shape = NULL,
+  time = "AVISITCDN",
+  color_manual = color_manual,
+  line_type = type_manual,
+  median = TRUE,
+  hline = 50,
+  xtick = c(0, 1, 5),
+  xlabel = c("Baseline", "Week 1", "Week 5"),
+  rotate_xlab = FALSE,
+  plot_height = 600
+)
 
-g_lineplot(label = "Line Plot",
-           data = subset(ADLB, SEX \%in\% c("M", "F")),
-           biomarker_var = "PARAMCD",
-           biomarker = "CRP",
-           value_var = "AVAL",
-           trt_group = "ARM",
-           shape = "SEX",
-           time = "AVISITCDN",
-           color_manual = color_manual,
-           line_type = type_manual,
-           median = FALSE,
-           hline = 50,
-           xtick = c(0, 1, 5),
-           xlabel = c("Baseline", "Week 1", "Week 5"),
-           rotate_xlab = FALSE,
-           plot_height = 1500)
+g_lineplot(
+  label = "Line Plot",
+  data = subset(ADLB, SEX \%in\% c("M", "F")),
+  biomarker_var = "PARAMCD",
+  biomarker = "CRP",
+  value_var = "AVAL",
+  trt_group = "ARM",
+  shape = "SEX",
+  time = "AVISITCDN",
+  color_manual = color_manual,
+  line_type = type_manual,
+  median = FALSE,
+  hline = 50,
+  xtick = c(0, 1, 5),
+  xlabel = c("Baseline", "Week 1", "Week 5"),
+  rotate_xlab = FALSE,
+  plot_height = 1500
+)
 
-g_lineplot(label = "Line Plot",
-           data = subset(ADLB, SEX \%in\% c("M", "F")),
-           biomarker_var = "PARAMCD",
-           biomarker = "CRP",
-           value_var = "AVAL",
-           trt_group = "ARM",
-           shape = "SEX",
-           time = "AVISITCDN",
-           color_manual = NULL,
-           median = FALSE,
-           hline = 50,
-           xtick = c(0, 1, 5),
-           xlabel = c("Baseline", "Week 1", "Week 5"),
-           rotate_xlab = FALSE,
-           plot_height = 1500)
-
+g_lineplot(
+  label = "Line Plot",
+  data = subset(ADLB, SEX \%in\% c("M", "F")),
+  biomarker_var = "PARAMCD",
+  biomarker = "CRP",
+  value_var = "AVAL",
+  trt_group = "ARM",
+  shape = "SEX",
+  time = "AVISITCDN",
+  color_manual = NULL,
+  median = FALSE,
+  hline = 50,
+  xtick = c(0, 1, 5),
+  xlabel = c("Baseline", "Week 1", "Week 5"),
+  rotate_xlab = FALSE,
+  plot_height = 1500
+)
 }
 \author{
 Balazs Toth (toth.balazs@gene.com)

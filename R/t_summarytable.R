@@ -29,8 +29,7 @@
 #' library(stringr)
 #'
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
-#' "C: Combination" = "Combination")
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
 #'
 #' ASL <- synthetic_cdisc_data("latest")$adsl
 #' ADLB <- synthetic_cdisc_data("latest")$adlb
@@ -39,37 +38,43 @@
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
 #'     grepl("WEEK", AVISIT) ~
-#'       paste(
-#'         "W",
-#'         trimws(
-#'           substr(
-#'             AVISIT,
-#'             start = 6,
-#'             stop = str_locate(AVISIT, "DAY") - 1
-#'           )
+#'     paste(
+#'       "W",
+#'       trimws(
+#'         substr(
+#'           AVISIT,
+#'           start = 6,
+#'           stop = str_locate(AVISIT, "DAY") - 1
 #'         )
-#'       ),
-#'     TRUE ~ NA_character_)) %>%
+#'       )
+#'     ),
+#'     TRUE ~ NA_character_
+#'   )) %>%
 #'   mutate(AVISITCDN = case_when(
 #'     AVISITCD == "SCR" ~ -2,
 #'     AVISITCD == "BL" ~ 0,
 #'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
-#'     TRUE ~ NA_real_)) %>%
+#'     TRUE ~ NA_real_
+#'   )) %>%
 #'   # use ARMCD values to order treatment in visualization legend
 #'   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
 #'     ifelse(grepl("B", ARMCD), 2,
-#'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
+#'       ifelse(grepl("A", ARMCD), 3, NA)
+#'     )
+#'   )) %>%
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
-#'   reorder(TRTORD))
+#'     reorder(TRTORD))
 #'
-#' tbl <- t_summarytable(data = ADLB,
-#'                trt_group = "ARM",
-#'                param_var = "PARAMCD",
-#'                param = c("CRP"),
-#'                xaxis_var = "AVAL",
-#'                facet_var = "AVISITCD",
-#'                loq_flag_var = "LOQFL")
+#' tbl <- t_summarytable(
+#'   data = ADLB,
+#'   trt_group = "ARM",
+#'   param_var = "PARAMCD",
+#'   param = c("CRP"),
+#'   xaxis_var = "AVAL",
+#'   facet_var = "AVISITCD",
+#'   loq_flag_var = "LOQFL"
+#' )
 #' tbl
 t_summarytable <- function(data,
                            trt_group,
@@ -78,7 +83,6 @@ t_summarytable <- function(data,
                            xaxis_var,
                            facet_var = "AVISITCD",
                            loq_flag_var = "LOQFL", ...) {
-
   if (!is.null(facet_var) && trt_group == facet_var) {
     data[paste0(facet_var, "_")] <- data[facet_var]
     facet_var <- paste0(facet_var, "_")
@@ -137,7 +141,7 @@ t_summarytable <- function(data,
     sum_data_by_arm <- sum_data_by_arm %>%
       select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
-  } else{
+  } else {
     sum_data_by_arm <- sum_data_by_arm %>%
       select(param_var, trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       ungroup()
@@ -172,8 +176,8 @@ t_summarytable <- function(data,
   # select only those columns needed to prop
   if (!is.null(facet_var)) {
     sum_data_combined_arm <- sum_data_combined_arm %>%
-    select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
-    ungroup()
+      select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      ungroup()
 
     # combine the two data sets and apply some formatting. Note that R coerces treatment group into
     # character since it is a factor and character
@@ -182,11 +186,10 @@ t_summarytable <- function(data,
       select(Biomarker = param_var, Treatment = trt_group, Facet = facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
       arrange(.data$Biomarker, .data$Facet, .data$TRTORD) %>% # drop variable
       select(-.data$TRTORD)
-
   } else {
     sum_data_combined_arm <- sum_data_combined_arm %>%
-    select(param_var, trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
-    ungroup()
+      select(param_var, trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      ungroup()
 
     # combine the two data sets and apply some formatting. Note that R coerces treatment group into
     # character since it is a factor and character
@@ -199,5 +202,4 @@ t_summarytable <- function(data,
 
   # add analysis variable as first column
   sum_data <- cbind(study_id, anl_var, sum_data)
-
 }

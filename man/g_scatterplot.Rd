@@ -101,11 +101,10 @@ library(scda)
 library(stringr)
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
-"C: Combination" = "Combination")
-color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
+arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
-shape_manual <-  c("N" = 1, "Y" = 2, "NA" = 0)
+shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 
 ASL <- synthetic_cdisc_data("latest")$adsl
 ADLB <- synthetic_cdisc_data("latest")$adlb
@@ -115,57 +114,63 @@ ADLB <- ADLB \%>\%
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
     grepl("WEEK", AVISIT) ~
-      paste(
-        "W",
-        trimws(
-          substr(
-            AVISIT,
-            start = 6,
-            stop = str_locate(AVISIT, "DAY") - 1
-          )
+    paste(
+      "W",
+      trimws(
+        substr(
+          AVISIT,
+          start = 6,
+          stop = str_locate(AVISIT, "DAY") - 1
         )
-      ),
-    TRUE ~ NA_character_)) \%>\%
+      )
+    ),
+    TRUE ~ NA_character_
+  )) \%>\%
   mutate(AVISITCDN = case_when(
     AVISITCD == "SCR" ~ -2,
     AVISITCD == "BL" ~ 0,
     grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
-    TRUE ~ NA_real_)) \%>\%
+    TRUE ~ NA_real_
+  )) \%>\%
   # use ARMCD values to order treatment in visualization legend
   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
     ifelse(grepl("B", ARMCD), 2,
-      ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
+      ifelse(grepl("A", ARMCD), 3, NA)
+    )
+  )) \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
-  reorder(TRTORD))
- attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
+    reorder(TRTORD))
+attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 
-g_scatterplot(label = "Scatter Plot",
-           data = ADLB,
-           param_var = "PARAMCD",
-           param = c("ALT"),
-           xaxis_var = "BASE",
-           yaxis_var = "AVAL",
-           trt_group = "ARM",
-           visit = "AVISITCD",
-           loq_flag_var = "LOQFL",
-           unit = "AVALU",
-           xmin = 0,
-           xmax = 200,
-           ymin = 0,
-           ymax = 200,
-           color_manual = color_manual,
-           shape_manual = shape_manual,
-           facet_ncol = 2,
-           facet = TRUE,
-           facet_var = "ARM",
-           reg_line = TRUE,
-           hline = NULL,
-           vline = .5,
-           rotate_xlab = TRUE,
-           font_size = 14,
-           dot_size = 2,
-           reg_text_size = 3)
+g_scatterplot(
+  label = "Scatter Plot",
+  data = ADLB,
+  param_var = "PARAMCD",
+  param = c("ALT"),
+  xaxis_var = "BASE",
+  yaxis_var = "AVAL",
+  trt_group = "ARM",
+  visit = "AVISITCD",
+  loq_flag_var = "LOQFL",
+  unit = "AVALU",
+  xmin = 0,
+  xmax = 200,
+  ymin = 0,
+  ymax = 200,
+  color_manual = color_manual,
+  shape_manual = shape_manual,
+  facet_ncol = 2,
+  facet = TRUE,
+  facet_var = "ARM",
+  reg_line = TRUE,
+  hline = NULL,
+  vline = .5,
+  rotate_xlab = TRUE,
+  font_size = 14,
+  dot_size = 2,
+  reg_text_size = 3
+)
 }
 \author{
 Nick Paszty (npaszty) paszty.nicholas@gene.com

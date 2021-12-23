@@ -61,8 +61,7 @@
 #' library(dplyr)
 #'
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
-#' "C: Combination" = "Combination")
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
 #' color_manual <- c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
 #' type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "dotted")
 #'
@@ -77,134 +76,149 @@
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
 #'     grepl("WEEK", AVISIT) ~
-#'       paste(
-#'         "W",
-#'         trimws(
-#'           substr(
-#'             AVISIT,
-#'             start = 6,
-#'             stop = str_locate(AVISIT, "DAY") - 1
-#'           )
+#'     paste(
+#'       "W",
+#'       trimws(
+#'         substr(
+#'           AVISIT,
+#'           start = 6,
+#'           stop = str_locate(AVISIT, "DAY") - 1
 #'         )
-#'       ),
-#'     TRUE ~ NA_character_)) %>%
+#'       )
+#'     ),
+#'     TRUE ~ NA_character_
+#'   )) %>%
 #'   mutate(AVISITCDN = case_when(
 #'     AVISITCD == "SCR" ~ -2,
 #'     AVISITCD == "BL" ~ 0,
 #'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
-#'     TRUE ~ NA_real_)) %>%
+#'     TRUE ~ NA_real_
+#'   )) %>%
 #'   # use ARMCD values to order treatment in visualization legend
 #'   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
 #'     ifelse(grepl("B", ARMCD), 2,
-#'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
+#'       ifelse(grepl("A", ARMCD), 3, NA)
+#'     )
+#'   )) %>%
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
-#'   reorder(TRTORD))
+#'     reorder(TRTORD))
 #' attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 #'
-#' g_lineplot(label = "Line Plot",
-#'            data = ADLB,
-#'            biomarker_var = "PARAMCD",
-#'            biomarker = "CRP",
-#'            value_var = "AVAL",
-#'            trt_group = "ARM",
-#'            shape = NULL,
-#'            time = "AVISITCDN",
-#'            color_manual = color_manual,
-#'            line_type = type_manual,
-#'            median = FALSE,
-#'            hline = 50,
-#'            xtick = c(0, 1, 5),
-#'            xlabel = c("Baseline", "Week 1", "Week 5"),
-#'            rotate_xlab = FALSE,
-#'            plot_height = 600)
+#' g_lineplot(
+#'   label = "Line Plot",
+#'   data = ADLB,
+#'   biomarker_var = "PARAMCD",
+#'   biomarker = "CRP",
+#'   value_var = "AVAL",
+#'   trt_group = "ARM",
+#'   shape = NULL,
+#'   time = "AVISITCDN",
+#'   color_manual = color_manual,
+#'   line_type = type_manual,
+#'   median = FALSE,
+#'   hline = 50,
+#'   xtick = c(0, 1, 5),
+#'   xlabel = c("Baseline", "Week 1", "Week 5"),
+#'   rotate_xlab = FALSE,
+#'   plot_height = 600
+#' )
 #'
-#' g_lineplot(label = "Line Plot",
-#'            data = ADLB,
-#'            biomarker_var = "PARAMCD",
-#'            biomarker = "CRP",
-#'            value_var = "AVAL",
-#'            trt_group = "ARM",
-#'            shape = NULL,
-#'            time = "AVISITCD",
-#'            color_manual = NULL,
-#'            line_type = type_manual,
-#'            median = TRUE,
-#'            hline = 50,
-#'            xtick = c("BL", "W 1", "W 5"),
-#'            xlabel = c("Baseline", "Week 1", "Week 5"),
-#'            rotate_xlab = FALSE,
-#'            plot_height = 600)
+#' g_lineplot(
+#'   label = "Line Plot",
+#'   data = ADLB,
+#'   biomarker_var = "PARAMCD",
+#'   biomarker = "CRP",
+#'   value_var = "AVAL",
+#'   trt_group = "ARM",
+#'   shape = NULL,
+#'   time = "AVISITCD",
+#'   color_manual = NULL,
+#'   line_type = type_manual,
+#'   median = TRUE,
+#'   hline = 50,
+#'   xtick = c("BL", "W 1", "W 5"),
+#'   xlabel = c("Baseline", "Week 1", "Week 5"),
+#'   rotate_xlab = FALSE,
+#'   plot_height = 600
+#' )
 #'
-#' g_lineplot(label = "Line Plot",
-#'            data = ADLB,
-#'            biomarker_var = "PARAMCD",
-#'            biomarker = "CRP",
-#'            value_var = "AVAL",
-#'            trt_group = "ARM",
-#'            shape = NULL,
-#'            time = "AVISITCD",
-#'            color_manual = color_manual,
-#'            line_type = type_manual,
-#'            median = FALSE,
-#'            hline = 50,
-#'            xtick = c("BL", "W 1", "W 5"),
-#'            xlabel = c("Baseline", "Week 1", "Week 5"),
-#'            rotate_xlab = FALSE,
-#'            plot_height = 600,
-#'            count_threshold = 90,
-#'            table_font_size = 15)
+#' g_lineplot(
+#'   label = "Line Plot",
+#'   data = ADLB,
+#'   biomarker_var = "PARAMCD",
+#'   biomarker = "CRP",
+#'   value_var = "AVAL",
+#'   trt_group = "ARM",
+#'   shape = NULL,
+#'   time = "AVISITCD",
+#'   color_manual = color_manual,
+#'   line_type = type_manual,
+#'   median = FALSE,
+#'   hline = 50,
+#'   xtick = c("BL", "W 1", "W 5"),
+#'   xlabel = c("Baseline", "Week 1", "Week 5"),
+#'   rotate_xlab = FALSE,
+#'   plot_height = 600,
+#'   count_threshold = 90,
+#'   table_font_size = 15
+#' )
 #'
-#' g_lineplot(label = "Line Plot",
-#'            data = ADLB,
-#'            biomarker_var = "PARAMCD",
-#'            biomarker = "CRP",
-#'            value_var = "AVAL",
-#'            trt_group = "ARM",
-#'            shape = NULL,
-#'            time = "AVISITCDN",
-#'            color_manual = color_manual,
-#'            line_type = type_manual,
-#'            median = TRUE,
-#'            hline = 50,
-#'            xtick = c(0, 1, 5),
-#'            xlabel = c("Baseline", "Week 1", "Week 5"),
-#'            rotate_xlab = FALSE,
-#'            plot_height = 600)
+#' g_lineplot(
+#'   label = "Line Plot",
+#'   data = ADLB,
+#'   biomarker_var = "PARAMCD",
+#'   biomarker = "CRP",
+#'   value_var = "AVAL",
+#'   trt_group = "ARM",
+#'   shape = NULL,
+#'   time = "AVISITCDN",
+#'   color_manual = color_manual,
+#'   line_type = type_manual,
+#'   median = TRUE,
+#'   hline = 50,
+#'   xtick = c(0, 1, 5),
+#'   xlabel = c("Baseline", "Week 1", "Week 5"),
+#'   rotate_xlab = FALSE,
+#'   plot_height = 600
+#' )
 #'
-#' g_lineplot(label = "Line Plot",
-#'            data = subset(ADLB, SEX %in% c("M", "F")),
-#'            biomarker_var = "PARAMCD",
-#'            biomarker = "CRP",
-#'            value_var = "AVAL",
-#'            trt_group = "ARM",
-#'            shape = "SEX",
-#'            time = "AVISITCDN",
-#'            color_manual = color_manual,
-#'            line_type = type_manual,
-#'            median = FALSE,
-#'            hline = 50,
-#'            xtick = c(0, 1, 5),
-#'            xlabel = c("Baseline", "Week 1", "Week 5"),
-#'            rotate_xlab = FALSE,
-#'            plot_height = 1500)
+#' g_lineplot(
+#'   label = "Line Plot",
+#'   data = subset(ADLB, SEX %in% c("M", "F")),
+#'   biomarker_var = "PARAMCD",
+#'   biomarker = "CRP",
+#'   value_var = "AVAL",
+#'   trt_group = "ARM",
+#'   shape = "SEX",
+#'   time = "AVISITCDN",
+#'   color_manual = color_manual,
+#'   line_type = type_manual,
+#'   median = FALSE,
+#'   hline = 50,
+#'   xtick = c(0, 1, 5),
+#'   xlabel = c("Baseline", "Week 1", "Week 5"),
+#'   rotate_xlab = FALSE,
+#'   plot_height = 1500
+#' )
 #'
-#' g_lineplot(label = "Line Plot",
-#'            data = subset(ADLB, SEX %in% c("M", "F")),
-#'            biomarker_var = "PARAMCD",
-#'            biomarker = "CRP",
-#'            value_var = "AVAL",
-#'            trt_group = "ARM",
-#'            shape = "SEX",
-#'            time = "AVISITCDN",
-#'            color_manual = NULL,
-#'            median = FALSE,
-#'            hline = 50,
-#'            xtick = c(0, 1, 5),
-#'            xlabel = c("Baseline", "Week 1", "Week 5"),
-#'            rotate_xlab = FALSE,
-#'            plot_height = 1500)
-#'
+#' g_lineplot(
+#'   label = "Line Plot",
+#'   data = subset(ADLB, SEX %in% c("M", "F")),
+#'   biomarker_var = "PARAMCD",
+#'   biomarker = "CRP",
+#'   value_var = "AVAL",
+#'   trt_group = "ARM",
+#'   shape = "SEX",
+#'   time = "AVISITCDN",
+#'   color_manual = NULL,
+#'   median = FALSE,
+#'   hline = 50,
+#'   xtick = c(0, 1, 5),
+#'   xlabel = c("Baseline", "Week 1", "Week 5"),
+#'   rotate_xlab = FALSE,
+#'   plot_height = 1500
+#' )
 g_lineplot <- function(label = "Line Plot",
                        data,
                        biomarker_var = "PARAMCD",
@@ -303,7 +317,8 @@ g_lineplot <- function(label = "Line Plot",
       CIdown = mean(!!sym(value_var), na.rm = TRUE) - 1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
       median = median(!!sym(value_var), na.rm = TRUE),
       quant25 = quantile(!!sym(value_var), 0.25, na.rm = TRUE),
-      quant75 = quantile(!!sym(value_var), 0.75, na.rm = TRUE)) %>%
+      quant75 = quantile(!!sym(value_var), 0.75, na.rm = TRUE)
+    ) %>%
     arrange_at(c(trt_group, shape))
 
   ## Filter out rows with insufficient number of counts
@@ -394,10 +409,9 @@ g_lineplot <- function(label = "Line Plot",
       scale_shape_manual(" ", values = shape_mapping) +
       theme(legend.key.size = unit(1, "cm")) +
       geom_point(position = pd, size = 3)
-
   }
 
-  plot1 <-  plot1 +
+  plot1 <- plot1 +
     geom_line(position = pd) +
     geom_errorbar(aes_string(ymin = down_limit, ymax = up_limit), width = 0.45, position = pd, linetype = "solid") +
     ggtitle(gtitle) +
@@ -405,14 +419,16 @@ g_lineplot <- function(label = "Line Plot",
       "The output plot can display mean and median of input value.",
       "For mean, the error bar denotes 95% confidence interval.",
       "For median, the bar denotes the first to third quartile.\n",
-      caption_loqs_label)) +
+      caption_loqs_label
+    )) +
     xlab(time) +
     ylab(gylab) +
     theme(
       legend.position = "bottom",
       legend.direction = "vertical",
       plot.title = element_text(size = plot_font_size, margin = margin(), hjust = 0.5),
-      axis.title.y = element_text(margin = margin(r = 20))) +
+      axis.title.y = element_text(margin = margin(r = 20))
+    ) +
     guides(color = guide_legend(ncol = 3, byrow = TRUE))
 
   # Apply y-axis zoom range
@@ -435,7 +451,7 @@ g_lineplot <- function(label = "Line Plot",
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
 
-  #Add horizontal line
+  # Add horizontal line
   if (!is.null(hline)) {
     plot1 <- plot1 +
       geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
@@ -444,12 +460,14 @@ g_lineplot <- function(label = "Line Plot",
   # Format font size
   if (!is.null(plot_font_size)) {
     plot1 <- plot1 +
-      theme(axis.title.x = element_text(size = plot_font_size),
-            axis.text.x = element_text(size = plot_font_size),
-            axis.title.y = element_text(size = plot_font_size),
-            axis.text.y = element_text(size = plot_font_size),
-            legend.title = element_text(size = plot_font_size),
-            legend.text = element_text(size = plot_font_size))
+      theme(
+        axis.title.x = element_text(size = plot_font_size),
+        axis.text.x = element_text(size = plot_font_size),
+        axis.title.y = element_text(size = plot_font_size),
+        axis.text.y = element_text(size = plot_font_size),
+        legend.title = element_text(size = plot_font_size),
+        legend.text = element_text(size = plot_font_size)
+      )
   }
 
   labels <- levels(unfiltered_data[[int]])
@@ -509,17 +527,18 @@ g_lineplot <- function(label = "Line Plot",
     ) +
     scale_color_manual(values = c("FALSE" = "red", "TRUE" = "black"))
 
-  #Plot the grobs using plot_grid
+  # Plot the grobs using plot_grid
   if (display_center_tbl) {
-    plot_grid(plot1, tbl_central_value, tbl, align = "v", ncol = 1,
-      rel_heights = c(plotsize, tabletotal / 2, tabletotal / 2))
-  }
-  else {
+    plot_grid(plot1, tbl_central_value, tbl,
+      align = "v", ncol = 1,
+      rel_heights = c(plotsize, tabletotal / 2, tabletotal / 2)
+    )
+  } else {
     plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
   }
 }
 
-new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { #nolint
+new_interaction <- function(args, drop = FALSE, sep = ".", lex.order = FALSE) { # nolint
   for (i in seq_along(args)) {
     if (is.null(args[[i]])) {
       args[[i]] <- NULL

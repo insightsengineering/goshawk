@@ -120,31 +120,35 @@ ADLB <- ADLB \%>\%
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
     grepl("WEEK", AVISIT) ~
-      paste(
-        "W",
-        trimws(
-          substr(
-            AVISIT,
-            start = 6,
-            stop = stringr::str_locate(AVISIT, "DAY") - 1
-          )
+    paste(
+      "W",
+      trimws(
+        substr(
+          AVISIT,
+          start = 6,
+          stop = stringr::str_locate(AVISIT, "DAY") - 1
         )
-      ),
-    TRUE ~ NA_character_)) \%>\%
+      )
+    ),
+    TRUE ~ NA_character_
+  )) \%>\%
   mutate(AVISITCDN = case_when(
     AVISITCD == "SCR" ~ -2,
     AVISITCD == "BL" ~ 0,
     grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
-    TRUE ~ NA_real_)) \%>\%
+    TRUE ~ NA_real_
+  )) \%>\%
   mutate(ANRLO = 50, ANRHI = 75) \%>\%
   rowwise() \%>\%
   group_by(PARAMCD) \%>\%
   mutate(LBSTRESC = ifelse(
     USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
-    paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) \%>\%
+    paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC
+  )) \%>\%
   mutate(LBSTRESC = ifelse(
     USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
-    paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) \%>\%
+    paste(">", round(runif(1, min = 70, max = 75))), LBSTRESC
+  )) \%>\%
   ungroup()
 attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
@@ -155,26 +159,25 @@ ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
 ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 
 g_boxplot(ADLB,
-          biomarker = "CRP",
-          param_var = "PARAMCD",
-          yaxis_var = "AVAL",
-          trt_group = "ARM",
-          loq_flag_var = "LOQFL",
-          loq_legend = FALSE,
-          unit = "AVALU",
-          shape_manual = c("N" = 1, "Y" = 2, "NA" = NULL),
-          facet_var = "AVISIT",
-          xaxis_var = "STUDYID",
-          alpha = 0.5,
-          rotate_xlab = TRUE,
-          hline_arb = c(30, 40),
-          hline_arb_color = "blue",
-          hline_arb_label = "Hori_line_label",
-          hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-          hline_vars_colors = c("pink", "brown", "purple", "gray"),
-          hline_vars_labels = c("A", "B", "C", "D")
+  biomarker = "CRP",
+  param_var = "PARAMCD",
+  yaxis_var = "AVAL",
+  trt_group = "ARM",
+  loq_flag_var = "LOQFL",
+  loq_legend = FALSE,
+  unit = "AVALU",
+  shape_manual = c("N" = 1, "Y" = 2, "NA" = NULL),
+  facet_var = "AVISIT",
+  xaxis_var = "STUDYID",
+  alpha = 0.5,
+  rotate_xlab = TRUE,
+  hline_arb = c(30, 40),
+  hline_arb_color = "blue",
+  hline_arb_label = "Hori_line_label",
+  hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
+  hline_vars_colors = c("pink", "brown", "purple", "gray"),
+  hline_vars_labels = c("A", "B", "C", "D")
 )
-
 }
 \author{
 Balazs Toth

@@ -63,11 +63,11 @@ This function is currently designed to be used with ('g_boxplot'), ('g_correlati
 and ('g_density_distribution_plot'), but may also work in general.
 }
 \examples{
-p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+p <- ggplot(mtcars, aes(wt, mpg)) +
+  geom_point()
 p \%>\% goshawk:::add_axes_lines(
   hline_arb = c(20, 25, 30),
   hline_arb_color = "red",
   hline_arb_label = "Hori Line"
 )
-
 }

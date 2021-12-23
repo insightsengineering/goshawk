@@ -14,4 +14,4 @@ NULL
 
 #' @import mcr
 #' @importFrom utils getFromNamespace
-mc.deming <- getFromNamespace("mc.deming", "mcr") #nolint
+mc.deming <- getFromNamespace("mc.deming", "mcr") # nolint

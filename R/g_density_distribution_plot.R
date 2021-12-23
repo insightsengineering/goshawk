@@ -40,9 +40,8 @@
 #' library(stringr)
 #'
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo",
-#' "C: Combination" = "Combination")
-#' color_manual <-  c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
+#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+#' color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #'
 #' ASL <- synthetic_cdisc_data("latest")$adsl
 #' ADLB <- synthetic_cdisc_data("latest")$adlb
@@ -52,53 +51,57 @@
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
 #'     grepl("WEEK", AVISIT) ~
-#'       paste(
-#'         "W",
-#'         trimws(
-#'           substr(
-#'             AVISIT,
-#'             start = 6,
-#'             stop = str_locate(AVISIT, "DAY") - 1
-#'           )
+#'     paste(
+#'       "W",
+#'       trimws(
+#'         substr(
+#'           AVISIT,
+#'           start = 6,
+#'           stop = str_locate(AVISIT, "DAY") - 1
 #'         )
-#'       ),
-#'     TRUE ~ NA_character_)) %>%
+#'       )
+#'     ),
+#'     TRUE ~ NA_character_
+#'   )) %>%
 #'   mutate(AVISITCDN = case_when(
 #'     AVISITCD == "SCR" ~ -2,
 #'     AVISITCD == "BL" ~ 0,
 #'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
-#'     TRUE ~ NA_real_)) %>%
+#'     TRUE ~ NA_real_
+#'   )) %>%
 #'   # use ARMCD values to order treatment in visualization legend
 #'   mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
 #'     ifelse(grepl("B", ARMCD), 2,
-#'       ifelse(grepl("A", ARMCD), 3, NA)))) %>%
+#'       ifelse(grepl("A", ARMCD), 3, NA)
+#'     )
+#'   )) %>%
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
-#'   reorder(TRTORD))
+#'     reorder(TRTORD))
 #' attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 #'
-#' g_density_distribution_plot(label = "Density Distribution Plot",
-#'            data = ADLB,
-#'            param_var = "PARAMCD",
-#'            param = c("CRP"),
-#'            xaxis_var = "AVAL",
-#'            trt_group = "ARM",
-#'            xmin = 0,
-#'            xmax = 200,
-#'            unit = "AVALU",
-#'            color_manual = color_manual,
-#'            color_comb = "#39ff14",
-#'            comb_line = FALSE,
-#'            facet_var = "AVISITCD",
-#'            hline_arb = c(0.04, 0.05),
-#'            hline_arb_color = c("black", "red"),
-#'            hline_arb_label = c("Horizontal Line A", "Horizontal Line B"),
-#'            facet_ncol = 2,
-#'            rotate_xlab = FALSE,
-#'            font_size = 10,
-#'            line_size = .5
-#'            )
-#'
+#' g_density_distribution_plot(
+#'   label = "Density Distribution Plot",
+#'   data = ADLB,
+#'   param_var = "PARAMCD",
+#'   param = c("CRP"),
+#'   xaxis_var = "AVAL",
+#'   trt_group = "ARM",
+#'   xmin = 0,
+#'   xmax = 200,
+#'   unit = "AVALU",
+#'   color_manual = color_manual,
+#'   color_comb = "#39ff14",
+#'   comb_line = FALSE,
+#'   facet_var = "AVISITCD",
+#'   hline_arb = c(0.04, 0.05),
+#'   hline_arb_color = c("black", "red"),
+#'   hline_arb_label = c("Horizontal Line A", "Horizontal Line B"),
+#'   facet_ncol = 2,
+#'   rotate_xlab = FALSE,
+#'   font_size = 10,
+#'   line_size = .5
+#' )
 g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         data,
                                         param_var = "PARAMCD",
@@ -120,7 +123,6 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         font_size = 12,
                                         line_size = 2,
                                         rug_plot = FALSE) {
-
   plot_data <- data %>%
     filter(!!sym(param_var) == param)
 
@@ -154,7 +156,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
       plot_data,
       plot_data %>%
         dplyr::mutate(!!sym(trt_group) := "Combined Dose")
-      )
+    )
   }
 
   color_manual <- if (is.null(color_manual)) {
@@ -183,7 +185,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
       size = line_size,
       geom = "line",
       position = "identity"
-      ) +
+    ) +
     coord_cartesian(xlim = c(xmin, xmax)) +
     facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol) +
     labs(caption = caption_loqs_label) +
@@ -210,14 +212,16 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   # Format font size
   if (!is.null(font_size)) {
     plot1 <- plot1 +
-      theme(axis.title.x = element_text(size = font_size),
-            axis.text.x = element_text(size = font_size),
-            axis.title.y = element_text(size = font_size),
-            axis.text.y = element_text(size = font_size),
-            legend.title = element_text(size = font_size),
-            legend.text = element_text(size = font_size),
-            strip.text.x = element_text(size = font_size),
-            strip.text.y = element_text(size = font_size))
+      theme(
+        axis.title.x = element_text(size = font_size),
+        axis.text.x = element_text(size = font_size),
+        axis.title.y = element_text(size = font_size),
+        axis.text.y = element_text(size = font_size),
+        legend.title = element_text(size = font_size),
+        legend.text = element_text(size = font_size),
+        strip.text.x = element_text(size = font_size),
+        strip.text.y = element_text(size = font_size)
+      )
   }
 
   # Format x-label
@@ -227,5 +231,4 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   }
 
   plot1
-
 }

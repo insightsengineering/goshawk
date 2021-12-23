@@ -175,50 +175,57 @@ ADLB <- ADLB \%>\%
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
     grepl("WEEK", AVISIT) ~
-      paste(
-        "W",
-        trimws(
-          substr(
-            AVISIT,
-            start = 6,
-            stop = str_locate(AVISIT, "DAY") - 1
-          )
+    paste(
+      "W",
+      trimws(
+        substr(
+          AVISIT,
+          start = 6,
+          stop = str_locate(AVISIT, "DAY") - 1
         )
-      ),
-    TRUE ~ NA_character_)) \%>\%
+      )
+    ),
+    TRUE ~ NA_character_
+  )) \%>\%
   mutate(AVISITCDN = case_when(
     AVISITCD == "SCR" ~ -2,
     AVISITCD == "BL" ~ 0,
     grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
-    TRUE ~ NA_real_)) \%>\%
-  # use ARMCD values to order treatment in visualization legend
-  mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
-                         ifelse(grepl("B", ARMCD), 2,
-                                ifelse(grepl("A", ARMCD), 3, NA)))) \%>\%
-  mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
-  mutate(ARM = factor(ARM) \%>\%
-           reorder(TRTORD)) \%>\%
-  mutate(
-  ANRHI = case_when(
-    PARAMCD == "ALT" ~ 60,
-    PARAMCD == "CRP" ~ 70,
-    PARAMCD == "IGA" ~ 80,
-    TRUE ~ NA_real_
-  ),
-  ANRLO = case_when(
-    PARAMCD == "ALT" ~ 20,
-    PARAMCD == "CRP" ~ 30,
-    PARAMCD == "IGA" ~ 40,
     TRUE ~ NA_real_
   )) \%>\%
+  # use ARMCD values to order treatment in visualization legend
+  mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
+    ifelse(grepl("B", ARMCD), 2,
+      ifelse(grepl("A", ARMCD), 3, NA)
+    )
+  )) \%>\%
+  mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
+  mutate(ARM = factor(ARM) \%>\%
+    reorder(TRTORD)) \%>\%
+  mutate(
+    ANRHI = case_when(
+      PARAMCD == "ALT" ~ 60,
+      PARAMCD == "CRP" ~ 70,
+      PARAMCD == "IGA" ~ 80,
+      TRUE ~ NA_real_
+    ),
+    ANRLO = case_when(
+      PARAMCD == "ALT" ~ 20,
+      PARAMCD == "CRP" ~ 30,
+      PARAMCD == "IGA" ~ 40,
+      TRUE ~ NA_real_
+    )
+  ) \%>\%
   rowwise() \%>\%
   group_by(PARAMCD) \%>\%
   mutate(LBSTRESC = ifelse(
     USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
-    paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC)) \%>\%
+    paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC
+  )) \%>\%
   mutate(LBSTRESC = ifelse(
     USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
-    paste( ">", round(runif(1, min = 70, max = 75))), LBSTRESC)) \%>\%
+    paste(">", round(runif(1, min = 70, max = 75))), LBSTRESC
+  )) \%>\%
   ungroup()
 attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
 attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
@@ -230,11 +237,14 @@ ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 
 # given the 2 param and 2 analysis vars we need to transform the data
 plot_data_t1 <- ADLB \%>\%
-  gather(ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL,
-  ANRHI, ANRLO, ULOQN, LLOQN) \%>\%
+  gather(
+    ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL,
+    ANRHI, ANRLO, ULOQN, LLOQN
+  ) \%>\%
   mutate(ANL.PARAM = ifelse(ANLVARS \%in\% c("PARAM", "LBSTRESC", "LOQFL"),
-                            paste0(ANLVARS, "_", PARAMCD),
-                            paste0(ANLVARS, ".", PARAMCD))) \%>\%
+    paste0(ANLVARS, "_", PARAMCD),
+    paste0(ANLVARS, ".", PARAMCD)
+  )) \%>\%
   select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) \%>\%
   spread(ANL.PARAM, ANLVALS)
 
@@ -294,7 +304,6 @@ g_correlationplot(
   dot_size = 2,
   reg_text_size = 3
 )
-
 }
 \author{
 Nick Paszty (npaszty) paszty.nicholas@gene.com
