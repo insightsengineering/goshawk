@@ -22,13 +22,13 @@ Depends:
     ggplot2,
     R (>= 3.6)
 Imports:
+    checkmate,
     cowplot,
     grid,
     magrittr,
     mcr,
     rlang,
-    stringr,
-    utils.nest (>= 0.2.11)
+    stringr
 Suggests:
     scda.2021(>= 0.1.1),
     scda(>= 0.1.1),

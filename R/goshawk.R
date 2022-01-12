@@ -9,7 +9,6 @@
 #' @import dplyr
 #' @import ggplot2
 #' @importFrom rlang .data := !!
-#' @import utils.nest
 NULL
 
 #' @import mcr

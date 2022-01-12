@@ -2,9 +2,6 @@ current_repo:
   repo: insightsengineering/goshawk
   host: https://github.com
 upstream_repos:
-  insightsengineering/utils.nest:
-    repo: insightsengineering/utils.nest
-    host: https://github.com
   insightsengineering/scda:
     repo: insightsengineering/scda
     host: https://github.com
