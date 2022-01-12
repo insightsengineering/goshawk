@@ -161,7 +161,7 @@ validate_line_args <- function(data,
       line_vars,
       FUN.VALUE = character(1),
       USE.NAMES = FALSE,
-      FUN = function(x) if_null(attributes(data[[x]])$label, x)
+      FUN = function(x) if (is.null(attributes(data[[x]])$label)) x else attributes(data[[x]])$label
     )
 
     line_vars <- sapply(
