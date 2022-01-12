@@ -306,7 +306,7 @@ add_axes_lines <- function(plot,
         ),
         values = c(
           rep(2, length(validated_res$values)),
-          if_not_null(agg_label, 1),
+          if (is.null(agg_label)) agg_label else 1,
           rep(2, length(validated_res_vert$values))
         )
       ) +
@@ -315,7 +315,7 @@ add_axes_lines <- function(plot,
           list(
             color = c(
               validated_res$colors,
-              if_not_null(agg_label, color_comb),
+              if (is.null(agg_label)) agg_label else color_comb,
               validated_res_vert$colors
             ),
             orientation = c(
