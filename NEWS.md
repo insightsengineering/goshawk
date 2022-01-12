@@ -3,6 +3,7 @@
 * Added R version requirement, R >= 3.6.
 * Renamed `visit_var` as `facet_var` in `t_summarytable` and allow it to be `NULL` when there is no faceting.
 * Extended the functionality of the parameters `hline_arb` (and `vline_arb` for `g_correlationplot`) to a vector of arbitrary length, allowing users to add any number of arbitrary horizontal or vertical lines to `g_spaghettiplot`, `g_boxplot`, `g_density_distribution_plot` and `g_correlationplot`.
+* Removed `utils.nest` from imports and used `checkmate` for validations.
 
 # goshawk 0.1.10
 
