@@ -155,8 +155,8 @@ g_boxplot <- function(data,
   if (!any(data[[param_var]] == biomarker)) {
     stop(paste("biomarker", biomarker, "is not found in param_var", param_var, "."))
   }
-  stopifnot("loq_legend must be a logical scalar." = is_logical_single(loq_legend))
-  stopifnot("dot_size must be numeric." = is_numeric_single(dot_size))
+  checkmate::assert_flag(loq_legend)
+  checkmate::assert_number(dot_size)
 
   # filter input data
   data <- data %>%

@@ -256,9 +256,8 @@ g_correlationplot <- function(label = "Correlation Plot",
                               font_size = 12,
                               dot_size = 2,
                               reg_text_size = 3) {
-  stopifnot("loq_legend must be a logical scalar." = is_logical_single(loq_legend))
-  stopifnot("dot_size must be numeric." = is_numeric_single(dot_size))
-  stopifnot("dot_size must not be less than 1." = dot_size >= 1)
+  checkmate::assert_flag(loq_legend)
+  checkmate::assert_number(dot_size, lower = 1)
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data

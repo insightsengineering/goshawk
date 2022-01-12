@@ -130,7 +130,7 @@ validate_line_args <- function(data,
                                line_vars_colors = "green",
                                line_vars_labels = line_vars) {
   if (length(line_arb) > 0) {
-    stopifnot(is_numeric_vector(line_arb))
+    checkmate::assert_numeric(line_arb)
     stopifnot(length(line_arb_color) == 1 || length(line_arb_color) == length(line_arb))
     stopifnot(length(line_arb_label) == 1 || length(line_arb_label) == length(line_arb))
 
@@ -149,7 +149,7 @@ validate_line_args <- function(data,
 
   if (length(line_vars) > 0) {
     stopifnot(all(line_vars %in% names(data)))
-    stopifnot(is_class_list(class_name = "numeric")(data[line_vars]))
+    checkmate::check_list(data[line_vars], types = "numeric")
     stopifnot(length(line_vars_labels) == length(line_vars))
     if (length(line_vars_colors) == 1) {
       line_vars_colors <- rep(line_vars_colors, length(line_vars))
@@ -170,8 +170,8 @@ validate_line_args <- function(data,
       function(name) {
         x <- data[[name]]
         vals <- unique(x)
-        if (!is_numeric_single(vals)) {
-          warning(sprint("First value is taken from variable '%s' to draw the straight line", name))
+        if (!checkmate::test_number(vals)) {
+          warning(sprintf("First value is taken from variable '%s' to draw the straight line", name))
         }
         vals[1]
       }
