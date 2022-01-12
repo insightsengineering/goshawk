@@ -214,8 +214,8 @@ g_scatterplot <- function(label = "Scatter Plot",
           data = sub_data,
           # has to put some neutral values for missings, i.e. big & negative intercept + 0 slope
           aes(
-            intercept = vapply(.data$intercept, if_na, numeric(1), -9999),
-            slope = vapply(.data$slope, if_na, numeric(1), 0),
+            intercept = vapply(.data$intercept, function(x) if (is.na(x)) x else numeric(1), FUN.VALUE = -9999),
+            slope = vapply(.data$slope, function(x) if (is.na(x)) x else numeric(1), FUN.VALUE = 0),
             color = !!sym(trt_group)
           )
         )
