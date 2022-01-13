@@ -227,7 +227,7 @@ g_spaghettiplot <- function(data,
     unique() %>%
     extract2(1)
   gtitle <- paste0(biomarker1, unit1, value_var, " Values by Treatment @ Visits")
-  gxlab <- if_null(attr(data[[time]], "label"), time)
+  gxlab <- if (is.null(attr(data[[time]], "label"))) time else attr(data[[time]], "label")
   gylab <- paste0(biomarker1, " ", value_var, " Values")
 
   # Setup legend label

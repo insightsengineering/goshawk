@@ -130,7 +130,7 @@ validate_line_args <- function(data,
                                line_vars_colors = "green",
                                line_vars_labels = line_vars) {
   if (length(line_arb) > 0) {
-    stopifnot(is_numeric_vector(line_arb))
+    checkmate::assert_numeric(line_arb, any.missing = FALSE)
     stopifnot(length(line_arb_color) == 1 || length(line_arb_color) == length(line_arb))
     stopifnot(length(line_arb_label) == 1 || length(line_arb_label) == length(line_arb))
 
@@ -149,7 +149,7 @@ validate_line_args <- function(data,
 
   if (length(line_vars) > 0) {
     stopifnot(all(line_vars %in% names(data)))
-    stopifnot(is_class_list(class_name = "numeric")(data[line_vars]))
+    checkmate::check_list(data[line_vars], types = "numeric")
     stopifnot(length(line_vars_labels) == length(line_vars))
     if (length(line_vars_colors) == 1) {
       line_vars_colors <- rep(line_vars_colors, length(line_vars))
@@ -161,7 +161,7 @@ validate_line_args <- function(data,
       line_vars,
       FUN.VALUE = character(1),
       USE.NAMES = FALSE,
-      FUN = function(x) if_null(attributes(data[[x]])$label, x)
+      FUN = function(x) if (is.null(attributes(data[[x]])$label)) x else attributes(data[[x]])$label
     )
 
     line_vars <- sapply(
@@ -170,8 +170,8 @@ validate_line_args <- function(data,
       function(name) {
         x <- data[[name]]
         vals <- unique(x)
-        if (!is_numeric_single(vals)) {
-          warning(sprint("First value is taken from variable '%s' to draw the straight line", name))
+        if (!checkmate::test_number(vals)) {
+          warning(sprintf("First value is taken from variable '%s' to draw the straight line", name))
         }
         vals[1]
       }
@@ -306,7 +306,7 @@ add_axes_lines <- function(plot,
         ),
         values = c(
           rep(2, length(validated_res$values)),
-          if_not_null(agg_label, 1),
+          if (is.null(agg_label)) agg_label else 1,
           rep(2, length(validated_res_vert$values))
         )
       ) +
@@ -315,7 +315,7 @@ add_axes_lines <- function(plot,
           list(
             color = c(
               validated_res$colors,
-              if_not_null(agg_label, color_comb),
+              if (is.null(agg_label)) agg_label else color_comb,
               validated_res_vert$colors
             ),
             orientation = c(

@@ -42,8 +42,6 @@
 #' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
 #' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
 #'
-#' @importFrom utils.nest stop_if_not if_null
-#'
 #' @author Balazs Toth
 #' @author Jeff Tomlinson (tomlinsj) jeffrey.tomlinson@roche.com
 #'
@@ -150,12 +148,15 @@ g_boxplot <- function(data,
                       hline_vars = character(0),
                       hline_vars_colors = "green",
                       hline_vars_labels = hline_vars) {
-  stop_if_not(list(!is.null(data[[param_var]]), paste("param_var", param_var, "is not in data.")))
-  stop_if_not(list(
-    any(data[[param_var]] == biomarker), paste("biomarker", biomarker, "is not found in param_var", param_var, ".")
-  ))
-  stop_if_not(list(is_logical_single(loq_legend), "loq_legend must be a logical scalar."))
-  stop_if_not(list(is_numeric_single(dot_size), "dot_size must be numeric."))
+  if (is.null(data[[param_var]])) {
+    stop(paste("param_var", param_var, "is not in data."))
+  }
+
+  if (!any(data[[param_var]] == biomarker)) {
+    stop(paste("biomarker", biomarker, "is not found in param_var", param_var, "."))
+  }
+  checkmate::assert_flag(loq_legend)
+  checkmate::assert_number(dot_size)
 
   # filter input data
   data <- data %>%
@@ -163,7 +164,9 @@ g_boxplot <- function(data,
 
   if (!is.null(unit)) {
     # check unit is in the dataset
-    stop_if_not(list(!is.null(data[[unit]]), paste("unit variable", unit, "is not in data.")))
+    if (is.null(data[[unit]])) {
+      stop(paste("unit variable", unit, "is not in data."))
+    }
     # extract the most common unit
     # if there are ties, take the use alphabetic order
     tmp_unit <- data %>%
