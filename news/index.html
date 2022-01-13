@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.10.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.10.9011</span>
       </span>
     </div>
 
@@ -34,15 +34,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/goshawk" class="external-link">
     <span class="fa fa-github"></span>
@@ -63,10 +54,11 @@ Other releases
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.10.9010" id="goshawk-01109010">goshawk 0.1.10.9010<a class="anchor" aria-label="anchor" href="#goshawk-01109010"></a></h2>
+<h2 class="page-header" data-toc-text="0.1.10.9011" id="goshawk-01109011">goshawk 0.1.10.9011<a class="anchor" aria-label="anchor" href="#goshawk-01109011"></a></h2>
 <ul><li>Added R version requirement, R &gt;= 3.6.</li>
 <li>Renamed <code>visit_var</code> as <code>facet_var</code> in <code>t_summarytable</code> and allow it to be <code>NULL</code> when there is no faceting.</li>
 <li>Extended the functionality of the parameters <code>hline_arb</code> (and <code>vline_arb</code> for <code>g_correlationplot</code>) to a vector of arbitrary length, allowing users to add any number of arbitrary horizontal or vertical lines to <code>g_spaghettiplot</code>, <code>g_boxplot</code>, <code>g_density_distribution_plot</code> and <code>g_correlationplot</code>.</li>
+<li>Removed <code>utils.nest</code> from imports and used <code>checkmate</code> for validations.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.10" id="goshawk-0110">goshawk 0.1.10<a class="anchor" aria-label="anchor" href="#goshawk-0110"></a></h2>
