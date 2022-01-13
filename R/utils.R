@@ -130,7 +130,7 @@ validate_line_args <- function(data,
                                line_vars_colors = "green",
                                line_vars_labels = line_vars) {
   if (length(line_arb) > 0) {
-    checkmate::assert_numeric(line_arb)
+    checkmate::assert_numeric(line_arb, any.missing = FALSE)
     stopifnot(length(line_arb_color) == 1 || length(line_arb_color) == length(line_arb))
     stopifnot(length(line_arb_label) == 1 || length(line_arb_label) == length(line_arb))
 
