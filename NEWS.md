@@ -7,7 +7,7 @@
 ### Miscellaneous
 * Added R version requirement `R >= 3.6`.
 * Removed dependency on `test.nest` package.
-* Removed dependency on `utils.nest` and replaced those function with equivalents from the `checkmate` package.
+* Removed dependency on `utils.nest` package and replaced its functions with equivalents from the `checkmate` package.
 
 # goshawk 0.1.10
 
