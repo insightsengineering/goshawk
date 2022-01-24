@@ -27,7 +27,7 @@ t_summarytable(
 \item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. AVAL.}
 
 \item{facet_var}{name of variable facetted on typically containing visit values e.g. AVISITCD.
-If NULL then ignored.}
+If NULL then ignored. It defaults to `"AVISITCD"` when not provided.}
 
 \item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
 
