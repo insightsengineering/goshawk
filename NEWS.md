@@ -8,6 +8,7 @@
 * Added R version requirement `R >= 3.6`.
 * Removed dependency on `test.nest` package.
 * Removed dependency on `utils.nest` package and replaced its functions with equivalents from the `checkmate` package.
+* Removed unused `...` argument in `t_summarytable`. 
 
 # goshawk 0.1.10
 

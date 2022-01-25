@@ -12,7 +12,6 @@
 #' @param facet_var name of variable facetted on typically containing visit values e.g. AVISITCD.
 #'   If NULL then ignored.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
-#' @param ... additional options
 #'
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
@@ -82,7 +81,7 @@ t_summarytable <- function(data,
                            param,
                            xaxis_var,
                            facet_var = "AVISITCD",
-                           loq_flag_var = "LOQFL", ...) {
+                           loq_flag_var = "LOQFL") {
   if (!is.null(facet_var) && trt_group == facet_var) {
     data[paste0(facet_var, "_")] <- data[facet_var]
     facet_var <- paste0(facet_var, "_")

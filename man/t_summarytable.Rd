@@ -11,8 +11,7 @@ t_summarytable(
   param,
   xaxis_var,
   facet_var = "AVISITCD",
-  loq_flag_var = "LOQFL",
-  ...
+  loq_flag_var = "LOQFL"
 )
 }
 \arguments{
@@ -30,8 +29,6 @@ t_summarytable(
 If NULL then ignored.}
 
 \item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
-
-\item{...}{additional options}
 }
 \description{
 Output descriptive summary statistics table as a data frame. Includes biomarker, treatment,
