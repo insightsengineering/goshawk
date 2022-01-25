@@ -29,7 +29,7 @@ t_summarytable(
 \item{facet_var}{name of variable facetted on typically containing visit values e.g. AVISITCD.
 If NULL then ignored. It defaults to `"AVISITCD"` when not provided.}
 
-\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
+\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL. Defaults to `"LOQFL"`.}
 
 \item{...}{additional options}
 }
