@@ -1,4 +1,4 @@
-# goshawk 0.1.10.9011.1
+# goshawk 0.1.10.9011.2
 
 ### Enhancements
 * Renamed `visit_var` as `facet_var` in `t_summarytable` and allowed it to be `NULL` when there is no facetting.
