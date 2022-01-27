@@ -25,7 +25,7 @@ n, mean, median, sd, min, max, "><!-- mathjax --><script src="https://cdnjs.clou
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.10.9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.11</span>
       </span>
     </div>
 
@@ -36,15 +36,6 @@ n, mean, median, sd, min, max, "><!-- mathjax --><script src="https://cdnjs.clou
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/goshawk" class="external-link">
     <span class="fa fa-github"></span>
@@ -98,9 +89,9 @@ n, mean, median, sd, min, max, <!-- %missing values, % LOQ values. --></p>
 <dd><p>name of variable containing biomarker results displayed on X-axis e.g. AVAL.</p></dd>
 <dt>facet_var</dt>
 <dd><p>name of variable facetted on typically containing visit values e.g. AVISITCD.
-If NULL then ignored.</p></dd>
+If NULL then ignored. It defaults to `"AVISITCD"` when not provided.</p></dd>
 <dt>loq_flag_var</dt>
-<dd><p>name of variable containing LOQ flag e.g. LOQFL.</p></dd>
+<dd><p>name of variable containing LOQ flag e.g. LOQFL. Defaults to `"LOQFL"`.</p></dd>
 <dt>...</dt>
 <dd><p>additional options</p></dd>
 </dl></div>
@@ -242,7 +233,7 @@ If NULL then ignored.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer></div>
