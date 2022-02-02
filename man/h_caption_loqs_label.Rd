@@ -17,3 +17,4 @@ library(scda)
 ADLB <- synthetic_cdisc_data("latest")$adlb
 caption_label <- goshawk:::h_caption_loqs_label(loqs_data = ADLB)
 }
+\keyword{internal}

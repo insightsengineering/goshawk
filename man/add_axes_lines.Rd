@@ -71,3 +71,4 @@ p \%>\% goshawk:::add_axes_lines(
   hline_arb_label = "Hori Line"
 )
 }
+\keyword{internal}

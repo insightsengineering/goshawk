@@ -9,6 +9,7 @@
 #' @param loqs_data (`data frame`)\cr loqs_data data set containing assay data with potential LOQ values
 #'
 #' @import dplyr
+#' @keywords internal
 #'
 #' @examples
 #' library(scda)
@@ -74,6 +75,7 @@ h_identify_loq_values <- function(loqs_data) {
 #' @param loqs_data (`data frame`)\cr loqs_data data set containing assay data with potential LOQ values
 #'
 #' @import dplyr
+#' @keywords internal
 #'
 #' @examples
 #' library(scda)
@@ -122,6 +124,8 @@ h_caption_loqs_label <- function(loqs_data) {
 #'
 #' @return ('list') containing the `values`,`colors` and `labels` fields defining attributes
 #' for horizontal or vertical lines.
+#' @keywords internal
+#'
 validate_line_args <- function(data,
                                line_arb = numeric(0),
                                line_arb_color = "red",
@@ -221,6 +225,7 @@ validate_line_args <- function(data,
 #'   hline_arb_label = "Hori Line"
 #' )
 #' @return \code{ggplot} object
+#' @keywords internal
 #'
 add_axes_lines <- function(plot,
                            agg_label = NULL,
