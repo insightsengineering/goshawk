@@ -28,3 +28,4 @@ ADLB <- synthetic_cdisc_data("latest")$adlb
 
 goshawk:::h_identify_loq_values(loqs_data = ADLB)
 }
+\keyword{internal}

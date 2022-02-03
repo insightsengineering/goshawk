@@ -7,3 +7,4 @@
 \description{
 The goshawk package provides longitudinal visualizations of lab/biomarker data
 }
+\keyword{internal}

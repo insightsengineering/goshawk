@@ -37,3 +37,4 @@ for horizontal or vertical lines.
 \description{
 helper function to be called by add_straight_lines
 }
+\keyword{internal}
