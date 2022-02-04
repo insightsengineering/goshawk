@@ -1,5 +1,10 @@
 # goshawk 0.1.11.9001
 
+### Breaking Changes
+
+* Converted the `hline` parameter of `g_lineplot` to three parameters: `hline_arb`, `hline_arb_color` and `hline_arb_label`.
+
+
 ### Enhancements
 * Renamed `visit_var` as `facet_var` in `t_summarytable` and allowed it to be `NULL` when there is no facetting.
 * Extended the functionality of the parameters `hline_arb` (and `vline_arb` for `g_correlationplot`) to a vector of arbitrary length, allowing users to add any number of arbitrary horizontal or vertical lines to `g_spaghettiplot`, `g_boxplot`, `g_density_distribution_plot` and `g_correlationplot`.

@@ -19,7 +19,8 @@ add_axes_lines(
   vline_arb_label = "Vertical line",
   vline_vars = character(0),
   vline_vars_colors = "green",
-  vline_vars_labels = vline_vars
+  vline_vars_labels = vline_vars,
+  add_new_scale = FALSE
 )
 }
 \arguments{
@@ -54,6 +55,9 @@ The data inside of the ggplot2 object must also contain the columns with these v
 \item{vline_vars_colors}{('character vector') colors for the vertical lines defined by variables.}
 
 \item{vline_vars_labels}{('character vector') labels for the legend to the vertical lines defined by variables.}
+
+\item{add_new_scale}{('logical scalar') flag to indicate whether or not `plot` already has a `scale_linetype` added
+to it. If yes, set this parameter to `TRUE`. If not, set it to `FALSE`.}
 }
 \value{
 \code{ggplot} object
