@@ -441,11 +441,11 @@ g_lineplot <- function(label = "Line Plot",
     ylab(gylab) +
     theme(
       legend.position = "bottom",
-      legend.direction = "horizontal",
+      legend.direction = "vertical",
       plot.title = element_text(size = plot_font_size, margin = margin(), hjust = 0.5),
       axis.title.y = element_text(margin = margin(r = 20))
     ) +
-    guides(color = guide_legend(ncol = 3, byrow = TRUE))
+    guides(color = guide_legend(ncol = 1))
 
   # Apply y-axis zoom range
   if (!is.null(ylim)) {
