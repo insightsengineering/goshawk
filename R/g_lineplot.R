@@ -441,7 +441,7 @@ g_lineplot <- function(label = "Line Plot",
     ylab(gylab) +
     theme(
       legend.position = "bottom",
-      legend.direction = "vertical",
+      legend.direction = "horizontal",
       plot.title = element_text(size = plot_font_size, margin = margin(), hjust = 0.5),
       axis.title.y = element_text(margin = margin(r = 20))
     ) +
