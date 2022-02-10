@@ -258,25 +258,23 @@ g_spaghettiplot <- function(data,
         group_by(!!sym(trt_group), !!sym(time)) %>%
         transmute(AGG_VAL = mean(!!sym(value_var), na.rm = TRUE))
 
-      agg_label <- "Group Mean"
+      plot_data_groupped$metric <- "Mean"
     } else {
       plot_data_groupped <- plot_data %>%
         group_by(!!sym(trt_group), !!sym(time)) %>%
         transmute(AGG_VAL = median(!!sym(value_var), na.rm = TRUE))
 
-      agg_label <- "Group Median"
+      plot_data_groupped$metric <- "Median"
     }
-
     plot <- plot +
       geom_line(
-        aes_string(x = time, y = "AGG_VAL", group = 1, linetype = as.factor(agg_label)),
+        aes_string(x = time, y = "AGG_VAL", group = 1, linetype = "metric"),
         data = plot_data_groupped,
         lwd = 1,
         color = color_comb,
         na.rm = TRUE
-      )
-  } else {
-    agg_label <- NULL
+      ) +
+      guides(linetype = guide_legend("Group statistic"))
   }
   # Format x-label
   if (xtype == "continuous") {
@@ -296,19 +294,6 @@ g_spaghettiplot <- function(data,
       scale_color_manual(values = color_manual, name = trt_label)
   }
 
-  # Add horizontal line for range based on option
-  plot <- add_axes_lines(
-    plot,
-    agg_label = agg_label,
-    color_comb = color_comb,
-    hline_arb = hline_arb,
-    hline_arb_color = hline_arb_color,
-    hline_arb_label = hline_arb_label,
-    hline_vars = hline_vars,
-    hline_vars_colors = hline_vars_colors,
-    hline_vars_labels = hline_vars_labels
-  )
-
   # Format font size
   if (!is.null(font_size)) {
     plot <- plot +
@@ -324,5 +309,14 @@ g_spaghettiplot <- function(data,
         strip.text.y = element_text(size = font_size)
       )
   }
-  plot
+  # Add horizontal line for range based on option
+  plot + add_axes_lines(
+    plot_data,
+    hline_arb = hline_arb,
+    hline_arb_color = hline_arb_color,
+    hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars,
+    hline_vars_colors = hline_vars_colors,
+    hline_vars_labels = hline_vars_labels
+  )
 }

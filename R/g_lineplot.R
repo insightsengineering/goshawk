@@ -18,7 +18,9 @@
 #' @param line_type vector of line types.
 #' @param ylim numeric vector to define y-axis range.
 #' @param median boolean whether to display median results.
-#' @param hline numeric value representing intercept of horizontal line.
+#' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
+#' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
+#' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
 #' @param xtick a vector to define the tick values of time in x-axis.
 #' Default value is waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values.
@@ -52,7 +54,6 @@
 #' @export
 #'
 #' @examples
-#'
 #'
 #' # Example using ADaM structure analysis dataset.
 #'
@@ -117,7 +118,9 @@
 #'   color_manual = color_manual,
 #'   line_type = type_manual,
 #'   median = FALSE,
-#'   hline = 50,
+#'   hline_arb = c(.9, 1.1, 1.2, 1.5),
+#'   hline_arb_color = c("green", "red", "blue", "pink"),
+#'   hline_arb_label = c("A", "B", "C", "D"),
 #'   xtick = c(0, 1, 5),
 #'   xlabel = c("Baseline", "Week 1", "Week 5"),
 #'   rotate_xlab = FALSE,
@@ -136,7 +139,9 @@
 #'   color_manual = NULL,
 #'   line_type = type_manual,
 #'   median = TRUE,
-#'   hline = 50,
+#'   hline_arb = c(.9, 1.1, 1.2, 1.5),
+#'   hline_arb_color = c("green", "red", "blue", "pink"),
+#'   hline_arb_label = c("A", "B", "C", "D"),
 #'   xtick = c("BL", "W 1", "W 5"),
 #'   xlabel = c("Baseline", "Week 1", "Week 5"),
 #'   rotate_xlab = FALSE,
@@ -155,7 +160,9 @@
 #'   color_manual = color_manual,
 #'   line_type = type_manual,
 #'   median = FALSE,
-#'   hline = 50,
+#'   hline_arb = c(.9, 1.1, 1.2, 1.5),
+#'   hline_arb_color = c("green", "red", "blue", "pink"),
+#'   hline_arb_label = c("A", "B", "C", "D"),
 #'   xtick = c("BL", "W 1", "W 5"),
 #'   xlabel = c("Baseline", "Week 1", "Week 5"),
 #'   rotate_xlab = FALSE,
@@ -176,7 +183,9 @@
 #'   color_manual = color_manual,
 #'   line_type = type_manual,
 #'   median = TRUE,
-#'   hline = 50,
+#'   hline_arb = c(.9, 1.1, 1.2, 1.5),
+#'   hline_arb_color = c("green", "red", "blue", "pink"),
+#'   hline_arb_label = c("A", "B", "C", "D"),
 #'   xtick = c(0, 1, 5),
 #'   xlabel = c("Baseline", "Week 1", "Week 5"),
 #'   rotate_xlab = FALSE,
@@ -195,7 +204,9 @@
 #'   color_manual = color_manual,
 #'   line_type = type_manual,
 #'   median = FALSE,
-#'   hline = 50,
+#'   hline_arb = c(.9, 1.1, 1.2, 1.5),
+#'   hline_arb_color = c("green", "red", "blue", "pink"),
+#'   hline_arb_label = c("A", "B", "C", "D"),
 #'   xtick = c(0, 1, 5),
 #'   xlabel = c("Baseline", "Week 1", "Week 5"),
 #'   rotate_xlab = FALSE,
@@ -213,7 +224,9 @@
 #'   time = "AVISITCDN",
 #'   color_manual = NULL,
 #'   median = FALSE,
-#'   hline = 50,
+#'   hline_arb = c(.9, 1.1, 1.2, 1.5),
+#'   hline_arb_color = c("green", "red", "blue", "pink"),
+#'   hline_arb_label = c("A", "B", "C", "D"),
 #'   xtick = c(0, 1, 5),
 #'   xlabel = c("Baseline", "Week 1", "Week 5"),
 #'   rotate_xlab = FALSE,
@@ -236,7 +249,9 @@ g_lineplot <- function(label = "Line Plot",
                        color_manual = NULL,
                        line_type = NULL,
                        median = FALSE,
-                       hline = NULL,
+                       hline_arb = numeric(0),
+                       hline_arb_color = "red",
+                       hline_arb_label = "Horizontal line",
                        xtick = waiver(),
                        xlabel = xtick,
                        rotate_xlab = FALSE,
@@ -424,12 +439,13 @@ g_lineplot <- function(label = "Line Plot",
     xlab(time) +
     ylab(gylab) +
     theme(
+      legend.box = "vertical",
       legend.position = "bottom",
-      legend.direction = "vertical",
+      legend.direction = "horizontal",
       plot.title = element_text(size = plot_font_size, margin = margin(), hjust = 0.5),
       axis.title.y = element_text(margin = margin(r = 20))
     ) +
-    guides(color = guide_legend(ncol = 3, byrow = TRUE))
+    guides(color = guide_legend(ncol = 3))
 
   # Apply y-axis zoom range
   if (!is.null(ylim)) {
@@ -451,11 +467,11 @@ g_lineplot <- function(label = "Line Plot",
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
 
-  # Add horizontal line
-  if (!is.null(hline)) {
-    plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
-  }
+
+  plot1 <- plot1 + add_axes_lines(
+    sum_data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label
+  )
 
   # Format font size
   if (!is.null(plot_font_size)) {

@@ -201,14 +201,6 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
       geom_rug(aes(x = !!sym(xaxis_var), colour = !!sym(trt_group)))
   }
 
-  # Add horizontal line
-  plot1 <- add_axes_lines(
-    plot = plot1,
-    hline_arb = hline_arb,
-    hline_arb_color = hline_arb_color,
-    hline_arb_label = hline_arb_label
-  )
-
   # Format font size
   if (!is.null(font_size)) {
     plot1 <- plot1 +
@@ -230,5 +222,11 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
 
-  plot1
+    # Add horizontal line
+  plot1 + add_axes_lines(
+    plot_data,
+    hline_arb = hline_arb,
+    hline_arb_color = hline_arb_color,
+    hline_arb_label = hline_arb_label
+  )
 }

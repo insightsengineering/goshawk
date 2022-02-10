@@ -276,12 +276,8 @@ g_boxplot <- function(data,
     }
   }
 
-  # Add horizontal line for range based on option
-  plot1 <- add_axes_lines(
-    plot = plot1,
-    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
-    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
-  )
+
+
 
   # Format font size
   if (is_finite(font_size)) {
@@ -302,5 +298,10 @@ g_boxplot <- function(data,
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
-  return(plot1)
+
+  # Add horizontal line for range based on option
+  plot1 + add_axes_lines(data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
 }
