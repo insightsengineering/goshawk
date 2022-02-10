@@ -6,7 +6,7 @@
 \title{Check that argument is a valid color}
 \usage{
 check_color(
-  x,
+  color,
   min.len = NULL,
   max.len = NULL,
   any.missing = TRUE,
@@ -16,20 +16,20 @@ check_color(
 )
 
 assert_color(
-  x,
+  color,
   min.len = NULL,
   max.len = NULL,
   any.missing = TRUE,
   all.missing = TRUE,
   len = NULL,
   null.ok = FALSE,
-  .var.name = checkmate::vname(x),
+  .var.name = checkmate::vname(color),
   add = NULL
 )
 }
 \arguments{
-\item{x}{[any]\cr
-Object to check.}
+\item{color}{(`character`)\cr
+Valid color convertible to RGB scale by [grDevices::col2rgb()]}
 
 \item{min.len}{[\code{integer(1)}]\cr
 Minimal length of \code{x}.}

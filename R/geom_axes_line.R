@@ -24,7 +24,7 @@
 #' @examples
 #' p <- ggplot(mtcars, aes(wt, mpg)) +
 #'   geom_point() +
-#'   goshawk:::add_axes_lines(
+#'   goshawk:::geom_axes_lines(
 #'     hline_arb = c(20, 25, 30),
 #'     hline_arb_color = "red",
 #'     hline_arb_label = "Hori Line"
@@ -32,7 +32,7 @@
 #' @return \code{ggplot} object
 #' @keywords internal
 #'
-add_axes_lines <- function(data,
+geom_axes_lines <- function(data,
                            hline_arb = numeric(0),
                            hline_arb_color = "red",
                            hline_arb_label = "Horizontal line",
@@ -50,6 +50,17 @@ add_axes_lines <- function(data,
       yintercept = hline_arb,
       color = hline_arb_color,
       label = hline_arb_label,
+      legend_title = "Horizontal arbitrary line(s)",
+      linetype = 2
+    )
+  }
+
+  range_hlines <- if (length(hline_vars > 0)) {
+    geom_range_hline(
+      data = data,
+      vars = hline_vars,
+      color = hline_vars_colors,
+      label = hline_vars_labels,
       linetype = 2
     )
   }
@@ -59,20 +70,11 @@ add_axes_lines <- function(data,
       xintercept = vline_arb,
       color = vline_arb_color,
       label = vline_arb_label,
+      legend_title = "Vertical arbitrary line(s)",
       linetype = 2
     )
   }
 
-  range_hlines <- if (length(hline_vars > 0)) {
-    print(hline_vars)
-    geom_range_hline(
-      data = data,
-      vars = hline_vars,
-      color = hline_vars_colors,
-      label = hline_vars_labels,
-      linetype = 2
-    )
-  }
   range_vlines <- if (length(vline_vars) > 0) {
     geom_range_vline(
       data = data,
@@ -93,7 +95,7 @@ add_axes_lines <- function(data,
 
 #' Validate line arguments given in the parameters against the data.
 #'
-#' helper function to be called by [add_axes_lines]
+#' helper function to be called by [geom_axes_lines()]
 #'
 #' @param data (`data.frame`)\cr
 #'  should contain `vars` which will be used to create the plot.
@@ -160,29 +162,38 @@ validate_line_args <- function(data,
   )
 }
 
-#' Abitrary lines for `ggplot2`
+#' Straight lines for `ggplot2`
 #'
 #' Abitrary lines for `ggplot2`
-#' @rdname geom_straight_lines
-#' @inheritParams ggplot2::geom_hline
+#' @name geom_straight_lines
+#' @param vars (`character`)\cr
+#'  names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#' @param xintercept (`numeric`)\cr
+#'  Position of the vertical line(s) on the x-axis
+#' @param yintercept (`numeric`)\cr
+#'  Position of the horizontal line(s) on the y-axis
 #' @param label (`character`)\cr
 #'  Label to be rendered in the legend.
 #'  Should be a single string or vector of length equal to length of `xintercept`.
 #' @param color (`character`)\cr
-#'  Valid color convertible to RGB scale by [[grDevices::col2rgb()]].
+#'  Valid color convertible to RGB scale by [grDevices::col2rgb()].
 #'  Should be a single string or vector of length equal to length of `xintercept`.
 #'
 #' @inherit ggplot2::geom_hline return
 #'
 #' @keywords internal
 #'
+NULL
+
+#' @rdname geom_straight_lines
 #' @examples
+#' # horizontal arbitrary lines
 #' library(ggplot2)
 #'
 #' data <- data.frame(x = seq_len(10), y = seq_len(10), color = rep(c("a", "b"), each = 5))
-#' ggplot2(data, aes(x = x, y = y, color = color)) +
+#' ggplot(data, aes(x = x, y = y, color = color)) +
 #'   geom_point() +
-#'   geom_arb_hline(yintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2)
+#'   goshawk:::geom_arb_hline(yintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2)
 geom_arb_hline <- function(yintercept,
                            label = "Horizontal line",
                            color = "red",
@@ -220,20 +231,15 @@ geom_arb_hline <- function(yintercept,
 }
 
 #' @rdname geom_straight_lines
-#' @inheritParams ggplot2::geom_vline
-#' @param label (`character`)\cr
-#'  Label to be rendered in the legend.
-#'  Should be a single string or vector of length equal to length of `xintercept`.
-#' @param color (`character`)\cr
-#'  Valid color convertible to RGB scale by [[grDevices::col2rgb()]].
-#'  Should be a single string or vector of length equal to length of `xintercept`.
 #' @examples
+#'
+#' # vertical arbitrary lines
 #' library(ggplot2)
 #'
 #' data <- data.frame(x = seq_len(10), y = seq_len(10), color = rep(c("a", "b"), each = 5))
-#' ggplot2(data, aes(x = x, y = y, color = color)) +
+#' ggplot(data, aes(x = x, y = y, color = color)) +
 #'   geom_point() +
-#'   geom_arb_vline(xintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2)
+#'   goshawk:::geom_arb_vline(xintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2)
 geom_arb_vline <- function(xintercept,
                            label = "Vertical line",
                            color = "red",
@@ -272,13 +278,27 @@ geom_arb_vline <- function(xintercept,
 
 
 #' @rdname geom_straight_lines
-#' @param vars (`character`)\cr
-#'  names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#' @param data (`data.frame`)\cr
-#'  should contain `vars` which will be used to create the plot.
-#' @param color (`character`)\cr
-#'  colors for the lines defined by variables.
-#' @return
+#' @examples
+#'
+#' # horizontal range
+#' library(ggplot2)
+#'
+#' data <- data.frame(
+#'   x = seq_len(10),
+#'   y = seq_len(10),
+#'   color = rep(c("a", "b"), each = 5),
+#'   lower = rep(c(2, 3), each = 5),
+#'   upper = rep(c(7, 8), each = 5)
+#' )
+#' ggplot(data, aes(x = x, y = y, color = color)) +
+#'    geom_point() +
+#'    goshawk:::geom_range_hline(
+#'     vars = c("lower", "upper"),
+#'     data = data.frame(lower = 2, upper = 7),
+#'     color = "blue",
+#'     linetype = 2
+#'   )
+#'
 geom_range_hline <- function(vars,
                              data,
                              color = "green",
@@ -301,6 +321,27 @@ geom_range_hline <- function(vars,
 }
 
 #' @rdname geom_straight_lines
+#' @examples
+#'
+#' # vertical range
+#' library(ggplot2)
+#'
+#' data <- data.frame(
+#'   x = seq_len(10),
+#'   y = seq_len(10),
+#'   color = rep(c("a", "b"), each = 5),
+#'   lower = rep(c(2, 3), each = 5),
+#'   upper = rep(c(7, 8), each = 5)
+#' )
+#' ggplot(data, aes(x = x, y = y, color = color)) +
+#'    geom_point() +
+#'    goshawk:::geom_range_vline(
+#'     vars = c("lower", "upper"),
+#'     data = data.frame(lower = 2, upper = 7),
+#'     color = "blue",
+#'     linetype = 2
+#'   )
+#'
 geom_range_vline <- function(vars,
                              data,
                              color = "green",

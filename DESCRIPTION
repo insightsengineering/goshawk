@@ -24,7 +24,9 @@ Depends:
 Imports:
     checkmate,
     cowplot,
+    ggnewscale,
     grid,
+    grDevices,
     magrittr,
     mcr,
     rlang,

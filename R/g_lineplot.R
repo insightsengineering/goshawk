@@ -468,7 +468,7 @@ g_lineplot <- function(label = "Line Plot",
   }
 
 
-  plot1 <- plot1 + add_axes_lines(
+  plot1 <- plot1 + geom_axes_lines(
     sum_data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label
   )

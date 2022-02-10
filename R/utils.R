@@ -135,7 +135,7 @@ check_color <- function(color,
 
   res <- sapply(color, function(col)
     tryCatch(
-      is.matrix(col2rgb(col)),
+      is.matrix(grDevices::col2rgb(col)),
       error = function(e) FALSE
     )
   )
