@@ -470,7 +470,7 @@ g_lineplot <- function(label = "Line Plot",
 
   plot1 <- add_axes_lines(
     plot = plot1,
-    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label, add_new_scale = TRUE
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label
   )
 
   # Format font size

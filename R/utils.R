@@ -215,8 +215,6 @@ validate_line_args <- function(data,
 #'   The data inside of the ggplot2 object must also contain the columns with these variable names
 #' @param vline_vars_colors ('character vector') colors for the vertical lines defined by variables.
 #' @param vline_vars_labels ('character vector') labels for the legend to the vertical lines defined by variables.
-#' @param add_new_scale ('logical scalar') flag to indicate whether or not `plot` already has a `scale_linetype` added
-#'   to it. If yes, set this parameter to `TRUE`. If not, set it to `FALSE`.
 #'
 #' @examples
 #' p <- ggplot(mtcars, aes(wt, mpg)) +
@@ -243,8 +241,7 @@ add_axes_lines <- function(plot,
                            vline_arb_label = "Vertical line",
                            vline_vars = character(0),
                            vline_vars_colors = "green",
-                           vline_vars_labels = vline_vars,
-                           add_new_scale = FALSE) {
+                           vline_vars_labels = vline_vars) {
   plot_data <- ggplot_build(plot)$plot$data
   draw_key_cust <- function(data, params, size) {
     if (data$orientation == "horizontal") {
@@ -265,7 +262,10 @@ add_axes_lines <- function(plot,
     line_vars_labels = hline_vars_labels
   )
 
-  if (add_new_scale) {
+  # if statement is needed because spaghettiplot fails without it.
+  # according to maintainers of ggnewscale, it shouldn't matter whether a linetype has already been added or not.
+  # maintainers suggested that this might be a bug in ggnewscale or a bug in goshawk.
+  if (any(sapply(plot$scales$scales, function(x) any(x$aesthetics == "linetype")))) {
     plot <- plot +
       ggnewscale::new_scale("linetype")
   }
