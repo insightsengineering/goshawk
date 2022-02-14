@@ -222,7 +222,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
 
-    # Add horizontal line
+  # Add horizontal line
   plot1 + geom_axes_lines(
     plot_data,
     hline_arb = hline_arb,

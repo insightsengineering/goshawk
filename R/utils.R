@@ -127,18 +127,19 @@ check_color <- function(color,
                         len = NULL,
                         null.ok = FALSE) {
   string_check <- checkmate::check_character(
-    color, min.len = min.len, max.len = max.len, any.missing = any.missing, len = len, null.ok = null.ok
+    color,
+    min.len = min.len, max.len = max.len, any.missing = any.missing, len = len, null.ok = null.ok
   )
   if (!isTRUE(string_check)) {
     return(string_check)
   }
 
-  res <- sapply(color, function(col)
+  res <- sapply(color, function(col) {
     tryCatch(
       is.matrix(grDevices::col2rgb(col)),
       error = function(e) FALSE
     )
-  )
+  })
 
   if (any(!res)) {
     "Must be a valid color, convertible to rgb by 'col2rgb'"

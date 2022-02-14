@@ -11,7 +11,8 @@ validate_line_args(data, vars = character(0), color = "green", label = vars)
 should contain `vars` which will be used to create the plot.}
 
 \item{vars}{(`character`)\cr
-names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+names of variables to take the values from. Only first value from the variable will be
+applied.}
 
 \item{color}{(`character`)\cr
 colors for the lines defined by variables.}

@@ -33,18 +33,18 @@
 #' @keywords internal
 #'
 geom_axes_lines <- function(data,
-                           hline_arb = numeric(0),
-                           hline_arb_color = "red",
-                           hline_arb_label = "Horizontal line",
-                           hline_vars = character(0),
-                           hline_vars_colors = "green",
-                           hline_vars_labels = hline_vars,
-                           vline_arb = numeric(0),
-                           vline_arb_color = "red",
-                           vline_arb_label = "Vertical line",
-                           vline_vars = character(0),
-                           vline_vars_colors = "green",
-                           vline_vars_labels = vline_vars) {
+                            hline_arb = numeric(0),
+                            hline_arb_color = "red",
+                            hline_arb_label = "Horizontal line",
+                            hline_vars = character(0),
+                            hline_vars_colors = "green",
+                            hline_vars_labels = hline_vars,
+                            vline_arb = numeric(0),
+                            vline_arb_color = "red",
+                            vline_arb_label = "Vertical line",
+                            vline_vars = character(0),
+                            vline_vars_colors = "green",
+                            vline_vars_labels = vline_vars) {
   arb_hlines <- if (length(hline_arb) > 0) {
     geom_arb_hline(
       yintercept = hline_arb,
@@ -100,7 +100,8 @@ geom_axes_lines <- function(data,
 #' @param data (`data.frame`)\cr
 #'  should contain `vars` which will be used to create the plot.
 #' @param vars (`character`)\cr
-#'  names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+#'  names of variables to take the values from. Only first value from the variable will be
+#'  applied.
 #' @param color (`character`)\cr
 #'  colors for the lines defined by variables.
 #' @param label (`character`)\cr
@@ -131,7 +132,7 @@ validate_line_args <- function(data,
       FUN = function(x) {
         if (is.null(attributes(data[[x]])$label)) {
           x
-        }  else {
+        } else {
           attributes(data[[x]])$label
         }
       }
@@ -205,7 +206,7 @@ geom_arb_hline <- function(yintercept,
     check_color(color, len = length(yintercept))
   )
   checkmate::assert(
-    checkmate::check_character(label, len = 1),
+    checkmate::check_string(label),
     checkmate::check_character(label, len = length(yintercept))
   )
 
@@ -291,14 +292,13 @@ geom_arb_vline <- function(xintercept,
 #'   upper = rep(c(7, 8), each = 5)
 #' )
 #' ggplot(data, aes(x = x, y = y, color = color)) +
-#'    geom_point() +
-#'    goshawk:::geom_range_hline(
+#'   geom_point() +
+#'   goshawk:::geom_range_hline(
 #'     vars = c("lower", "upper"),
 #'     data = data.frame(lower = 2, upper = 7),
 #'     color = "blue",
 #'     linetype = 2
 #'   )
-#'
 geom_range_hline <- function(vars,
                              data,
                              color = "green",
@@ -334,14 +334,13 @@ geom_range_hline <- function(vars,
 #'   upper = rep(c(7, 8), each = 5)
 #' )
 #' ggplot(data, aes(x = x, y = y, color = color)) +
-#'    geom_point() +
-#'    goshawk:::geom_range_vline(
+#'   geom_point() +
+#'   goshawk:::geom_range_vline(
 #'     vars = c("lower", "upper"),
 #'     data = data.frame(lower = 2, upper = 7),
 #'     color = "blue",
 #'     linetype = 2
 #'   )
-#'
 geom_range_vline <- function(vars,
                              data,
                              color = "green",
