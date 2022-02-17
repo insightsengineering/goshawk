@@ -77,3 +77,4 @@ Depending on the function prefix:
 \description{
 Checks if the argument can be converted to valid RGB values space. See `grDevices::col2rgb`.
 }
+\keyword{internal}

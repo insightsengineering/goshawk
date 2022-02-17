@@ -91,14 +91,13 @@ data <- data.frame(
   upper = rep(c(7, 8), each = 5)
 )
 ggplot(data, aes(x = x, y = y, color = color)) +
-   geom_point() +
-   goshawk:::geom_range_hline(
+  geom_point() +
+  goshawk:::geom_range_hline(
     vars = c("lower", "upper"),
     data = data.frame(lower = 2, upper = 7),
     color = "blue",
     linetype = 2
   )
-
 
 # vertical range
 library(ggplot2)
@@ -111,13 +110,12 @@ data <- data.frame(
   upper = rep(c(7, 8), each = 5)
 )
 ggplot(data, aes(x = x, y = y, color = color)) +
-   geom_point() +
-   goshawk:::geom_range_vline(
+  geom_point() +
+  goshawk:::geom_range_vline(
     vars = c("lower", "upper"),
     data = data.frame(lower = 2, upper = 7),
     color = "blue",
     linetype = 2
   )
-
 }
 \keyword{internal}

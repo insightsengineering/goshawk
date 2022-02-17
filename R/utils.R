@@ -118,14 +118,14 @@ h_caption_loqs_label <- function(loqs_data) {
 #'  Valid color convertible to RGB scale by [grDevices::col2rgb()]
 #'
 #' @inherit checkmate::checkCharacter return
-#' @export
+#' @keywords internal
 check_color <- function(color,
-                        min.len = NULL,
-                        max.len = NULL,
-                        any.missing = TRUE,
-                        all.missing = TRUE,
+                        min.len = NULL, # nolint
+                        max.len = NULL, # nolint
+                        any.missing = TRUE, # nolint
+                        all.missing = TRUE, # nolint
                         len = NULL,
-                        null.ok = FALSE) {
+                        null.ok = FALSE) { # nolint
   string_check <- checkmate::check_character(
     color,
     min.len = min.len, max.len = max.len, any.missing = any.missing, len = len, null.ok = null.ok
@@ -149,5 +149,4 @@ check_color <- function(color,
 }
 
 #' @rdname check_color
-#' @export
 assert_color <- checkmate::makeAssertionFunction(check_color)

@@ -255,7 +255,7 @@ geom_arb_vline <- function(xintercept,
     checkmate::check_character(label, len = length(xintercept))
   )
 
-   data <- data.frame(xintercept, color, label, color_var = paste(color, label))
+  data <- data.frame(xintercept, color, label, color_var = paste(color, label))
 
   list(
     ggnewscale::new_scale_color(),
