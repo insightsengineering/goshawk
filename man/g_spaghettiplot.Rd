@@ -18,7 +18,7 @@ g_spaghettiplot(
   time_level = NULL,
   color_manual = NULL,
   color_comb = "#39ff14",
-  ylim = range(data[[value]], na.rm = TRUE),
+  ylim = NULL,
   alpha = 1,
   facet_ncol = 2,
   xtick = waiver(),
