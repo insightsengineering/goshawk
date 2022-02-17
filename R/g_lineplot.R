@@ -397,8 +397,8 @@ g_lineplot <- function(label = "Line Plot",
     ) +
       theme_bw() +
       geom_point(position = pd) +
-      scale_color_manual(values = color_manual, name = trt_label) +
-      scale_linetype_manual(values = line_type, name = trt_label)
+      scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(ncol = 3, order = 1)) +
+      scale_linetype_manual(values = line_type, name = trt_label, guide = "none")
   } else {
     mappings <- sum_data %>%
       ungroup() %>%
@@ -419,9 +419,9 @@ g_lineplot <- function(label = "Line Plot",
       aes_string(x = time, y = line, color = int, linetype = int, group = int, shape = int)
     ) +
       theme_bw() +
-      scale_color_manual(" ", values = col_mapping) +
-      scale_linetype_manual(" ", values = type_mapping) +
-      scale_shape_manual(" ", values = shape_mapping) +
+      scale_color_manual(" ", values = col_mapping, guide = guide_legend(ncol = 3, order = 1)) +
+      scale_linetype_manual(" ", values = type_mapping, guide = "none") +
+      scale_shape_manual(" ", values = shape_mapping, guide = "none") +
       theme(legend.key.size = unit(1, "cm")) +
       geom_point(position = pd, size = 3)
   }
@@ -444,8 +444,7 @@ g_lineplot <- function(label = "Line Plot",
       legend.direction = "horizontal",
       plot.title = element_text(size = plot_font_size, margin = margin(), hjust = 0.5),
       axis.title.y = element_text(margin = margin(r = 20))
-    ) +
-    guides(color = guide_legend(ncol = 3))
+    )
 
   # Apply y-axis zoom range
   if (!is.null(ylim)) {

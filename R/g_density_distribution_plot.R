@@ -194,7 +194,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
     theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
     xlab(paste(x_axis_label)) +
     ylab(paste("Density")) +
-    scale_color_manual(values = color_manual, name = trt_label)
+    scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
 
   if (rug_plot) {
     plot1 <- plot1 +

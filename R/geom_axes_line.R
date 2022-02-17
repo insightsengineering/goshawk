@@ -225,7 +225,7 @@ geom_arb_hline <- function(yintercept,
       name = legend_title,
       values = setNames(data$color, data$color_var),
       labels = data$label,
-      guide = "legend"
+      guide = guide_legend(order = 11) # high order to be put after main plot items
     )
   )
 }
@@ -271,7 +271,7 @@ geom_arb_vline <- function(xintercept,
       name = legend_title,
       values = setNames(data$color, data$color_var),
       labels = data$label,
-      guide = "legend"
+      guide = guide_legend(order = 12) # high order to be put after main plot items
     )
   )
 }

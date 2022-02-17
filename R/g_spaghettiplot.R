@@ -274,7 +274,7 @@ g_spaghettiplot <- function(data,
         color = color_comb,
         na.rm = TRUE
       ) +
-      guides(linetype = guide_legend("Group statistic"))
+      guides(linetype = guide_legend("Group statistic", order = 2))
   }
   # Format x-label
   if (xtype == "continuous") {
@@ -291,7 +291,7 @@ g_spaghettiplot <- function(data,
   # Add manual color
   if (!is.null(color_manual)) {
     plot <- plot +
-      scale_color_manual(values = color_manual, name = trt_label)
+      scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
   }
 
   # Format font size

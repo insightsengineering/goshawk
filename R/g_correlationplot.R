@@ -386,7 +386,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   # Format treatment color
   if (!is.null(color_manual)) {
     plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = trt_label)
+      scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
   }
   # Format LOQ flag symbol shape
   if (is.null(shape_manual)) {
@@ -398,7 +398,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   plot1 <- if (!loq_legend) {
     plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
   } else {
-    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ")
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = guide_legend(order = 2))
   }
   # Format x-label
   if (rotate_xlab) {
