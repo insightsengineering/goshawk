@@ -209,22 +209,21 @@ geom_arb_hline <- function(yintercept,
     checkmate::check_string(label),
     checkmate::check_character(label, len = length(yintercept))
   )
-
-  data <- data.frame(yintercept, color, label)
+  data <- data.frame(yintercept, color, label, color_var = paste(color, label))
 
   list(
     ggnewscale::new_scale_color(),
     geom_hline(
       mapping = aes(
         yintercept = yintercept,
-        color = paste(color, label), # need legend entry for each color-label combination
+        color = color_var, # need legend entry for each color-label combination
       ),
       data = data,
       ...
     ),
     scale_color_manual(
       name = legend_title,
-      values = data$color,
+      values = setNames(data$color, data$color_var),
       labels = data$label,
       guide = "legend"
     )
@@ -256,21 +255,21 @@ geom_arb_vline <- function(xintercept,
     checkmate::check_character(label, len = length(xintercept))
   )
 
-  data <- data.frame(xintercept, color, label)
+   data <- data.frame(xintercept, color, label, color_var = paste(color, label))
 
   list(
     ggnewscale::new_scale_color(),
     geom_vline(
       mapping = aes(
         xintercept = xintercept,
-        color = paste(color, label), # need legend entry for each color-label combination
+        color = color_var, # need legend entry for each color-label combination
       ),
       data = data,
       ...
     ),
     scale_color_manual(
       name = legend_title,
-      values = data$color,
+      values = setNames(data$color, data$color_var),
       labels = data$label,
       guide = "legend"
     )
