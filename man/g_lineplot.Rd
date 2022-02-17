@@ -109,7 +109,7 @@ Function to create line plot of summary statistics over time.
 \details{
 Currently, the output plot can display mean and median of input value. For mean, the
 error bar denotes
-95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75%
+95\\% confidence interval. For median, the error bar denotes median-25\% quartile to median+75\%
 quartile.
 }
 \examples{

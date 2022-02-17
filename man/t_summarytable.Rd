@@ -27,16 +27,16 @@ t_summarytable(
 \item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. AVAL.}
 
 \item{facet_var}{name of variable facetted on typically containing visit values e.g. AVISITCD.
-If NULL then ignored. It defaults to `"AVISITCD"` when not provided.}
+If NULL then ignored. It defaults to \code{"AVISITCD"} when not provided.}
 
-\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL. Defaults to `"LOQFL"`.}
+\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL. Defaults to \code{"LOQFL"}.}
 
 \item{...}{additional options}
 }
 \description{
 Output descriptive summary statistics table as a data frame. Includes biomarker, treatment,
 visit,
-n, mean, median, sd, min, max, %missing values, % LOQ values.
+n, mean, median, sd, min, max, \%missing values, \% LOQ values.
 }
 \details{
 provide additional information as needed. link to specification file

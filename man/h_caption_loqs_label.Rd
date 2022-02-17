@@ -7,7 +7,7 @@
 h_caption_loqs_label(loqs_data)
 }
 \arguments{
-\item{loqs_data}{(`data frame`)\cr loqs_data data set containing assay data with potential LOQ values}
+\item{loqs_data}{(\verb{data frame})\cr loqs_data data set containing assay data with potential LOQ values}
 }
 \description{
 Add footnote to identify LLOQ and ULOQ values identified from data

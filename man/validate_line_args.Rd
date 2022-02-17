@@ -7,24 +7,24 @@
 validate_line_args(data, vars = character(0), color = "green", label = vars)
 }
 \arguments{
-\item{data}{(`data.frame`)\cr
-should contain `vars` which will be used to create the plot.}
+\item{data}{(\code{data.frame})\cr
+should contain \code{vars} which will be used to create the plot.}
 
-\item{vars}{(`character`)\cr
+\item{vars}{(\code{character})\cr
 names of variables to take the values from. Only first value from the variable will be
 applied.}
 
-\item{color}{(`character`)\cr
+\item{color}{(\code{character})\cr
 colors for the lines defined by variables.}
 
-\item{label}{(`character`)\cr
+\item{label}{(\code{character})\cr
 labels for the legend to the lines defined by variables.}
 }
 \value{
-(`data.frame`) containing the `values`,`colors` and `labels` fields defining attributes
- for horizontal or vertical lines.
+(\code{data.frame}) containing the \code{values},\code{colors} and \code{labels} fields defining attributes
+for horizontal or vertical lines.
 }
 \description{
-helper function to be called by [geom_axes_lines()]
+helper function to be called by \code{\link[=geom_axes_lines]{geom_axes_lines()}}
 }
 \keyword{internal}

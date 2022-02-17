@@ -18,7 +18,7 @@ g_spaghettiplot(
   time_level = NULL,
   color_manual = NULL,
   color_comb = "#39ff14",
-  ylim = NULL,
+  ylim = range(data[[value]], na.rm = TRUE),
   alpha = 1,
   facet_ncol = 2,
   xtick = waiver(),
@@ -87,7 +87,7 @@ value is waiver().}
 
 \item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
-\item{hline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+\item{hline_vars}{('character vector'), names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.
 The data inside of the ggplot2 object must also contain the columns with these variable names}
 
 \item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}

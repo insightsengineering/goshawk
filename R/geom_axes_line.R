@@ -165,7 +165,7 @@ validate_line_args <- function(data,
 
 #' Straight lines for `ggplot2`
 #'
-#' Abitrary lines for `ggplot2`
+#' Arbitrary lines for `ggplot2`
 #' @name geom_straight_lines
 #' @param vars (`character`)\cr
 #'  names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.

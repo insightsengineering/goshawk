@@ -78,7 +78,7 @@ g_correlationplot(
 
 \item{visit_facet}{visit facet toggle.}
 
-\item{loq_legend}{`logical` whether to include LoQ legend.}
+\item{loq_legend}{\code{logical} whether to include LoQ legend.}
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
@@ -115,7 +115,7 @@ Use with facet = TRUE.}
 
 \item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
-\item{hline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+\item{hline_vars}{('character vector'), names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.
 The data inside of the ggplot2 object must also contain the columns with these variable names}
 
 \item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
@@ -128,7 +128,7 @@ The data inside of the ggplot2 object must also contain the columns with these v
 
 \item{vline_arb_label}{('character vector') optional, label for the legend to the arbitrary vertical lines.}
 
-\item{vline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+\item{vline_vars}{('character vector'), names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.
 The data inside of the ggplot2 object must also contain the columns with these variable names}
 
 \item{vline_vars_colors}{('character vector') colors for the vertical lines defined by variables.}

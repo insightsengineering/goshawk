@@ -9,7 +9,7 @@ of values in footnote.}
 h_identify_loq_values(loqs_data)
 }
 \arguments{
-\item{loqs_data}{(`data frame`)\cr loqs_data data set containing assay data with potential LOQ values}
+\item{loqs_data}{(\verb{data frame})\cr loqs_data data set containing assay data with potential LOQ values}
 }
 \description{
 Helper for identifying any LLOQ and ULOQ values in LBSTRESC. Outcome drives

@@ -28,8 +28,8 @@ assert_color(
 )
 }
 \arguments{
-\item{color}{(`character`)\cr
-Valid color convertible to RGB scale by [grDevices::col2rgb()]}
+\item{color}{(\code{character})\cr
+Valid color convertible to RGB scale by \code{\link[grDevices:col2rgb]{grDevices::col2rgb()}}}
 
 \item{min.len}{[\code{integer(1)}]\cr
 Minimal length of \code{x}.}
@@ -75,6 +75,6 @@ Depending on the function prefix:
  \code{\link[testthat]{expectation}}.
 }
 \description{
-Checks if the argument can be converted to valid RGB values space. See `grDevices::col2rgb`.
+Checks if the argument can be converted to valid RGB values space. See \code{grDevices::col2rgb}.
 }
 \keyword{internal}

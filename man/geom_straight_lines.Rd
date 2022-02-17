@@ -6,7 +6,7 @@
 \alias{geom_arb_vline}
 \alias{geom_range_hline}
 \alias{geom_range_vline}
-\title{Straight lines for `ggplot2`}
+\title{Straight lines for \code{ggplot2}}
 \usage{
 geom_arb_hline(
   yintercept,
@@ -43,25 +43,25 @@ geom_range_vline(
 )
 }
 \arguments{
-\item{yintercept}{(`numeric`)\cr
+\item{yintercept}{(\code{numeric})\cr
 Position of the horizontal line(s) on the y-axis}
 
-\item{label}{(`character`)\cr
+\item{label}{(\code{character})\cr
 Label to be rendered in the legend.
-Should be a single string or vector of length equal to length of `xintercept`.}
+Should be a single string or vector of length equal to length of \code{xintercept}.}
 
-\item{color}{(`character`)\cr
-Valid color convertible to RGB scale by [grDevices::col2rgb()].
-Should be a single string or vector of length equal to length of `xintercept`.}
+\item{color}{(\code{character})\cr
+Valid color convertible to RGB scale by \code{\link[grDevices:col2rgb]{grDevices::col2rgb()}}.
+Should be a single string or vector of length equal to length of \code{xintercept}.}
 
-\item{xintercept}{(`numeric`)\cr
+\item{xintercept}{(\code{numeric})\cr
 Position of the vertical line(s) on the x-axis}
 
-\item{vars}{(`character`)\cr
-names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.}
+\item{vars}{(\code{character})\cr
+names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.}
 }
 \description{
-Abitrary lines for `ggplot2`
+Arbitrary lines for \code{ggplot2}
 }
 \examples{
 # horizontal arbitrary lines

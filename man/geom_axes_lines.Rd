@@ -21,7 +21,7 @@ geom_axes_lines(
 )
 }
 \arguments{
-\item{data}{('data.frame') data where `hline_vars` and `vline_var` columns are taken from.}
+\item{data}{('data.frame') data where \code{hline_vars} and \code{vline_var} columns are taken from.}
 
 \item{hline_arb}{('numeric vector') value identifying intercept for arbitrary horizontal lines.}
 
@@ -29,8 +29,8 @@ geom_axes_lines(
 
 \item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
-\item{hline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-Needs `data` to be specified.}
+\item{hline_vars}{('character vector'), names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.
+Needs \code{data} to be specified.}
 
 \item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 
@@ -42,8 +42,8 @@ Needs `data` to be specified.}
 
 \item{vline_arb_label}{('character vector') optional, label for the legend to the arbitrary vertical lines.}
 
-\item{vline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-Needs `data` to be specified.}
+\item{vline_vars}{('character vector'), names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.
+Needs \code{data} to be specified.}
 
 \item{vline_vars_colors}{('character vector') colors for the vertical lines defined by variables.}
 
