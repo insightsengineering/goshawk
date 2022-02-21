@@ -4,7 +4,7 @@ Longitudinal biomarker/lab visualizations functions. These can be used stand alo
 [teal.goshawk](https://github.com/insightsengineering/teal.goshawk) package which provides `teal` modules to be used
 inside `teal` applications.
 
-# Functions
+## Functions
 - `g_boxplot`
 - `g_correlationplot`
 - `g_density_distribution_plot`
@@ -13,7 +13,7 @@ inside `teal` applications.
 - `g_spaghettiplot`
 - `t_summarytable`
 
-# Installation
+## Installation
 
 This repository requires a personal access token to install see here [creating and using PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). Once this is set up, to install the latest released version of the package run:
 
@@ -23,4 +23,4 @@ install.packages("devtools")
 devtools::install_github("insightsengineering/goshawk@*release")
 ```
 
-Currently, it is necessary to manually install all of the packages dependencies found on Github (for example `scda` to run the examples) before using this package. 
+Currently, it is necessary to manually install all of the packages dependencies found on Github (for example `scda` to run the examples) before using this package.
