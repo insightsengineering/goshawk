@@ -292,7 +292,11 @@ g_spaghettiplot <- function(data,
   if (!is.null(color_manual)) {
     plot <- plot +
       scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
+  } else {
+    plot1 +
+      scale_color_discrete(guide = guide_legend(order = 1))
   }
+
 
   # Format font size
   if (!is.null(font_size)) {

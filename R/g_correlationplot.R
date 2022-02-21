@@ -384,10 +384,14 @@ g_correlationplot <- function(label = "Correlation Plot",
     )
   }
   # Format treatment color
-  if (!is.null(color_manual)) {
-    plot1 <- plot1 +
+  plot1 <- if (!is.null(color_manual)) {
+    plot1 +
       scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
+  } else {
+    plot1 +
+      scale_color_discrete(guide = guide_legend(order = 1))
   }
+
   # Format LOQ flag symbol shape
   if (is.null(shape_manual)) {
     shape_names <- unique(data[!is.na(data[[loq_flag_var]]), ][[loq_flag_var]])

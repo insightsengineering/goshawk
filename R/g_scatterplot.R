@@ -267,7 +267,11 @@ g_scatterplot <- function(label = "Scatter Plot",
   if (!is.null(color_manual)) {
     plot1 <- plot1 +
       scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
+  } else {
+    plot1 +
+      scale_color_discrete(guide = guide_legend(order = 1))
   }
+
   # Format LOQ flag symbol shape
   if (!is.null(shape_manual)) {
     plot1 <- plot1 +

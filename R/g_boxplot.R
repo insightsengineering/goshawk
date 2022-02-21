@@ -229,12 +229,13 @@ g_boxplot <- function(data,
     ggtitle(ggtitle_label) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5))
   # Colors supplied?  Use color_manual, otherwise default ggplot coloring.
-  if (!is.null(color_manual)) {
-    cols <- color_manual
-    plot1 <- plot1 +
-      scale_color_manual(values = cols, guide = guide_legend(order = 1))
+  plot1 <- if (!is.null(color_manual)) {
+    plot1 +
+      scale_color_manual(values = color_manual, guide = guide_legend(order = 1))
+  } else {
+    plot1 +
+      scale_color_discrete(guide = guide_legend(order = 1))
   }
-
 
   # Format LOQ flag symbol shape
   if (is.null(shape_manual)) {
@@ -255,7 +256,6 @@ g_boxplot <- function(data,
       aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
       alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE
     )
-
   # Any limits for the Y axis?
   if (!is.null(ymin_scale) & !is.null(ymax_scale)) {
     plot1 <- plot1 + coord_cartesian(ylim = c(ymin_scale, ymax_scale))
