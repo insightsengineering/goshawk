@@ -85,11 +85,14 @@ geom_axes_lines <- function(data,
     )
   }
 
-  list(
-    arb_hlines,
-    range_hlines,
-    arb_vlines,
-    range_vlines
+  Filter(
+    Negate(is.na),
+    list(
+      arb_hlines,
+      range_hlines,
+      arb_vlines,
+      range_vlines
+    )
   )
 }
 

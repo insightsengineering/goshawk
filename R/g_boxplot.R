@@ -232,8 +232,7 @@ g_boxplot <- function(data,
   if (!is.null(color_manual)) {
     cols <- color_manual
     plot1 <- plot1 +
-      scale_color_manual(values = cols, guide = guide_legend(order = 1)) +
-      scale_fill_manual(values = cols, guide = guide_legend(order = 2))
+      scale_color_manual(values = cols, guide = guide_legend(order = 1))
   }
 
 
@@ -247,7 +246,7 @@ g_boxplot <- function(data,
   plot1 <- if (!loq_legend) {
     plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
   } else {
-    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = guide_legend(order = 3))
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = guide_legend(order = 2))
   }
 
   plot1 <- plot1 +
