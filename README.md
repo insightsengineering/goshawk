@@ -19,8 +19,8 @@ This repository requires a personal access token to install see here [creating a
 
 ```r
 Sys.setenv(GITHUB_PAT = "your_access_token_here")
-install.packages("devtools")
+if (!require("devtools")) install.packages("devtools")
 devtools::install_github("insightsengineering/goshawk@*release")
 ```
 
-Currently, it is necessary to manually install all of the packages dependencies found on Github (for example `scda` to run the examples) before using this package.
+In order to run the examples you will need to install the [scda](https://github.com/insightsengineering/scda) package.
