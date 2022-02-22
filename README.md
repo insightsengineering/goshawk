@@ -23,4 +23,4 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("insightsengineering/goshawk@*release")
 ```
 
-In order to run the examples you will need to install the [scda](https://github.com/insightsengineering/scda) package.
+In order to run the examples you will also need to install the [scda](https://github.com/insightsengineering/scda) package.
