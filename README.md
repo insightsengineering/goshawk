@@ -1,46 +1,28 @@
 # goshawk R package
 
-Longitudinal biomarker/lab visualizations functions. These can be used stand alone or with the teal.goshawk package.
+Longitudinal biomarker/lab visualizations functions. These can be used stand alone but are also called by the
+[teal.goshawk](https://github.com/insightsengineering/teal.goshawk) package which provides `teal` modules to be used
+inside `teal` applications.
 
-# Functions
-- `g_boxplot`
-- `g_correlationplot`
-- `g_density_distribution_plot`
-- `g_lineplot`
-- `g_scatterplot`
-- `g_spaghettiplot`
-- `t_summarytable`
+## Functions
+<!-- markdownlint-disable MD007 MD030 -->
+-   `g_boxplot`
+-   `g_correlationplot`
+-   `g_density_distribution_plot`
+-   `g_lineplot`
+-   `g_scatterplot`
+-   `g_spaghettiplot`
+-   `t_summarytable`
+<!-- markdownlint-enable MD007 MD030 -->
 
-# Installation
+## Installation
 
-## Clone and install manually
-1. Clone the repository
+This repository requires a personal access token to install see here [creating and using PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). Once this is set up, to install the latest released version of the package run:
 
-   The repository can be downloaded directly from the `github.com` site as an archive (see [Github tutorial on cloning to learn more](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository)). Alternatively, Git command line tools offer the same functionality, without the need for manual downloading and unpacking the archive, but require to authenticate to Github. You can authenticate using a key pair or a Personal Access Token (PAT). Please refer to excellent Github tutorials on [connecting to Github using SSH](https://docs.github.com/en/github/authenticating-to-github) or [creating and using PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
-   1. Using PAT. Input in the Git Bash console, PowerShell or any Linux shell:
+```r
+Sys.setenv(GITHUB_PAT = "your_access_token_here")
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("insightsengineering/goshawk@*release")
+```
 
-      ```
-      $ git clone https://github.com/insightsengineering/goshawk.git
-      Username: your_username_goes_here
-      Password: your_token_goes_here
-      ```
-    1. Using SSH. If set up properly, the repository is ready to be cloned executing:
-
-       ```
-       $ git clone https://github.com/insightsengineering/goshawk.git
-       ```
-   This creates a subdirectory `goshawk` containing the cloned repository.
-
-2. Build and install
-
-   The native R tools provide a quick way to install a package. Run in PowerShell or any Linux shell:
-   ```
-   $ R CMD build goshawk
-   ```
-   This command builds the package and creates an archive. The name of the archive is output by the command at then of building. Then input in the shell:
-   ```
-   $ Rscript -e 'install.packages("name_of_the_archive")
-   ```
-   Here is an example of a real command (with name_of_the_archive substituted by the output of the build command):
-   ```
-   $ Rscript -e 'install.packages("goshawk_0.9.5.9000.tar.gz")'
+In order to run many of the examples you will also need to install the [`scda`](https://github.com/insightsengineering/scda) package.
