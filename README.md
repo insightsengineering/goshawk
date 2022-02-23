@@ -5,13 +5,15 @@ Longitudinal biomarker/lab visualizations functions. These can be used stand alo
 inside `teal` applications.
 
 ## Functions
-- `g_boxplot`
-- `g_correlationplot`
-- `g_density_distribution_plot`
-- `g_lineplot`
-- `g_scatterplot`
-- `g_spaghettiplot`
-- `t_summarytable`
+<!-- markdownlint-disable MD007 MD030 -->
+-   `g_boxplot`
+-   `g_correlationplot`
+-   `g_density_distribution_plot`
+-   `g_lineplot`
+-   `g_scatterplot`
+-   `g_spaghettiplot`
+-   `t_summarytable`
+<!-- markdownlint-enable MD007 MD030 -->
 
 ## Installation
 
