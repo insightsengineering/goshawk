@@ -3,6 +3,8 @@
 ### Enhancements
 * Renamed `visit_var` as `facet_var` in `t_summarytable` and allowed it to be `NULL` when there is no facetting.
 * Extended the functionality of the parameters `hline_arb` (and `vline_arb` for `g_correlationplot`) to a vector of arbitrary length, allowing users to add any number of arbitrary horizontal or vertical lines to `g_spaghettiplot`, `g_boxplot`, `g_density_distribution_plot` and `g_correlationplot`.
+* Improve straight lines to have a standard `ggplot2` legend format. Each line type (horizontal/vertical, arbitrary/range) has a separate legend entry.
+* Fixed plots legends to keep specific items order.
 
 ### Miscellaneous
 * Added R version requirement `R >= 3.6`.
