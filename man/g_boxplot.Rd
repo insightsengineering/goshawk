@@ -49,7 +49,7 @@ Y-axis e.g. AVAL.}
 
 \item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
 
-\item{loq_legend}{`logical` whether to include LoQ legend.}
+\item{loq_legend}{\code{logical} whether to include LoQ legend.}
 
 \item{unit}{biomarker unit label e.g. (U/L)}
 
@@ -82,7 +82,7 @@ required.}
 
 \item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
-\item{hline_vars}{('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+\item{hline_vars}{('character vector'), names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.
 The data inside of the ggplot2 object must also contain the columns with these variable names}
 
 \item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}

@@ -229,13 +229,13 @@ g_boxplot <- function(data,
     ggtitle(ggtitle_label) +
     theme(plot.title = element_text(size = font_size, hjust = 0.5))
   # Colors supplied?  Use color_manual, otherwise default ggplot coloring.
-  if (!is.null(color_manual)) {
-    cols <- color_manual
-    plot1 <- plot1 +
-      scale_color_manual(values = cols) +
-      scale_fill_manual(values = cols)
+  plot1 <- if (!is.null(color_manual)) {
+    plot1 +
+      scale_color_manual(values = color_manual, guide = guide_legend(order = 1))
+  } else {
+    plot1 +
+      scale_color_discrete(guide = guide_legend(order = 1))
   }
-
 
   # Format LOQ flag symbol shape
   if (is.null(shape_manual)) {
@@ -247,7 +247,7 @@ g_boxplot <- function(data,
   plot1 <- if (!loq_legend) {
     plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
   } else {
-    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ")
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = guide_legend(order = 2))
   }
 
   plot1 <- plot1 +
@@ -256,7 +256,6 @@ g_boxplot <- function(data,
       aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
       alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE
     )
-
   # Any limits for the Y axis?
   if (!is.null(ymin_scale) & !is.null(ymax_scale)) {
     plot1 <- plot1 + coord_cartesian(ylim = c(ymin_scale, ymax_scale))
@@ -276,12 +275,8 @@ g_boxplot <- function(data,
     }
   }
 
-  # Add horizontal line for range based on option
-  plot1 <- add_axes_lines(
-    plot = plot1,
-    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
-    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
-  )
+
+
 
   # Format font size
   if (is_finite(font_size)) {
@@ -302,5 +297,10 @@ g_boxplot <- function(data,
     plot1 <- plot1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
-  return(plot1)
+
+  # Add horizontal line for range based on option
+  plot1 + geom_axes_lines(data,
+    hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
+    hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
+  )
 }

@@ -384,10 +384,14 @@ g_correlationplot <- function(label = "Correlation Plot",
     )
   }
   # Format treatment color
-  if (!is.null(color_manual)) {
-    plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = trt_label)
+  plot1 <- if (!is.null(color_manual)) {
+    plot1 +
+      scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
+  } else {
+    plot1 +
+      scale_color_discrete(guide = guide_legend(order = 1))
   }
+
   # Format LOQ flag symbol shape
   if (is.null(shape_manual)) {
     shape_names <- unique(data[!is.na(data[[loq_flag_var]]), ][[loq_flag_var]])
@@ -398,7 +402,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   plot1 <- if (!loq_legend) {
     plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
   } else {
-    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ")
+    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = guide_legend(order = 2))
   }
   # Format x-label
   if (rotate_xlab) {
@@ -406,13 +410,11 @@ g_correlationplot <- function(label = "Correlation Plot",
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
 
-  plot1 <- add_axes_lines(
-    plot = plot1,
+  plot1 + geom_axes_lines(
+    plot_data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels,
     vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label,
-    vline_vars = vline_vars, vline_vars_colors = vline_vars_colors, vline_vars_labels = vline_vars_labels,
+    vline_vars = vline_vars, vline_vars_colors = vline_vars_colors, vline_vars_labels = vline_vars_labels
   )
-
-  plot1
 }

@@ -22,7 +22,9 @@ g_lineplot(
   color_manual = NULL,
   line_type = NULL,
   median = FALSE,
-  hline = NULL,
+  hline_arb = numeric(0),
+  hline_arb_color = "red",
+  hline_arb_label = "Horizontal line",
   xtick = waiver(),
   xlabel = xtick,
   rotate_xlab = FALSE,
@@ -70,7 +72,11 @@ x-axis variable is character or factor.}
 
 \item{median}{boolean whether to display median results.}
 
-\item{hline}{numeric value representing intercept of horizontal line.}
+\item{hline_arb}{('numeric vector') value identifying intercept for arbitrary horizontal lines.}
+
+\item{hline_arb_color}{('character vector') optional, color for the arbitrary horizontal lines.}
+
+\item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
 \item{xtick}{a vector to define the tick values of time in x-axis.
 Default value is waiver().}
@@ -103,11 +109,10 @@ Function to create line plot of summary statistics over time.
 \details{
 Currently, the output plot can display mean and median of input value. For mean, the
 error bar denotes
-95\% confidence interval. For median, the error bar denotes median-25% quartile to median+75%
+95\\% confidence interval. For median, the error bar denotes median-25\% quartile to median+75\%
 quartile.
 }
 \examples{
-
 
 # Example using ADaM structure analysis dataset.
 
@@ -172,7 +177,9 @@ g_lineplot(
   color_manual = color_manual,
   line_type = type_manual,
   median = FALSE,
-  hline = 50,
+  hline_arb = c(.9, 1.1, 1.2, 1.5),
+  hline_arb_color = c("green", "red", "blue", "pink"),
+  hline_arb_label = c("A", "B", "C", "D"),
   xtick = c(0, 1, 5),
   xlabel = c("Baseline", "Week 1", "Week 5"),
   rotate_xlab = FALSE,
@@ -191,7 +198,9 @@ g_lineplot(
   color_manual = NULL,
   line_type = type_manual,
   median = TRUE,
-  hline = 50,
+  hline_arb = c(.9, 1.1, 1.2, 1.5),
+  hline_arb_color = c("green", "red", "blue", "pink"),
+  hline_arb_label = c("A", "B", "C", "D"),
   xtick = c("BL", "W 1", "W 5"),
   xlabel = c("Baseline", "Week 1", "Week 5"),
   rotate_xlab = FALSE,
@@ -210,7 +219,9 @@ g_lineplot(
   color_manual = color_manual,
   line_type = type_manual,
   median = FALSE,
-  hline = 50,
+  hline_arb = c(.9, 1.1, 1.2, 1.5),
+  hline_arb_color = c("green", "red", "blue", "pink"),
+  hline_arb_label = c("A", "B", "C", "D"),
   xtick = c("BL", "W 1", "W 5"),
   xlabel = c("Baseline", "Week 1", "Week 5"),
   rotate_xlab = FALSE,
@@ -231,7 +242,9 @@ g_lineplot(
   color_manual = color_manual,
   line_type = type_manual,
   median = TRUE,
-  hline = 50,
+  hline_arb = c(.9, 1.1, 1.2, 1.5),
+  hline_arb_color = c("green", "red", "blue", "pink"),
+  hline_arb_label = c("A", "B", "C", "D"),
   xtick = c(0, 1, 5),
   xlabel = c("Baseline", "Week 1", "Week 5"),
   rotate_xlab = FALSE,
@@ -250,7 +263,9 @@ g_lineplot(
   color_manual = color_manual,
   line_type = type_manual,
   median = FALSE,
-  hline = 50,
+  hline_arb = c(.9, 1.1, 1.2, 1.5),
+  hline_arb_color = c("green", "red", "blue", "pink"),
+  hline_arb_label = c("A", "B", "C", "D"),
   xtick = c(0, 1, 5),
   xlabel = c("Baseline", "Week 1", "Week 5"),
   rotate_xlab = FALSE,
@@ -268,7 +283,9 @@ g_lineplot(
   time = "AVISITCDN",
   color_manual = NULL,
   median = FALSE,
-  hline = 50,
+  hline_arb = c(.9, 1.1, 1.2, 1.5),
+  hline_arb_color = c("green", "red", "blue", "pink"),
+  hline_arb_label = c("A", "B", "C", "D"),
   xtick = c(0, 1, 5),
   xlabel = c("Baseline", "Week 1", "Week 5"),
   rotate_xlab = FALSE,
