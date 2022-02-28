@@ -15,10 +15,8 @@ g_scatterplot(
   visit = "AVISITCD",
   loq_flag_var = "LOQFL",
   unit = "AVALU",
-  xmin = NA,
-  xmax = NA,
-  ymin = NA,
-  ymax = NA,
+  xlim = range(data[[xaxis_var]], na.rm = TRUE, finite = TRUE),
+  ylim = range(data[[yaxis_var]], na.rm = TRUE, finite = TRUE),
   color_manual = NULL,
   shape_manual = NULL,
   facet_ncol = 2,
@@ -54,13 +52,11 @@ g_scatterplot(
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
-\item{xmin}{x-axis lower zoom limit.}
+\item{xlim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
+if the default limits are not suitable.}
 
-\item{xmax}{x-axis upper zoom limit.}
-
-\item{ymin}{y-axis lower zoom limit.}
-
-\item{ymax}{y-axis upper zoom limit.}
+\item{ylim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+if the default limits are not suitable.}
 
 \item{color_manual}{vector of colors applied to treatment values.}
 
@@ -154,10 +150,6 @@ g_scatterplot(
   visit = "AVISITCD",
   loq_flag_var = "LOQFL",
   unit = "AVALU",
-  xmin = 0,
-  xmax = 200,
-  ymin = 0,
-  ymax = 200,
   color_manual = color_manual,
   shape_manual = shape_manual,
   facet_ncol = 2,

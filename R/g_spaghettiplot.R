@@ -17,7 +17,8 @@
 #' x-axis variable is character or factor.
 #' @param color_manual vector of colors.
 #' @param color_comb name or hex value for combined treatment color.
-#' @param ylim numeric vector to define y-axis range.
+#' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+#'   if the default limits are not suitable.
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
 #' @param xtick a vector to define the tick values of time in x-axis.
@@ -180,7 +181,7 @@ g_spaghettiplot <- function(data,
                             time_level = NULL,
                             color_manual = NULL,
                             color_comb = "#39ff14",
-                            ylim = NULL,
+                            ylim = range(data[[value_var]], na.rm = TRUE, finite = TRUE),
                             alpha = 1.0,
                             facet_ncol = 2,
                             xtick = waiver(),
@@ -246,10 +247,10 @@ g_spaghettiplot <- function(data,
     xlab(gxlab) +
     ylab(gylab) +
     theme(plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5))
+
   # Apply y-axis zoom range
-  if (!is.null(ylim)) {
-    plot <- plot + coord_cartesian(ylim = ylim)
-  }
+  plot <- plot + coord_cartesian(ylim = ylim)
+
   # add group statistics
   # can't use stat_summary() because of presenting values for groups with all missings
   if (group_stats != "NONE") {

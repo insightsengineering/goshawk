@@ -13,10 +13,10 @@
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
 #' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
-#' @param xmin x-axis lower zoom limit.
-#' @param xmax x-axis upper zoom limit.
-#' @param ymin y-axis lower zoom limit.
-#' @param ymax y-axis upper zoom limit.
+#' @param xlim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
+#'   if the default limits are not suitable.
+#' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+#'   if the default limits are not suitable.
 #' @param color_manual vector of colors applied to treatment values.
 #' @param shape_manual vector of symbols applied to LOQ values.
 #' @param facet_ncol number of facets per row.
@@ -102,10 +102,6 @@
 #'   visit = "AVISITCD",
 #'   loq_flag_var = "LOQFL",
 #'   unit = "AVALU",
-#'   xmin = 0,
-#'   xmax = 200,
-#'   ymin = 0,
-#'   ymax = 200,
 #'   color_manual = color_manual,
 #'   shape_manual = shape_manual,
 #'   facet_ncol = 2,
@@ -129,10 +125,8 @@ g_scatterplot <- function(label = "Scatter Plot",
                           visit = "AVISITCD",
                           loq_flag_var = "LOQFL",
                           unit = "AVALU",
-                          xmin = NA,
-                          xmax = NA,
-                          ymin = NA,
-                          ymax = NA,
+                          xlim = range(data[[xaxis_var]], na.rm = TRUE, finite = TRUE),
+                          ylim = range(data[[yaxis_var]], na.rm = TRUE, finite = TRUE),
                           color_manual = NULL,
                           shape_manual = NULL,
                           facet_ncol = 2,
@@ -145,6 +139,10 @@ g_scatterplot <- function(label = "Scatter Plot",
                           font_size = 12,
                           dot_size = NULL,
                           reg_text_size = 3) {
+
+  checkmate::assert_numeric(xlim, len = 2)
+  checkmate::assert_numeric(ylim, len = 2)
+
   # create scatter plot over time pairwise per treatment arm
   plot_data <- data %>%
     filter(!!sym(param_var) == param)
@@ -171,7 +169,7 @@ g_scatterplot <- function(label = "Scatter Plot",
   # create plot foundation
   plot1 <- ggplot2::ggplot(data = plot_data, aes_string(x = xaxis_var, y = yaxis_var, color = trt_group)) +
     geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
-    coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
+    coord_cartesian(xlim = xlim, ylim = ylim) +
     facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol) +
     theme_bw() +
     ggtitle(ggtitle_label) +

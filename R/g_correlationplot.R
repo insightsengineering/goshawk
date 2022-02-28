@@ -10,7 +10,7 @@
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
 #' @param xvar x-axis analysis variable from transposed data set.
 #' @param yaxis_param y-axis biomarker to visualize e.g. IGG.
-#' @param yaxis_var name of variable containing biomarker results displayed on Y-axise.g. AVAL.
+#' @param yaxis_var name of variable containing biomarker results displayed on Y-axis.g. AVAL.
 #' @param yvar y-axis analysis variable from transposed data set.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param visit name of variable containing nominal visits e.g. AVISITCD.
@@ -18,10 +18,10 @@
 #' @param visit_facet visit facet toggle.
 #' @param loq_legend `logical` whether to include LoQ legend.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
-#' @param xmin x-axis lower zoom limit.
-#' @param xmax x-axis upper zoom limit.
-#' @param ymin y-axis lower zoom limit.
-#' @param ymax y-axis upper zoom limit.
+#' @param xlim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
+#'   if the default limits are not suitable.
+#' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+#'   if the default limits are not suitable.
 #' @param title_text plot title.
 #' @param xaxis_lab x-axis label.
 #' @param yaxis_lab y-axis label.
@@ -182,10 +182,6 @@
 #'   visit_facet = TRUE,
 #'   loq_legend = TRUE,
 #'   unit = "AVALU",
-#'   xmin = 20,
-#'   xmax = 80,
-#'   ymin = 20,
-#'   ymax = 80,
 #'   title_text = "Correlation of ALT to CRP",
 #'   xaxis_lab = "CRP",
 #'   yaxis_lab = "ALT",
@@ -195,10 +191,10 @@
 #'   facet = FALSE,
 #'   facet_var = "ARM",
 #'   reg_line = FALSE,
-#'   hline_arb = c(60, 70),
-#'   hline_arb_color = "gray",
+#'   hline_arb = c(15, 25),
+#'   hline_arb_color = c("gray", "green"),
 #'   hline_arb_label = "Hori_line_label",
-#'   vline_arb = c(45, 50),
+#'   vline_arb = c(.5, 1),
 #'   vline_arb_color = c("red", "black"),
 #'   vline_arb_label = c("Vertical Line A", "Vertical Line B"),
 #'   hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
@@ -217,20 +213,18 @@ g_correlationplot <- function(label = "Correlation Plot",
                               param_var = "PARAMCD",
                               xaxis_param = "CRP",
                               xaxis_var = "BASE",
-                              xvar = xvar,
+                              xvar,
                               yaxis_param = "IGG",
                               yaxis_var = "AVAL",
-                              yvar = yvar,
+                              yvar,
                               trt_group = "ARM",
                               visit = "AVISITCD",
                               loq_flag_var = "LOQFL_COMB",
                               visit_facet = TRUE,
                               loq_legend = TRUE,
                               unit = "AVALU",
-                              xmin = NA,
-                              xmax = NA,
-                              ymin = NA,
-                              ymax = NA,
+                              xlim = range(data[[xvar]], na.rm = TRUE, finite = TRUE),
+                              ylim = range(data[[yvar]], na.rm = TRUE, finite = TRUE),
                               title_text = title_text,
                               xaxis_lab = xaxis_lab,
                               yaxis_lab = yaxis_lab,
@@ -258,6 +252,8 @@ g_correlationplot <- function(label = "Correlation Plot",
                               reg_text_size = 3) {
   checkmate::assert_flag(loq_legend)
   checkmate::assert_number(dot_size, lower = 1)
+  checkmate::assert_numeric(xlim, len = 2)
+  checkmate::assert_numeric(ylim, len = 2)
 
   # create correlation plot over time pairwise per treatment arm
   plot_data <- data
@@ -294,7 +290,7 @@ g_correlationplot <- function(label = "Correlation Plot",
       color = trt_group
     )
   ) +
-    coord_cartesian(xlim = c(xmin, xmax), ylim = c(ymin, ymax)) +
+    coord_cartesian(xlim = xlim, ylim = ylim) +
     theme_bw() +
     labs(caption = caption_loqs_label_x_y) +
     ggtitle(title_text) +

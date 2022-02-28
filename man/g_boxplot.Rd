@@ -17,8 +17,7 @@ g_boxplot(
   color_manual = NULL,
   shape_manual = NULL,
   box = TRUE,
-  ymax_scale = NULL,
-  ymin_scale = NULL,
+  ylim = range(data[[yaxis_var]], na.rm = TRUE, finite = TRUE),
   dot_size = 2,
   alpha = 1,
   facet_ncol = NULL,
@@ -59,9 +58,8 @@ Y-axis e.g. AVAL.}
 
 \item{box}{add boxes to the plot (boolean)}
 
-\item{ymax_scale}{maximum value for the Y axis}
-
-\item{ymin_scale}{minimum value for the Y axis}
+\item{ylim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+if the default limits are not suitable.}
 
 \item{dot_size}{plot dot size.}
 
@@ -171,7 +169,7 @@ g_boxplot(ADLB,
   xaxis_var = "STUDYID",
   alpha = 0.5,
   rotate_xlab = TRUE,
-  hline_arb = c(30, 40),
+  hline_arb = c(.9, 1.2),
   hline_arb_color = "blue",
   hline_arb_label = "Hori_line_label",
   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),

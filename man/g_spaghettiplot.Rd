@@ -18,7 +18,7 @@ g_spaghettiplot(
   time_level = NULL,
   color_manual = NULL,
   color_comb = "#39ff14",
-  ylim = NULL,
+  ylim = range(data[[value_var]], na.rm = TRUE, finite = TRUE),
   alpha = 1,
   facet_ncol = 2,
   xtick = waiver(),
@@ -63,7 +63,8 @@ x-axis variable is character or factor.}
 
 \item{color_comb}{name or hex value for combined treatment color.}
 
-\item{ylim}{numeric vector to define y-axis range.}
+\item{ylim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+if the default limits are not suitable.}
 
 \item{alpha}{subject line transparency (0 = transparent, 1 = opaque)}
 

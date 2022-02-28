@@ -16,7 +16,8 @@
 #' x-axis variable is character or factor.
 #' @param color_manual vector of colors.
 #' @param line_type vector of line types.
-#' @param ylim numeric vector to define y-axis range.
+#' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+#'   if the default limits are not suitable.
 #' @param median boolean whether to display median results.
 #' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
 #' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
@@ -239,7 +240,7 @@ g_lineplot <- function(label = "Line Plot",
                        biomarker,
                        value_var = "AVAL",
                        unit_var = "AVALU",
-                       ylim = NULL,
+                       ylim = c(NA, NA),
                        trt_group,
                        trt_group_level = NULL,
                        shape = NULL,
@@ -261,6 +262,8 @@ g_lineplot <- function(label = "Line Plot",
                        count_threshold = 0,
                        table_font_size = 12,
                        display_center_tbl = TRUE) {
+
+  checkmate::assert_numeric(ylim, len = 2)
 
   ## Pre-process data
   table_font_size <- convertX(unit(table_font_size, "points"), "mm", valueOnly = TRUE)
@@ -447,10 +450,8 @@ g_lineplot <- function(label = "Line Plot",
     )
 
   # Apply y-axis zoom range
-  if (!is.null(ylim)) {
-    plot1 <- plot1 +
-      coord_cartesian(ylim = ylim)
-  }
+  plot1 <- plot1 +
+    coord_cartesian(ylim = ylim)
 
   # Format x-label
   if (xtype == "continuous") {
