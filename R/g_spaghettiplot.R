@@ -196,6 +196,8 @@ g_spaghettiplot <- function(data,
                             hline_vars_colors = "green",
                             hline_vars_labels = hline_vars) {
 
+  checkmate::assert_numeric(ylim, len = 2)
+
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
   data[[trt_group]] <- if (!is.null(trt_group_level)) {
