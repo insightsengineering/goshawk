@@ -18,7 +18,7 @@ g_spaghettiplot(
   time_level = NULL,
   color_manual = NULL,
   color_comb = "#39ff14",
-  ylim = range(data[[value_var]], na.rm = TRUE, finite = TRUE),
+  ylim = c(NA, NA),
   alpha = 1,
   facet_ncol = 2,
   xtick = waiver(),
@@ -147,14 +147,14 @@ ADLB <- ADLB \%>\%
   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) \%>\%
   mutate(ARM = factor(ARM) \%>\%
     reorder(TRTORD)) \%>\%
-  mutate(ANRLO = 30, ANRHI = 75) \%>\%
+  mutate(ANRLO = .5, ANRHI = 1) \%>\%
   rowwise() \%>\%
   group_by(PARAMCD) \%>\%
   mutate(LBSTRESC = ifelse(USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
-    paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC
+    paste("<", round(runif(1, min = .5, max = .7))), LBSTRESC
   )) \%>\%
   mutate(LBSTRESC = ifelse(USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
-    paste(">", round(runif(1, min = 70, max = 75))), LBSTRESC
+    paste(">", round(runif(1, min = .9, max = 1.2))), LBSTRESC
   )) \%>\%
   ungroup()
 attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
@@ -199,7 +199,7 @@ g_spaghettiplot(
   xlabel = c("Baseline", "Week 1", "Week 4"),
   rotate_xlab = FALSE,
   group_stats = "median",
-  hline_arb = 55,
+  hline_arb = 1,
   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
   hline_vars_colors = c("pink", "brown", "purple", "gray")
 )
@@ -219,7 +219,7 @@ g_spaghettiplot(
   xlabel = c("Baseline", "Week 1", "Week 4"),
   rotate_xlab = FALSE,
   group_stats = "median",
-  hline_arb = c(40, 50, 60),
+  hline_arb = c(.5, .7, 1),
   hline_arb_color = c("blue", "red", "green"),
   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
   hline_vars = c("ANRHI", "ANRLO")

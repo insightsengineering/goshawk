@@ -12,6 +12,8 @@
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
 #' @param xlim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
 #'   if the default limits are not suitable.
+#' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+#'   if the default limits are not suitable.
 #' @param color_manual vector of colors applied to treatment values.
 #' @param color_comb name or hex value for combined treatment color.
 #' @param comb_line display combined treatment line toggle.
@@ -107,6 +109,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         trt_group = "ARM",
                                         unit = "AVALU",
                                         xlim = c(NA, NA),
+                                        ylim = c(NA, NA),
                                         color_manual = NULL,
                                         color_comb = "#39ff14",
                                         comb_line = TRUE,
@@ -120,6 +123,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         line_size = 2,
                                         rug_plot = FALSE) {
   checkmate::assert_numeric(xlim, len = 2)
+  checkmate::assert_numeric(ylim, len = 2)
 
   plot_data <- data %>%
     filter(!!sym(param_var) == param)
@@ -184,7 +188,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
       geom = "line",
       position = "identity"
     ) +
-    coord_cartesian(xlim = xlim) +
+    coord_cartesian(xlim = xlim, ylim = ylim) +
     facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol) +
     labs(caption = caption_loqs_label) +
     theme_bw() +

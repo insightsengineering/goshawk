@@ -17,7 +17,7 @@ g_boxplot(
   color_manual = NULL,
   shape_manual = NULL,
   box = TRUE,
-  ylim = range(data[[yaxis_var]], na.rm = TRUE, finite = TRUE),
+  ylim = c(NA, NA),
   dot_size = 2,
   alpha = 1,
   facet_ncol = NULL,
@@ -136,16 +136,16 @@ ADLB <- ADLB \%>\%
     grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
     TRUE ~ NA_real_
   )) \%>\%
-  mutate(ANRLO = 50, ANRHI = 75) \%>\%
+  mutate(ANRLO = .5, ANRHI = 1) \%>\%
   rowwise() \%>\%
   group_by(PARAMCD) \%>\%
   mutate(LBSTRESC = ifelse(
     USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
-    paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC
+    paste("<", round(runif(1, min = .5, max = 1))), LBSTRESC
   )) \%>\%
   mutate(LBSTRESC = ifelse(
     USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
-    paste(">", round(runif(1, min = 70, max = 75))), LBSTRESC
+    paste(">", round(runif(1, min = 1, max = 1.5))), LBSTRESC
   )) \%>\%
   ungroup()
 attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]

@@ -13,6 +13,7 @@ g_density_distribution_plot(
   trt_group = "ARM",
   unit = "AVALU",
   xlim = c(NA, NA),
+  ylim = c(NA, NA),
   color_manual = NULL,
   color_comb = "#39ff14",
   comb_line = TRUE,
@@ -43,6 +44,9 @@ g_density_distribution_plot(
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
 \item{xlim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
+if the default limits are not suitable.}
+
+\item{ylim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
 if the default limits are not suitable.}
 
 \item{color_manual}{vector of colors applied to treatment values.}
