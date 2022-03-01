@@ -195,7 +195,6 @@ g_spaghettiplot <- function(data,
                             hline_vars = character(0),
                             hline_vars_colors = "green",
                             hline_vars_labels = hline_vars) {
-
   checkmate::assert_numeric(ylim, len = 2)
 
   ## Pre-process data

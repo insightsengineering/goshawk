@@ -119,7 +119,6 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         font_size = 12,
                                         line_size = 2,
                                         rug_plot = FALSE) {
-
   checkmate::assert_numeric(xlim, len = 2)
 
   plot_data <- data %>%

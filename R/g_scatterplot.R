@@ -139,7 +139,6 @@ g_scatterplot <- function(label = "Scatter Plot",
                           font_size = 12,
                           dot_size = NULL,
                           reg_text_size = 3) {
-
   checkmate::assert_numeric(xlim, len = 2)
   checkmate::assert_numeric(ylim, len = 2)
 

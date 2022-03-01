@@ -262,7 +262,6 @@ g_lineplot <- function(label = "Line Plot",
                        count_threshold = 0,
                        table_font_size = 12,
                        display_center_tbl = TRUE) {
-
   checkmate::assert_numeric(ylim, len = 2)
 
   ## Pre-process data
