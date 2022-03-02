@@ -33,7 +33,7 @@ midhinge, range, mid-range, and trimean."><!-- mathjax --><script src="https://c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.11.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.11.9003</span>
       </span>
     </div>
 
@@ -44,15 +44,6 @@ midhinge, range, mid-range, and trimean."><!-- mathjax --><script src="https://c
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/goshawk" class="external-link">
     <span class="fa fa-github"></span>
@@ -101,8 +92,7 @@ midhinge, range, mid-range, and trimean.</p>
   color_manual <span class="op">=</span> <span class="cn">NULL</span>,
   shape_manual <span class="op">=</span> <span class="cn">NULL</span>,
   box <span class="op">=</span> <span class="cn">TRUE</span>,
-  ymax_scale <span class="op">=</span> <span class="cn">NULL</span>,
-  ymin_scale <span class="op">=</span> <span class="cn">NULL</span>,
+  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,
   dot_size <span class="op">=</span> <span class="fl">2</span>,
   alpha <span class="op">=</span> <span class="fl">1</span>,
   facet_ncol <span class="op">=</span> <span class="cn">NULL</span>,
@@ -136,7 +126,7 @@ Y-axis e.g. AVAL.</p></dd>
 <dt>loq_flag_var</dt>
 <dd><p>name of variable containing LOQ flag e.g. LOQFL.</p></dd>
 <dt>loq_legend</dt>
-<dd><p>`logical` whether to include LoQ legend.</p></dd>
+<dd><p><code>logical</code> whether to include LoQ legend.</p></dd>
 <dt>unit</dt>
 <dd><p>biomarker unit label e.g. (U/L)</p></dd>
 <dt>color_manual</dt>
@@ -145,10 +135,9 @@ Y-axis e.g. AVAL.</p></dd>
 <dd><p>vector of shapes (used with loq_flag_var)</p></dd>
 <dt>box</dt>
 <dd><p>add boxes to the plot (boolean)</p></dd>
-<dt>ymax_scale</dt>
-<dd><p>maximum value for the Y axis</p></dd>
-<dt>ymin_scale</dt>
-<dd><p>minimum value for the Y axis</p></dd>
+<dt>ylim</dt>
+<dd><p>('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+if the default limits are not suitable.</p></dd>
 <dt>dot_size</dt>
 <dd><p>plot dot size.</p></dd>
 <dt>alpha</dt>
@@ -169,7 +158,7 @@ required.</p></dd>
 <dt>hline_arb_label</dt>
 <dd><p>('character vector') optional, label for the legend to the arbitrary horizontal lines.</p></dd>
 <dt>hline_vars</dt>
-<dd><p>('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
+<dd><p>('character vector'), names of variables <code>(ANR*)</code> or values <code>(*LOQ)</code> identifying intercept values.
 The data inside of the ggplot2 object must also contain the columns with these variable names</p></dd>
 <dt>hline_vars_colors</dt>
 <dd><p>('character vector') colors for the horizontal lines defined by variables.</p></dd>
@@ -221,16 +210,16 @@ The data inside of the ggplot2 object must also contain the columns with these v
 <span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"W"</span>, <span class="va">AVISITCD</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"\\D+"</span>, <span class="st">""</span>, <span class="va">AVISITCD</span><span class="op">)</span><span class="op">)</span>,</span>
 <span class="r-in">    <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span></span>
 <span class="r-in">  <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span class="r-in">  <span class="fu">mutate</span><span class="op">(</span>ANRLO <span class="op">=</span> <span class="fl">50</span>, ANRHI <span class="op">=</span> <span class="fl">75</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span class="r-in">  <span class="fu">mutate</span><span class="op">(</span>ANRLO <span class="op">=</span> <span class="fl">.5</span>, ANRHI <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span class="r-in">  <span class="fu">rowwise</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span class="r-in">  <span class="fu">group_by</span><span class="op">(</span><span class="va">PARAMCD</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span class="r-in">  <span class="fu">mutate</span><span class="op">(</span>LBSTRESC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
 <span class="r-in">    <span class="va">USUBJID</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="fl">1</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"&lt;"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, min <span class="op">=</span> <span class="fl">25</span>, max <span class="op">=</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="va">LBSTRESC</span></span>
+<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"&lt;"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, min <span class="op">=</span> <span class="fl">.5</span>, max <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="va">LBSTRESC</span></span>
 <span class="r-in">  <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span class="r-in">  <span class="fu">mutate</span><span class="op">(</span>LBSTRESC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
 <span class="r-in">    <span class="va">USUBJID</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="fl">1</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, min <span class="op">=</span> <span class="fl">70</span>, max <span class="op">=</span> <span class="fl">75</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="va">LBSTRESC</span></span>
+<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="va">LBSTRESC</span></span>
 <span class="r-in">  <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span class="r-in">  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ADLB</span><span class="op">[[</span><span class="st">"ARM"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"label"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">var_labels</span><span class="op">[[</span><span class="st">"ARM"</span><span class="op">]</span><span class="op">]</span></span>
@@ -254,7 +243,7 @@ The data inside of the ggplot2 object must also contain the columns with these v
 <span class="r-in">  xaxis_var <span class="op">=</span> <span class="st">"STUDYID"</span>,</span>
 <span class="r-in">  alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span class="r-in">  rotate_xlab <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">  hline_arb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span>,</span>
+<span class="r-in">  hline_arb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.9</span>, <span class="fl">1.2</span><span class="op">)</span>,</span>
 <span class="r-in">  hline_arb_color <span class="op">=</span> <span class="st">"blue"</span>,</span>
 <span class="r-in">  hline_arb_label <span class="op">=</span> <span class="st">"Hori_line_label"</span>,</span>
 <span class="r-in">  hline_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ANRHI"</span>, <span class="st">"ANRLO"</span>, <span class="st">"ULOQN"</span>, <span class="st">"LLOQN"</span><span class="op">)</span>,</span>

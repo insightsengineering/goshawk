@@ -19,7 +19,7 @@
     <loc>https://insightsengineering.github.io/goshawk/pull_request_template.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/goshawk/reference/add_axes_lines.html</loc>
+    <loc>https://insightsengineering.github.io/goshawk/reference/check_color.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/g_boxplot.html</loc>
@@ -38,6 +38,12 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/g_spaghettiplot.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/goshawk/reference/geom_axes_lines.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/goshawk/reference/geom_straight_lines.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/goshawk.html</loc>

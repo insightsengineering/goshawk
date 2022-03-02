@@ -24,7 +24,7 @@ attributed LOQ values."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.11.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.11.9003</span>
       </span>
     </div>
 
@@ -35,15 +35,6 @@ attributed LOQ values."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/goshawk" class="external-link">
     <span class="fa fa-github"></span>
@@ -81,10 +72,8 @@ attributed LOQ values.</p>
   visit <span class="op">=</span> <span class="st">"AVISITCD"</span>,
   loq_flag_var <span class="op">=</span> <span class="st">"LOQFL"</span>,
   unit <span class="op">=</span> <span class="st">"AVALU"</span>,
-  xmin <span class="op">=</span> <span class="cn">NA</span>,
-  xmax <span class="op">=</span> <span class="cn">NA</span>,
-  ymin <span class="op">=</span> <span class="cn">NA</span>,
-  ymax <span class="op">=</span> <span class="cn">NA</span>,
+  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,
+  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,
   color_manual <span class="op">=</span> <span class="cn">NULL</span>,
   shape_manual <span class="op">=</span> <span class="cn">NULL</span>,
   facet_ncol <span class="op">=</span> <span class="fl">2</span>,
@@ -122,14 +111,12 @@ attributed LOQ values.</p>
 <dd><p>name of variable containing LOQ flag e.g. LOQFL.</p></dd>
 <dt>unit</dt>
 <dd><p>name of variable containing biomarker unit e.g. AVALU.</p></dd>
-<dt>xmin</dt>
-<dd><p>x-axis lower zoom limit.</p></dd>
-<dt>xmax</dt>
-<dd><p>x-axis upper zoom limit.</p></dd>
-<dt>ymin</dt>
-<dd><p>y-axis lower zoom limit.</p></dd>
-<dt>ymax</dt>
-<dd><p>y-axis upper zoom limit.</p></dd>
+<dt>xlim</dt>
+<dd><p>('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
+if the default limits are not suitable.</p></dd>
+<dt>ylim</dt>
+<dd><p>('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+if the default limits are not suitable.</p></dd>
 <dt>color_manual</dt>
 <dd><p>vector of colors applied to treatment values.</p></dd>
 <dt>shape_manual</dt>
@@ -227,10 +214,6 @@ visualization. Use with facet = TRUE.</p></dd>
 <span class="r-in">  visit <span class="op">=</span> <span class="st">"AVISITCD"</span>,</span>
 <span class="r-in">  loq_flag_var <span class="op">=</span> <span class="st">"LOQFL"</span>,</span>
 <span class="r-in">  unit <span class="op">=</span> <span class="st">"AVALU"</span>,</span>
-<span class="r-in">  xmin <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">  xmax <span class="op">=</span> <span class="fl">200</span>,</span>
-<span class="r-in">  ymin <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">  ymax <span class="op">=</span> <span class="fl">200</span>,</span>
 <span class="r-in">  color_manual <span class="op">=</span> <span class="va">color_manual</span>,</span>
 <span class="r-in">  shape_manual <span class="op">=</span> <span class="va">shape_manual</span>,</span>
 <span class="r-in">  facet_ncol <span class="op">=</span> <span class="fl">2</span>,</span>
