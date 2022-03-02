@@ -17,7 +17,8 @@
 #' x-axis variable is character or factor.
 #' @param color_manual vector of colors.
 #' @param color_comb name or hex value for combined treatment color.
-#' @param ylim numeric vector to define y-axis range.
+#' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+#'   if the default limits are not suitable.
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
 #' @param xtick a vector to define the tick values of time in x-axis.
@@ -90,14 +91,14 @@
 #'   mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
 #'   mutate(ARM = factor(ARM) %>%
 #'     reorder(TRTORD)) %>%
-#'   mutate(ANRLO = 30, ANRHI = 75) %>%
+#'   mutate(ANRLO = .5, ANRHI = 1) %>%
 #'   rowwise() %>%
 #'   group_by(PARAMCD) %>%
 #'   mutate(LBSTRESC = ifelse(USUBJID %in% sample(USUBJID, 1, replace = TRUE),
-#'     paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC
+#'     paste("<", round(runif(1, min = .5, max = .7))), LBSTRESC
 #'   )) %>%
 #'   mutate(LBSTRESC = ifelse(USUBJID %in% sample(USUBJID, 1, replace = TRUE),
-#'     paste(">", round(runif(1, min = 70, max = 75))), LBSTRESC
+#'     paste(">", round(runif(1, min = .9, max = 1.2))), LBSTRESC
 #'   )) %>%
 #'   ungroup()
 #' attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
@@ -142,7 +143,7 @@
 #'   xlabel = c("Baseline", "Week 1", "Week 4"),
 #'   rotate_xlab = FALSE,
 #'   group_stats = "median",
-#'   hline_arb = 55,
+#'   hline_arb = 1,
 #'   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
 #'   hline_vars_colors = c("pink", "brown", "purple", "gray")
 #' )
@@ -162,7 +163,7 @@
 #'   xlabel = c("Baseline", "Week 1", "Week 4"),
 #'   rotate_xlab = FALSE,
 #'   group_stats = "median",
-#'   hline_arb = c(40, 50, 60),
+#'   hline_arb = c(.5, .7, 1),
 #'   hline_arb_color = c("blue", "red", "green"),
 #'   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
 #'   hline_vars = c("ANRHI", "ANRLO")
@@ -180,7 +181,7 @@ g_spaghettiplot <- function(data,
                             time_level = NULL,
                             color_manual = NULL,
                             color_comb = "#39ff14",
-                            ylim = NULL,
+                            ylim = c(NA, NA),
                             alpha = 1.0,
                             facet_ncol = 2,
                             xtick = waiver(),
@@ -194,6 +195,7 @@ g_spaghettiplot <- function(data,
                             hline_vars = character(0),
                             hline_vars_colors = "green",
                             hline_vars_labels = hline_vars) {
+  checkmate::assert_numeric(ylim, len = 2)
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
@@ -246,10 +248,10 @@ g_spaghettiplot <- function(data,
     xlab(gxlab) +
     ylab(gylab) +
     theme(plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5))
+
   # Apply y-axis zoom range
-  if (!is.null(ylim)) {
-    plot <- plot + coord_cartesian(ylim = ylim)
-  }
+  plot <- plot + coord_cartesian(ylim = ylim)
+
   # add group statistics
   # can't use stat_summary() because of presenting values for groups with all missings
   if (group_stats != "NONE") {

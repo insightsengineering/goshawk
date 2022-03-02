@@ -10,20 +10,18 @@ g_correlationplot(
   param_var = "PARAMCD",
   xaxis_param = "CRP",
   xaxis_var = "BASE",
-  xvar = xvar,
+  xvar,
   yaxis_param = "IGG",
   yaxis_var = "AVAL",
-  yvar = yvar,
+  yvar,
   trt_group = "ARM",
   visit = "AVISITCD",
   loq_flag_var = "LOQFL_COMB",
   visit_facet = TRUE,
   loq_legend = TRUE,
   unit = "AVALU",
-  xmin = NA,
-  xmax = NA,
-  ymin = NA,
-  ymax = NA,
+  xlim = c(NA, NA),
+  ylim = c(NA, NA),
   title_text = title_text,
   xaxis_lab = xaxis_lab,
   yaxis_lab = yaxis_lab,
@@ -66,7 +64,7 @@ g_correlationplot(
 
 \item{yaxis_param}{y-axis biomarker to visualize e.g. IGG.}
 
-\item{yaxis_var}{name of variable containing biomarker results displayed on Y-axise.g. AVAL.}
+\item{yaxis_var}{name of variable containing biomarker results displayed on Y-axis.g. AVAL.}
 
 \item{yvar}{y-axis analysis variable from transposed data set.}
 
@@ -82,13 +80,11 @@ g_correlationplot(
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
-\item{xmin}{x-axis lower zoom limit.}
+\item{xlim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
+if the default limits are not suitable.}
 
-\item{xmax}{x-axis upper zoom limit.}
-
-\item{ymin}{y-axis lower zoom limit.}
-
-\item{ymax}{y-axis upper zoom limit.}
+\item{ylim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+if the default limits are not suitable.}
 
 \item{title_text}{plot title.}
 
@@ -274,10 +270,6 @@ g_correlationplot(
   visit_facet = TRUE,
   loq_legend = TRUE,
   unit = "AVALU",
-  xmin = 20,
-  xmax = 80,
-  ymin = 20,
-  ymax = 80,
   title_text = "Correlation of ALT to CRP",
   xaxis_lab = "CRP",
   yaxis_lab = "ALT",
@@ -287,10 +279,10 @@ g_correlationplot(
   facet = FALSE,
   facet_var = "ARM",
   reg_line = FALSE,
-  hline_arb = c(60, 70),
-  hline_arb_color = "gray",
+  hline_arb = c(15, 25),
+  hline_arb_color = c("gray", "green"),
   hline_arb_label = "Hori_line_label",
-  vline_arb = c(45, 50),
+  vline_arb = c(.5, 1),
   vline_arb_color = c("red", "black"),
   vline_arb_label = c("Vertical Line A", "Vertical Line B"),
   hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),

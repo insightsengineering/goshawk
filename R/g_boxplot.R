@@ -24,8 +24,8 @@
 #' @param color_manual vector of color for trt_group
 #' @param shape_manual vector of shapes (used with loq_flag_var)
 #' @param box add boxes to the plot (boolean)
-#' @param ymin_scale minimum value for the Y axis
-#' @param ymax_scale maximum value for the Y axis
+#' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+#'   if the default limits are not suitable.
 #' @param facet_var variable to facet the plot by, or "None" if no faceting
 #'   required.
 #' @param xaxis_var variable used to group the data on the x-axis.
@@ -82,16 +82,16 @@
 #'     grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
 #'     TRUE ~ NA_real_
 #'   )) %>%
-#'   mutate(ANRLO = 50, ANRHI = 75) %>%
+#'   mutate(ANRLO = .5, ANRHI = 1) %>%
 #'   rowwise() %>%
 #'   group_by(PARAMCD) %>%
 #'   mutate(LBSTRESC = ifelse(
 #'     USUBJID %in% sample(USUBJID, 1, replace = TRUE),
-#'     paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC
+#'     paste("<", round(runif(1, min = .5, max = 1))), LBSTRESC
 #'   )) %>%
 #'   mutate(LBSTRESC = ifelse(
 #'     USUBJID %in% sample(USUBJID, 1, replace = TRUE),
-#'     paste(">", round(runif(1, min = 70, max = 75))), LBSTRESC
+#'     paste(">", round(runif(1, min = 1, max = 1.5))), LBSTRESC
 #'   )) %>%
 #'   ungroup()
 #' attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
@@ -115,7 +115,7 @@
 #'   xaxis_var = "STUDYID",
 #'   alpha = 0.5,
 #'   rotate_xlab = TRUE,
-#'   hline_arb = c(30, 40),
+#'   hline_arb = c(.9, 1.2),
 #'   hline_arb_color = "blue",
 #'   hline_arb_label = "Hori_line_label",
 #'   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
@@ -134,8 +134,7 @@ g_boxplot <- function(data,
                       color_manual = NULL,
                       shape_manual = NULL,
                       box = TRUE,
-                      ymax_scale = NULL,
-                      ymin_scale = NULL,
+                      ylim = c(NA, NA),
                       dot_size = 2,
                       alpha = 1.0,
                       facet_ncol = NULL,
@@ -157,6 +156,7 @@ g_boxplot <- function(data,
   }
   checkmate::assert_flag(loq_legend)
   checkmate::assert_number(dot_size)
+  checkmate::assert_numeric(ylim, len = 2)
 
   # filter input data
   data <- data %>%
@@ -256,10 +256,10 @@ g_boxplot <- function(data,
       aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
       alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE
     )
+
   # Any limits for the Y axis?
-  if (!is.null(ymin_scale) & !is.null(ymax_scale)) {
-    plot1 <- plot1 + coord_cartesian(ylim = c(ymin_scale, ymax_scale))
-  }
+  plot1 <- plot1 + coord_cartesian(ylim = ylim)
+
 
   # Add facetting.
   if (!is.null(facet_var)) {

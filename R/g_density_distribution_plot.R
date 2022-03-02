@@ -10,8 +10,10 @@
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
 #' @param trt_group name of variable representing treatment group e.g. ARM.
 #' @param unit name of variable containing biomarker unit e.g. AVALU.
-#' @param xmin x-axis lower zoom limit.
-#' @param xmax x-axis upper zoom limit.
+#' @param xlim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
+#'   if the default limits are not suitable.
+#' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+#'   if the default limits are not suitable.
 #' @param color_manual vector of colors applied to treatment values.
 #' @param color_comb name or hex value for combined treatment color.
 #' @param comb_line display combined treatment line toggle.
@@ -86,17 +88,14 @@
 #'   param_var = "PARAMCD",
 #'   param = c("CRP"),
 #'   xaxis_var = "AVAL",
-#'   trt_group = "ARM",
-#'   xmin = 0,
-#'   xmax = 200,
 #'   unit = "AVALU",
 #'   color_manual = color_manual,
 #'   color_comb = "#39ff14",
 #'   comb_line = FALSE,
 #'   facet_var = "AVISITCD",
-#'   hline_arb = c(0.04, 0.05),
-#'   hline_arb_color = c("black", "red"),
-#'   hline_arb_label = c("Horizontal Line A", "Horizontal Line B"),
+#'   hline_arb = 2,
+#'   hline_arb_color = "black",
+#'   hline_arb_label = "Horizontal Line A",
 #'   facet_ncol = 2,
 #'   rotate_xlab = FALSE,
 #'   font_size = 10,
@@ -109,8 +108,8 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         xaxis_var = "AVAL",
                                         trt_group = "ARM",
                                         unit = "AVALU",
-                                        xmin = NA,
-                                        xmax = NA,
+                                        xlim = c(NA, NA),
+                                        ylim = c(NA, NA),
                                         color_manual = NULL,
                                         color_comb = "#39ff14",
                                         comb_line = TRUE,
@@ -123,6 +122,9 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         font_size = 12,
                                         line_size = 2,
                                         rug_plot = FALSE) {
+  checkmate::assert_numeric(xlim, len = 2)
+  checkmate::assert_numeric(ylim, len = 2)
+
   plot_data <- data %>%
     filter(!!sym(param_var) == param)
 
@@ -186,7 +188,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
       geom = "line",
       position = "identity"
     ) +
-    coord_cartesian(xlim = c(xmin, xmax)) +
+    coord_cartesian(xlim = xlim, ylim = ylim) +
     facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol) +
     labs(caption = caption_loqs_label) +
     theme_bw() +

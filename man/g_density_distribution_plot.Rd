@@ -12,8 +12,8 @@ g_density_distribution_plot(
   xaxis_var = "AVAL",
   trt_group = "ARM",
   unit = "AVALU",
-  xmin = NA,
-  xmax = NA,
+  xlim = c(NA, NA),
+  ylim = c(NA, NA),
   color_manual = NULL,
   color_comb = "#39ff14",
   comb_line = TRUE,
@@ -43,9 +43,11 @@ g_density_distribution_plot(
 
 \item{unit}{name of variable containing biomarker unit e.g. AVALU.}
 
-\item{xmin}{x-axis lower zoom limit.}
+\item{xlim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
+if the default limits are not suitable.}
 
-\item{xmax}{x-axis upper zoom limit.}
+\item{ylim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+if the default limits are not suitable.}
 
 \item{color_manual}{vector of colors applied to treatment values.}
 
@@ -131,17 +133,14 @@ g_density_distribution_plot(
   param_var = "PARAMCD",
   param = c("CRP"),
   xaxis_var = "AVAL",
-  trt_group = "ARM",
-  xmin = 0,
-  xmax = 200,
   unit = "AVALU",
   color_manual = color_manual,
   color_comb = "#39ff14",
   comb_line = FALSE,
   facet_var = "AVISITCD",
-  hline_arb = c(0.04, 0.05),
-  hline_arb_color = c("black", "red"),
-  hline_arb_label = c("Horizontal Line A", "Horizontal Line B"),
+  hline_arb = 2,
+  hline_arb_color = "black",
+  hline_arb_label = "Horizontal Line A",
   facet_ncol = 2,
   rotate_xlab = FALSE,
   font_size = 10,

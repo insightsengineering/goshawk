@@ -17,8 +17,7 @@ g_boxplot(
   color_manual = NULL,
   shape_manual = NULL,
   box = TRUE,
-  ymax_scale = NULL,
-  ymin_scale = NULL,
+  ylim = c(NA, NA),
   dot_size = 2,
   alpha = 1,
   facet_ncol = NULL,
@@ -59,9 +58,8 @@ Y-axis e.g. AVAL.}
 
 \item{box}{add boxes to the plot (boolean)}
 
-\item{ymax_scale}{maximum value for the Y axis}
-
-\item{ymin_scale}{minimum value for the Y axis}
+\item{ylim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+if the default limits are not suitable.}
 
 \item{dot_size}{plot dot size.}
 
@@ -138,16 +136,16 @@ ADLB <- ADLB \%>\%
     grepl("W", AVISITCD) ~ as.numeric(gsub("\\\\D+", "", AVISITCD)),
     TRUE ~ NA_real_
   )) \%>\%
-  mutate(ANRLO = 50, ANRHI = 75) \%>\%
+  mutate(ANRLO = .5, ANRHI = 1) \%>\%
   rowwise() \%>\%
   group_by(PARAMCD) \%>\%
   mutate(LBSTRESC = ifelse(
     USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
-    paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC
+    paste("<", round(runif(1, min = .5, max = 1))), LBSTRESC
   )) \%>\%
   mutate(LBSTRESC = ifelse(
     USUBJID \%in\% sample(USUBJID, 1, replace = TRUE),
-    paste(">", round(runif(1, min = 70, max = 75))), LBSTRESC
+    paste(">", round(runif(1, min = 1, max = 1.5))), LBSTRESC
   )) \%>\%
   ungroup()
 attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
@@ -171,7 +169,7 @@ g_boxplot(ADLB,
   xaxis_var = "STUDYID",
   alpha = 0.5,
   rotate_xlab = TRUE,
-  hline_arb = c(30, 40),
+  hline_arb = c(.9, 1.2),
   hline_arb_color = "blue",
   hline_arb_label = "Hori_line_label",
   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),

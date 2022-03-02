@@ -10,6 +10,7 @@
 * Added R version requirement `R >= 3.6`.
 * Removed dependency on `test.nest` package.
 * Removed dependency on `utils.nest` package and replaced its functions with equivalents from the `checkmate` package.
+* Standardized the argument to control the range of the axes to `xlim` and `ylim`, complying with `ggplot2`.
 
 # goshawk 0.1.10
 

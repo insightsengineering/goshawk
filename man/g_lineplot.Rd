@@ -12,7 +12,7 @@ g_lineplot(
   biomarker,
   value_var = "AVAL",
   unit_var = "AVALU",
-  ylim = NULL,
+  ylim = c(NA, NA),
   trt_group,
   trt_group_level = NULL,
   shape = NULL,
@@ -51,7 +51,8 @@ g_lineplot(
 
 \item{unit_var}{name of variable containing biomarker result unit.}
 
-\item{ylim}{numeric vector to define y-axis range.}
+\item{ylim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
+if the default limits are not suitable.}
 
 \item{trt_group}{name of variable representing treatment group.}
 
