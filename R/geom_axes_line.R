@@ -372,12 +372,12 @@ geom_range_vline <- function(vars,
 #'
 #' library(ggplot2)
 #' p <- ggplot(mtcars, aes(wt, mpg)) +
-#' geom_point() +
-#'  goshawk:::geom_axes_lines(
-#'    hline_arb = c(12, 25, 30),
-#'    hline_arb_color = "red",
-#'    hline_arb_label = "Hori Line"
-#'  )
+#'   geom_point() +
+#'   goshawk:::geom_axes_lines(
+#'     hline_arb = c(12, 25, 30),
+#'     hline_arb_color = "red",
+#'     hline_arb_label = "Hori Line"
+#'   )
 #' goshawk:::line_axis_label(p)
 line_axis_label <- function(plot) {
   plot %>%
@@ -393,12 +393,12 @@ line_axis_label <- function(plot) {
 #'
 #' library(ggplot2)
 #' p <- ggplot(mtcars, aes(wt, mpg)) +
-#' geom_point() +
-#'  goshawk:::geom_axes_lines(
-#'    vline_arb = c(12, 25, 30),
-#'    vline_arb_color = "red",
-#'    vline_arb_label = "Vert Line"
-#'  )
+#'   geom_point() +
+#'   goshawk:::geom_axes_lines(
+#'     vline_arb = c(12, 25, 30),
+#'     vline_arb_color = "red",
+#'     vline_arb_label = "Vert Line"
+#'   )
 #' goshawk:::vline_axis_label(p)
 vline_axis_label <- function(plot) {
   breaks <- ggplot_build(plot)$layout$panel_params[[1]]$x$breaks
@@ -406,7 +406,7 @@ vline_axis_label <- function(plot) {
 
   vals <- unlist(lapply(seq_along(plot$layers), function(x) {
     df <- layer_data(plot, x)
-    if ('xintercept' %in% names(df)) df$xintercept else numeric()
+    if ("xintercept" %in% names(df)) df$xintercept else numeric()
   }))
   if (length(vals) > 0 && !all(vals %in% breaks)) {
     plot + scale_x_continuous(breaks = sort(c(vals, breaks)))
@@ -423,12 +423,12 @@ vline_axis_label <- function(plot) {
 #'
 #' library(ggplot2)
 #' p <- ggplot(mtcars, aes(wt, mpg)) +
-#' geom_point() +
-#'  goshawk:::geom_axes_lines(
-#'    hline_arb = c(12, 25, 30),
-#'    hline_arb_color = "red",
-#'    hline_arb_label = "Hori Line"
-#'  )
+#'   geom_point() +
+#'   goshawk:::geom_axes_lines(
+#'     hline_arb = c(12, 25, 30),
+#'     hline_arb_color = "red",
+#'     hline_arb_label = "Hori Line"
+#'   )
 #' goshawk:::hline_axis_label(p)
 hline_axis_label <- function(plot) {
   breaks <- ggplot_build(plot)$layout$panel_params[[1]]$y$breaks
@@ -436,7 +436,7 @@ hline_axis_label <- function(plot) {
 
   vals <- unlist(lapply(seq_along(plot$layers), function(y) {
     df <- layer_data(plot, y)
-    if ('yintercept' %in% names(df)) df$yintercept else numeric()
+    if ("yintercept" %in% names(df)) df$yintercept else numeric()
   }))
   if (length(vals) > 0 && !all(vals %in% breaks)) {
     plot + scale_y_continuous(breaks = sort(c(vals, breaks)))
