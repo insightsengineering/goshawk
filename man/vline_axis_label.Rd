@@ -19,11 +19,11 @@ Add labels to the x axis equaling to the values of the lines
 
 library(ggplot2)
 p <- ggplot(mtcars, aes(wt, mpg)) +
-geom_point() +
- goshawk:::geom_axes_lines(
-   vline_arb = c(12, 25, 30),
-   vline_arb_color = "red",
-   vline_arb_label = "Vert Line"
- )
+  geom_point() +
+  goshawk:::geom_axes_lines(
+    vline_arb = c(12, 25, 30),
+    vline_arb_color = "red",
+    vline_arb_label = "Vert Line"
+  )
 goshawk:::vline_axis_label(p)
 }

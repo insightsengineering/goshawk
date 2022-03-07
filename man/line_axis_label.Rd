@@ -19,11 +19,11 @@ Add labels to the y/x axes equaling to the values of the lines
 
 library(ggplot2)
 p <- ggplot(mtcars, aes(wt, mpg)) +
-geom_point() +
- goshawk:::geom_axes_lines(
-   hline_arb = c(12, 25, 30),
-   hline_arb_color = "red",
-   hline_arb_label = "Hori Line"
- )
+  geom_point() +
+  goshawk:::geom_axes_lines(
+    hline_arb = c(12, 25, 30),
+    hline_arb_color = "red",
+    hline_arb_label = "Hori Line"
+  )
 goshawk:::line_axis_label(p)
 }
