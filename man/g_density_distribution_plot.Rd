@@ -138,7 +138,7 @@ g_density_distribution_plot(
   color_comb = "#39ff14",
   comb_line = FALSE,
   facet_var = "AVISITCD",
-  hline_arb = 2,
+  hline_arb = 1.75,
   hline_arb_color = "black",
   hline_arb_label = "Horizontal Line A",
   facet_ncol = 2,

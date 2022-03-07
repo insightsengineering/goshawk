@@ -93,7 +93,7 @@
 #'   color_comb = "#39ff14",
 #'   comb_line = FALSE,
 #'   facet_var = "AVISITCD",
-#'   hline_arb = 2,
+#'   hline_arb = 1.75,
 #'   hline_arb_color = "black",
 #'   hline_arb_label = "Horizontal Line A",
 #'   facet_ncol = 2,
@@ -225,10 +225,11 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   }
 
   # Add horizontal line
-  plot1 + geom_axes_lines(
+  plot1 <- plot1 + geom_axes_lines(
     plot_data,
     hline_arb = hline_arb,
     hline_arb_color = hline_arb_color,
     hline_arb_label = hline_arb_label
   )
+  line_axis_label(plot1)
 }

@@ -199,7 +199,7 @@ g_spaghettiplot(
   xlabel = c("Baseline", "Week 1", "Week 4"),
   rotate_xlab = FALSE,
   group_stats = "median",
-  hline_arb = 1,
+  hline_arb = 1.3,
   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
   hline_vars_colors = c("pink", "brown", "purple", "gray")
 )

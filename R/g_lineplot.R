@@ -471,6 +471,7 @@ g_lineplot <- function(label = "Line Plot",
     sum_data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label
   )
+  plot1 <- line_axis_label(plot1)
 
   # Format font size
   if (!is.null(plot_font_size)) {

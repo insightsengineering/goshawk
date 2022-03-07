@@ -143,7 +143,7 @@
 #'   xlabel = c("Baseline", "Week 1", "Week 4"),
 #'   rotate_xlab = FALSE,
 #'   group_stats = "median",
-#'   hline_arb = 1,
+#'   hline_arb = 1.3,
 #'   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
 #'   hline_vars_colors = c("pink", "brown", "purple", "gray")
 #' )
@@ -316,7 +316,7 @@ g_spaghettiplot <- function(data,
       )
   }
   # Add horizontal line for range based on option
-  plot + geom_axes_lines(
+  plot <- plot + geom_axes_lines(
     plot_data,
     hline_arb = hline_arb,
     hline_arb_color = hline_arb_color,
@@ -325,4 +325,5 @@ g_spaghettiplot <- function(data,
     hline_vars_colors = hline_vars_colors,
     hline_vars_labels = hline_vars_labels
   )
+  line_axis_label(plot)
 }

@@ -299,8 +299,9 @@ g_boxplot <- function(data,
   }
 
   # Add horizontal line for range based on option
-  plot1 + geom_axes_lines(data,
+  plot1 <- plot1 + geom_axes_lines(data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels
   )
+  line_axis_label(plot1)
 }
