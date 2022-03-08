@@ -55,12 +55,21 @@
     <loc>https://insightsengineering.github.io/goshawk/reference/h_identify_loq_values.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/goshawk/reference/hline_axis_label.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/goshawk/reference/line_axis_label.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/t_summarytable.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/validate_line_args.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/goshawk/reference/vline_axis_label.html</loc>
   </url>
 </urlset>
