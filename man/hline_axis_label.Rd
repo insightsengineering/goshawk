@@ -4,10 +4,12 @@
 \alias{hline_axis_label}
 \title{Add labels to the y axis equaling to the values of the lines}
 \usage{
-hline_axis_label(plot)
+hline_axis_label(plot, replace = FALSE)
 }
 \arguments{
 \item{plot}{('ggplot') a ggplot with either horizontal or vertical lines}
+
+\item{replace}{('logical') flag to determine if the line value labels should replace the entire axis}
 }
 \value{
 (\code{ggplot}) with the new axis breaks

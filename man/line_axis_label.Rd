@@ -4,10 +4,14 @@
 \alias{line_axis_label}
 \title{Add labels to the y/x axes equaling to the values of the lines}
 \usage{
-line_axis_label(plot)
+line_axis_label(plot, replace_x = FALSE, replace_y = FALSE)
 }
 \arguments{
 \item{plot}{('ggplot') a ggplot with either horizontal or vertical lines}
+
+\item{replace_x}{('logical') flag to determine if the line value labels should replace the entire x-axis}
+
+\item{replace_y}{('logical') flag to determine if the line value labels should replace the entire y-axis}
 }
 \value{
 (\code{ggplot}) with the new axes breaks
