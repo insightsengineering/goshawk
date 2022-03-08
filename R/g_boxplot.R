@@ -64,16 +64,16 @@
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
 #'     grepl("WEEK", AVISIT) ~
-#'     paste(
-#'       "W",
-#'       trimws(
-#'         substr(
-#'           AVISIT,
-#'           start = 6,
-#'           stop = stringr::str_locate(AVISIT, "DAY") - 1
+#'       paste(
+#'         "W",
+#'         trimws(
+#'           substr(
+#'             AVISIT,
+#'             start = 6,
+#'             stop = stringr::str_locate(AVISIT, "DAY") - 1
+#'           )
 #'         )
-#'       )
-#'     ),
+#'       ),
 #'     TRUE ~ NA_character_
 #'   )) %>%
 #'   mutate(AVISITCDN = case_when(
