@@ -369,7 +369,6 @@ geom_range_vline <- function(vars,
 #' @param plot ('ggplot') a ggplot with either horizontal or vertical lines
 #' @param replace_x ('logical') flag to determine if the line value labels should replace the entire x-axis
 #' @param replace_y ('logical') flag to determine if the line value labels should replace the entire y-axis
-#' @return (`ggplot`) with the new axes breaks
 #' @examples
 #'
 #' library(ggplot2)
@@ -381,6 +380,8 @@ geom_range_vline <- function(vars,
 #'     hline_arb_label = "Hori Line"
 #'   )
 #' goshawk:::line_axis_label(p)
+#' @return \code{ggplot} object
+#' @keywords internal
 line_axis_label <- function(plot, replace_x = FALSE, replace_y = FALSE) {
   plot %>%
     vline_axis_label(replace_x) %>%
@@ -391,7 +392,6 @@ line_axis_label <- function(plot, replace_x = FALSE, replace_y = FALSE) {
 #'
 #' @param plot ('ggplot') a ggplot with either horizontal or vertical lines
 #' @param replace ('logical') flag to determine if the line value labels should replace the entire axis
-#' @return (`ggplot`) with the new axis breaks
 #' @examples
 #'
 #' library(ggplot2)
@@ -403,6 +403,8 @@ line_axis_label <- function(plot, replace_x = FALSE, replace_y = FALSE) {
 #'     vline_arb_label = "Vert Line"
 #'   )
 #' goshawk:::vline_axis_label(p)
+#' @return \code{ggplot} object
+#' @keywords internal
 vline_axis_label <- function(plot, replace = FALSE) {
   breaks <- ggplot_build(plot)$layout$panel_params[[1]]$x$breaks
   breaks <- breaks[!is.na(breaks)]
@@ -426,7 +428,6 @@ vline_axis_label <- function(plot, replace = FALSE) {
 #'
 #' @param plot ('ggplot') a ggplot with either horizontal or vertical lines
 #' @param replace ('logical') flag to determine if the line value labels should replace the entire axis
-#' @return (`ggplot`) with the new axis breaks
 #' @examples
 #'
 #' library(ggplot2)
@@ -438,6 +439,8 @@ vline_axis_label <- function(plot, replace = FALSE) {
 #'     hline_arb_label = "Hori Line"
 #'   )
 #' goshawk:::hline_axis_label(p)
+#' @return \code{ggplot} object
+#' @keywords internal
 hline_axis_label <- function(plot, replace = FALSE) {
   breaks <- ggplot_build(plot)$layout$panel_params[[1]]$y$breaks
   breaks <- breaks[!is.na(breaks)]

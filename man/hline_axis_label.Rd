@@ -12,7 +12,7 @@ hline_axis_label(plot, replace = FALSE)
 \item{replace}{('logical') flag to determine if the line value labels should replace the entire axis}
 }
 \value{
-(\code{ggplot}) with the new axis breaks
+\code{ggplot} object
 }
 \description{
 Add labels to the y axis equaling to the values of the lines
@@ -29,3 +29,4 @@ p <- ggplot(mtcars, aes(wt, mpg)) +
   )
 goshawk:::hline_axis_label(p)
 }
+\keyword{internal}
