@@ -120,16 +120,16 @@ ADLB <- ADLB \%>\%
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
     grepl("WEEK", AVISIT) ~
-    paste(
-      "W",
-      trimws(
-        substr(
-          AVISIT,
-          start = 6,
-          stop = str_locate(AVISIT, "DAY") - 1
+      paste(
+        "W",
+        trimws(
+          substr(
+            AVISIT,
+            start = 6,
+            stop = str_locate(AVISIT, "DAY") - 1
+          )
         )
-      )
-    ),
+      ),
     TRUE ~ NA_character_
   )) \%>\%
   mutate(AVISITCDN = case_when(
@@ -199,7 +199,7 @@ g_spaghettiplot(
   xlabel = c("Baseline", "Week 1", "Week 4"),
   rotate_xlab = FALSE,
   group_stats = "median",
-  hline_arb = 1,
+  hline_arb = 1.3,
   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
   hline_vars_colors = c("pink", "brown", "purple", "gray")
 )

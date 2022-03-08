@@ -363,3 +363,99 @@ geom_range_vline <- function(vars,
     ...
   )
 }
+
+#' Add labels to the y/x axes equaling to the values of the lines
+#'
+#' @param plot ('ggplot') a ggplot with either horizontal or vertical lines
+#' @param replace_x ('logical') flag to determine if the line value labels should replace the entire x-axis
+#' @param replace_y ('logical') flag to determine if the line value labels should replace the entire y-axis
+#' @examples
+#'
+#' library(ggplot2)
+#' p <- ggplot(mtcars, aes(wt, mpg)) +
+#'   geom_point() +
+#'   goshawk:::geom_axes_lines(
+#'     hline_arb = c(12, 25, 30),
+#'     hline_arb_color = "red",
+#'     hline_arb_label = "Hori Line"
+#'   )
+#' goshawk:::line_axis_label(p)
+#' @return \code{ggplot} object
+#' @keywords internal
+line_axis_label <- function(plot, replace_x = FALSE, replace_y = FALSE) {
+  plot %>%
+    vline_axis_label(replace_x) %>%
+    hline_axis_label(replace_y)
+}
+
+#' Add labels to the x axis equaling to the values of the lines
+#'
+#' @param plot ('ggplot') a ggplot with either horizontal or vertical lines
+#' @param replace ('logical') flag to determine if the line value labels should replace the entire axis
+#' @examples
+#'
+#' library(ggplot2)
+#' p <- ggplot(mtcars, aes(wt, mpg)) +
+#'   geom_point() +
+#'   goshawk:::geom_axes_lines(
+#'     vline_arb = c(12, 25, 30),
+#'     vline_arb_color = "red",
+#'     vline_arb_label = "Vert Line"
+#'   )
+#' goshawk:::vline_axis_label(p)
+#' @return \code{ggplot} object
+#' @keywords internal
+vline_axis_label <- function(plot, replace = FALSE) {
+  breaks <- ggplot_build(plot)$layout$panel_params[[1]]$x$breaks
+  breaks <- breaks[!is.na(breaks)]
+
+  vals <- unlist(lapply(seq_along(plot$layers), function(x) {
+    df <- layer_data(plot, x)
+    if ("xintercept" %in% names(df)) df$xintercept else numeric()
+  }))
+  if (length(vals) > 0 && !all(vals %in% breaks)) {
+    if (replace) {
+      plot + scale_x_continuous(breaks = sort(vals))
+    } else {
+      plot + scale_x_continuous(breaks = sort(c(vals, breaks)))
+    }
+  } else {
+    plot
+  }
+}
+
+#' Add labels to the y axis equaling to the values of the lines
+#'
+#' @param plot ('ggplot') a ggplot with either horizontal or vertical lines
+#' @param replace ('logical') flag to determine if the line value labels should replace the entire axis
+#' @examples
+#'
+#' library(ggplot2)
+#' p <- ggplot(mtcars, aes(wt, mpg)) +
+#'   geom_point() +
+#'   goshawk:::geom_axes_lines(
+#'     hline_arb = c(12, 25, 30),
+#'     hline_arb_color = "red",
+#'     hline_arb_label = "Hori Line"
+#'   )
+#' goshawk:::hline_axis_label(p)
+#' @return \code{ggplot} object
+#' @keywords internal
+hline_axis_label <- function(plot, replace = FALSE) {
+  breaks <- ggplot_build(plot)$layout$panel_params[[1]]$y$breaks
+  breaks <- breaks[!is.na(breaks)]
+
+  vals <- unlist(lapply(seq_along(plot$layers), function(y) {
+    df <- layer_data(plot, y)
+    if ("yintercept" %in% names(df)) df$yintercept else numeric()
+  }))
+  if (length(vals) > 0 && !all(vals %in% breaks)) {
+    if (replace) {
+      plot + scale_y_continuous(breaks = sort(vals))
+    } else {
+      plot + scale_y_continuous(breaks = sort(c(vals, breaks)))
+    }
+  } else {
+    plot
+  }
+}

@@ -98,16 +98,16 @@ ADLB <- ADLB \%>\%
     AVISIT == "SCREENING" ~ "SCR",
     AVISIT == "BASELINE" ~ "BL",
     grepl("WEEK", AVISIT) ~
-    paste(
-      "W",
-      trimws(
-        substr(
-          AVISIT,
-          start = 6,
-          stop = str_locate(AVISIT, "DAY") - 1
+      paste(
+        "W",
+        trimws(
+          substr(
+            AVISIT,
+            start = 6,
+            stop = str_locate(AVISIT, "DAY") - 1
+          )
         )
-      )
-    ),
+      ),
     TRUE ~ NA_character_
   )) \%>\%
   mutate(AVISITCDN = case_when(
@@ -138,7 +138,7 @@ g_density_distribution_plot(
   color_comb = "#39ff14",
   comb_line = FALSE,
   facet_var = "AVISITCD",
-  hline_arb = 2,
+  hline_arb = 1.75,
   hline_arb_color = "black",
   hline_arb_label = "Horizontal Line A",
   facet_ncol = 2,

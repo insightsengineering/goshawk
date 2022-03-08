@@ -83,16 +83,16 @@
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
 #'     grepl("WEEK", AVISIT) ~
-#'     paste(
-#'       "W",
-#'       trimws(
-#'         substr(
-#'           AVISIT,
-#'           start = 6,
-#'           stop = str_locate(AVISIT, "DAY") - 1
+#'       paste(
+#'         "W",
+#'         trimws(
+#'           substr(
+#'             AVISIT,
+#'             start = 6,
+#'             stop = str_locate(AVISIT, "DAY") - 1
+#'           )
 #'         )
-#'       )
-#'     ),
+#'       ),
 #'     TRUE ~ NA_character_
 #'   )) %>%
 #'   mutate(AVISITCDN = case_when(
@@ -406,11 +406,12 @@ g_correlationplot <- function(label = "Correlation Plot",
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
 
-  plot1 + geom_axes_lines(
+  plot1 <- plot1 + geom_axes_lines(
     plot_data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels,
     vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label,
     vline_vars = vline_vars, vline_vars_colors = vline_vars_colors, vline_vars_labels = vline_vars_labels
   )
+  line_axis_label(plot1)
 }

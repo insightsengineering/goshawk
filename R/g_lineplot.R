@@ -78,16 +78,16 @@
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
 #'     grepl("WEEK", AVISIT) ~
-#'     paste(
-#'       "W",
-#'       trimws(
-#'         substr(
-#'           AVISIT,
-#'           start = 6,
-#'           stop = str_locate(AVISIT, "DAY") - 1
+#'       paste(
+#'         "W",
+#'         trimws(
+#'           substr(
+#'             AVISIT,
+#'             start = 6,
+#'             stop = str_locate(AVISIT, "DAY") - 1
+#'           )
 #'         )
-#'       )
-#'     ),
+#'       ),
 #'     TRUE ~ NA_character_
 #'   )) %>%
 #'   mutate(AVISITCDN = case_when(
@@ -471,6 +471,7 @@ g_lineplot <- function(label = "Line Plot",
     sum_data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label
   )
+  plot1 <- line_axis_label(plot1)
 
   # Format font size
   if (!is.null(plot_font_size)) {
