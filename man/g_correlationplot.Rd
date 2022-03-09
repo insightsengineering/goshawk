@@ -46,7 +46,9 @@ g_correlationplot(
   rotate_xlab = FALSE,
   font_size = 12,
   dot_size = 2,
-  reg_text_size = 3
+  reg_text_size = 3,
+  replace_x_axis = FALSE,
+  replace_y_axis = FALSE
 )
 }
 \arguments{
@@ -138,6 +140,12 @@ The data inside of the ggplot2 object must also contain the columns with these v
 \item{dot_size}{plot dot size.}
 
 \item{reg_text_size}{font size control for regression line annotations.}
+
+\item{replace_x_axis}{('logical scalar') flag to determine if x axis break points should be replaced by vertical
+line values. if FALSE, then new break points will be added instead.}
+
+\item{replace_y_axis}{('logical scalar') flag to determine if y axis break points should be replaced by horizontal
+line values. if FALSE, then new break points will be added instead.}
 }
 \description{
 Default plot displays correlation facetted by visit with color attributed treatment arms and
@@ -294,7 +302,8 @@ g_correlationplot(
   rotate_xlab = FALSE,
   font_size = 14,
   dot_size = 2,
-  reg_text_size = 3
+  reg_text_size = 3,
+  replace_x_axis = TRUE,
 )
 }
 \author{

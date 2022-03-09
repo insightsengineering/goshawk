@@ -27,6 +27,8 @@
 #' @param line_size plot line thickness.
 #' @param rug_plot should a rug plot be displayed under the density plot. Note this
 #'   option is most useful if the data only contains a single treatment group.
+#' @param replace_y_axis ('logical scalar') flag to determine if y axis break points should be replaced by horizontal
+#'   line values. if FALSE, then new break points will be added instead.
 #'
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
@@ -99,7 +101,8 @@
 #'   facet_ncol = 2,
 #'   rotate_xlab = FALSE,
 #'   font_size = 10,
-#'   line_size = .5
+#'   line_size = .5,
+#'   replace_y_axis = TRUE
 #' )
 g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         data,
@@ -121,7 +124,8 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         rotate_xlab = FALSE,
                                         font_size = 12,
                                         line_size = 2,
-                                        rug_plot = FALSE) {
+                                        rug_plot = FALSE,
+                                        replace_y_axis = FALSE) {
   checkmate::assert_numeric(xlim, len = 2)
   checkmate::assert_numeric(ylim, len = 2)
 
@@ -231,5 +235,5 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
     hline_arb_color = hline_arb_color,
     hline_arb_label = hline_arb_label
   )
-  line_axis_label(plot1)
+  line_axis_label(plot1, replace_y = replace_y_axis)
 }

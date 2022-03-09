@@ -29,7 +29,8 @@ g_boxplot(
   hline_arb_label = "Horizontal line",
   hline_vars = character(0),
   hline_vars_colors = "green",
-  hline_vars_labels = hline_vars
+  hline_vars_labels = hline_vars,
+  replace_y_axis = FALSE
 )
 }
 \arguments{
@@ -86,6 +87,9 @@ The data inside of the ggplot2 object must also contain the columns with these v
 \item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 
 \item{hline_vars_labels}{('character vector') labels for the legend to the horizontal lines defined by variables.}
+
+\item{replace_y_axis}{('logical scalar') flag to determine if y axis break points should be replaced by horizontal
+line values. if FALSE, then new break points will be added instead.}
 }
 \value{
 \code{ggplot} object
@@ -174,7 +178,8 @@ g_boxplot(ADLB,
   hline_arb_label = "Hori_line_label",
   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
   hline_vars_colors = c("pink", "brown", "purple", "gray"),
-  hline_vars_labels = c("A", "B", "C", "D")
+  hline_vars_labels = c("A", "B", "C", "D"),
+  replace_y_axis = TRUE
 )
 }
 \author{

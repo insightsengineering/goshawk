@@ -50,6 +50,10 @@
 #' @param font_size font size control for title, x-axis label, y-axis label and legend.
 #' @param dot_size plot dot size.
 #' @param reg_text_size font size control for regression line annotations.
+#' @param replace_y_axis ('logical scalar') flag to determine if y axis break points should be replaced by horizontal
+#'   line values. if FALSE, then new break points will be added instead.
+#' @param replace_x_axis ('logical scalar') flag to determine if x axis break points should be replaced by vertical
+#'   line values. if FALSE, then new break points will be added instead.
 #'
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
@@ -206,7 +210,8 @@
 #'   rotate_xlab = FALSE,
 #'   font_size = 14,
 #'   dot_size = 2,
-#'   reg_text_size = 3
+#'   reg_text_size = 3,
+#'   replace_x_axis = TRUE,
 #' )
 g_correlationplot <- function(label = "Correlation Plot",
                               data,
@@ -249,7 +254,9 @@ g_correlationplot <- function(label = "Correlation Plot",
                               rotate_xlab = FALSE,
                               font_size = 12,
                               dot_size = 2,
-                              reg_text_size = 3) {
+                              reg_text_size = 3,
+                              replace_x_axis = FALSE,
+                              replace_y_axis = FALSE) {
   checkmate::assert_flag(loq_legend)
   checkmate::assert_number(dot_size, lower = 1)
   checkmate::assert_numeric(xlim, len = 2)
@@ -413,5 +420,5 @@ g_correlationplot <- function(label = "Correlation Plot",
     vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label,
     vline_vars = vline_vars, vline_vars_colors = vline_vars_colors, vline_vars_labels = vline_vars_labels
   )
-  line_axis_label(plot1)
+  line_axis_label(plot1, replace_x = replace_x_axis, replace_y = replace_y_axis)
 }

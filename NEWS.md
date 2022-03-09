@@ -6,6 +6,7 @@
 * Improve straight lines to have a standard `ggplot2` legend format. Each line type (horizontal/vertical, arbitrary/range) has a separate legend entry.
 * Fixed plots legends to keep specific items order.
 * Added labels to the axes equaling the value of a horizontal or vertical line that is added to the plot.
+* Added new argument to plots with horizontal and / or vertical lines to replace the axes with the values of the lines.
 
 ### Miscellaneous
 * Added R version requirement `R >= 3.6`.

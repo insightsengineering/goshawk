@@ -35,6 +35,8 @@
 #' @param table_font_size \code{float} controls the font size of the values printed in the table.
 #' Default: 12
 #' @param display_center_tbl boolean whether to include table of means or medians
+#' @param replace_y_axis ('logical scalar') flag to determine if y axis break points should be replaced by horizontal
+#'   line values. if FALSE, then new break points will be added instead.
 #'
 #' @importFrom cowplot plot_grid
 #' @importFrom grDevices hcl
@@ -125,7 +127,8 @@
 #'   xtick = c(0, 1, 5),
 #'   xlabel = c("Baseline", "Week 1", "Week 5"),
 #'   rotate_xlab = FALSE,
-#'   plot_height = 600
+#'   plot_height = 600,
+#'   replace_y_axis = TRUE
 #' )
 #'
 #' g_lineplot(
@@ -261,7 +264,8 @@ g_lineplot <- function(label = "Line Plot",
                        plot_height = 989,
                        count_threshold = 0,
                        table_font_size = 12,
-                       display_center_tbl = TRUE) {
+                       display_center_tbl = TRUE,
+                       replace_y_axis = FALSE) {
   checkmate::assert_numeric(ylim, len = 2)
 
   ## Pre-process data
@@ -471,7 +475,7 @@ g_lineplot <- function(label = "Line Plot",
     sum_data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label
   )
-  plot1 <- line_axis_label(plot1)
+  plot1 <- line_axis_label(plot1, replace_y = replace_y_axis)
 
   # Format font size
   if (!is.null(plot_font_size)) {

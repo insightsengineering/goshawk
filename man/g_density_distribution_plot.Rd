@@ -25,7 +25,8 @@ g_density_distribution_plot(
   rotate_xlab = FALSE,
   font_size = 12,
   line_size = 2,
-  rug_plot = FALSE
+  rug_plot = FALSE,
+  replace_y_axis = FALSE
 )
 }
 \arguments{
@@ -73,6 +74,9 @@ if the default limits are not suitable.}
 
 \item{rug_plot}{should a rug plot be displayed under the density plot. Note this
 option is most useful if the data only contains a single treatment group.}
+
+\item{replace_y_axis}{('logical scalar') flag to determine if y axis break points should be replaced by horizontal
+line values. if FALSE, then new break points will be added instead.}
 }
 \description{
 Default plot displays overall density facetted by visit with treatment arms and combined
@@ -144,7 +148,8 @@ g_density_distribution_plot(
   facet_ncol = 2,
   rotate_xlab = FALSE,
   font_size = 10,
-  line_size = .5
+  line_size = .5,
+  replace_y_axis = TRUE
 )
 }
 \author{

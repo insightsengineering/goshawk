@@ -33,7 +33,8 @@ g_lineplot(
   plot_height = 989,
   count_threshold = 0,
   table_font_size = 12,
-  display_center_tbl = TRUE
+  display_center_tbl = TRUE,
+  replace_y_axis = FALSE
 )
 }
 \arguments{
@@ -100,6 +101,9 @@ bar and point on the plot. Default: 0}
 Default: 12}
 
 \item{display_center_tbl}{boolean whether to include table of means or medians}
+
+\item{replace_y_axis}{('logical scalar') flag to determine if y axis break points should be replaced by horizontal
+line values. if FALSE, then new break points will be added instead.}
 }
 \value{
 \code{ggplot} object
@@ -184,7 +188,8 @@ g_lineplot(
   xtick = c(0, 1, 5),
   xlabel = c("Baseline", "Week 1", "Week 5"),
   rotate_xlab = FALSE,
-  plot_height = 600
+  plot_height = 600,
+  replace_y_axis = TRUE
 )
 
 g_lineplot(
