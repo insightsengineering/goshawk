@@ -150,8 +150,7 @@ g_boxplot <- function(data,
                       hline_vars = character(0),
                       hline_vars_colors = "green",
                       hline_vars_labels = hline_vars,
-                      replace_y_axis = FALSE
-                      ) {
+                      replace_y_axis = FALSE) {
   if (is.null(data[[param_var]])) {
     stop(paste("param_var", param_var, "is not in data."))
   }
