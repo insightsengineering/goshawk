@@ -406,12 +406,11 @@ g_correlationplot <- function(label = "Correlation Plot",
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   }
 
-  plot1 <- plot1 + geom_axes_lines(
+  plot1 + geom_axes_lines(
     plot_data,
     hline_arb = hline_arb, hline_arb_color = hline_arb_color, hline_arb_label = hline_arb_label,
     hline_vars = hline_vars, hline_vars_colors = hline_vars_colors, hline_vars_labels = hline_vars_labels,
     vline_arb = vline_arb, vline_arb_color = vline_arb_color, vline_arb_label = vline_arb_label,
     vline_vars = vline_vars, vline_vars_colors = vline_vars_colors, vline_vars_labels = vline_vars_labels
   )
-  line_axis_label(plot1)
 }

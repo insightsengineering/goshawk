@@ -225,11 +225,10 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   }
 
   # Add horizontal line
-  plot1 <- plot1 + geom_axes_lines(
+  plot1 + geom_axes_lines(
     plot_data,
     hline_arb = hline_arb,
     hline_arb_color = hline_arb_color,
     hline_arb_label = hline_arb_label
   )
-  line_axis_label(plot1)
 }
