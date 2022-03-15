@@ -316,7 +316,7 @@ g_spaghettiplot <- function(data,
       )
   }
   # Add horizontal line for range based on option
-  plot <- plot + geom_axes_lines(
+  plot + geom_axes_lines(
     plot_data,
     hline_arb = hline_arb,
     hline_arb_color = hline_arb_color,
@@ -325,5 +325,4 @@ g_spaghettiplot <- function(data,
     hline_vars_colors = hline_vars_colors,
     hline_vars_labels = hline_vars_labels
   )
-  line_axis_label(plot)
 }
