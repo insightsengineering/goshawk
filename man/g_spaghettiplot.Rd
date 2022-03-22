@@ -21,7 +21,7 @@ g_spaghettiplot(
   ylim = c(NA, NA),
   alpha = 1,
   facet_ncol = 2,
-  xtick = waiver(),
+  xtick = ggplot2::waiver(),
   xlabel = xtick,
   rotate_xlab = FALSE,
   font_size = 12,
@@ -71,10 +71,10 @@ if the default limits are not suitable.}
 \item{facet_ncol}{number of facets per row.}
 
 \item{xtick}{a vector to define the tick values of time in x-axis.
-Default value is waiver().}
+Default value is ggplot2::waiver().}
 
 \item{xlabel}{vector with same length of xtick to define the label of x-axis tick values. Default
-value is waiver().}
+value is ggplot2::waiver().}
 
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 

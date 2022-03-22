@@ -22,8 +22,8 @@
 #' @param vline_vars_labels ('character vector') labels for the legend to the vertical lines defined by variables.
 #'
 #' @examples
-#' p <- ggplot(mtcars, aes(wt, mpg)) +
-#'   geom_point() +
+#' p <- ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) +
+#'   ggplot2::geom_point() +
 #'   goshawk:::geom_axes_lines(
 #'     hline_arb = c(20, 25, 30),
 #'     hline_arb_color = "red",
@@ -195,8 +195,8 @@ NULL
 #' library(ggplot2)
 #'
 #' data <- data.frame(x = seq_len(10), y = seq_len(10), color = rep(c("a", "b"), each = 5))
-#' ggplot(data, aes(x = x, y = y, color = color)) +
-#'   geom_point() +
+#' ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
+#'   ggplot2::geom_point() +
 #'   goshawk:::geom_arb_hline(yintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2)
 geom_arb_hline <- function(yintercept,
                            label = "Horizontal line",
@@ -216,19 +216,19 @@ geom_arb_hline <- function(yintercept,
 
   list(
     ggnewscale::new_scale_color(),
-    geom_hline(
-      mapping = aes(
+    ggplot2::geom_hline(
+      mapping = ggplot2::aes(
         yintercept = yintercept,
         color = color_var, # need legend entry for each color-label combination
       ),
       data = data,
       ...
     ),
-    scale_color_manual(
+    ggplot2::scale_color_manual(
       name = legend_title,
-      values = setNames(data$color, data$color_var),
+      values = stats::setNames(data$color, data$color_var),
       labels = data$label,
-      guide = guide_legend(order = 11) # high order to be put after main plot items
+      guide = ggplot2::guide_legend(order = 11) # high order to be put after main plot items
     )
   )
 }
@@ -240,8 +240,8 @@ geom_arb_hline <- function(yintercept,
 #' library(ggplot2)
 #'
 #' data <- data.frame(x = seq_len(10), y = seq_len(10), color = rep(c("a", "b"), each = 5))
-#' ggplot(data, aes(x = x, y = y, color = color)) +
-#'   geom_point() +
+#' ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
+#'   ggplot2::geom_point() +
 #'   goshawk:::geom_arb_vline(xintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2)
 geom_arb_vline <- function(xintercept,
                            label = "Vertical line",
@@ -262,19 +262,19 @@ geom_arb_vline <- function(xintercept,
 
   list(
     ggnewscale::new_scale_color(),
-    geom_vline(
-      mapping = aes(
+    ggplot2::geom_vline(
+      mapping = ggplot2::aes(
         xintercept = xintercept,
         color = color_var, # need legend entry for each color-label combination
       ),
       data = data,
       ...
     ),
-    scale_color_manual(
+    ggplot2::scale_color_manual(
       name = legend_title,
-      values = setNames(data$color, data$color_var),
+      values = stats::setNames(data$color, data$color_var),
       labels = data$label,
-      guide = guide_legend(order = 12) # high order to be put after main plot items
+      guide = ggplot2::guide_legend(order = 12) # high order to be put after main plot items
     )
   )
 }
@@ -293,8 +293,8 @@ geom_arb_vline <- function(xintercept,
 #'   lower = rep(c(2, 3), each = 5),
 #'   upper = rep(c(7, 8), each = 5)
 #' )
-#' ggplot(data, aes(x = x, y = y, color = color)) +
-#'   geom_point() +
+#' ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
+#'   ggplot2::geom_point() +
 #'   goshawk:::geom_range_hline(
 #'     vars = c("lower", "upper"),
 #'     data = data.frame(lower = 2, upper = 7),
@@ -335,8 +335,8 @@ geom_range_hline <- function(vars,
 #'   lower = rep(c(2, 3), each = 5),
 #'   upper = rep(c(7, 8), each = 5)
 #' )
-#' ggplot(data, aes(x = x, y = y, color = color)) +
-#'   geom_point() +
+#' ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
+#'   ggplot2::geom_point() +
 #'   goshawk:::geom_range_vline(
 #'     vars = c("lower", "upper"),
 #'     data = data.frame(lower = 2, upper = 7),

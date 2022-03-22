@@ -22,9 +22,9 @@
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
 #' @param xtick a vector to define the tick values of time in x-axis.
-#' Default value is waiver().
+#' Default value is ggplot2::waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default
-#'  value is waiver().
+#'  value is ggplot2::waiver().
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
@@ -42,8 +42,6 @@
 #' @return \code{ggplot} object
 #'
 #' @export
-#'
-#' @importFrom magrittr extract2
 #'
 #' @examples
 #'
@@ -184,7 +182,7 @@ g_spaghettiplot <- function(data,
                             ylim = c(NA, NA),
                             alpha = 1.0,
                             facet_ncol = 2,
-                            xtick = waiver(),
+                            xtick = ggplot2::waiver(),
                             xlabel = xtick,
                             rotate_xlab = FALSE,
                             font_size = 12,
@@ -222,12 +220,12 @@ g_spaghettiplot <- function(data,
   unit <- plot_data %>%
     select(!!sym(unit_var)) %>%
     unique() %>%
-    extract2(1)
+    magrittr::extract2(1)
   unit1 <- ifelse(is.na(unit) | unit == "", " ", paste0(" (", unit, ") "))
   biomarker1 <- plot_data %>%
     select(!!sym(biomarker_var_label)) %>%
     unique() %>%
-    extract2(1)
+    magrittr::extract2(1)
   gtitle <- paste0(biomarker1, unit1, value_var, " Values by Treatment @ Visits")
   gxlab <- if (is.null(attr(data[[time]], "label"))) time else attr(data[[time]], "label")
   gylab <- paste0(biomarker1, " ", value_var, " Values")
@@ -238,19 +236,22 @@ g_spaghettiplot <- function(data,
   # Add footnote to identify LLOQ and ULOQ values pulled from data
   caption_loqs_label <- h_caption_loqs_label(loqs_data = plot_data)
 
-  plot <- ggplot(data = plot_data, aes_string(x = time, y = value_var, color = trt_group, group = subj_id)) +
-    geom_point(size = 0.8, na.rm = TRUE) +
-    geom_line(size = 0.4, alpha = alpha, na.rm = TRUE) +
-    facet_wrap(trt_group, ncol = facet_ncol) +
-    labs(caption = caption_loqs_label) +
-    theme_bw() +
-    ggtitle(gtitle) +
-    xlab(gxlab) +
-    ylab(gylab) +
-    theme(plot.title = element_text(size = font_size, margin = margin(), hjust = 0.5))
+  plot <- ggplot2::ggplot(
+    data = plot_data,
+    ggplot2::aes_string(x = time, y = value_var, color = trt_group, group = subj_id)
+  ) +
+    ggplot2::geom_point(size = 0.8, na.rm = TRUE) +
+    ggplot2::geom_line(size = 0.4, alpha = alpha, na.rm = TRUE) +
+    ggplot2::facet_wrap(trt_group, ncol = facet_ncol) +
+    ggplot2::labs(caption = caption_loqs_label) +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(gtitle) +
+    ggplot2::xlab(gxlab) +
+    ggplot2::ylab(gylab) +
+    ggplot2::theme(plot.title = ggplot2::element_text(size = font_size, margin = ggplot2::margin(), hjust = 0.5))
 
   # Apply y-axis zoom range
-  plot <- plot + coord_cartesian(ylim = ylim)
+  plot <- plot + ggplot2::coord_cartesian(ylim = ylim)
 
   # add group statistics
   # can't use stat_summary() because of presenting values for groups with all missings
@@ -264,55 +265,55 @@ g_spaghettiplot <- function(data,
     } else {
       plot_data_groupped <- plot_data %>%
         group_by(!!sym(trt_group), !!sym(time)) %>%
-        transmute(AGG_VAL = median(!!sym(value_var), na.rm = TRUE))
+        transmute(AGG_VAL = stats::median(!!sym(value_var), na.rm = TRUE))
 
       plot_data_groupped$metric <- "Median"
     }
     plot <- plot +
-      geom_line(
-        aes_string(x = time, y = "AGG_VAL", group = 1, linetype = "metric"),
+      ggplot2::geom_line(
+        ggplot2::aes_string(x = time, y = "AGG_VAL", group = 1, linetype = "metric"),
         data = plot_data_groupped,
         lwd = 1,
         color = color_comb,
         na.rm = TRUE
       ) +
-      guides(linetype = guide_legend("Group statistic", order = 2))
+      ggplot2::guides(linetype = ggplot2::guide_legend("Group statistic", order = 2))
   }
   # Format x-label
   if (xtype == "continuous") {
     plot <- plot +
-      scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
+      ggplot2::scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
   } else if (xtype == "discrete") {
     plot <- plot +
-      scale_x_discrete(breaks = xtick, labels = xlabel)
+      ggplot2::scale_x_discrete(breaks = xtick, labels = xlabel)
   }
   if (rotate_xlab) {
     plot <- plot +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
   }
   # Add manual color
   if (!is.null(color_manual)) {
     plot <- plot +
-      scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
+      ggplot2::scale_color_manual(values = color_manual, name = trt_label, guide = ggplot2::guide_legend(order = 1))
   } else {
-    plot1 +
-      scale_color_discrete(guide = guide_legend(order = 1))
+    plot +
+      ggplot2::scale_color_discrete(guide = ggplot2::guide_legend(order = 1))
   }
 
 
   # Format font size
   if (!is.null(font_size)) {
     plot <- plot +
-      theme(
-        plot.title = element_text(size = font_size, margin = margin()),
-        axis.title.x = element_text(size = font_size),
-        axis.text.x = element_text(size = font_size),
-        axis.title.y = element_text(size = font_size),
-        axis.text.y = element_text(size = font_size),
-        legend.title = element_text(size = font_size),
-        legend.text = element_text(size = font_size),
-        strip.text.x = element_text(size = font_size),
-        strip.text.y = element_text(size = font_size)
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(size = font_size, margin = ggplot2::margin()),
+        axis.title.x = ggplot2::element_text(size = font_size),
+        axis.text.x = ggplot2::element_text(size = font_size),
+        axis.title.y = ggplot2::element_text(size = font_size),
+        axis.text.y = ggplot2::element_text(size = font_size),
+        legend.title = ggplot2::element_text(size = font_size),
+        legend.text = ggplot2::element_text(size = font_size),
+        strip.text.x = ggplot2::element_text(size = font_size),
+        strip.text.y = ggplot2::element_text(size = font_size)
       )
   }
   # Add horizontal line for range based on option

@@ -25,7 +25,7 @@ g_lineplot(
   hline_arb = numeric(0),
   hline_arb_color = "red",
   hline_arb_label = "Horizontal line",
-  xtick = waiver(),
+  xtick = ggplot2::waiver(),
   xlabel = xtick,
   rotate_xlab = FALSE,
   plot_font_size = 12,
@@ -80,10 +80,10 @@ x-axis variable is character or factor.}
 \item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
 \item{xtick}{a vector to define the tick values of time in x-axis.
-Default value is waiver().}
+Default value is ggplot2::waiver().}
 
 \item{xlabel}{vector with same length of xtick to define the label of x-axis tick values.
-Default value is waiver().}
+Default value is ggplot2::waiver().}
 
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 
