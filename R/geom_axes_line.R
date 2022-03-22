@@ -213,13 +213,14 @@ geom_arb_hline <- function(yintercept,
     checkmate::check_character(label, len = length(yintercept))
   )
   data <- data.frame(yintercept, color, label, color_var = paste(color, label))
+  additional_args <- list(...)
 
   list(
     ggnewscale::new_scale_color(),
     ggplot2::geom_hline(
       mapping = ggplot2::aes(
         yintercept = yintercept,
-        color = color_var, # need legend entry for each color-label combination
+        color = additional_args$color_var, # need legend entry for each color-label combination
       ),
       data = data,
       ...
@@ -259,13 +260,14 @@ geom_arb_vline <- function(xintercept,
   )
 
   data <- data.frame(xintercept, color, label, color_var = paste(color, label))
+  additional_args <- list(...)
 
   list(
     ggnewscale::new_scale_color(),
     ggplot2::geom_vline(
       mapping = ggplot2::aes(
         xintercept = xintercept,
-        color = color_var, # need legend entry for each color-label combination
+        color = additional_args$color_var, # need legend entry for each color-label combination
       ),
       data = data,
       ...
