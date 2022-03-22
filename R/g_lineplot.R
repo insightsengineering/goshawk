@@ -394,7 +394,9 @@ g_lineplot <- function(label = "Line Plot",
     ) +
       ggplot2::theme_bw() +
       ggplot2::geom_point(position = pd) +
-      ggplot2::scale_color_manual(values = color_manual, name = trt_label, guide = ggplot2::guide_legend(ncol = 3, order = 1)) +
+      ggplot2::scale_color_manual(
+        values = color_manual, name = trt_label, guide = ggplot2::guide_legend(ncol = 3, order = 1)
+      ) +
       ggplot2::scale_linetype_manual(values = line_type, name = trt_label, guide = "none")
   } else {
     mappings <- sum_data %>%
