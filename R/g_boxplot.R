@@ -29,7 +29,7 @@
 #' @param facet_var variable to facet the plot by, or "None" if no faceting
 #'   required.
 #' @param xaxis_var variable used to group the data on the x-axis.
-#' @param facet_ncol number of facets per row.  NULL = Use the default for facet_wrap
+#' @param facet_ncol number of facets per row.  NULL = Use the default for ggplot2::facet_wrap
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
 #' @param font_size point size of tex to use.  NULL is use default size
 #' @param dot_size plot dot size.
@@ -200,13 +200,13 @@ g_boxplot <- function(data,
   # add footnote to identify LLOQ and ULOQ values pulled from data
   caption_loqs_label <- h_caption_loqs_label(loqs_data = data)
   # Base plot
-  plot1 <- ggplot(data)
+  plot1 <- ggplot2::ggplot(data)
   # Add boxes if required
   if (box) {
     plot1 <- plot1 +
-      geom_boxplot(
+      ggplot2::geom_boxplot(
         data = data,
-        aes_string(
+        ggplot2::aes_string(
           x = xaxis_var,
           y = yaxis_var,
           fill = NULL
@@ -224,17 +224,17 @@ g_boxplot <- function(data,
   }
 
   plot1 <- plot1 +
-    labs(color = trt_label, x = NULL, y = y_axis_label, caption = caption_loqs_label) +
-    theme_bw() +
-    ggtitle(ggtitle_label) +
-    theme(plot.title = element_text(size = font_size, hjust = 0.5))
+    ggplot2::labs(color = trt_label, x = NULL, y = y_axis_label, caption = caption_loqs_label) +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(ggtitle_label) +
+    ggplot2::theme(plot.title = ggplot2::element_text(size = font_size, hjust = 0.5))
   # Colors supplied?  Use color_manual, otherwise default ggplot coloring.
   plot1 <- if (!is.null(color_manual)) {
     plot1 +
-      scale_color_manual(values = color_manual, guide = guide_legend(order = 1))
+      ggplot2::scale_color_manual(values = color_manual, guide = ggplot2::guide_legend(order = 1))
   } else {
     plot1 +
-      scale_color_discrete(guide = guide_legend(order = 1))
+      ggplot2::scale_color_discrete(guide = ggplot2::guide_legend(order = 1))
   }
 
   # Format LOQ flag symbol shape
@@ -245,20 +245,20 @@ g_boxplot <- function(data,
   }
   # add LOQ legend conditionally
   plot1 <- if (!loq_legend) {
-    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
+    plot1 + ggplot2::scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
   } else {
-    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = guide_legend(order = 2))
+    plot1 + ggplot2::scale_shape_manual(values = shape_manual, name = "LoQ", guide = ggplot2::guide_legend(order = 2))
   }
 
   plot1 <- plot1 +
-    geom_jitter(
+    ggplot2::geom_jitter(
       data = data,
-      aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
-      alpha = alpha, position = position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE
+      ggplot2::aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
+      alpha = alpha, position = ggplot2::position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE
     )
 
   # Any limits for the Y axis?
-  plot1 <- plot1 + coord_cartesian(ylim = ylim)
+  plot1 <- plot1 + ggplot2::coord_cartesian(ylim = ylim)
 
 
   # Add facetting.
@@ -267,10 +267,10 @@ g_boxplot <- function(data,
       if (!is_finite(facet_ncol)) facet_ncol <- 0
       if (facet_ncol >= 1) {
         plot1 <- plot1 +
-          facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = round(facet_ncol))
+          ggplot2::facet_wrap(stats::as.formula(paste0(" ~ ", facet_var)), ncol = round(facet_ncol))
       } else {
         plot1 <- plot1 +
-          facet_wrap(as.formula(paste0(" ~ ", facet_var)))
+          ggplot2::facet_wrap(stats::as.formula(paste0(" ~ ", facet_var)))
       }
     }
   }
@@ -281,21 +281,21 @@ g_boxplot <- function(data,
   # Format font size
   if (is_finite(font_size)) {
     plot1 <- plot1 +
-      theme(
-        axis.title.x = element_text(size = font_size),
-        axis.text.x = element_text(size = font_size),
-        axis.title.y = element_text(size = font_size),
-        axis.text.y = element_text(size = font_size),
-        legend.title = element_text(size = font_size),
-        legend.text = element_text(size = font_size),
-        strip.text.x = element_text(size = font_size),
-        strip.text.y = element_text(size = font_size)
+      ggplot2::theme(
+        axis.title.x = ggplot2::element_text(size = font_size),
+        axis.text.x = ggplot2::element_text(size = font_size),
+        axis.title.y = ggplot2::element_text(size = font_size),
+        axis.text.y = ggplot2::element_text(size = font_size),
+        legend.title = ggplot2::element_text(size = font_size),
+        legend.text = ggplot2::element_text(size = font_size),
+        strip.text.x = ggplot2::element_text(size = font_size),
+        strip.text.y = ggplot2::element_text(size = font_size)
       )
   }
   # Format x-label
   if (rotate_xlab) {
     plot1 <- plot1 +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
   }
 
   # Add horizontal line for range based on option

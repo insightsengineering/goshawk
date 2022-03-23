@@ -31,14 +31,10 @@
 #' @param dot_size plot dot size.
 #' @param reg_text_size font size control for regression line annotations.
 #'
-#' @importFrom stats as.formula cor median quantile sd
-#'
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
 #' @details Regression uses deming model.
-#'
-#' @importFrom stats setNames
 #'
 #' @export
 #'
@@ -166,38 +162,38 @@ g_scatterplot <- function(label = "Scatter Plot",
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
   # create plot foundation
-  plot1 <- ggplot2::ggplot(data = plot_data, aes_string(x = xaxis_var, y = yaxis_var, color = trt_group)) +
-    geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
-    coord_cartesian(xlim = xlim, ylim = ylim) +
-    facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol) +
-    theme_bw() +
-    ggtitle(ggtitle_label) +
-    theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
-    xlab(x_axis_label) +
-    ylab(y_axis_label)
+  plot1 <- ggplot2::ggplot(data = plot_data, ggplot2::aes_string(x = xaxis_var, y = yaxis_var, color = trt_group)) +
+    ggplot2::geom_point(ggplot2::aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
+    ggplot2::coord_cartesian(xlim = xlim, ylim = ylim) +
+    ggplot2::facet_wrap(stats::as.formula(paste0(" ~ ", visit)), ncol = facet_ncol) +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(ggtitle_label) +
+    ggplot2::theme(plot.title = ggplot2::element_text(size = font_size, hjust = 0.5)) +
+    ggplot2::xlab(x_axis_label) +
+    ggplot2::ylab(y_axis_label)
   # add grid faceting to foundation
   if (facet) {
     plot1 <- plot1 +
-      facet_grid(as.formula(paste0(facet_var, " ~ ", visit)))
+      ggplot2::facet_grid(stats::as.formula(paste0(facet_var, " ~ ", visit)))
   }
   # add regression line
   if (reg_line) {
     slope <- function(x, y) {
-      ratio <- sd(x) / sd(y)
+      ratio <- stats::sd(x) / stats::sd(y)
       res <- if (!is.na(ratio) & ratio > 0) {
         reg <- mc.deming(y, x, ratio)
         # return the evaluation of the ratio condition as third value in numeric vector
         # for conttroling downstream processing
         c(
           round(reg$b0, 2), round(reg$b1, 2),
-          ifelse(!is.na(ratio) && ratio > 0, cor(y, x, method = "spearman", use = "complete.obs"), NA_real_)
+          ifelse(!is.na(ratio) && ratio > 0, stats::cor(y, x, method = "spearman", use = "complete.obs"), NA_real_)
         )
       } else {
         # if ratio condition is not met then assign NA to returned vector
         # so that NULL condition does not throw error below
         as.numeric(c(NA, NA, NA))
       }
-      return(as_tibble(setNames(as.list(res), c("intercept", "slope", "corr"))))
+      return(as_tibble(stats::setNames(as.list(res), c("intercept", "slope", "corr"))))
     }
     sub_data <- plot_data %>%
       select(!!sym(trt_group), !!sym(visit), !!sym(xaxis_var), !!sym(yaxis_var)) %>%
@@ -207,10 +203,10 @@ g_scatterplot <- function(label = "Scatter Plot",
 
     if (!(all(is.na(sub_data$intercept)) && all(is.na(sub_data$slope)))) {
       plot1 <- plot1 +
-        geom_abline(
+        ggplot2::geom_abline(
           data = sub_data,
           # has to put some neutral values for missings, i.e. big & negative intercept + 0 slope
-          aes(
+          ggplot2::aes(
             intercept = vapply(.data$intercept, function(x) if (!is.na(x)) x else numeric(1), FUN.VALUE = -9999),
             slope = vapply(.data$slope, function(x) if (!is.na(x)) x else numeric(1), FUN.VALUE = 0),
             color = !!sym(trt_group)
@@ -218,9 +214,9 @@ g_scatterplot <- function(label = "Scatter Plot",
         )
     }
     plot1 <- plot1 +
-      geom_text(
+      ggplot2::geom_text(
         data = filter(sub_data, row_number() == 1),
-        aes(
+        ggplot2::aes(
           x = -Inf,
           y = Inf,
           hjust = 0,
@@ -234,65 +230,65 @@ g_scatterplot <- function(label = "Scatter Plot",
         ),
         size = reg_text_size
       ) +
-      labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
+      ggplot2::labs(caption = paste("Deming Regression Model, Spearman Correlation Method"))
   }
   # Add abline
   if (yaxis_var %in% c("AVAL", "AVALL2", "BASE2", "BASE2L2", "BASE", "BASEL2")) {
-    plot1 <- plot1 + geom_abline(intercept = 0, slope = 1)
+    plot1 <- plot1 + ggplot2::geom_abline(intercept = 0, slope = 1)
   }
   if (yaxis_var %in% c("CHG2", "CHG")) {
-    plot1 <- plot1 + geom_abline(intercept = 0, slope = 0)
+    plot1 <- plot1 + ggplot2::geom_abline(intercept = 0, slope = 0)
   }
   if (yaxis_var %in% c("PCHG2", "PCHG")) {
-    plot1 <- plot1 + geom_abline(intercept = 100, slope = 0)
+    plot1 <- plot1 + ggplot2::geom_abline(intercept = 100, slope = 0)
   }
   # Format font size
   if (!is.null(font_size)) {
     plot1 <- plot1 +
-      theme(
-        axis.title.x = element_text(size = font_size),
-        axis.text.x = element_text(size = font_size),
-        axis.title.y = element_text(size = font_size),
-        axis.text.y = element_text(size = font_size),
-        legend.title = element_text(size = font_size),
-        legend.text = element_text(size = font_size),
-        strip.text.x = element_text(size = font_size),
-        strip.text.y = element_text(size = font_size)
+      ggplot2::theme(
+        axis.title.x = ggplot2::element_text(size = font_size),
+        axis.text.x = ggplot2::element_text(size = font_size),
+        axis.title.y = ggplot2::element_text(size = font_size),
+        axis.text.y = ggplot2::element_text(size = font_size),
+        legend.title = ggplot2::element_text(size = font_size),
+        legend.text = ggplot2::element_text(size = font_size),
+        strip.text.x = ggplot2::element_text(size = font_size),
+        strip.text.y = ggplot2::element_text(size = font_size)
       )
   }
   # Format treatment color
   if (!is.null(color_manual)) {
     plot1 <- plot1 +
-      scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
+      ggplot2::scale_color_manual(values = color_manual, name = trt_label, guide = ggplot2::guide_legend(order = 1))
   } else {
     plot1 +
-      scale_color_discrete(guide = guide_legend(order = 1))
+      ggplot2::scale_color_discrete(guide = ggplot2::guide_legend(order = 1))
   }
 
   # Format LOQ flag symbol shape
   if (!is.null(shape_manual)) {
     plot1 <- plot1 +
-      scale_shape_manual(values = shape_manual, name = "LOQ")
+      ggplot2::scale_shape_manual(values = shape_manual, name = "LOQ")
   }
   # Format dot size
   if (!is.null(dot_size)) {
     plot1 <- plot1 +
-      geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
+      ggplot2::geom_point(ggplot2::aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
   }
   # Format x-label
   if (rotate_xlab) {
     plot1 <- plot1 +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
   }
   # Add horizontal line
   if (!is.null(hline)) {
     plot1 <- plot1 +
-      geom_hline(aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
+      ggplot2::geom_hline(ggplot2::aes(yintercept = hline), color = "red", linetype = "dashed", size = 0.5)
   }
   # Add vertical line
   if (!is.null(vline)) {
     plot1 <- plot1 +
-      geom_vline(aes(xintercept = vline), color = "red", linetype = "dashed", size = 0.5)
+      ggplot2::geom_vline(ggplot2::aes(xintercept = vline), color = "red", linetype = "dashed", size = 0.5)
   }
   plot1
 }

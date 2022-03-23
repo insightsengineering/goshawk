@@ -284,41 +284,41 @@ g_correlationplot <- function(label = "Correlation Plot",
   # teal.goshawk.tm_g_correlationplot.R
   plot1 <- ggplot2::ggplot(
     data = plot_data,
-    aes_string(
+    ggplot2::aes_string(
       x = xvar,
       y = yvar,
       color = trt_group
     )
   ) +
-    coord_cartesian(xlim = xlim, ylim = ylim) +
-    theme_bw() +
-    labs(caption = caption_loqs_label_x_y) +
-    ggtitle(title_text) +
-    theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
-    xlab(xaxis_lab) +
-    ylab(yaxis_lab)
+    ggplot2::coord_cartesian(xlim = xlim, ylim = ylim) +
+    ggplot2::theme_bw() +
+    ggplot2::labs(caption = caption_loqs_label_x_y) +
+    ggplot2::ggtitle(title_text) +
+    ggplot2::theme(plot.title = ggplot2::element_text(size = font_size, hjust = 0.5)) +
+    ggplot2::xlab(xaxis_lab) +
+    ggplot2::ylab(yaxis_lab)
 
   # conditionally facet
   plot1 <- if (visit_facet && facet) {
     plot1 +
-      facet_grid(as.formula(paste0(facet_var, " ~ ", visit)))
+      ggplot2::facet_grid(stats::as.formula(paste0(facet_var, " ~ ", visit)))
   } else if (visit_facet) {
     plot1 +
-      facet_wrap(as.formula(paste0(" ~ ", visit)), ncol = facet_ncol)
+      ggplot2::facet_wrap(stats::as.formula(paste0(" ~ ", visit)), ncol = facet_ncol)
   } else if (facet) {
     plot1 +
-      facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol)
+      ggplot2::facet_wrap(stats::as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol)
   } else {
     plot1
   }
 
   plot1 <- plot1 +
-    geom_point(aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
+    ggplot2::geom_point(ggplot2::aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
 
   # add regression line
   if (reg_line) {
     slope <- function(x, y) {
-      ratio <- sd(x) / sd(y)
+      ratio <- stats::sd(x) / stats::sd(y)
       if (!is.na(ratio) & ratio > 0) {
         reg <- mc.deming(y, x, ratio)
         # return the evaluation of the ratio condition as third value in numeric vector to control
@@ -336,17 +336,17 @@ g_correlationplot <- function(label = "Correlation Plot",
       mutate(slope = slope(!!sym(yvar), !!sym(xvar))[2]) %>%
       mutate(corr = ifelse(
         slope(!!sym(yvar), !!sym(xvar))[3],
-        cor(!!sym(yvar), !!sym(xvar), method = "spearman", use = "complete.obs"),
+        stats::cor(!!sym(yvar), !!sym(xvar), method = "spearman", use = "complete.obs"),
         NA
       ))
     plot1 <- plot1 +
-      geom_abline(
+      ggplot2::geom_abline(
         data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by
-        aes_string(intercept = "intercept", slope = "slope", color = trt_group)
+        ggplot2::aes_string(intercept = "intercept", slope = "slope", color = trt_group)
       ) +
-      geom_text(
+      ggplot2::geom_text(
         data = filter(sub_data, row_number() == 1),
-        aes_(
+        ggplot2::aes_(
           x = -Inf,
           y = Inf,
           hjust = 0,
@@ -361,31 +361,31 @@ g_correlationplot <- function(label = "Correlation Plot",
         size = reg_text_size,
         show.legend = FALSE
       ) +
-      labs(caption = paste0(
+      ggplot2::labs(caption = paste0(
         "Deming Regression Model, Spearman Correlation Method.\n",
         caption_loqs_label_x_y
       ))
   }
   # Format font size
   if (!is.null(font_size)) {
-    plot1 <- plot1 + theme(
-      axis.title.x = element_text(size = font_size),
-      axis.text.x = element_text(size = font_size),
-      axis.title.y = element_text(size = font_size),
-      axis.text.y = element_text(size = font_size),
-      legend.title = element_text(size = font_size),
-      legend.text = element_text(size = font_size),
-      strip.text.x = element_text(size = font_size),
-      strip.text.y = element_text(size = font_size)
+    plot1 <- plot1 + ggplot2::theme(
+      axis.title.x = ggplot2::element_text(size = font_size),
+      axis.text.x = ggplot2::element_text(size = font_size),
+      axis.title.y = ggplot2::element_text(size = font_size),
+      axis.text.y = ggplot2::element_text(size = font_size),
+      legend.title = ggplot2::element_text(size = font_size),
+      legend.text = ggplot2::element_text(size = font_size),
+      strip.text.x = ggplot2::element_text(size = font_size),
+      strip.text.y = ggplot2::element_text(size = font_size)
     )
   }
   # Format treatment color
   plot1 <- if (!is.null(color_manual)) {
     plot1 +
-      scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
+      ggplot2::scale_color_manual(values = color_manual, name = trt_label, guide = ggplot2::guide_legend(order = 1))
   } else {
     plot1 +
-      scale_color_discrete(guide = guide_legend(order = 1))
+      ggplot2::scale_color_discrete(guide = ggplot2::guide_legend(order = 1))
   }
 
   # Format LOQ flag symbol shape
@@ -396,14 +396,14 @@ g_correlationplot <- function(label = "Correlation Plot",
   }
   # add LOQ legend conditionally
   plot1 <- if (!loq_legend) {
-    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
+    plot1 + ggplot2::scale_shape_manual(values = shape_manual, name = "LoQ", guide = "none")
   } else {
-    plot1 + scale_shape_manual(values = shape_manual, name = "LoQ", guide = guide_legend(order = 2))
+    plot1 + ggplot2::scale_shape_manual(values = shape_manual, name = "LoQ", guide = ggplot2::guide_legend(order = 2))
   }
   # Format x-label
   if (rotate_xlab) {
     plot1 <- plot1 +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
   }
 
   plot1 + geom_axes_lines(

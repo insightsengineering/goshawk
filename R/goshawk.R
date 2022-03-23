@@ -7,11 +7,12 @@
 #' @name goshawk
 #'
 #' @import dplyr
-#' @import ggplot2
+#' @importFrom ggplot2 ggplot
+#' @importFrom magrittr extract2
 #' @importFrom rlang .data := !!
 #' @keywords internal
 NULL
 
 #' @import mcr
 #' @importFrom utils getFromNamespace
-mc.deming <- getFromNamespace("mc.deming", "mcr") # nolint
+mc.deming <- utils::getFromNamespace("mc.deming", "mcr") # nolint

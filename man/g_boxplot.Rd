@@ -65,7 +65,7 @@ if the default limits are not suitable.}
 
 \item{alpha}{dot transparency (0 = transparent, 1 = opaque)}
 
-\item{facet_ncol}{number of facets per row.  NULL = Use the default for facet_wrap}
+\item{facet_ncol}{number of facets per row.  NULL = Use the default for ggplot2::facet_wrap}
 
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 

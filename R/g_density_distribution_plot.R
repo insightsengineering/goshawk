@@ -181,47 +181,47 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   # Add footnote to identify LLOQ and ULOQ values pulled from data
   caption_loqs_label <- h_caption_loqs_label(loqs_data = plot_data)
 
-  plot1 <- ggplot(plot_data) +
-    stat_density(
-      aes_string(x = xaxis_var, colour = trt_group),
+  plot1 <- ggplot2::ggplot(plot_data) +
+    ggplot2::stat_density(
+      ggplot2::aes_string(x = xaxis_var, colour = trt_group),
       size = line_size,
       geom = "line",
       position = "identity"
     ) +
-    coord_cartesian(xlim = xlim, ylim = ylim) +
-    facet_wrap(as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol) +
-    labs(caption = caption_loqs_label) +
-    theme_bw() +
-    ggtitle(ggtitle_label) +
-    theme(plot.title = element_text(size = font_size, hjust = 0.5)) +
-    xlab(paste(x_axis_label)) +
-    ylab(paste("Density")) +
-    scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(order = 1))
+    ggplot2::coord_cartesian(xlim = xlim, ylim = ylim) +
+    ggplot2::facet_wrap(stats::as.formula(paste0(" ~ ", facet_var)), ncol = facet_ncol) +
+    ggplot2::labs(caption = caption_loqs_label) +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(ggtitle_label) +
+    ggplot2::theme(plot.title = ggplot2::element_text(size = font_size, hjust = 0.5)) +
+    ggplot2::xlab(paste(x_axis_label)) +
+    ggplot2::ylab(paste("Density")) +
+    ggplot2::scale_color_manual(values = color_manual, name = trt_label, guide = ggplot2::guide_legend(order = 1))
 
   if (rug_plot) {
     plot1 <- plot1 +
-      geom_rug(aes(x = !!sym(xaxis_var), colour = !!sym(trt_group)))
+      ggplot2::geom_rug(ggplot2::aes(x = !!sym(xaxis_var), colour = !!sym(trt_group)))
   }
 
   # Format font size
   if (!is.null(font_size)) {
     plot1 <- plot1 +
-      theme(
-        axis.title.x = element_text(size = font_size),
-        axis.text.x = element_text(size = font_size),
-        axis.title.y = element_text(size = font_size),
-        axis.text.y = element_text(size = font_size),
-        legend.title = element_text(size = font_size),
-        legend.text = element_text(size = font_size),
-        strip.text.x = element_text(size = font_size),
-        strip.text.y = element_text(size = font_size)
+      ggplot2::theme(
+        axis.title.x = ggplot2::element_text(size = font_size),
+        axis.text.x = ggplot2::element_text(size = font_size),
+        axis.title.y = ggplot2::element_text(size = font_size),
+        axis.text.y = ggplot2::element_text(size = font_size),
+        legend.title = ggplot2::element_text(size = font_size),
+        legend.text = ggplot2::element_text(size = font_size),
+        strip.text.x = ggplot2::element_text(size = font_size),
+        strip.text.y = ggplot2::element_text(size = font_size)
       )
   }
 
   # Format x-label
   if (rotate_xlab) {
     plot1 <- plot1 +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
   }
 
   # Add horizontal line

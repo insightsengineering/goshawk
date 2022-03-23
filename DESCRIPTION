@@ -19,12 +19,12 @@ Description: Functions that plot and summarize biomarkers/labs of
 License: Apache License 2.0 | file LICENSE
 Depends:
     dplyr,
-    ggplot2,
     R (>= 3.6)
 Imports:
     checkmate,
     cowplot,
     ggnewscale,
+    ggplot2,
     grDevices,
     grid,
     magrittr,

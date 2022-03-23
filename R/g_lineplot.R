@@ -23,9 +23,9 @@
 #' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
 #' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
 #' @param xtick a vector to define the tick values of time in x-axis.
-#' Default value is waiver().
+#' Default value is ggplot2::waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values.
-#' Default value is waiver().
+#' Default value is ggplot2::waiver().
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param plot_font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge.
@@ -36,11 +36,6 @@
 #' Default: 12
 #' @param display_center_tbl boolean whether to include table of means or medians
 #'
-#' @importFrom cowplot plot_grid
-#' @importFrom grDevices hcl
-#' @importFrom stringr str_count str_wrap str_to_title
-#' @importFrom rlang .data
-#' @importFrom grid unit convertX
 #'
 #' @author Balazs Toth (toth.balazs@gene.com)
 #' @author Wenyi Liu (wenyi.liu@roche.com)
@@ -253,7 +248,7 @@ g_lineplot <- function(label = "Line Plot",
                        hline_arb = numeric(0),
                        hline_arb_color = "red",
                        hline_arb_label = "Horizontal line",
-                       xtick = waiver(),
+                       xtick = ggplot2::waiver(),
                        xlabel = xtick,
                        rotate_xlab = FALSE,
                        plot_font_size = 12,
@@ -265,7 +260,7 @@ g_lineplot <- function(label = "Line Plot",
   checkmate::assert_numeric(ylim, len = 2)
 
   ## Pre-process data
-  table_font_size <- convertX(unit(table_font_size, "points"), "mm", valueOnly = TRUE)
+  table_font_size <- grid::convertX(grid::unit(table_font_size, "points"), "mm", valueOnly = TRUE)
 
   ## - convert to factors
   label_trt_group <- attr(data[[trt_group]], "label")
@@ -286,7 +281,7 @@ g_lineplot <- function(label = "Line Plot",
   }
 
   line_type <- if (is.null(line_type)) {
-    setNames(rep("dashed", nlevels(data[[trt_group]])), levels(data[[trt_group]]))
+    stats::setNames(rep("dashed", nlevels(data[[trt_group]])), levels(data[[trt_group]]))
   } else {
     stopifnot(all(levels(data[[trt_group]]) %in% names(line_type)))
     line_type
@@ -302,7 +297,7 @@ g_lineplot <- function(label = "Line Plot",
       } else {
         default_shapes[seq_len(nlevels(data[[shape]]))]
       }
-      setNames(res, levels(data[[shape]]))
+      stats::setNames(res, levels(data[[shape]]))
     } else {
       stopifnot(all(levels(data[[shape]]) %in% names(shape_type)))
       shape_type
@@ -330,11 +325,11 @@ g_lineplot <- function(label = "Line Plot",
     summarise(
       count = sum(!is.na(!!sym(value_var))),
       mean = mean(!!sym(value_var), na.rm = TRUE),
-      CIup = mean(!!sym(value_var), na.rm = TRUE) + 1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
-      CIdown = mean(!!sym(value_var), na.rm = TRUE) - 1.96 * sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
-      median = median(!!sym(value_var), na.rm = TRUE),
-      quant25 = quantile(!!sym(value_var), 0.25, na.rm = TRUE),
-      quant75 = quantile(!!sym(value_var), 0.75, na.rm = TRUE)
+      CIup = mean(!!sym(value_var), na.rm = TRUE) + 1.96 * stats::sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
+      CIdown = mean(!!sym(value_var), na.rm = TRUE) - 1.96 * stats::sd(!!sym(value_var), na.rm = TRUE) / sqrt(n()),
+      median = stats::median(!!sym(value_var), na.rm = TRUE),
+      quant25 = stats::quantile(!!sym(value_var), 0.25, na.rm = TRUE),
+      quant75 = stats::quantile(!!sym(value_var), 0.75, na.rm = TRUE)
     ) %>%
     arrange_at(c(trt_group, shape))
 
@@ -348,14 +343,14 @@ g_lineplot <- function(label = "Line Plot",
 
   int <- unique_name("int", names(sum_data))
   sum_data[[int]] <- new_interaction(listin, sep = " ")
-  sum_data[[int]] <- str_wrap(sum_data[[int]], 12)
+  sum_data[[int]] <- stringr::str_wrap(sum_data[[int]], 12)
   sum_data[[int]] <- factor(sum_data[[int]], sort(unique(sum_data[[int]])))
 
   unfiltered_data <- sum_data %>% mutate("met_threshold" = count >= count_threshold)
   sum_data <- unfiltered_data %>% filter(.data[["met_threshold"]])
 
   ## Base plot
-  pd <- position_dodge(dodge)
+  pd <- ggplot2::position_dodge(dodge)
   if (median) {
     line <- "median"
     up_limit <- "quant75"
@@ -383,8 +378,8 @@ g_lineplot <- function(label = "Line Plot",
     pull(biomarker_var_label) %>%
     unique()
 
-  gtitle <- paste0(biomarker1, unit1, str_to_title(line), " by Treatment @ Visits")
-  gylab <- paste0(biomarker1, " ", str_to_title(line), " of ", value_var, " Values")
+  gtitle <- paste0(biomarker1, unit1, stringr::str_to_title(line), " by Treatment @ Visits")
+  gylab <- paste0(biomarker1, " ", stringr::str_to_title(line), " of ", value_var, " Values")
 
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
@@ -393,14 +388,16 @@ g_lineplot <- function(label = "Line Plot",
   caption_loqs_label <- h_caption_loqs_label(loqs_data = filtered_data)
 
   if (is.null(shape)) {
-    plot1 <- ggplot(
+    plot1 <- ggplot2::ggplot(
       data = sum_data,
-      aes_string(x = time, y = line, color = trt_group, linetype = trt_group, group = int)
+      ggplot2::aes_string(x = time, y = line, color = trt_group, linetype = trt_group, group = int)
     ) +
-      theme_bw() +
-      geom_point(position = pd) +
-      scale_color_manual(values = color_manual, name = trt_label, guide = guide_legend(ncol = 3, order = 1)) +
-      scale_linetype_manual(values = line_type, name = trt_label, guide = "none")
+      ggplot2::theme_bw() +
+      ggplot2::geom_point(position = pd) +
+      ggplot2::scale_color_manual(
+        values = color_manual, name = trt_label, guide = ggplot2::guide_legend(ncol = 3, order = 1)
+      ) +
+      ggplot2::scale_linetype_manual(values = line_type, name = trt_label, guide = "none")
   } else {
     mappings <- sum_data %>%
       ungroup() %>%
@@ -412,58 +409,61 @@ g_lineplot <- function(label = "Line Plot",
         shps = shape_type[!!sym(shape)]
       )
 
-    col_mapping <- setNames(mappings$cols, mappings$int)
-    shape_mapping <- setNames(mappings$shps, mappings$int)
-    type_mapping <- setNames(mappings$types, mappings$int)
+    col_mapping <- stats::setNames(mappings$cols, mappings$int)
+    shape_mapping <- stats::setNames(mappings$shps, mappings$int)
+    type_mapping <- stats::setNames(mappings$types, mappings$int)
 
-    plot1 <- ggplot(
+    plot1 <- ggplot2::ggplot(
       data = sum_data,
-      aes_string(x = time, y = line, color = int, linetype = int, group = int, shape = int)
+      ggplot2::aes_string(x = time, y = line, color = int, linetype = int, group = int, shape = int)
     ) +
-      theme_bw() +
-      scale_color_manual(" ", values = col_mapping, guide = guide_legend(ncol = 3, order = 1)) +
-      scale_linetype_manual(" ", values = type_mapping, guide = "none") +
-      scale_shape_manual(" ", values = shape_mapping, guide = "none") +
-      theme(legend.key.size = unit(1, "cm")) +
-      geom_point(position = pd, size = 3)
+      ggplot2::theme_bw() +
+      ggplot2::scale_color_manual(" ", values = col_mapping, guide = ggplot2::guide_legend(ncol = 3, order = 1)) +
+      ggplot2::scale_linetype_manual(" ", values = type_mapping, guide = "none") +
+      ggplot2::scale_shape_manual(" ", values = shape_mapping, guide = "none") +
+      ggplot2::theme(legend.key.size = grid::unit(1, "cm")) +
+      ggplot2::geom_point(position = pd, size = 3)
   }
 
   plot1 <- plot1 +
-    geom_line(position = pd) +
-    geom_errorbar(aes_string(ymin = down_limit, ymax = up_limit), width = 0.45, position = pd, linetype = "solid") +
-    ggtitle(gtitle) +
-    labs(caption = paste(
+    ggplot2::geom_line(position = pd) +
+    ggplot2::geom_errorbar(
+      ggplot2::aes_string(ymin = down_limit, ymax = up_limit),
+      width = 0.45, position = pd, linetype = "solid"
+    ) +
+    ggplot2::ggtitle(gtitle) +
+    ggplot2::labs(caption = paste(
       "The output plot can display mean and median of input value.",
       "For mean, the error bar denotes 95% confidence interval.",
       "For median, the bar denotes the first to third quartile.\n",
       caption_loqs_label
     )) +
-    xlab(time) +
-    ylab(gylab) +
-    theme(
+    ggplot2::xlab(time) +
+    ggplot2::ylab(gylab) +
+    ggplot2::theme(
       legend.box = "vertical",
       legend.position = "bottom",
       legend.direction = "horizontal",
-      plot.title = element_text(size = plot_font_size, margin = margin(), hjust = 0.5),
-      axis.title.y = element_text(margin = margin(r = 20))
+      plot.title = ggplot2::element_text(size = plot_font_size, margin = ggplot2::margin(), hjust = 0.5),
+      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(r = 20))
     )
 
   # Apply y-axis zoom range
   plot1 <- plot1 +
-    coord_cartesian(ylim = ylim)
+    ggplot2::coord_cartesian(ylim = ylim)
 
   # Format x-label
   if (xtype == "continuous") {
     plot1 <- plot1 +
-      scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
+      ggplot2::scale_x_continuous(breaks = xtick, labels = xlabel, limits = c(NA, NA))
   } else if (xtype == "discrete") {
     plot1 <- plot1 +
-      scale_x_discrete(breaks = xtick, labels = xlabel)
+      ggplot2::scale_x_discrete(breaks = xtick, labels = xlabel)
   }
 
   if (rotate_xlab) {
     plot1 <- plot1 +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
   }
 
 
@@ -475,13 +475,13 @@ g_lineplot <- function(label = "Line Plot",
   # Format font size
   if (!is.null(plot_font_size)) {
     plot1 <- plot1 +
-      theme(
-        axis.title.x = element_text(size = plot_font_size),
-        axis.text.x = element_text(size = plot_font_size),
-        axis.title.y = element_text(size = plot_font_size),
-        axis.text.y = element_text(size = plot_font_size),
-        legend.title = element_text(size = plot_font_size),
-        legend.text = element_text(size = plot_font_size)
+      ggplot2::theme(
+        axis.title.x = ggplot2::element_text(size = plot_font_size),
+        axis.text.x = ggplot2::element_text(size = plot_font_size),
+        axis.title.y = ggplot2::element_text(size = plot_font_size),
+        axis.text.y = ggplot2::element_text(size = plot_font_size),
+        legend.title = ggplot2::element_text(size = plot_font_size),
+        legend.text = ggplot2::element_text(size = plot_font_size)
       )
   }
 
@@ -505,51 +505,51 @@ g_lineplot <- function(label = "Line Plot",
       sprintf(ifelse(unfiltered_data$count > 0, "%.2f", ""), unfiltered_data$mean)
     }
     tbl_central_value_title <- if (median) "Median" else "Mean"
-    tbl_central_value <- ggplot(unfiltered_data, aes_string(x = time, y = int, label = "center")) +
-      geom_text(aes(color = .data[["met_threshold"]]), size = table_font_size) +
-      ggtitle(tbl_central_value_title) +
-      theme_minimal() +
-      scale_y_discrete(labels = labels) +
-      theme(
-        panel.grid.major = element_blank(),
+    tbl_central_value <- ggplot2::ggplot(unfiltered_data, ggplot2::aes_string(x = time, y = int, label = "center")) +
+      ggplot2::geom_text(ggplot2::aes(color = .data[["met_threshold"]]), size = table_font_size) +
+      ggplot2::ggtitle(tbl_central_value_title) +
+      ggplot2::theme_minimal() +
+      ggplot2::scale_y_discrete(labels = labels) +
+      ggplot2::theme(
+        panel.grid.major = ggplot2::element_blank(),
         legend.position = "none",
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(), axis.text.x = element_blank(),
-        axis.ticks = element_blank(),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.y = element_text(size = plot_font_size),
-        plot.title = element_text(face = "bold", size = plot_font_size)
+        panel.grid.minor = ggplot2::element_blank(),
+        panel.border = ggplot2::element_blank(), axis.text.x = ggplot2::element_blank(),
+        axis.ticks = ggplot2::element_blank(),
+        axis.title.x = ggplot2::element_blank(),
+        axis.title.y = ggplot2::element_blank(),
+        axis.text.y = ggplot2::element_text(size = plot_font_size),
+        plot.title = ggplot2::element_text(face = "bold", size = plot_font_size)
       ) +
-      scale_color_manual(values = c("FALSE" = "red", "TRUE" = "black"))
+      ggplot2::scale_color_manual(values = c("FALSE" = "red", "TRUE" = "black"))
   }
 
-  tbl <- ggplot(unfiltered_data, aes_string(x = time, y = int, label = "count")) +
-    geom_text(aes(color = .data[["met_threshold"]]), size = table_font_size) +
-    ggtitle("Number of observations") +
-    theme_minimal() +
-    scale_y_discrete(labels = labels) +
-    theme(
-      panel.grid.major = element_blank(),
+  tbl <- ggplot2::ggplot(unfiltered_data, ggplot2::aes_string(x = time, y = int, label = "count")) +
+    ggplot2::geom_text(ggplot2::aes(color = .data[["met_threshold"]]), size = table_font_size) +
+    ggplot2::ggtitle("Number of observations") +
+    ggplot2::theme_minimal() +
+    ggplot2::scale_y_discrete(labels = labels) +
+    ggplot2::theme(
+      panel.grid.major = ggplot2::element_blank(),
       legend.position = "none",
-      panel.grid.minor = element_blank(),
-      panel.border = element_blank(), axis.text.x = element_blank(),
-      axis.ticks = element_blank(),
-      axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
-      axis.text.y = element_text(size = plot_font_size),
-      plot.title = element_text(face = "bold", size = plot_font_size)
+      panel.grid.minor = ggplot2::element_blank(),
+      panel.border = ggplot2::element_blank(), axis.text.x = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
+      axis.title.x = ggplot2::element_blank(),
+      axis.title.y = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_text(size = plot_font_size),
+      plot.title = ggplot2::element_text(face = "bold", size = plot_font_size)
     ) +
-    scale_color_manual(values = c("FALSE" = "red", "TRUE" = "black"))
+    ggplot2::scale_color_manual(values = c("FALSE" = "red", "TRUE" = "black"))
 
   # Plot the grobs using plot_grid
   if (display_center_tbl) {
-    plot_grid(plot1, tbl_central_value, tbl,
+    cowplot::plot_grid(plot1, tbl_central_value, tbl,
       align = "v", ncol = 1,
       rel_heights = c(plotsize, tabletotal / 2, tabletotal / 2)
     )
   } else {
-    plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
+    cowplot::plot_grid(plot1, tbl, align = "v", ncol = 1, rel_heights = c(plotsize, tabletotal))
   }
 }
 
@@ -575,5 +575,5 @@ unique_name <- function(newname, old_names) {
 
 gg_color_hue <- function(n) {
   hues <- seq(15, 375, length = n + 1)
-  hcl(h = hues, l = 65, c = 100)[1:n]
+  grDevices::hcl(h = hues, l = 65, c = 100)[1:n]
 }

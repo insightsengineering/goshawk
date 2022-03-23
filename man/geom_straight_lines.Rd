@@ -68,16 +68,16 @@ Arbitrary lines for \code{ggplot2}
 library(ggplot2)
 
 data <- data.frame(x = seq_len(10), y = seq_len(10), color = rep(c("a", "b"), each = 5))
-ggplot(data, aes(x = x, y = y, color = color)) +
-  geom_point() +
+ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
+  ggplot2::geom_point() +
   goshawk:::geom_arb_hline(yintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2)
 
 # vertical arbitrary lines
 library(ggplot2)
 
 data <- data.frame(x = seq_len(10), y = seq_len(10), color = rep(c("a", "b"), each = 5))
-ggplot(data, aes(x = x, y = y, color = color)) +
-  geom_point() +
+ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
+  ggplot2::geom_point() +
   goshawk:::geom_arb_vline(xintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2)
 
 # horizontal range
@@ -90,8 +90,8 @@ data <- data.frame(
   lower = rep(c(2, 3), each = 5),
   upper = rep(c(7, 8), each = 5)
 )
-ggplot(data, aes(x = x, y = y, color = color)) +
-  geom_point() +
+ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
+  ggplot2::geom_point() +
   goshawk:::geom_range_hline(
     vars = c("lower", "upper"),
     data = data.frame(lower = 2, upper = 7),
@@ -109,8 +109,8 @@ data <- data.frame(
   lower = rep(c(2, 3), each = 5),
   upper = rep(c(7, 8), each = 5)
 )
-ggplot(data, aes(x = x, y = y, color = color)) +
-  geom_point() +
+ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
+  ggplot2::geom_point() +
   goshawk:::geom_range_vline(
     vars = c("lower", "upper"),
     data = data.frame(lower = 2, upper = 7),
