@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">goshawk</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.11.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.11.9006</span>
       </span>
     </div>
 
@@ -34,15 +34,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/goshawk" class="external-link">
     <span class="fa fa-github"></span>
@@ -89,7 +80,7 @@ Other releases
   hline_arb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,
   hline_arb_color <span class="op">=</span> <span class="st">"red"</span>,
   hline_arb_label <span class="op">=</span> <span class="st">"Horizontal line"</span>,
-  xtick <span class="op">=</span> <span class="fu">waiver</span><span class="op">(</span><span class="op">)</span>,
+  xtick <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/waiver.html" class="external-link">waiver</a></span><span class="op">(</span><span class="op">)</span>,
   xlabel <span class="op">=</span> <span class="va">xtick</span>,
   rotate_xlab <span class="op">=</span> <span class="cn">FALSE</span>,
   plot_font_size <span class="op">=</span> <span class="fl">12</span>,
@@ -147,10 +138,10 @@ x-axis variable is character or factor.</p></dd>
 <dd><p>('character vector') optional, label for the legend to the arbitrary horizontal lines.</p></dd>
 <dt>xtick</dt>
 <dd><p>a vector to define the tick values of time in x-axis.
-Default value is waiver().</p></dd>
+Default value is ggplot2::waiver().</p></dd>
 <dt>xlabel</dt>
 <dd><p>vector with same length of xtick to define the label of x-axis tick values.
-Default value is waiver().</p></dd>
+Default value is ggplot2::waiver().</p></dd>
 <dt>rotate_xlab</dt>
 <dd><p>boolean whether to rotate x-axis labels.</p></dd>
 <dt>plot_font_size</dt>
