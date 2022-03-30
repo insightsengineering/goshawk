@@ -1,4 +1,4 @@
-# goshawk 0.1.11.9007
+# goshawk 0.1.11.9007.1
 
 ### Fixes
 * Fixed plots legends to keep specific items order.
