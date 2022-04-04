@@ -73,16 +73,16 @@
 #'     AVISIT == "SCREENING" ~ "SCR",
 #'     AVISIT == "BASELINE" ~ "BL",
 #'     grepl("WEEK", AVISIT) ~
-#'       paste(
-#'         "W",
-#'         trimws(
-#'           substr(
-#'             AVISIT,
-#'             start = 6,
-#'             stop = str_locate(AVISIT, "DAY") - 1
-#'           )
+#'     paste(
+#'       "W",
+#'       trimws(
+#'         substr(
+#'           AVISIT,
+#'           start = 6,
+#'           stop = str_locate(AVISIT, "DAY") - 1
 #'         )
-#'       ),
+#'       )
+#'     ),
 #'     TRUE ~ NA_character_
 #'   )) %>%
 #'   mutate(AVISITCDN = case_when(
@@ -397,7 +397,9 @@ g_lineplot <- function(label = "Line Plot",
       ggplot2::scale_color_manual(
         values = color_manual, name = trt_label, guide = ggplot2::guide_legend(ncol = 3, order = 1)
       ) +
-      ggplot2::scale_linetype_manual(values = line_type, name = trt_label, guide = "none")
+      ggplot2::scale_linetype_manual(
+        values = line_type, name = trt_label, guide = ggplot2::guide_legend(ncol = 3, order = 1)
+      )
   } else {
     mappings <- sum_data %>%
       ungroup() %>%
@@ -419,8 +421,8 @@ g_lineplot <- function(label = "Line Plot",
     ) +
       ggplot2::theme_bw() +
       ggplot2::scale_color_manual(" ", values = col_mapping, guide = ggplot2::guide_legend(ncol = 3, order = 1)) +
-      ggplot2::scale_linetype_manual(" ", values = type_mapping, guide = "none") +
-      ggplot2::scale_shape_manual(" ", values = shape_mapping, guide = "none") +
+      ggplot2::scale_linetype_manual(" ", values = type_mapping, guide = ggplot2::guide_legend(ncol = 3, order = 1)) +
+      ggplot2::scale_shape_manual(" ", values = shape_mapping, guide = ggplot2::guide_legend(ncol = 3, order = 1)) +
       ggplot2::theme(legend.key.size = grid::unit(1, "cm")) +
       ggplot2::geom_point(position = pd, size = 3)
   }
