@@ -32,8 +32,8 @@ Imports:
     rlang,
     stringr
 Suggests:
-    scda.2021(>= 0.1.2),
-    scda(>= 0.1.2),
+    scda.2021(>= 0.1.3),
+    scda(>= 0.1.3),
     testthat (>= 2.0),
     tidyr
 Encoding: UTF-8

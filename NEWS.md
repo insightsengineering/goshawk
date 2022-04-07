@@ -1,5 +1,14 @@
 # goshawk 0.1.11.9008
 
+### Fixes
+* Fixed plots legends to keep specific items order.
+
+#### Plot lines
+* Improve straight lines to have a standard `ggplot2` legend format. Each line type (horizontal/vertical, arbitrary/range) has a separate legend entry.
+* Added labels to the axes equaling the value of a horizontal or vertical line that is added to the plot.
+* Standardized the argument to control the range of the axes to `xlim` and `ylim`, complying with `ggplot2`.
+
+# goshawk 0.1.11
 ### Enhancements
 * Renamed `visit_var` as `facet_var` in `t_summarytable` and allowed it to be `NULL` when there is no facetting.
 * Fixed plots legends to keep specific items order.
