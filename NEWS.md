@@ -1,4 +1,7 @@
 # goshawk 0.1.11.9009
+### Miscellaneous
+* Added a template to the `pkgdown` site.
+# goshawk 0.1.11
 
 ### Fixes
 * Fixed plots legends to keep specific items order.
