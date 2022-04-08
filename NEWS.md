@@ -1,28 +1,28 @@
-# goshawk 0.1.11.9008
+# goshawk 0.1.12
 
 ### Fixes
+
 * Fixed plots legends to keep specific items order.
 
 #### Plot lines
+
 * Improve straight lines to have a standard `ggplot2` legend format. Each line type (horizontal/vertical, arbitrary/range) has a separate legend entry.
 * Added labels to the axes equaling the value of a horizontal or vertical line that is added to the plot.
 * Standardized the argument to control the range of the axes to `xlim` and `ylim`, complying with `ggplot2`.
 
 # goshawk 0.1.11
-### Enhancements
-* Renamed `visit_var` as `facet_var` in `t_summarytable` and allowed it to be `NULL` when there is no facetting.
-* Fixed plots legends to keep specific items order.
 
-#### Plot lines
+### Enhancements
+
+* Renamed `visit_var` as `facet_var` in `t_summarytable` and allowed it to be `NULL` when there is no facetting.
 * Extended the functionality of the parameters `hline_arb` (and `vline_arb` for `g_correlationplot`) to a vector of arbitrary length, allowing users to add any number of arbitrary horizontal or vertical lines to `g_spaghettiplot`, `g_boxplot`, `g_density_distribution_plot` and `g_correlationplot`.
-* Improve straight lines to have a standard `ggplot2` legend format. Each line type (horizontal/vertical, arbitrary/range) has a separate legend entry.
-* Added labels to the axes equaling the value of a horizontal or vertical line that is added to the plot.
 
 ### Miscellaneous
+
 * Added R version requirement `R >= 3.6`.
 * Removed dependency on the `test.nest` package.
 * Removed dependency on the `utils.nest` package and replaced its functions with equivalents from the `checkmate` package.
-* Standardized the argument to control the range of the axes to `xlim` and `ylim`, complying with `ggplot2`.
+
 
 # goshawk 0.1.10
 
