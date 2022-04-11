@@ -2,7 +2,7 @@ pandoc: 2.17.1.1
 pkgdown: 2.0.2
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-04-11T14:08Z
+last_built: 2022-04-11T14:50Z
 urls:
   reference: https://insightsengineering.github.io/goshawk/reference
   article: https://insightsengineering.github.io/goshawk/articles
