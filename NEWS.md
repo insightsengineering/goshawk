@@ -1,4 +1,4 @@
-# goshawk 0.1.12.0.1
+# goshawk 0.1.12.0.2
 
 ### Fixes
 
