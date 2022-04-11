@@ -1,7 +1,7 @@
 Type: Package
 Package: goshawk
 Title: Longitudinal visualization functions
-Version: 0.1.12
+Version: 0.1.12.0.1
 Date: 2022-04-07
 Authors@R: c(
     person("Nick", "Paszty", , "nick.paszty@gene.com", role = c("aut", "cre")),
@@ -32,8 +32,8 @@ Imports:
     rlang,
     stringr
 Suggests:
-    scda.2021 (>= 0.1.3),
     scda (>= 0.1.3),
+    scda.2021 (>= 0.1.3),
     testthat (>= 2.0),
     tidyr
 Encoding: UTF-8
