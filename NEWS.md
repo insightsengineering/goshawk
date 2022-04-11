@@ -1,5 +1,10 @@
 # goshawk 0.1.12.9000
 
+### Miscellaneous
+
+* Added a template to the `pkgdown` site.
+
+
 # goshawk 0.1.12
 
 ### Fixes
