@@ -1,5 +1,9 @@
 # goshawk 0.1.12.9001
 
+### Fixes
+
+* Fixed incorrect order of colors in the `teal.goshawk` lines related apps, updated `geom_arb_hline` and `geom_arb_vline` `goshawk` functions.
+
 ### Miscellaneous
 
 * Added a template to the `pkgdown` site.
