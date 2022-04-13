@@ -2,7 +2,7 @@
 
 ### Fixes
 
-* Fixed incorrect order of colors in the `teal.goshawk` lines related apps, updated `geom_arb_hline` and `geom_arb_vline` `goshawk` functions.
+* Fixed incorrect color of arbitrary lines legend elements in `geom_arb_hline` and `geom_arb_vline` functions.
 
 ### Miscellaneous
 
