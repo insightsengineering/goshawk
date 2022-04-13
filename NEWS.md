@@ -1,5 +1,9 @@
 # goshawk 0.1.12.9001
 
+### Fixes
+
+* Fixed incorrect color of arbitrary lines legend elements in `geom_arb_hline` and `geom_arb_vline` functions.
+
 ### Miscellaneous
 
 * Added a template to the `pkgdown` site.

@@ -500,6 +500,7 @@ g_lineplot <- function(label = "Line Plot",
       * increasing the initial maximum plot_height argument during creation of this app,
       * and / or consider removing the mean / median table.")
   }
+  
   if (display_center_tbl) {
     unfiltered_data$center <- if (median) {
       sprintf(ifelse(unfiltered_data$count > 0, "%.2f", ""), unfiltered_data$median)
