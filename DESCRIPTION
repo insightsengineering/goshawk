@@ -11,6 +11,9 @@ Authors@R: c(
     person("Konrad", "Pagacz", , "konrad.pagacz@contractors.roche.com", role = "aut"),
     person("Ondrej", "Slama", , "ondrej.slama@roche.com", role = "aut"),
     person("Adrian", "Waddell", , "adrian.waddell@roche.com", role = "aut"),
+    person("Wenyi", "Liu", , "liu.wenyi@roche.com", role = "aut"),
+    person("Jeffrey", "Tomlinson", , "tomlinson.jeffrey@roche.com", role = "aut"),
+    person("Bali", "Toth", , "toth.balazs@gene.com", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
 Description: Functions that plot and summarize biomarkers/labs of
