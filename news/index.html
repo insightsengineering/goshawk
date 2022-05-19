@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">goshawk</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.12.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.12.9002</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 30px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,15 +30,6 @@
 <li class="active nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -60,15 +51,13 @@ Other releases
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.12.9001" id="goshawk-01129001">goshawk 0.1.12.9001<a class="anchor" aria-label="anchor" href="#goshawk-01129001"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.12.9002" id="goshawk-01129002">goshawk 0.1.12.9002<a class="anchor" aria-label="anchor" href="#goshawk-01129002"></a></h2>
 <div class="section level4">
-<h4 id="fixes-0-1-12-9001">Fixes<a class="anchor" aria-label="anchor" href="#fixes-0-1-12-9001"></a></h4>
-<ul><li>Fixed incorrect color of arbitrary lines legend elements in
-<code>geom_arb_hline</code> and <code>geom_arb_vline</code>
-functions.</li>
+<h4 id="fixes-0-1-12-9002">Fixes<a class="anchor" aria-label="anchor" href="#fixes-0-1-12-9002"></a></h4>
+<ul><li>Fixed incorrect color of arbitrary lines legend elements in <code>geom_arb_hline</code> and <code>geom_arb_vline</code> functions.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="miscellaneous-0-1-12-9001">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-12-9001"></a></h4>
+<h4 id="miscellaneous-0-1-12-9002">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-12-9002"></a></h4>
 <ul><li>Added a template to the <code>pkgdown</code> site.</li>
 </ul></div>
 </div>
@@ -79,14 +68,9 @@ functions.</li>
 <ul><li>Fixed plots legends to keep specific items order.</li>
 </ul><div class="section level5">
 <h5 id="plot-lines-0-1-12">Plot lines<a class="anchor" aria-label="anchor" href="#plot-lines-0-1-12"></a></h5>
-<ul><li>Improve straight lines to have a standard <code>ggplot2</code>
-legend format. Each line type (horizontal/vertical, arbitrary/range) has
-a separate legend entry.</li>
-<li>Added labels to the axes equaling the value of a horizontal or
-vertical line that is added to the plot.</li>
-<li>Standardized the argument to control the range of the axes to
-<code>xlim</code> and <code>ylim</code>, complying with
-<code>ggplot2</code>.</li>
+<ul><li>Improve straight lines to have a standard <code>ggplot2</code> legend format. Each line type (horizontal/vertical, arbitrary/range) has a separate legend entry.</li>
+<li>Added labels to the axes equaling the value of a horizontal or vertical line that is added to the plot.</li>
+<li>Standardized the argument to control the range of the axes to <code>xlim</code> and <code>ylim</code>, complying with <code>ggplot2</code>.</li>
 </ul></div>
 </div>
 </div>
@@ -94,82 +78,52 @@ vertical line that is added to the plot.</li>
 <h2 class="pkg-version" data-toc-text="0.1.11" id="goshawk-0111">goshawk 0.1.11<a class="anchor" aria-label="anchor" href="#goshawk-0111"></a></h2>
 <div class="section level4">
 <h4 id="enhancements-0-1-11">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-1-11"></a></h4>
-<ul><li>Renamed <code>visit_var</code> as <code>facet_var</code> in
-<code>t_summarytable</code> and allowed it to be <code>NULL</code> when
-there is no facetting.</li>
-<li>Extended the functionality of the parameters <code>hline_arb</code>
-(and <code>vline_arb</code> for <code>g_correlationplot</code>) to a
-vector of arbitrary length, allowing users to add any number of
-arbitrary horizontal or vertical lines to <code>g_spaghettiplot</code>,
-<code>g_boxplot</code>, <code>g_density_distribution_plot</code> and
-<code>g_correlationplot</code>.</li>
+<ul><li>Renamed <code>visit_var</code> as <code>facet_var</code> in <code>t_summarytable</code> and allowed it to be <code>NULL</code> when there is no facetting.</li>
+<li>Extended the functionality of the parameters <code>hline_arb</code> (and <code>vline_arb</code> for <code>g_correlationplot</code>) to a vector of arbitrary length, allowing users to add any number of arbitrary horizontal or vertical lines to <code>g_spaghettiplot</code>, <code>g_boxplot</code>, <code>g_density_distribution_plot</code> and <code>g_correlationplot</code>.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="miscellaneous-0-1-11">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-11"></a></h4>
 <ul><li>Added R version requirement <code>R &gt;= 3.6</code>.</li>
 <li>Removed dependency on the <code>test.nest</code> package.</li>
-<li>Removed dependency on the <code>utils.nest</code> package and
-replaced its functions with equivalents from the <code>checkmate</code>
-package.</li>
+<li>Removed dependency on the <code>utils.nest</code> package and replaced its functions with equivalents from the <code>checkmate</code> package.</li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.10" id="goshawk-0110">goshawk 0.1.10<a class="anchor" aria-label="anchor" href="#goshawk-0110"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-1-10">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-10"></a></h4>
-<ul><li>Lab normal range and <code>LOQs</code> horizontal line feature in
-<code>g_spaghettiplot</code>, <code>g_boxplot</code> and
-<code>g_correlationplot</code>.</li>
+<ul><li>Lab normal range and <code>LOQs</code> horizontal line feature in <code>g_spaghettiplot</code>, <code>g_boxplot</code> and <code>g_correlationplot</code>.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="breaking-changes-0-1-10">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-10"></a></h4>
-<ul><li>Allow arbitrary horizontal line arguments in
-<code>g_spaghettiplot</code>, <code>g_boxplot</code>,
-<code>g_density_distribution_plot</code> and
-<code>g_correlationplot</code> and vertical line arguments in
-<code>g_correlationplot</code>. This functionality has changed the
-arguments required to use the functions:
+<ul><li>Allow arbitrary horizontal line arguments in <code>g_spaghettiplot</code>, <code>g_boxplot</code>, <code>g_density_distribution_plot</code> and <code>g_correlationplot</code> and vertical line arguments in <code>g_correlationplot</code>. This functionality has changed the arguments required to use the functions:
 <ul><li>
-<code>hline</code> replaced by <code>hline_arb</code>,
-<code>hline_arb_color</code> and <code>hline_arb_label</code> in the
-above functions.</li>
+<code>hline</code> replaced by <code>hline_arb</code>, <code>hline_arb_color</code> and <code>hline_arb_label</code> in the above functions.</li>
 <li>
-<code>vline</code> replaced by <code>vline_arb_var</code>,
-<code>vline_arb_color</code> and <code>vline_arb_label</code> in
-<code>g_correlationplot</code>.</li>
+<code>vline</code> replaced by <code>vline_arb_var</code>, <code>vline_arb_color</code> and <code>vline_arb_label</code> in <code>g_correlationplot</code>.</li>
 </ul></li>
 </ul></div>
 <div class="section level4">
 <h4 id="miscellaneous-0-1-10">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-10"></a></h4>
-<ul><li>Updated <code>LICENCE</code> and <code>README</code> with new
-package references.</li>
-<li>Updated examples and documentation using <code>scda</code> synthetic
-data instead of <code>random.cdisc.data</code>.</li>
+<ul><li>Updated <code>LICENCE</code> and <code>README</code> with new package references.</li>
+<li>Updated examples and documentation using <code>scda</code> synthetic data instead of <code>random.cdisc.data</code>.</li>
 <li>Added <code>error_on_lint: TRUE</code> to <code>.lintr</code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.9" id="goshawk-019">goshawk 0.1.9<a class="anchor" aria-label="anchor" href="#goshawk-019"></a></h2>
-<ul><li>Updated <code>g_density_distribution_plot</code> legend to show
-lines not squares.</li>
-<li>Fixed a bug in <code>g_correlationplot</code> when facetting by
-treatment variable would nullify facetting by visit variable.</li>
+<ul><li>Updated <code>g_density_distribution_plot</code> legend to show lines not squares.</li>
+<li>Fixed a bug in <code>g_correlationplot</code> when facetting by treatment variable would nullify facetting by visit variable.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.8" id="goshawk-018">goshawk 0.1.8<a class="anchor" aria-label="anchor" href="#goshawk-018"></a></h2>
-<ul><li>Removed warnings in <code>g_boxplot</code> and
-<code>t_summarytable</code> when one group has no data.</li>
+<ul><li>Removed warnings in <code>g_boxplot</code> and <code>t_summarytable</code> when one group has no data.</li>
 <li>
-<code>g_boxplot</code> and <code>g_correlationplot</code> have been
-modified to always have empty points, regardless of whether
-<code>loq_legend</code> parameter is set to <code>TRUE</code> or
-<code>FALSE</code>.</li>
+<code>g_boxplot</code> and <code>g_correlationplot</code> have been modified to always have empty points, regardless of whether <code>loq_legend</code> parameter is set to <code>TRUE</code> or <code>FALSE</code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.7" id="goshawk-017">goshawk 0.1.7<a class="anchor" aria-label="anchor" href="#goshawk-017"></a></h2>
-<ul><li>Added optional table in <code>g_lineplot</code>, controlled by
-argument <code>display_center_tbl</code>, that displays means or medians
-of each group of each time point corresponding to the plot.</li>
+<ul><li>Added optional table in <code>g_lineplot</code>, controlled by argument <code>display_center_tbl</code>, that displays means or medians of each group of each time point corresponding to the plot.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.6" id="goshawk-016">goshawk 0.1.6<a class="anchor" aria-label="anchor" href="#goshawk-016"></a></h2>
@@ -177,8 +131,7 @@ of each group of each time point corresponding to the plot.</li>
 <h4 id="enhancements-0-1-6">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-1-6"></a></h4>
 <ul><li>
 <code>g_boxplot</code>
-<ul><li>Argument changes: <code>facet</code> –&gt;
-<code>facet_var</code>
+<ul><li>Argument changes: <code>facet</code> –&gt; <code>facet_var</code>
 </li>
 </ul></li>
 <li>
@@ -187,11 +140,9 @@ of each group of each time point corresponding to the plot.</li>
 </ul></li>
 <li>
 <code>g_lineplot</code>:
-<ul><li>Argument changes: <code>font_size</code> –&gt;
-<code>plot_font_size</code>
+<ul><li>Argument changes: <code>font_size</code> –&gt; <code>plot_font_size</code>
 </li>
-<li>Line and symbol type can now be configured. especially useful if
-line splitting is used.</li>
+<li>Line and symbol type can now be configured. especially useful if line splitting is used.</li>
 <li>Added minimum records threshold.</li>
 <li>Table font size can now be controlled.</li>
 <li>Decreased width of error bars.</li>
@@ -200,10 +151,8 @@ line splitting is used.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="general-0-1-6">General<a class="anchor" aria-label="anchor" href="#general-0-1-6"></a></h4>
-<ul><li>Added additional validation and description for the
-<code>loq_legend</code> argument.</li>
-<li>Set legend label as variable label attribute of
-<code>trt_group</code> across all modules.</li>
+<ul><li>Added additional validation and description for the <code>loq_legend</code> argument.</li>
+<li>Set legend label as variable label attribute of <code>trt_group</code> across all modules.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -212,8 +161,7 @@ line splitting is used.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.4" id="goshawk-014">goshawk 0.1.4<a class="anchor" aria-label="anchor" href="#goshawk-014"></a></h2>
-<ul><li>Added labeling function and data driven LLOQ and ULOQ related
-footnote.</li>
+<ul><li>Added labeling function and data driven LLOQ and ULOQ related footnote.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.3.9000" id="goshawk-0139000">goshawk 0.1.3.9000<a class="anchor" aria-label="anchor" href="#goshawk-0139000"></a></h2>
@@ -221,16 +169,14 @@ footnote.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.3" id="goshawk-013">goshawk 0.1.3<a class="anchor" aria-label="anchor" href="#goshawk-013"></a></h2>
-<ul><li>Added Study Identifier and Analysis Variable as columns to
-<code>t_summarytable</code>.</li>
+<ul><li>Added Study Identifier and Analysis Variable as columns to <code>t_summarytable</code>.</li>
 <li>Some cosmetic changes and address check issues.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="goshawk-012">goshawk 0.1.2<a class="anchor" aria-label="anchor" href="#goshawk-012"></a></h2>
 <ul><li>Added argument to control the following:
 <ul><li>Box: Toggle LoQ legend on/off.</li>
-<li>Correlation: Toggle LoQ legend on/off, toggle visit facetting
-on/off.</li>
+<li>Correlation: Toggle LoQ legend on/off, toggle visit facetting on/off.</li>
 <li>Density: Toggle combined treatment line on/off.</li>
 </ul></li>
 </ul></div>
