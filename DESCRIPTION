@@ -1,13 +1,20 @@
 Type: Package
 Package: goshawk
 Title: Longitudinal visualization functions
-Version: 0.1.11.9007.2
-Date: 2022-01-27
+Version: 0.1.12.9004
+Date: 2022-04-07
 Authors@R: c(
     person("Nick", "Paszty", , "nick.paszty@gene.com", role = c("aut", "cre")),
+    person("Junlue", "Zhao", , "zhaoj88@gene.com", role = "aut"),
+    person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = "aut"),
+    person("Maciej", "Nasinski", , "maciej.nasinski@contractors.roche.com", role = "aut"),
+    person("Konrad", "Pagacz", , "konrad.pagacz@contractors.roche.com", role = "aut"),
+    person("Ondrej", "Slama", , "ondrej.slama@roche.com", role = "aut"),
+    person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
     person("Wenyi", "Liu", , "liu.wenyi@roche.com", role = "aut"),
     person("Jeffrey", "Tomlinson", , "tomlinson.jeffrey@roche.com", role = "aut"),
-    person("Bali", "Toth", , "toth.balazs@gene.com", role = "aut")
+    person("Bali", "Toth", , "toth.balazs@gene.com", role = "aut"),
+    person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
 Description: Functions that plot and summarize biomarkers/labs of
     interest. Visualizations include: box plot, correlation plot, density
@@ -32,11 +39,12 @@ Imports:
     rlang,
     stringr
 Suggests:
-    scda.2021(>= 0.1.2),
-    scda(>= 0.1.2),
+    scda (>= 0.1.3),
+    scda.2021 (>= 0.1.3),
     testthat (>= 2.0),
     tidyr
+Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
