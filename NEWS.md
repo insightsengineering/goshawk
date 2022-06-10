@@ -1,5 +1,7 @@
 # goshawk 0.1.13.9000
 
+# goshawk 0.1.13
+
 ### Fixes
 
 * Fixed incorrect color of arbitrary lines legend elements in `geom_arb_hline` and `geom_arb_vline` functions.
