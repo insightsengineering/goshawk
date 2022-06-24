@@ -1,7 +1,7 @@
 # goshawk R package
 
 Longitudinal biomarker/lab visualizations functions. These can be used stand alone but are also called by the
-[teal.goshawk](https://github.com/insightsengineering/teal.goshawk) package which provides `teal` modules to be used
+[teal.goshawk](https://insightsengineering.github.io/teal.goshawk) package which provides `teal` modules to be used
 inside `teal` applications.
 
 ## Functions
@@ -25,4 +25,4 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("insightsengineering/goshawk@*release")
 ```
 
-In order to run many of the examples you will also need to install the [`scda`](https://github.com/insightsengineering/scda) package.
+In order to run many of the examples you will also need to install the [`scda`](https://insightsengineering.github.io/scda) package.
