@@ -84,17 +84,17 @@ h_identify_loq_values <- function(loqs_data) {
 h_caption_loqs_label <- function(loqs_data) {
   loq_values <- h_identify_loq_values(loqs_data)
 
-  loq_values$LLOQC <- ifelse(is.na(loq_values$LLOQC), "NA", loq_values$LLOQC)
-  loq_values$ULOQC <- ifelse(is.na(loq_values$ULOQC), "NA", loq_values$ULOQC)
+  lloqc <- ifelse(is.na(loq_values$LLOQC), "NA", loq_values$LLOQC)
+  uloqc <- ifelse(is.na(loq_values$ULOQC), "NA", loq_values$ULOQC)
 
   # create caption
   caption_loqs_label <- paste0(
     "Limits of quantification read from study data for ",
     loqs_data$PARAM,
     ": LLOQ is ",
-    loq_values$LLOQC,
+    lloqc,
     ", ULOQ is ",
-    loq_values$ULOQC
+    uloqc
   )
 
   return(caption_loqs_label)
