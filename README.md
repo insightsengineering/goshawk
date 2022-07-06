@@ -21,8 +21,10 @@ It is recommended that you [create and use a Github PAT](https://docs.github.com
 
 ```r
 Sys.setenv(GITHUB_PAT = "your_access_token_here")
-if (!require("devtools")) install.packages("devtools")
-devtools::install_github("insightsengineering/goshawk@*release")
+if (!require("remotes")) install.packages("remotes")
+remotes::install_github("insightsengineering/goshawk@*release")
 ```
+
+A stable release of all `NEST` packages is also available [here](https://github.com/insightsengineering/depository#readme).
 
 In order to run many of the examples you will also need to install the [`scda`](https://insightsengineering.github.io/scda) package.

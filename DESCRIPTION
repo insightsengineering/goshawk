@@ -43,6 +43,9 @@ Suggests:
     scda.2021 (>= 0.1.3),
     testthat (>= 2.0),
     tidyr
+Remotes:
+    insightsengineering/scda.2021@*release,
+    insightsengineering/scda@*release
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
