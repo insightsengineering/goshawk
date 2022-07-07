@@ -12,7 +12,7 @@ and ('g_density_distribution_plot'), but may also work in general."><!-- mathjax
     
     <a class="navbar-brand me-2" href="../index.html">goshawk</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,12 +26,6 @@ and ('g_density_distribution_plot'), but may also work in general."><!-- mathjax
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/goshawk/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -60,21 +54,21 @@ and ('g_density_distribution_plot'), but may also work in general.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">geom_axes_lines</span><span class="op">(</span>
-  <span class="va">data</span>,
-  hline_arb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,
-  hline_arb_color <span class="op">=</span> <span class="st">"red"</span>,
-  hline_arb_label <span class="op">=</span> <span class="st">"Horizontal line"</span>,
-  hline_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,
-  hline_vars_colors <span class="op">=</span> <span class="st">"green"</span>,
-  hline_vars_labels <span class="op">=</span> <span class="va">hline_vars</span>,
-  vline_arb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,
-  vline_arb_color <span class="op">=</span> <span class="st">"red"</span>,
-  vline_arb_label <span class="op">=</span> <span class="st">"Vertical line"</span>,
-  vline_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,
-  vline_vars_colors <span class="op">=</span> <span class="st">"green"</span>,
-  vline_vars_labels <span class="op">=</span> <span class="va">vline_vars</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">geom_axes_lines</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  hline_arb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  hline_arb_color <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  hline_arb_label <span class="op">=</span> <span class="st">"Horizontal line"</span>,</span>
+<span>  hline_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  hline_vars_colors <span class="op">=</span> <span class="st">"green"</span>,</span>
+<span>  hline_vars_labels <span class="op">=</span> <span class="va">hline_vars</span>,</span>
+<span>  vline_arb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  vline_arb_color <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  vline_arb_label <span class="op">=</span> <span class="st">"Vertical line"</span>,</span>
+<span>  vline_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  vline_vars_colors <span class="op">=</span> <span class="st">"green"</span>,</span>
+<span>  vline_vars_labels <span class="op">=</span> <span class="va">vline_vars</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -150,13 +144,13 @@ Needs <code>data</code> to be specified.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">goshawk</span><span class="fu">:::</span><span class="fu">geom_axes_lines</span><span class="op">(</span></span>
-<span class="r-in">    hline_arb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">25</span>, <span class="fl">30</span><span class="op">)</span>,</span>
-<span class="r-in">    hline_arb_color <span class="op">=</span> <span class="st">"red"</span>,</span>
-<span class="r-in">    hline_arb_label <span class="op">=</span> <span class="st">"Hori Line"</span></span>
-<span class="r-in">  <span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">goshawk</span><span class="fu">:::</span><span class="fu">geom_axes_lines</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    hline_arb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">25</span>, <span class="fl">30</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    hline_arb_color <span class="op">=</span> <span class="st">"red"</span>,</span></span>
+<span class="r-in"><span>    hline_arb_label <span class="op">=</span> <span class="st">"Hori Line"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
