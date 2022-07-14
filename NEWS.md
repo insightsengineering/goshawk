@@ -9,7 +9,7 @@
 ### Enhancements
 
 * Implemented `nestcolor` with slight refactoring to `g_lineplot`, `g_density_distribution_plot`.
-  Added `nestcolor` in examples without custom colour manuals.
+  Added `nestcolor` in examples without custom color manuals.
 
 ### Miscellaneous
 
