@@ -45,7 +45,7 @@ Suggests:
     testthat (>= 2.0),
     tidyr
 Remotes:
-    insightsengineering/nestcolor@*release
+    insightsengineering/nestcolor@*release,
     insightsengineering/scda.2021@*release,
     insightsengineering/scda@*release
 Config/Needs/website: insightsengineering/nesttemplate
