@@ -55,8 +55,8 @@
 #' # Example using ADaM structure analysis dataset.
 #'
 #' library(scda)
+#' library(nestcolor)
 #'
-#' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' ADLB <- synthetic_cdisc_data("latest")$adlb
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%

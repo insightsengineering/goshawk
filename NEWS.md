@@ -9,6 +9,7 @@
 ### Miscellaneous
 
 * Added a template to the `pkgdown` site.
+* Implemented `nestcolor` in all examples with slight refactoring to `g_lineplot`, `g_density_distribution_plot`.
 
 
 # goshawk 0.1.12

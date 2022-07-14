@@ -43,6 +43,7 @@
 #'
 #' library(scda)
 #' library(stringr)
+#' library(nestcolor)
 #'
 #' # original ARM value = dose value
 #' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
@@ -50,7 +51,6 @@
 #' # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
 #' shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 #'
-#' ASL <- synthetic_cdisc_data("latest")$adsl
 #' ADLB <- synthetic_cdisc_data("latest")$adlb
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%
