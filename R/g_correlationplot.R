@@ -64,7 +64,6 @@
 #' library(scda)
 #' library(stringr)
 #' library(tidyr)
-#' library(nestcolor)
 #'
 #' # original ARM value = dose value
 #' arm_mapping <- list(
