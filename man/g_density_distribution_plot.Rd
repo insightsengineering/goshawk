@@ -14,7 +14,7 @@ g_density_distribution_plot(
   unit = "AVALU",
   xlim = c(NA, NA),
   ylim = c(NA, NA),
-  color_manual = NULL,
+  color_manual = getOption("ggplot2.discrete.colour"),
   color_comb = "#39ff14",
   comb_line = TRUE,
   facet_var = "AVISITCD",
