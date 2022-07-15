@@ -109,7 +109,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         unit = "AVALU",
                                         xlim = c(NA, NA),
                                         ylim = c(NA, NA),
-                                        color_manual = getOption("ggplot2.discrete.colour"),
+                                        color_manual = NULL,
                                         color_comb = "#39ff14",
                                         comb_line = TRUE,
                                         facet_var = "AVISITCD",
@@ -163,6 +163,9 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   color_manual <- if (is.null(color_manual)) {
     group_names <- unique(plot_data[[trt_group]])
     color_values <- seq_along(group_names)
+    if (!is.null(getOption("ggplot2.discrete.colour"))) {
+      color_values <- getOption("ggplot2.discrete.colour")[color_values]
+    }
     names(color_values) <- group_names
     color_values
   } else {

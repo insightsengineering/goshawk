@@ -19,7 +19,7 @@ g_lineplot(
   shape_type = NULL,
   time,
   time_level = NULL,
-  color_manual = getOption("ggplot2.discrete.colour"),
+  color_manual = NULL,
   line_type = NULL,
   median = FALSE,
   hline_arb = numeric(0),
