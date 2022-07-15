@@ -243,7 +243,7 @@ g_lineplot <- function(label = "Line Plot",
                        shape_type = NULL,
                        time,
                        time_level = NULL,
-                       color_manual = NULL,
+                       color_manual = getOption("ggplot2.discrete.colour"),
                        line_type = NULL,
                        median = FALSE,
                        hline_arb = numeric(0),
@@ -273,11 +273,7 @@ g_lineplot <- function(label = "Line Plot",
   attr(data[[trt_group]], "label") <- label_trt_group
 
   color_manual <- if (is.null(color_manual)) {
-    if (!is.null(getOption("ggplot2.discrete.colour"))) {
-      temp <- getOption("ggplot2.discrete.colour")[1:nlevels(data[[trt_group]])]
-    } else {
-      temp <- gg_color_hue(nlevels(data[[trt_group]]))
-    }
+    temp <- gg_color_hue(nlevels(data[[trt_group]]))
     names(temp) <- levels(data[[trt_group]])
     temp
   } else {
