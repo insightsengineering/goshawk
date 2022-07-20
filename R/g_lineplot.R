@@ -56,16 +56,17 @@
 #' library(scda)
 #' library(stringr)
 #' library(dplyr)
+#' library(nestcolor)
 #'
 #' # original ARM value = dose value
 #' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
 #' color_manual <- c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
 #' type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "dotted")
 #'
-#' ASL <- synthetic_cdisc_data("latest")$adsl %>%
+#' ADSL <- synthetic_cdisc_data("latest")$adsl %>%
 #'   filter(!(ARM == "B: Placebo" & AGE < 40))
 #' ADLB <- synthetic_cdisc_data("latest")$adlb
-#' ADLB <- right_join(ADLB, ASL[, c("STUDYID", "USUBJID")])
+#' ADLB <- right_join(ADLB, ADSL[, c("STUDYID", "USUBJID")])
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #'
 #' ADLB <- ADLB %>%
@@ -272,7 +273,11 @@ g_lineplot <- function(label = "Line Plot",
   attr(data[[trt_group]], "label") <- label_trt_group
 
   color_manual <- if (is.null(color_manual)) {
-    temp <- gg_color_hue(nlevels(data[[trt_group]]))
+    temp <- if (!is.null(getOption("ggplot2.discrete.colour"))) {
+      getOption("ggplot2.discrete.colour")[1:nlevels(data[[trt_group]])]
+    } else {
+      gg_color_hue(nlevels(data[[trt_group]]))
+    }
     names(temp) <- levels(data[[trt_group]])
     temp
   } else {
@@ -500,7 +505,7 @@ g_lineplot <- function(label = "Line Plot",
       * increasing the initial maximum plot_height argument during creation of this app,
       * and / or consider removing the mean / median table.")
   }
-  
+
   if (display_center_tbl) {
     unfiltered_data$center <- if (median) {
       sprintf(ifelse(unfiltered_data$count > 0, "%.2f", ""), unfiltered_data$median)

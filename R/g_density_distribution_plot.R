@@ -45,7 +45,6 @@
 #' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
 #' color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #'
-#' ASL <- synthetic_cdisc_data("latest")$adsl
 #' ADLB <- synthetic_cdisc_data("latest")$adlb
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%
@@ -164,6 +163,9 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   color_manual <- if (is.null(color_manual)) {
     group_names <- unique(plot_data[[trt_group]])
     color_values <- seq_along(group_names)
+    if (!is.null(getOption("ggplot2.discrete.colour"))) {
+      color_values <- getOption("ggplot2.discrete.colour")[color_values]
+    }
     names(color_values) <- group_names
     color_values
   } else {

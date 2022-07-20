@@ -51,7 +51,6 @@ library(stringr)
 # original ARM value = dose value
 arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
 
-ASL <- synthetic_cdisc_data("latest")$adsl
 ADLB <- synthetic_cdisc_data("latest")$adlb
 ADLB <- ADLB \%>\%
   mutate(AVISITCD = case_when(

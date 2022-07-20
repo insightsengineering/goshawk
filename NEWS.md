@@ -6,6 +6,11 @@
 
 * Fixed incorrect color of arbitrary lines legend elements in `geom_arb_hline` and `geom_arb_vline` functions.
 
+### Enhancements
+
+* Implemented `nestcolor` with slight refactoring to `g_lineplot`, `g_density_distribution_plot`.
+  Added `nestcolor` in examples without custom color manuals.
+
 ### Miscellaneous
 
 * Added a template to the `pkgdown` site.

@@ -120,16 +120,17 @@ quartile.
 library(scda)
 library(stringr)
 library(dplyr)
+library(nestcolor)
 
 # original ARM value = dose value
 arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
 color_manual <- c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
 type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "dotted")
 
-ASL <- synthetic_cdisc_data("latest")$adsl \%>\%
+ADSL <- synthetic_cdisc_data("latest")$adsl \%>\%
   filter(!(ARM == "B: Placebo" & AGE < 40))
 ADLB <- synthetic_cdisc_data("latest")$adlb
-ADLB <- right_join(ADLB, ASL[, c("STUDYID", "USUBJID")])
+ADLB <- right_join(ADLB, ADSL[, c("STUDYID", "USUBJID")])
 var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 
 ADLB <- ADLB \%>\%
