@@ -29,9 +29,16 @@ A stable release of all `NEST` packages from June 2022 is also available [here](
 
 In order to run many of the examples you will also need to install the [`scda`](https://insightsengineering.github.io/scda) package.
 
-[![Stargazers repo roster for @insightsengineering/goshawk](https://reporoster.com/stars/insightsengineering/goshawk)](https://github.com/insightsengineering/goshawk/stargazers)
-[![Forkers repo roster for @insightsengineering/goshawk](https://reporoster.com/forks/insightsengineering/goshawk)](https://github.com/insightsengineering/goshawk/network/members)
+## Stargazers and Forkers
 
-## Stargazers over time
+### Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/insightsengineering/goshawk.svg)](https://starchart.cc/insightsengineering/goshawk)
+
+### Stargazers
+
+[![Stargazers repo roster for @insightsengineering/goshawk](https://reporoster.com/stars/insightsengineering/goshawk)](https://github.com/insightsengineering/goshawk/stargazers)
+
+### Forkers
+
+[![Forkers repo roster for @insightsengineering/goshawk](https://reporoster.com/forks/insightsengineering/goshawk)](https://github.com/insightsengineering/goshawk/network/members)
