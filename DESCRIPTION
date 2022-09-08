@@ -1,6 +1,6 @@
 Type: Package
 Package: goshawk
-Title: Longitudinal visualization functions
+Title: Longitudinal Visualization Functions
 Version: 0.1.13.9008
 Date: 2022-09-01
 Authors@R: c(

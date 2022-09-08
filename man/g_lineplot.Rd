@@ -123,7 +123,9 @@ library(dplyr)
 library(nestcolor)
 
 # original ARM value = dose value
-arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+arm_mapping <- list(
+  "A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination"
+)
 color_manual <- c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
 type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "dotted")
 
