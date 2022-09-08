@@ -181,7 +181,7 @@ g_scatterplot <- function(label = "Scatter Plot",
   if (reg_line) {
     slope <- function(x, y) {
       ratio <- stats::sd(x) / stats::sd(y)
-      res <- if (!is.na(ratio) & ratio > 0) {
+      res <- if (!is.na(ratio) && ratio > 0) {
         reg <- mc.deming(y, x, ratio)
         # return the evaluation of the ratio condition as third value in numeric vector
         # for conttroling downstream processing
