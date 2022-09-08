@@ -50,7 +50,7 @@ library(stringr)
 
 # original ARM value = dose value
 arm_mapping <- list(
- "A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination"
+  "A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination"
 )
 
 ADLB <- synthetic_cdisc_data("latest")$adlb
