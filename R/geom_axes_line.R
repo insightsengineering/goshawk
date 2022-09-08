@@ -197,7 +197,9 @@ NULL
 #' data <- data.frame(x = seq_len(10), y = seq_len(10), color = rep(c("a", "b"), each = 5))
 #' ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
 #'   ggplot2::geom_point() +
-#'   goshawk:::geom_arb_hline(yintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2)
+#'   goshawk:::geom_arb_hline(
+#'     yintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2
+#'   )
 geom_arb_hline <- function(yintercept,
                            label = "Horizontal line",
                            color = "red",
@@ -243,7 +245,9 @@ geom_arb_hline <- function(yintercept,
 #' data <- data.frame(x = seq_len(10), y = seq_len(10), color = rep(c("a", "b"), each = 5))
 #' ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
 #'   ggplot2::geom_point() +
-#'   goshawk:::geom_arb_vline(xintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2)
+#'   goshawk:::geom_arb_vline(
+#'     xintercept = c(2, 5), color = "blue", label = c("h1", "h2"), linetype = 2
+#'   )
 geom_arb_vline <- function(xintercept,
                            label = "Vertical line",
                            color = "red",
