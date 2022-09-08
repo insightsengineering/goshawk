@@ -1,7 +1,7 @@
 # goshawk R package
 
 Longitudinal biomarker/lab visualizations functions. These can be used stand alone but are also called by the
-[teal.goshawk](https://insightsengineering.github.io/teal.goshawk) package which provides `teal` modules to be used
+[teal.goshawk](https://insightsengineering.github.io/teal.goshawk/) package which provides `teal` modules to be used
 inside `teal` applications.
 
 ## Functions
@@ -27,7 +27,7 @@ remotes::install_github("insightsengineering/goshawk@*release")
 
 A stable release of all `NEST` packages from June 2022 is also available [here](https://github.com/insightsengineering/depository#readme).
 
-In order to run many of the examples you will also need to install the [`scda`](https://insightsengineering.github.io/scda) package.
+In order to run many of the examples you will also need to install the [`scda`](https://insightsengineering.github.io/scda/) package.
 
 ## Stargazers and Forkers
 

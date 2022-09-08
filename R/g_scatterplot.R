@@ -45,7 +45,9 @@
 #' library(stringr)
 #'
 #' # original ARM value = dose value
-#' arm_mapping <- list("A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination")
+#' arm_mapping <- list(
+#'   "A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination"
+#' )
 #' color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #' # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
 #' shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
@@ -179,7 +181,7 @@ g_scatterplot <- function(label = "Scatter Plot",
   if (reg_line) {
     slope <- function(x, y) {
       ratio <- stats::sd(x) / stats::sd(y)
-      res <- if (!is.na(ratio) & ratio > 0) {
+      res <- if (!is.na(ratio) && ratio > 0) {
         reg <- mc.deming(y, x, ratio)
         # return the evaluation of the ratio condition as third value in numeric vector
         # for conttroling downstream processing
