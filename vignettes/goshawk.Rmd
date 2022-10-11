@@ -12,7 +12,7 @@ vignette: >
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 editor_options:
-    markdown: 
+    markdown:
         wrap: 72
 ---
 
@@ -23,16 +23,10 @@ knitr::opts_chunk$set(
 )
 ```
 
----------
+## Introduction
 
-## Introduction to goshawk
-
----------
-
-This vignette shows the general purpose and syntax of the `goshawk` R package.  
-The `goshawk` R package contains analytical functions for primarily creating longitudinal visualizations useful for clinical trials and other statistical analysis. 
-
----------
+This vignette shows the general purpose and syntax of the `goshawk` R package.
+The `goshawk` R package contains analytical functions for primarily creating longitudinal visualizations useful for clinical trials and other statistical analysis.
 
 ## Common Clinical Trials Analyses
 
@@ -57,8 +51,6 @@ of data points displayed in the plots
 
 The reference of `goshawk` functions is available on [the goshawk website functions reference](https://insightsengineering.github.io/goshawk/reference/index.html).
 
----------
-
 The `goshawk` functions used for plot generation are `g_` prefixed.
 All `goshawk` plot functions are listed on [the goshawk website functions reference](https://insightsengineering.github.io/goshawk/reference/index.html) and
 include examples of data pre-processing and function usage. Please see the Articles
@@ -66,8 +58,8 @@ for more information on data pre-processing and data expectations for `goshawk`.
 
 ## Interactive Apps
 
-The `goshawk` outputs can be easily accommodated into `shiny` apps. 
-We recommend applying `goshawk` outputs into `teal` apps. 
+The `goshawk` outputs can be easily accommodated into `shiny` apps.
+We recommend applying `goshawk` outputs into `teal` apps.
 The [`teal` package](https://insightsengineering.github.io/teal/) is a shiny-based interactive exploration framework for analyzing data.
 `teal` shiny apps with `goshawk` outputs are available in the [`teal.goshawk` package](https://insightsengineering.github.io/teal.goshawk/).
 
@@ -77,7 +69,7 @@ The [`teal` package](https://insightsengineering.github.io/teal/) is a shiny-bas
 
 **For more detail on these requirements please visit the [teal.goshawk website](https://insightsengineering.github.io/teal.goshawk/).**
 
-## Summary 
+## Summary
 
 In summary, `goshawk` contains functions for creating primarily longitudinal visualizations used in clinical trials and other statistical analyses. The design of the package gives users a lot of flexibility to meet the analysis needs in a regulatory or exploratory reporting context.
 
