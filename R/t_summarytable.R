@@ -96,7 +96,8 @@ t_summarytable <- function(data,
   # get unique study id or unique study ids if multiple study data
   study_id <- as.data.frame(table(table_data$STUDYID)) %>%
     mutate(STUDYID = paste(.data$Var1, collapse = "/")) %>%
-    select(StudyID = .data$STUDYID) %>%
+    rename(StudyID = STUDYID) %>%
+    select("StudyID") %>%
     slice(1)
 
   # get analysis variable name
@@ -141,11 +142,17 @@ t_summarytable <- function(data,
 
   if (!is.null(facet_var)) {
     sum_data_by_arm <- sum_data_by_arm %>%
-      select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      select(
+        all_of(c(param_var, trt_group, facet_var)), "n", "Mean", "Median", "StdDev",
+        "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+      ) %>%
       ungroup()
   } else {
     sum_data_by_arm <- sum_data_by_arm %>%
-      select(param_var, trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      select(
+        all_of(c(param_var, trt_group)), "n", "Mean", "Median", "StdDev",
+        "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+      ) %>%
       ungroup()
   }
 
@@ -178,28 +185,40 @@ t_summarytable <- function(data,
   # select only those columns needed to prop
   if (!is.null(facet_var)) {
     sum_data_combined_arm <- sum_data_combined_arm %>%
-      select(param_var, trt_group, facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      select(
+        all_of(c(param_var, trt_group, facet_var)), "n", "Mean", "Median", "StdDev",
+        "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+      ) %>%
       ungroup()
 
     # combine the two data sets and apply some formatting. Note that R coerces treatment group into
     # character since it is a factor and character
     sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
       # reorder variables
-      select(Biomarker = param_var, Treatment = trt_group, Facet = facet_var, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      select(
+        all_of(c(Biomarker = param_var, Treatment = trt_group, Facet = facet_var)),
+        "n", "Mean", "Median", "StdDev", "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+      ) %>%
       arrange(.data$Biomarker, .data$Facet, .data$TRTORD) %>% # drop variable
-      select(-.data$TRTORD)
+      select(-"TRTORD")
   } else {
     sum_data_combined_arm <- sum_data_combined_arm %>%
-      select(param_var, trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      select(
+        all_of(c(param_var, trt_group)), "n", "Mean", "Median", "StdDev",
+        "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+      ) %>%
       ungroup()
 
     # combine the two data sets and apply some formatting. Note that R coerces treatment group into
     # character since it is a factor and character
     sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
       # reorder variables
-      select(Biomarker = param_var, Treatment = trt_group, .data$n:.data$PctLOQ, .data$TRTORD) %>%
+      select(
+        all_of(c(Biomarker = param_var, Treatment = trt_group)),
+        "n", "Mean", "Median", "StdDev", "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+      ) %>%
       arrange(.data$Biomarker, .data$TRTORD) %>% # drop variable
-      select(-.data$TRTORD)
+      select(-"TRTORD")
   }
 
   # add analysis variable as first column
