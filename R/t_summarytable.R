@@ -142,7 +142,8 @@ t_summarytable <- function(data,
 
   if (!is.null(facet_var)) {
     sum_data_by_arm <- sum_data_by_arm %>%
-      select(param_var, trt_group, facet_var, "n", "Mean", "Median", "StdDev",
+      select(
+        param_var, trt_group, facet_var, "n", "Mean", "Median", "StdDev",
         "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
       ) %>%
       ungroup()
@@ -181,8 +182,9 @@ t_summarytable <- function(data,
   # select only those columns needed to prop
   if (!is.null(facet_var)) {
     sum_data_combined_arm <- sum_data_combined_arm %>%
-      select(param_var, trt_group, facet_var, "n", "Mean", "Median", "StdDev",
-             "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+      select(
+        param_var, trt_group, facet_var, "n", "Mean", "Median", "StdDev",
+        "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
       ) %>%
       ungroup()
 
@@ -192,14 +194,15 @@ t_summarytable <- function(data,
       # reorder variables
       select(
         Biomarker = param_var, Treatment = trt_group, Facet = facet_var, "n", "Mean", "Median", "StdDev",
-        "Min", "Max", "PctMiss","PctLOQ", "TRTORD"
+        "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
       ) %>%
       arrange(.data$Biomarker, .data$Facet, .data$TRTORD) %>% # drop variable
       select(-"TRTORD")
   } else {
     sum_data_combined_arm <- sum_data_combined_arm %>%
-      select(param_var, trt_group, "n", "Mean", "Median", "StdDev",
-             "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+      select(
+        param_var, trt_group, "n", "Mean", "Median", "StdDev",
+        "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
       ) %>%
       ungroup()
 
