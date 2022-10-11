@@ -143,14 +143,14 @@ t_summarytable <- function(data,
   if (!is.null(facet_var)) {
     sum_data_by_arm <- sum_data_by_arm %>%
       select(
-        param_var, trt_group, facet_var, "n", "Mean", "Median", "StdDev",
+        all_of(c(param_var, trt_group, facet_var)), "n", "Mean", "Median", "StdDev",
         "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
       ) %>%
       ungroup()
   } else {
     sum_data_by_arm <- sum_data_by_arm %>%
       select(
-        param_var, trt_group, "n", "Mean", "Median", "StdDev",
+        all_of(c(param_var, trt_group)), "n", "Mean", "Median", "StdDev",
         "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
       ) %>%
       ungroup()
@@ -186,7 +186,7 @@ t_summarytable <- function(data,
   if (!is.null(facet_var)) {
     sum_data_combined_arm <- sum_data_combined_arm %>%
       select(
-        param_var, trt_group, facet_var, "n", "Mean", "Median", "StdDev",
+        all_of(c(param_var, trt_group, facet_var)), "n", "Mean", "Median", "StdDev",
         "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
       ) %>%
       ungroup()
@@ -196,15 +196,15 @@ t_summarytable <- function(data,
     sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
       # reorder variables
       select(
-        Biomarker = param_var, Treatment = trt_group, Facet = facet_var, "n", "Mean", "Median", "StdDev",
-        "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+        all_of(c(Biomarker = param_var, Treatment = trt_group, Facet = facet_var)),
+        "n", "Mean", "Median", "StdDev", "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
       ) %>%
       arrange(.data$Biomarker, .data$Facet, .data$TRTORD) %>% # drop variable
       select(-"TRTORD")
   } else {
     sum_data_combined_arm <- sum_data_combined_arm %>%
       select(
-        param_var, trt_group, "n", "Mean", "Median", "StdDev",
+        all_of(c(param_var, trt_group)), "n", "Mean", "Median", "StdDev",
         "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
       ) %>%
       ungroup()
@@ -214,8 +214,8 @@ t_summarytable <- function(data,
     sum_data <- rbind(sum_data_by_arm, sum_data_combined_arm) %>% # concatenate
       # reorder variables
       select(
-        Biomarker = param_var, Treatment = trt_group, "n", "Mean", "Median", "StdDev",
-        "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+        all_of(c(Biomarker = param_var, Treatment = trt_group)),
+        "n", "Mean", "Median", "StdDev", "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
       ) %>%
       arrange(.data$Biomarker, .data$TRTORD) %>% # drop variable
       select(-"TRTORD")
