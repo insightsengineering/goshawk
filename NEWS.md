@@ -1,12 +1,15 @@
 # goshawk 0.1.13.9009
 
 ### Fixes
+
 * Fixed `h_caption_loqs_label` to handle multiple parameters when data frame is returned from `h_identify_loq_values`.
 
 ### Enhancements
-* Implemented `nestcolor` in goshawk.
+
+* Implemented `nestcolor` with slight refactoring to `g_lineplot`, `g_density_distribution_plot` and added `nestcolor` in examples without custom color manuals.
 
 ### Miscellaneous
+
 * Updated installation instructions.
 
 # goshawk 0.1.13
@@ -14,11 +17,6 @@
 ### Fixes
 
 * Fixed incorrect color of arbitrary lines legend elements in `geom_arb_hline` and `geom_arb_vline` functions.
-
-### Enhancements
-
-* Implemented `nestcolor` with slight refactoring to `g_lineplot`, `g_density_distribution_plot`.
-  Added `nestcolor` in examples without custom color manuals.
 
 ### Miscellaneous
 
