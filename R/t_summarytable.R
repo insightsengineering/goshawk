@@ -149,7 +149,10 @@ t_summarytable <- function(data,
       ungroup()
   } else {
     sum_data_by_arm <- sum_data_by_arm %>%
-      select(param_var, trt_group, "n":"PctLOQ", "TRTORD") %>%
+      select(
+        param_var, trt_group, "n", "Mean", "Median", "StdDev",
+        "Min", "Max", "PctMiss", "PctLOQ", "TRTORD"
+      ) %>%
       ungroup()
   }
 
