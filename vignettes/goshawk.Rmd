@@ -36,7 +36,7 @@ The `goshawk` R package contains analytical functions for primarily creating lon
 
 ## Common Clinical Trials Analyses
 
-The package provides several functions to create graphs used for clinical trial and other statistical analysis.
+The package provides several functions to create graphs used for clinical trials and other statistical analyses.
 
 data visualizations:
 
