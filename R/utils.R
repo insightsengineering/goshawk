@@ -30,24 +30,25 @@ h_identify_loq_values <- function(loqs_data) {
   )
 
   # get LLOQ value
-  lloq <- loqs_data %>%
-    select(.data$PARAM, .data$LBSTRESC) %>%
+
+  lloq <- loqs_data[ , c("PARAM", "LBSTRESC")] %>%
     filter(grepl("<", .data$LBSTRESC, fixed = FALSE)) %>%
     mutate(LLOQC = .data$LBSTRESC, LLOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
     group_by(.data$PARAM) %>%
     slice(1) %>%
-    ungroup() %>%
-    select(-.data$LBSTRESC)
+    ungroup()
+
+  lloq$LBSTRESC <- NULL
 
   # get ULOQ value
-  uloq <- loqs_data %>%
-    select(.data$PARAM, .data$LBSTRESC) %>%
+  uloq <- loqs_data[ , c("PARAM", "LBSTRESC")] %>%
     filter(grepl(">", .data$LBSTRESC, fixed = FALSE)) %>%
     mutate(ULOQC = .data$LBSTRESC, ULOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
     group_by(.data$PARAM) %>%
     slice(1) %>%
-    ungroup() %>%
-    select(-.data$LBSTRESC)
+    ungroup()
+
+  uloq$LBSTRESC <- NULL
 
   # return LOQ data
   loq_values <- merge(lloq, uloq, by = "PARAM", all = TRUE)
