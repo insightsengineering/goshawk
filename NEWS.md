@@ -1,20 +1,26 @@
 # goshawk 0.1.13.9011
 
+### Fixes
+
+* Fixed `h_caption_loqs_label` to handle multiple parameters when data frame is returned from `h_identify_loq_values`.
+
+### Enhancements
+
+* Implemented `nestcolor` with slight refactoring to `g_lineplot`, `g_density_distribution_plot` and added `nestcolor` in examples without custom color manuals.
+
+### Miscellaneous
+
+* Updated installation instructions.
+
 # goshawk 0.1.13
 
 ### Fixes
 
 * Fixed incorrect color of arbitrary lines legend elements in `geom_arb_hline` and `geom_arb_vline` functions.
 
-### Enhancements
-
-* Implemented `nestcolor` with slight refactoring to `g_lineplot`, `g_density_distribution_plot`.
-  Added `nestcolor` in examples without custom color manuals.
-
 ### Miscellaneous
 
 * Added a template to the `pkgdown` site.
-
 
 # goshawk 0.1.12
 
@@ -41,7 +47,6 @@
 * Removed dependency on the `test.nest` package.
 * Removed dependency on the `utils.nest` package and replaced its functions with equivalents from the `checkmate` package.
 
-
 # goshawk 0.1.10
 
 ### New Features
@@ -53,7 +58,6 @@
 * Allow arbitrary horizontal line arguments in `g_spaghettiplot`, `g_boxplot`, `g_density_distribution_plot` and `g_correlationplot` and vertical line arguments in `g_correlationplot`. This functionality has changed the arguments required to use the functions:
   - `hline` replaced by `hline_arb`, `hline_arb_color` and `hline_arb_label` in the above functions.
   - `vline` replaced by `vline_arb_var`, `vline_arb_color` and `vline_arb_label` in `g_correlationplot`.
-
 
 ### Miscellaneous
 
