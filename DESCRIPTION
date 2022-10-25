@@ -48,7 +48,7 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    insightsengineering/scda.2021@*release,
+    insightsengineering/scda.2022@*release,
     insightsengineering/scda@*release
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
