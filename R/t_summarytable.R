@@ -96,7 +96,7 @@ t_summarytable <- function(data,
   # get unique study id or unique study ids if multiple study data
   study_id <- as.data.frame(table(table_data$STUDYID)) %>%
     mutate(STUDYID = paste(.data$Var1, collapse = "/")) %>%
-    rename(StudyID = STUDYID) %>%
+    rename(StudyID = "STUDYID") %>%
     select("StudyID") %>%
     slice(1)
 
