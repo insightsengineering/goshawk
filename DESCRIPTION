@@ -42,13 +42,13 @@ Suggests:
     knitr,
     nestcolor (>= 0.1.0),
     scda (>= 0.1.5),
-    scda.2021 (>= 0.1.5),
+    scda.2022 (>= 0.1.3),
     testthat (>= 2.0),
     tidyr
 VignetteBuilder:
     knitr
 Remotes:
-    insightsengineering/scda.2021@*release,
+    insightsengineering/scda.2022@*release,
     insightsengineering/scda@*release
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
