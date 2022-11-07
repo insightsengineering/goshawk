@@ -2,6 +2,10 @@
 
 # Examples now use `scda.2022` data instead of `scda.2021`.
 
+### Miscellaneous
+
+* Deprecated `g_scatterplot`. Use `g_correlationplot` instead.
+
 # goshawk 0.1.14
 
 ### Fixes

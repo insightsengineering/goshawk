@@ -84,8 +84,11 @@ visualization. Use with facet = TRUE.}
 \item{reg_text_size}{font size control for regression line annotations.}
 }
 \description{
-Default plot displays scatter facetted by visit with color attributed treatment arms and symbol
-attributed LOQ values.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+\code{g_scatterplot()} is deprecated. Please use
+\code{\link[=g_correlationplot]{g_correlationplot()}} instead. Default plot displays scatter facetted by
+visit with color attributed treatment arms and symbol attributed LOQ values.
 }
 \details{
 Regression uses deming model.
