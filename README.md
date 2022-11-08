@@ -1,5 +1,9 @@
 # goshawk R package
 
+<!-- start badges -->
+[![Code Coverage](https://raw.githubusercontent.com/insightsengineering/goshawk/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/goshawk/_xml_coverage_reports/data/main/coverage.xml)
+<!-- end badges -->
+
 Longitudinal biomarker/lab visualizations functions. These can be used stand alone but are also called by the
 [teal.goshawk](https://insightsengineering.github.io/teal.goshawk/) package which provides `teal` modules to be used
 inside `teal` applications.
