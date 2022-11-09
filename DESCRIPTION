@@ -34,6 +34,7 @@ Imports:
     ggplot2,
     grDevices,
     grid,
+    lifecycle,
     magrittr,
     mcr,
     rlang,

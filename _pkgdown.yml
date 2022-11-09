@@ -20,6 +20,10 @@ reference:
       - g_correlationplot
       - g_density_distribution_plot
       - g_lineplot
-      - g_scatterplot
       - g_spaghettiplot
       - t_summarytable
+
+  - title: Deprecated
+    desc: These functions have been deprecated.
+    contents:
+      - g_scatterplot

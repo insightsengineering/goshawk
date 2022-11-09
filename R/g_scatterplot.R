@@ -1,7 +1,11 @@
 #' Function to create a scatter plot.
 #'
-#' Default plot displays scatter facetted by visit with color attributed treatment arms and symbol
-#' attributed LOQ values.
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#'  `g_scatterplot()` is deprecated. Please use
+#'  [g_correlationplot()] instead. Default plot displays scatter facetted by
+#'  visit with color attributed treatment arms and symbol attributed LOQ values.
 #'
 #' @param label text string to used to identify plot.
 #' @param data ADaM structured analysis laboratory data frame e.g. ADLB.
@@ -136,6 +140,12 @@ g_scatterplot <- function(label = "Scatter Plot",
                           font_size = 12,
                           dot_size = NULL,
                           reg_text_size = 3) {
+  lifecycle::deprecate_soft(
+    when = "0.1.15",
+    what = "g_scatterplot()",
+    details = "You should use goshawk::g_correlationplot instead of goshawk::g_scatterplot"
+  )
+
   checkmate::assert_numeric(xlim, len = 2)
   checkmate::assert_numeric(ylim, len = 2)
 
