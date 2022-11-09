@@ -1,8 +1,8 @@
 Type: Package
 Package: goshawk
 Title: Longitudinal Visualization Functions
-Version: 0.1.14.9002
-Date: 2022-10-25
+Version: 0.1.14.9004
+Date: 2022-11-09
 Authors@R: c(
     person("Nick", "Paszty", , "nick.paszty@gene.com", role = c("aut", "cre")),
     person("Junlue", "Zhao", , "zhaoj88@gene.com", role = "aut"),
