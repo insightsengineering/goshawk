@@ -19,7 +19,6 @@
 [![Open Issues](https://img.shields.io/github/issues-raw/insightsengineering/goshawk?color=red\&label=open%20issues)](https://github.com/insightsengineering/goshawk/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 <!-- end badges -->
 
-
 Longitudinal biomarker/lab visualizations functions. These can be used stand alone but are also called by the
 [teal.goshawk](https://insightsengineering.github.io/teal.goshawk/) package which provides `teal` modules to be used
 inside `teal` applications.
