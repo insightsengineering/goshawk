@@ -1,7 +1,22 @@
 # goshawk R package
 
 <!-- start badges -->
-[![Code Coverage](https://raw.githubusercontent.com/insightsengineering/goshawk/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/goshawk/_xml_coverage_reports/data/main/coverage.xml)
+[![Check 🛠](https://github.com/insightsengineering/goshawk/actions/workflows/check.yaml/badge.svg)](https://github.com/insightsengineering/goshawk/actions/workflows/check.yaml)
+[![Docs 📚](https://github.com/insightsengineering/goshawk/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/goshawk/)
+[![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/goshawk/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/goshawk/_xml_coverage_reports/data/main/coverage.xml)
+
+![GitHub forks](https://img.shields.io/github/forks/insightsengineering/goshawk?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/insightsengineering/goshawk?style=social)
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/insightsengineering/goshawk)
+![GitHub contributors](https://img.shields.io/github/contributors/insightsengineering/goshawk)
+![GitHub last commit](https://img.shields.io/github/last-commit/insightsengineering/goshawk)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/insightsengineering/goshawk)
+![GitHub repo size](https://img.shields.io/github/repo-size/insightsengineering/goshawk)
+![GitHub language count](https://img.shields.io/github/languages/count/insightsengineering/goshawk)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Current Version](https://img.shields.io/github/r-package/v/insightsengineering/goshawk/main?color=purple\&label=package%20version)](https://github.com/insightsengineering/goshawk/tree/main)
+[![Open Issues](https://img.shields.io/github/issues-raw/insightsengineering/goshawk?color=red\&label=open%20issues)](https://github.com/insightsengineering/goshawk/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 <!-- end badges -->
 
 Longitudinal biomarker/lab visualizations functions. These can be used stand alone but are also called by the
