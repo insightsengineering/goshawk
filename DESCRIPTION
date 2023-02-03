@@ -45,7 +45,8 @@ Suggests:
     scda (>= 0.1.5),
     scda.2022 (>= 0.1.3),
     testthat (>= 2.0),
-    tidyr
+    tidyr,
+    rmarkdown
 VignetteBuilder:
     knitr
 Remotes:
