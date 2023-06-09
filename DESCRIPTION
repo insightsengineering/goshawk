@@ -28,7 +28,7 @@ Depends:
     dplyr,
     R (>= 3.6)
 Imports:
-    checkmate,
+    checkmate (>= 2.0),
     cowplot,
     ggnewscale,
     ggplot2,
@@ -52,6 +52,24 @@ VignetteBuilder:
 Remotes:
     insightsengineering/scda.2022@*release,
     insightsengineering/scda@*release
+Config/Needs/verdepcheck:
+    tidyverse/dplyr,
+    mllg/checkmate,
+    wilkelab/cowplot,
+    eliocamp/ggnewscale,
+    tidyverse/ggplot2,
+    r-lib/lifecycle,
+    tidyverse/magrittr,
+    mcr,
+    r-lib/rlang,
+    tidyverse/stringr,
+    yihui/knitr,
+    insightsengineering/nestcolor,
+    rstudio/rmarkdown,
+    insightsengineering/scda,
+    insightsengineering/scda.2022,
+    r-lib/testthat,
+    tidyverse/tidyr
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
