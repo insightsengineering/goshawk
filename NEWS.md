@@ -108,11 +108,11 @@
 
 # goshawk 0.1.5
 
-* updated LLOQ/ULOQ footnote for correlation plot
+* updated `LLOQ`/`ULOQ` footnote for correlation plot
 
 # goshawk 0.1.4
 
-* Added labeling function and data driven LLOQ and ULOQ related footnote.
+* Added labeling function and data driven `LLOQ` and `ULOQ` related footnote.
 
 # goshawk 0.1.3.9000
 
@@ -126,8 +126,8 @@
 # goshawk 0.1.2
 
 * Added argument to control the following:
-  - Box: Toggle LoQ legend on/off.
-  - Correlation: Toggle LoQ legend on/off, toggle visit facetting on/off.
+  - Box: Toggle `LoQ` legend on/off.
+  - Correlation: Toggle `LoQ` legend on/off, toggle visit facetting on/off.
   - Density: Toggle combined treatment line on/off.
 
 # goshawk 0.1.1

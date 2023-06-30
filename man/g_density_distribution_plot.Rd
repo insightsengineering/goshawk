@@ -31,17 +31,17 @@ g_density_distribution_plot(
 \arguments{
 \item{label}{text string used to identify plot.}
 
-\item{data}{ADaM structured analysis laboratory data frame e.g. ADLB.}
+\item{data}{\code{ADaM} structured analysis laboratory data frame e.g. \code{ADLB}.}
 
-\item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
+\item{param_var}{name of variable containing biomarker codes e.g. \code{PARAMCD}.}
 
-\item{param}{biomarker to visualize e.g. IGG.}
+\item{param}{biomarker to visualize e.g. \code{IGG}.}
 
-\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. AVAL.}
+\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. \code{AVAL}.}
 
-\item{trt_group}{name of variable representing treatment group e.g. ARM.}
+\item{trt_group}{name of variable representing treatment group e.g. \code{ARM}.}
 
-\item{unit}{name of variable containing biomarker unit e.g. AVALU.}
+\item{unit}{name of variable containing biomarker unit e.g. \code{AVALU}.}
 
 \item{xlim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
 if the default limits are not suitable.}

@@ -4,12 +4,12 @@
 #' treatment overlaid.
 #'
 #' @param label text string used to identify plot.
-#' @param data ADaM structured analysis laboratory data frame e.g. ADLB.
-#' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
-#' @param param biomarker to visualize e.g. IGG.
-#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
-#' @param trt_group name of variable representing treatment group e.g. ARM.
-#' @param unit name of variable containing biomarker unit e.g. AVALU.
+#' @param data `ADaM` structured analysis laboratory data frame e.g. `ADLB`.
+#' @param param_var name of variable containing biomarker codes e.g. `PARAMCD`.
+#' @param param biomarker to visualize e.g. `IGG`.
+#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. `AVAL`.
+#' @param trt_group name of variable representing treatment group e.g. `ARM`.
+#' @param unit name of variable containing biomarker unit e.g. `AVALU`.
 #' @param xlim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
 #'   if the default limits are not suitable.
 #' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis

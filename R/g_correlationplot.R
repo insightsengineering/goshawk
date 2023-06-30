@@ -1,23 +1,23 @@
 #' Function to create a correlation plot.
 #'
 #' Default plot displays correlation facetted by visit with color attributed treatment arms and
-#' symbol attributed LOQ values.
+#' symbol attributed `LOQ` values.
 #'
 #' @param label text string to used to identify plot.
-#' @param data ADaM structured analysis laboratory data frame e.g. ADLB.
-#' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
-#' @param xaxis_param x-axis biomarker to visualize e.g. IGG.
-#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. BASE.
+#' @param data `ADaM` structured analysis laboratory data frame e.g. `ADLB`.
+#' @param param_var name of variable containing biomarker codes e.g. `PARAMCD`.
+#' @param xaxis_param x-axis biomarker to visualize e.g. `IGG`.
+#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. `BASE`.
 #' @param xvar x-axis analysis variable from transposed data set.
-#' @param yaxis_param y-axis biomarker to visualize e.g. IGG.
-#' @param yaxis_var name of variable containing biomarker results displayed on Y-axis.g. AVAL.
+#' @param yaxis_param y-axis biomarker to visualize e.g. `IGG`.
+#' @param yaxis_var name of variable containing biomarker results displayed on Y-axis.g. `AVAL`.
 #' @param yvar y-axis analysis variable from transposed data set.
-#' @param trt_group name of variable representing treatment group e.g. ARM.
-#' @param visit name of variable containing nominal visits e.g. AVISITCD.
-#' @param loq_flag_var  name of variable containing LOQ flag e.g. LOQFL_COMB.
+#' @param trt_group name of variable representing treatment group e.g. `ARM`.
+#' @param visit name of variable containing nominal visits e.g. `AVISITCD`.
+#' @param loq_flag_var  name of variable containing `LOQ` flag e.g. `LOQFL_COMB`.
 #' @param visit_facet visit facet toggle.
-#' @param loq_legend `logical` whether to include LoQ legend.
-#' @param unit name of variable containing biomarker unit e.g. AVALU.
+#' @param loq_legend `logical` whether to include `LoQ` legend.
+#' @param unit name of variable containing biomarker unit e.g. `AVALU`.
 #' @param xlim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
 #'   if the default limits are not suitable.
 #' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
@@ -26,7 +26,7 @@
 #' @param xaxis_lab x-axis label.
 #' @param yaxis_lab y-axis label.
 #' @param color_manual vector of colors applied to treatment values.
-#' @param shape_manual vector of symbols applied to LOQ values. (used with loq_flag_var).
+#' @param shape_manual vector of symbols applied to `LOQ` values. (used with `loq_flag_var`).
 #' @param facet_ncol number of facets per row.
 #' @param facet set layout to use treatment facetting.
 #' @param facet_var variable to use for treatment facetting.
@@ -36,14 +36,14 @@
 #' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
 #' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
 #' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#'   The data inside of the `ggplot2` object must also contain the columns with these variable names
 #' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
 #' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
 #' @param vline_arb ('numeric vector') value identifying intercept for arbitrary vertical lines.
 #' @param vline_arb_color ('character vector') optional, color for the arbitrary vertical lines.
 #' @param vline_arb_label ('character vector') optional, label for the legend to the arbitrary vertical lines.
 #' @param vline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#'   The data inside of the `ggplot2` object must also contain the columns with these variable names
 #' @param vline_vars_colors ('character vector') colors for the vertical lines defined by variables.
 #' @param vline_vars_labels ('character vector') labels for the legend to the vertical lines defined by variables.
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
@@ -54,7 +54,7 @@
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
-#' @details Regression uses deming model.
+#' @details Regression uses `deming` model.
 #'
 #' @export
 #'

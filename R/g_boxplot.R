@@ -10,35 +10,35 @@
 #' of the box indicate the degree of dispersion (spread) and skewness in the
 #' data, and show outliers. In addition to the points themselves, they allow one
 #' to visually estimate various L-estimators, notably the interquartile range,
-#' midhinge, range, mid-range, and trimean.
+#' `midhinge`, range, mid-range, and `trimean`.
 #'
-#' @param data ADaM structured analysis laboratory data frame e.g. ADLB.
-#' @param biomarker biomarker to visualize e.g. IGG.
-#' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
+#' @param data `ADaM` structured analysis laboratory data frame e.g. `ADLB`.
+#' @param biomarker biomarker to visualize e.g. `IGG`.
+#' @param param_var name of variable containing biomarker codes e.g. `PARAMCD`.
 #' @param yaxis_var name of variable containing biomarker results displayed on
-#'   Y-axis e.g. AVAL.
-#' @param trt_group name of variable representing treatment trt_group e.g. ARM.
-#' @param loq_flag_var  name of variable containing LOQ flag e.g. LOQFL.
-#' @param loq_legend `logical` whether to include LoQ legend.
+#'   Y-axis e.g. `AVAL`.
+#' @param trt_group name of variable representing treatment `trt_group` e.g. `ARM`.
+#' @param loq_flag_var  name of variable containing `LOQ` flag e.g. `LOQFL`.
+#' @param loq_legend `logical` whether to include `LoQ` legend.
 #' @param unit biomarker unit label e.g. (U/L)
-#' @param color_manual vector of color for trt_group
-#' @param shape_manual vector of shapes (used with loq_flag_var)
+#' @param color_manual vector of color for `trt_group`
+#' @param shape_manual vector of shapes (used with `loq_flag_var`)
 #' @param box add boxes to the plot (boolean)
 #' @param ylim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
 #'   if the default limits are not suitable.
-#' @param facet_var variable to facet the plot by, or "None" if no faceting
+#' @param facet_var variable to facet the plot by, or `"None"` if no faceting
 #'   required.
 #' @param xaxis_var variable used to group the data on the x-axis.
-#' @param facet_ncol number of facets per row.  NULL = Use the default for ggplot2::facet_wrap
+#' @param facet_ncol number of facets per row.  NULL = Use the default for `ggplot2::facet_wrap`
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
-#' @param font_size point size of tex to use.  NULL is use default size
+#' @param font_size point size of `tex` to use.  NULL is use default size
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
 #' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
 #' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
 #' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
 #' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#'   The data inside of the `ggplot2` object must also contain the columns with these variable names
 #' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
 #' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
 #'

@@ -2,16 +2,16 @@
 #'
 #' Output descriptive summary statistics table as a data frame. Includes biomarker, treatment,
 #' visit,
-#' n, mean, median, sd, min, max, %missing values, % LOQ values.
+#' n, mean, median, SD, min, max, %missing values, % `LOQ` values.
 #'
 #' @param data name of data frame to summarize.
-#' @param trt_group treatment group variable name e.g. ARM.
-#' @param param_var name of variable containing biomarker codes e.g. PARAMCD.
-#' @param param biomarker to visualize e.g. IGG.
-#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. AVAL.
-#' @param facet_var name of variable facetted on typically containing visit values e.g. AVISITCD.
+#' @param trt_group treatment group variable name e.g. `ARM`.
+#' @param param_var name of variable containing biomarker codes e.g. `PARAMCD`.
+#' @param param biomarker to visualize e.g. `IGG`.
+#' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. `AVAL`.
+#' @param facet_var name of variable facetted on typically containing visit values e.g. `AVISITCD`.
 #'   If NULL then ignored. It defaults to `"AVISITCD"` when not provided.
-#' @param loq_flag_var name of variable containing LOQ flag e.g. LOQFL. Defaults to `"LOQFL"`.
+#' @param loq_flag_var name of variable containing `LOQ` flag e.g. `LOQFL`. Defaults to `"LOQFL"`.
 #' @param ... additional options
 #'
 #' @author Nick Paszty (npaszty) paszty.nicholas@gene.com

@@ -52,7 +52,7 @@ in the plot.}
 
 \item{trt_group}{name of variable representing treatment group.}
 
-\item{trt_group_level}{vector that can be used to define the factor level of trt_group.}
+\item{trt_group_level}{vector that can be used to define the factor level of \code{trt_group}.}
 
 \item{time}{name of variable containing visit names.}
 
@@ -71,10 +71,10 @@ if the default limits are not suitable.}
 \item{facet_ncol}{number of facets per row.}
 
 \item{xtick}{a vector to define the tick values of time in x-axis.
-Default value is ggplot2::waiver().}
+Default value is \code{ggplot2::waiver()}.}
 
-\item{xlabel}{vector with same length of xtick to define the label of x-axis tick values. Default
-value is ggplot2::waiver().}
+\item{xlabel}{vector with same length of \code{xtick} to define the label of x-axis tick values. Default
+value is \code{ggplot2::waiver()}.}
 
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 
@@ -89,7 +89,7 @@ value is ggplot2::waiver().}
 \item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
 \item{hline_vars}{('character vector'), names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.
-The data inside of the ggplot2 object must also contain the columns with these variable names}
+The data inside of the \code{ggplot2} object must also contain the columns with these variable names}
 
 \item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 

@@ -34,23 +34,23 @@ g_scatterplot(
 \arguments{
 \item{label}{text string to used to identify plot.}
 
-\item{data}{ADaM structured analysis laboratory data frame e.g. ADLB.}
+\item{data}{\code{ADaM} structured analysis laboratory data frame e.g. \code{ADLB}.}
 
-\item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
+\item{param_var}{name of variable containing biomarker codes e.g. \code{PARAMCD}.}
 
-\item{param}{biomarker to visualize e.g. IGG.}
+\item{param}{biomarker to visualize e.g. \code{IGG}.}
 
-\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. BASE.}
+\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. \code{BASE}.}
 
-\item{yaxis_var}{name of variable containing biomarker results displayed on Y-axise.g. AVAL.}
+\item{yaxis_var}{name of variable containing biomarker results displayed on Y-axis e.g. \code{AVAL}.}
 
-\item{trt_group}{name of variable representing treatment group e.g. ARM.}
+\item{trt_group}{name of variable representing treatment group e.g. \code{ARM}.}
 
-\item{visit}{name of variable containing nominal visits e.g. AVISITCD.}
+\item{visit}{name of variable containing nominal visits e.g. \code{AVISITCD}.}
 
-\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
+\item{loq_flag_var}{name of variable containing \code{LOQ} flag e.g. \code{LOQFL}.}
 
-\item{unit}{name of variable containing biomarker unit e.g. AVALU.}
+\item{unit}{name of variable containing biomarker unit e.g. \code{AVALU}.}
 
 \item{xlim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
 if the default limits are not suitable.}
@@ -60,7 +60,7 @@ if the default limits are not suitable.}
 
 \item{color_manual}{vector of colors applied to treatment values.}
 
-\item{shape_manual}{vector of symbols applied to LOQ values.}
+\item{shape_manual}{vector of symbols applied to \code{LOQ} values.}
 
 \item{facet_ncol}{number of facets per row.}
 
@@ -88,10 +88,10 @@ visualization. Use with facet = TRUE.}
 
 \code{g_scatterplot()} is deprecated. Please use
 \code{\link[=g_correlationplot]{g_correlationplot()}} instead. Default plot displays scatter facetted by
-visit with color attributed treatment arms and symbol attributed LOQ values.
+visit with color attributed treatment arms and symbol attributed \code{LOQ} values.
 }
 \details{
-Regression uses deming model.
+Regression uses \code{deming} model.
 }
 \examples{
 # Example using ADaM structure analysis dataset.

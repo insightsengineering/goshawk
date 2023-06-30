@@ -52,33 +52,33 @@ g_correlationplot(
 \arguments{
 \item{label}{text string to used to identify plot.}
 
-\item{data}{ADaM structured analysis laboratory data frame e.g. ADLB.}
+\item{data}{\code{ADaM} structured analysis laboratory data frame e.g. \code{ADLB}.}
 
-\item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
+\item{param_var}{name of variable containing biomarker codes e.g. \code{PARAMCD}.}
 
-\item{xaxis_param}{x-axis biomarker to visualize e.g. IGG.}
+\item{xaxis_param}{x-axis biomarker to visualize e.g. \code{IGG}.}
 
-\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. BASE.}
+\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. \code{BASE}.}
 
 \item{xvar}{x-axis analysis variable from transposed data set.}
 
-\item{yaxis_param}{y-axis biomarker to visualize e.g. IGG.}
+\item{yaxis_param}{y-axis biomarker to visualize e.g. \code{IGG}.}
 
-\item{yaxis_var}{name of variable containing biomarker results displayed on Y-axis.g. AVAL.}
+\item{yaxis_var}{name of variable containing biomarker results displayed on Y-axis.g. \code{AVAL}.}
 
 \item{yvar}{y-axis analysis variable from transposed data set.}
 
-\item{trt_group}{name of variable representing treatment group e.g. ARM.}
+\item{trt_group}{name of variable representing treatment group e.g. \code{ARM}.}
 
-\item{visit}{name of variable containing nominal visits e.g. AVISITCD.}
+\item{visit}{name of variable containing nominal visits e.g. \code{AVISITCD}.}
 
-\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL_COMB.}
+\item{loq_flag_var}{name of variable containing \code{LOQ} flag e.g. \code{LOQFL_COMB}.}
 
 \item{visit_facet}{visit facet toggle.}
 
-\item{loq_legend}{\code{logical} whether to include LoQ legend.}
+\item{loq_legend}{\code{logical} whether to include \code{LoQ} legend.}
 
-\item{unit}{name of variable containing biomarker unit e.g. AVALU.}
+\item{unit}{name of variable containing biomarker unit e.g. \code{AVALU}.}
 
 \item{xlim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
 if the default limits are not suitable.}
@@ -94,7 +94,7 @@ if the default limits are not suitable.}
 
 \item{color_manual}{vector of colors applied to treatment values.}
 
-\item{shape_manual}{vector of symbols applied to LOQ values. (used with loq_flag_var).}
+\item{shape_manual}{vector of symbols applied to \code{LOQ} values. (used with \code{loq_flag_var}).}
 
 \item{facet_ncol}{number of facets per row.}
 
@@ -112,7 +112,7 @@ Use with facet = TRUE.}
 \item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
 \item{hline_vars}{('character vector'), names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.
-The data inside of the ggplot2 object must also contain the columns with these variable names}
+The data inside of the \code{ggplot2} object must also contain the columns with these variable names}
 
 \item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 
@@ -125,7 +125,7 @@ The data inside of the ggplot2 object must also contain the columns with these v
 \item{vline_arb_label}{('character vector') optional, label for the legend to the arbitrary vertical lines.}
 
 \item{vline_vars}{('character vector'), names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.
-The data inside of the ggplot2 object must also contain the columns with these variable names}
+The data inside of the \code{ggplot2} object must also contain the columns with these variable names}
 
 \item{vline_vars_colors}{('character vector') colors for the vertical lines defined by variables.}
 
@@ -141,10 +141,10 @@ The data inside of the ggplot2 object must also contain the columns with these v
 }
 \description{
 Default plot displays correlation facetted by visit with color attributed treatment arms and
-symbol attributed LOQ values.
+symbol attributed \code{LOQ} values.
 }
 \details{
-Regression uses deming model.
+Regression uses \code{deming} model.
 }
 \examples{
 # Example using ADaM structure analysis dataset.
