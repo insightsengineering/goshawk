@@ -263,7 +263,7 @@ g_boxplot <- function(data,
 
   # Add facetting.
   if (!is.null(facet_var)) {
-    if (facet_var != "None" & facet_var %in% names(data)) {
+    if (facet_var != "None" && facet_var %in% names(data)) {
       if (!is_finite(facet_ncol)) facet_ncol <- 0
       if (facet_ncol >= 1) {
         plot1 <- plot1 +
