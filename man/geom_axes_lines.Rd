@@ -57,7 +57,7 @@ Needs \code{data} to be specified.}
 \code{ggplot} object
 }
 \description{
-This function is currently designed to be used with \link{g_boxplot}, \link{g_correlationplot}, \link{g_spaghettiplot},
+This function is currently designed to be used with \code{\link{g_boxplot()}}, \code{\link{g_correlationplot()}}, \code{\link{g_spaghettiplot()}},
 and ('g_density_distribution_plot'), but may also work in general.
 }
 \examples{

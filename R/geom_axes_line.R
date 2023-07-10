@@ -1,6 +1,6 @@
 #' Add horizontal and/or vertical lines and their legend labels to a plot
 #'
-#' This function is currently designed to be used with \link{g_boxplot}, \link{g_correlationplot}, \link{g_spaghettiplot},
+#' This function is currently designed to be used with \code{\link{g_boxplot()}}, \code{\link{g_correlationplot()}}, \code{\link{g_spaghettiplot()}},
 #' and ('g_density_distribution_plot'), but may also work in general.
 #'
 #' @param data ('data.frame') data where `hline_vars` and `vline_var` columns are taken from.
