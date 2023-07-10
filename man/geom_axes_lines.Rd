@@ -57,8 +57,8 @@ Needs \code{data} to be specified.}
 \code{ggplot} object
 }
 \description{
-This function is currently designed to be used with \code{\link{g_boxplot}}, \code{\link{g_correlationplot}}, \code{\link{g_spaghettiplot}},
-and ('g_density_distribution_plot'), but may also work in general.
+This function is currently designed to be used with \code{\link{g_boxplot}}, \code{\link{g_correlationplot}},
+\code{\link{g_spaghettiplot}}, and ('g_density_distribution_plot'), but may also work in general.
 }
 \examples{
 p <- ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) +
