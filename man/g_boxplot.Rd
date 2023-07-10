@@ -101,7 +101,7 @@ underlying statistical distribution. The spacings between the different parts
 of the box indicate the degree of dispersion (spread) and skewness in the
 data, and show outliers. In addition to the points themselves, they allow one
 to visually estimate various L-estimators, notably the interquartile range,
-\code{midhinge}, range, mid-range, and \code{trimean}.
+midhinge, range, mid-range, and trimean.
 }
 \examples{
 

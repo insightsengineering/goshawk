@@ -10,7 +10,7 @@
 #' of the box indicate the degree of dispersion (spread) and skewness in the
 #' data, and show outliers. In addition to the points themselves, they allow one
 #' to visually estimate various L-estimators, notably the interquartile range,
-#' `midhinge`, range, mid-range, and `trimean`.
+#' midhinge, range, mid-range, and trimean.
 #'
 #' @param data `ADaM` structured analysis laboratory data frame e.g. `ADLB`.
 #' @param biomarker biomarker to visualize e.g. `IGG`.
