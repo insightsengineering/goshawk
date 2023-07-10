@@ -31,7 +31,7 @@
 #' @param xaxis_var variable used to group the data on the x-axis.
 #' @param facet_ncol number of facets per row.  NULL = Use the default for `ggplot2::facet_wrap`
 #' @param rotate_xlab 45 degree rotation of x-axis label values.
-#' @param font_size point size of `tex` to use.  NULL is use default size
+#' @param font_size point size of text to use.  NULL is use default size
 #' @param dot_size plot dot size.
 #' @param alpha dot transparency (0 = transparent, 1 = opaque)
 #' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.

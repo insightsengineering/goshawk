@@ -69,7 +69,7 @@ if the default limits are not suitable.}
 
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
-\item{font_size}{point size of \code{tex} to use.  NULL is use default size}
+\item{font_size}{point size of text to use.  NULL is use default size}
 
 \item{facet_var}{variable to facet the plot by, or \code{"None"} if no faceting
 required.}
