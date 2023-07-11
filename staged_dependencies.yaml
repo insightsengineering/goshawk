@@ -5,12 +5,6 @@ upstream_repos:
   insightsengineering/nestcolor:
     repo: insightsengineering/nestcolor
     host: https://github.com
-  insightsengineering/scda:
-    repo: insightsengineering/scda
-    host: https://github.com
-  insightsengineering/scda.2022:
-    repo: insightsengineering/scda.2022
-    host: https://github.com
 downstream_repos:
   insightsengineering/teal.goshawk:
     repo: insightsengineering/teal.goshawk
