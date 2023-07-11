@@ -51,13 +51,11 @@
 #'
 #' @examples
 #'
-#'
 #' # Example using ADaM structure analysis dataset.
 #'
-#' library(scda)
 #' library(nestcolor)
 #'
-#' ADLB <- synthetic_cdisc_data("latest")$adlb
+#' ADLB <- goshawk::rADLB
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
