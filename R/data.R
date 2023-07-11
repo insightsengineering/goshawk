@@ -3,7 +3,7 @@
 #' @description Random lab analysis
 #' @docType data
 #'
-#' @usage goshawk::rADLB
+#' @usage rADLB
 #'
 #' @keywords datasets internal
 #'
@@ -18,7 +18,7 @@
 #'
 #' @keywords datasets internal
 #'
-#' @usage goshawk::rADSL
+#' @usage rADSL
 #'
 #' @source internal
 #' @name rADSL

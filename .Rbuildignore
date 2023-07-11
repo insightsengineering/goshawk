@@ -1,3 +1,6 @@
+SECURITY.md
+_pkgdown.yml
+staged_dependencies.yaml
 data-raw/data.R
 .gitlab-ci.yml
 .lintr
