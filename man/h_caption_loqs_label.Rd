@@ -13,8 +13,6 @@ h_caption_loqs_label(loqs_data)
 Add footnote to identify \code{LLOQ} and \code{ULOQ} values identified from data
 }
 \examples{
-library(scda)
-ADLB <- synthetic_cdisc_data("latest")$adlb
-caption_label <- goshawk:::h_caption_loqs_label(loqs_data = ADLB)
+caption_label <- goshawk:::h_caption_loqs_label(loqs_data = goshawk::rADLB)
 }
 \keyword{internal}

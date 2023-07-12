@@ -12,11 +12,8 @@
 #' @keywords internal
 #'
 #' @examples
-#' library(scda)
 #'
-#' ADLB <- synthetic_cdisc_data("latest")$adlb
-#'
-#' goshawk:::h_identify_loq_values(loqs_data = ADLB)
+#' goshawk:::h_identify_loq_values(loqs_data = goshawk::rADLB)
 h_identify_loq_values <- function(loqs_data) {
   ifelse(
     !grep("PARAM", names(loqs_data)),
@@ -79,9 +76,7 @@ h_identify_loq_values <- function(loqs_data) {
 #' @keywords internal
 #'
 #' @examples
-#' library(scda)
-#' ADLB <- synthetic_cdisc_data("latest")$adlb
-#' caption_label <- goshawk:::h_caption_loqs_label(loqs_data = ADLB)
+#' caption_label <- goshawk:::h_caption_loqs_label(loqs_data = goshawk::rADLB)
 h_caption_loqs_label <- function(loqs_data) {
   loq_values <- h_identify_loq_values(loqs_data)
 

@@ -1,10 +1,9 @@
-# goshawk 0.1.14.9010
-
-# Examples now use `scda.2022` data instead of `scda.2021`.
+# goshawk 0.1.14.9011
 
 ### Miscellaneous
 
 * Deprecated `g_scatterplot`. Use `g_correlationplot` instead.
+* Removed `scda` package dependency from examples.
 
 # goshawk 0.1.14
 

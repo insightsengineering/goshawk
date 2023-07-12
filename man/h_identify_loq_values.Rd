@@ -22,10 +22,7 @@ reference in the visualizations. This also aids in setting the data constraint
 ranges when \code{goshawk} functions are run from \code{teal.goshawk} \code{UI}.
 }
 \examples{
-library(scda)
 
-ADLB <- synthetic_cdisc_data("latest")$adlb
-
-goshawk:::h_identify_loq_values(loqs_data = ADLB)
+goshawk:::h_identify_loq_values(loqs_data = goshawk::rADLB)
 }
 \keyword{internal}
