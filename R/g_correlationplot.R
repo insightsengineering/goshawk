@@ -61,7 +61,6 @@
 #' @examples
 #' # Example using ADaM structure analysis dataset.
 #'
-#' library(scda)
 #' library(stringr)
 #' library(tidyr)
 #'
@@ -75,7 +74,7 @@
 #' # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
 #' shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 #'
-#' ADLB <- synthetic_cdisc_data("latest")$adlb
+#' ADLB <- goshawk::rADLB
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(

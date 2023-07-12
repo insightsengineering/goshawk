@@ -51,13 +51,11 @@
 #'
 #' @examples
 #'
-#'
 #' # Example using ADaM structure analysis dataset.
 #'
-#' library(scda)
 #' library(nestcolor)
 #'
-#' ADLB <- synthetic_cdisc_data("latest")$adlb
+#' ADLB <- goshawk::rADLB
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
@@ -263,7 +261,7 @@ g_boxplot <- function(data,
 
   # Add facetting.
   if (!is.null(facet_var)) {
-    if (facet_var != "None" & facet_var %in% names(data)) {
+    if (facet_var != "None" & facet_var %in% names(data)) { # nolint
       if (!is_finite(facet_ncol)) facet_ncol <- 0
       if (facet_ncol >= 1) {
         plot1 <- plot1 +

@@ -42,3 +42,12 @@ SECURITY.md
 ^LICENSE\.md$
 coverage.*
 ^\.pre-commit-config\.yaml
+_pkgdown.yml
+staged_dependencies.yaml
+data-raw/data.R
+.gitlab-ci.yml
+.lintr
+.pre-commit-config.yaml
+.github
+^.*\.Rproj$
+^\.Rproj\.user$
