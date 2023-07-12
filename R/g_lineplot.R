@@ -1,14 +1,14 @@
 #' Function to create line plot of summary statistics over time.
 #'
 #' @param label text string to be displayed as plot label.
-#' @param data ADaM structured analysis laboratory data frame e.g. ADLB.
+#' @param data `ADaM` structured analysis laboratory data frame e.g. `ADLB`.
 #' @param biomarker_var name of variable containing biomarker names.
 #' @param biomarker_var_label name of variable containing biomarker labels.
 #' @param biomarker biomarker name to be analyzed.
 #' @param value_var name of variable containing biomarker results.
 #' @param unit_var name of variable containing biomarker result unit.
 #' @param trt_group name of variable representing treatment group.
-#' @param trt_group_level vector that can be used to define the factor level of trt_group.
+#' @param trt_group_level vector that can be used to define the factor level of `trt_group`.
 #' @param shape categorical variable whose levels are used to split the plot lines.
 #' @param shape_type vector of symbol types.
 #' @param time name of variable containing visit names.
@@ -23,9 +23,9 @@
 #' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
 #' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
 #' @param xtick a vector to define the tick values of time in x-axis.
-#' Default value is ggplot2::waiver().
-#' @param xlabel vector with same length of xtick to define the label of x-axis tick values.
-#' Default value is ggplot2::waiver().
+#' Default value is `ggplot2::waiver()`.
+#' @param xlabel vector with same length of `xtick` to define the label of x-axis tick values.
+#' Default value is `ggplot2::waiver()`.
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param plot_font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dodge control position dodge.

@@ -33,28 +33,28 @@ g_boxplot(
 )
 }
 \arguments{
-\item{data}{ADaM structured analysis laboratory data frame e.g. ADLB.}
+\item{data}{\code{ADaM} structured analysis laboratory data frame e.g. \code{ADLB}.}
 
-\item{biomarker}{biomarker to visualize e.g. IGG.}
+\item{biomarker}{biomarker to visualize e.g. \code{IGG}.}
 
-\item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
+\item{param_var}{name of variable containing biomarker codes e.g. \code{PARAMCD}.}
 
 \item{yaxis_var}{name of variable containing biomarker results displayed on
-Y-axis e.g. AVAL.}
+Y-axis e.g. \code{AVAL}.}
 
-\item{trt_group}{name of variable representing treatment trt_group e.g. ARM.}
+\item{trt_group}{name of variable representing treatment \code{trt_group} e.g. \code{ARM}.}
 
 \item{xaxis_var}{variable used to group the data on the x-axis.}
 
-\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL.}
+\item{loq_flag_var}{name of variable containing \code{LOQ} flag e.g. \code{LOQFL}.}
 
-\item{loq_legend}{\code{logical} whether to include LoQ legend.}
+\item{loq_legend}{\code{logical} whether to include \code{LoQ} legend.}
 
 \item{unit}{biomarker unit label e.g. (U/L)}
 
-\item{color_manual}{vector of color for trt_group}
+\item{color_manual}{vector of color for \code{trt_group}}
 
-\item{shape_manual}{vector of shapes (used with loq_flag_var)}
+\item{shape_manual}{vector of shapes (used with \code{loq_flag_var})}
 
 \item{box}{add boxes to the plot (boolean)}
 
@@ -65,13 +65,13 @@ if the default limits are not suitable.}
 
 \item{alpha}{dot transparency (0 = transparent, 1 = opaque)}
 
-\item{facet_ncol}{number of facets per row.  NULL = Use the default for ggplot2::facet_wrap}
+\item{facet_ncol}{number of facets per row.  NULL = Use the default for \code{ggplot2::facet_wrap}}
 
 \item{rotate_xlab}{45 degree rotation of x-axis label values.}
 
-\item{font_size}{point size of tex to use.  NULL is use default size}
+\item{font_size}{point size of text to use.  NULL is use default size}
 
-\item{facet_var}{variable to facet the plot by, or "None" if no faceting
+\item{facet_var}{variable to facet the plot by, or \code{"None"} if no faceting
 required.}
 
 \item{hline_arb}{('numeric vector') value identifying intercept for arbitrary horizontal lines.}
@@ -81,7 +81,7 @@ required.}
 \item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
 \item{hline_vars}{('character vector'), names of variables \verb{(ANR*)} or values \verb{(*LOQ)} identifying intercept values.
-The data inside of the ggplot2 object must also contain the columns with these variable names}
+The data inside of the \code{ggplot2} object must also contain the columns with these variable names}
 
 \item{hline_vars_colors}{('character vector') colors for the horizontal lines defined by variables.}
 

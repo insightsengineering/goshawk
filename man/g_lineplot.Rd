@@ -39,7 +39,7 @@ g_lineplot(
 \arguments{
 \item{label}{text string to be displayed as plot label.}
 
-\item{data}{ADaM structured analysis laboratory data frame e.g. ADLB.}
+\item{data}{\code{ADaM} structured analysis laboratory data frame e.g. \code{ADLB}.}
 
 \item{biomarker_var}{name of variable containing biomarker names.}
 
@@ -56,7 +56,7 @@ if the default limits are not suitable.}
 
 \item{trt_group}{name of variable representing treatment group.}
 
-\item{trt_group_level}{vector that can be used to define the factor level of trt_group.}
+\item{trt_group_level}{vector that can be used to define the factor level of \code{trt_group}.}
 
 \item{shape}{categorical variable whose levels are used to split the plot lines.}
 
@@ -80,10 +80,10 @@ x-axis variable is character or factor.}
 \item{hline_arb_label}{('character vector') optional, label for the legend to the arbitrary horizontal lines.}
 
 \item{xtick}{a vector to define the tick values of time in x-axis.
-Default value is ggplot2::waiver().}
+Default value is \code{ggplot2::waiver()}.}
 
-\item{xlabel}{vector with same length of xtick to define the label of x-axis tick values.
-Default value is ggplot2::waiver().}
+\item{xlabel}{vector with same length of \code{xtick} to define the label of x-axis tick values.
+Default value is \code{ggplot2::waiver()}.}
 
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 

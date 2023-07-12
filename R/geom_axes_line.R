@@ -1,7 +1,7 @@
 #' Add horizontal and/or vertical lines and their legend labels to a plot
 #'
-#' This function is currently designed to be used with ('g_boxplot'), ('g_correlationplot'), ('g_spaghettiplot'),
-#' and ('g_density_distribution_plot'), but may also work in general.
+#' This function is currently designed to be used with \code{\link{g_boxplot}}, \code{\link{g_correlationplot}},
+#' \code{\link{g_spaghettiplot}}, and ('g_density_distribution_plot'), but may also work in general.
 #'
 #' @param data ('data.frame') data where `hline_vars` and `vline_var` columns are taken from.
 #' @param agg_label ('character') label for the line denoting the Mean or Median.

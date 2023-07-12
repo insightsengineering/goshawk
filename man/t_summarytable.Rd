@@ -18,25 +18,25 @@ t_summarytable(
 \arguments{
 \item{data}{name of data frame to summarize.}
 
-\item{trt_group}{treatment group variable name e.g. ARM.}
+\item{trt_group}{treatment group variable name e.g. \code{ARM}.}
 
-\item{param_var}{name of variable containing biomarker codes e.g. PARAMCD.}
+\item{param_var}{name of variable containing biomarker codes e.g. \code{PARAMCD}.}
 
-\item{param}{biomarker to visualize e.g. IGG.}
+\item{param}{biomarker to visualize e.g. \code{IGG}.}
 
-\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. AVAL.}
+\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. \code{AVAL}.}
 
-\item{facet_var}{name of variable facetted on typically containing visit values e.g. AVISITCD.
+\item{facet_var}{name of variable facetted on typically containing visit values e.g. \code{AVISITCD}.
 If NULL then ignored. It defaults to \code{"AVISITCD"} when not provided.}
 
-\item{loq_flag_var}{name of variable containing LOQ flag e.g. LOQFL. Defaults to \code{"LOQFL"}.}
+\item{loq_flag_var}{name of variable containing \code{LOQ} flag e.g. \code{LOQFL}. Defaults to \code{"LOQFL"}.}
 
 \item{...}{additional options}
 }
 \description{
 Output descriptive summary statistics table as a data frame. Includes biomarker, treatment,
 visit,
-n, mean, median, sd, min, max, \%missing values, \% LOQ values.
+n, mean, median, SD, min, max, \%missing values, \% \code{LOQ} values.
 }
 \details{
 provide additional information as needed. link to specification file
