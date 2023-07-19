@@ -228,7 +228,7 @@ g_spaghettiplot <- function(data,
                             ylim = c(NA, NA),
                             alpha = 1.0,
                             facet_ncol = 2,
-                            facet_scales = "fixed",
+                            facet_scales = c("fixed", "free", "free_x", "free_y"),
                             xtick = ggplot2::waiver(),
                             xlabel = xtick,
                             rotate_xlab = FALSE,
@@ -241,6 +241,7 @@ g_spaghettiplot <- function(data,
                             hline_vars_colors = "green",
                             hline_vars_labels = hline_vars) {
   checkmate::assert_numeric(ylim, len = 2)
+  facet_scales <- match.arg(facet_scales)
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")

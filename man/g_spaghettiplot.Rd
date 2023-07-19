@@ -21,7 +21,7 @@ g_spaghettiplot(
   ylim = c(NA, NA),
   alpha = 1,
   facet_ncol = 2,
-  facet_scales = "fixed",
+  facet_scales = c("fixed", "free", "free_x", "free_y"),
   xtick = ggplot2::waiver(),
   xlabel = xtick,
   rotate_xlab = FALSE,
@@ -71,7 +71,7 @@ if the default limits are not suitable.}
 
 \item{facet_ncol}{number of facets per row.}
 
-\item{facet_scales}{passed to \code{\link[ggplot2]{facet_wrap}} \code{scales} parameter. Should scales be fixed (\code{"fixed"},
+\item{facet_scales}{passed to \code{scales} in \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap}}. Should scales be fixed (\code{"fixed"},
 the default), free (\code{"free"}), or free in one dimension (\code{"free_x"}, \code{"free_y"})?}
 
 \item{xtick}{a vector to define the tick values of time in x-axis.
