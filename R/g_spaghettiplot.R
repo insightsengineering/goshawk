@@ -21,7 +21,7 @@
 #'   if the default limits are not suitable.
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
-#' @param facet_scales passed to \link{ggplot2::facet_wrap} \code{scales} parameter. Should scales be fixed (`"fixed"`,
+#' @param facet_scales passed to \code{\link[ggplot2]{facet_wrap}} \code{scales} parameter. Should scales be fixed (`"fixed"`,
 #' the default), free (`"free"`), or free in one dimension (`"free_x"`, `"free_y"`)?
 #' @param xtick a vector to define the tick values of time in x-axis.
 #' Default value is ggplot2::waiver().
