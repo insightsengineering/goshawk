@@ -14,6 +14,7 @@
 ### Enhancements
 
 * Implemented `nestcolor` with slight refactoring to `g_lineplot`, `g_density_distribution_plot` and added `nestcolor` in examples without custom color manuals.
+* `g_spaghettiplot` has a new parameter `facet_scales` that allows for releasing scales in plot facets.
 
 ### Miscellaneous
 

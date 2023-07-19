@@ -21,6 +21,7 @@ g_spaghettiplot(
   ylim = c(NA, NA),
   alpha = 1,
   facet_ncol = 2,
+  facet_scales = c("fixed", "free", "free_x", "free_y"),
   xtick = ggplot2::waiver(),
   xlabel = xtick,
   rotate_xlab = FALSE,
@@ -69,6 +70,9 @@ if the default limits are not suitable.}
 \item{alpha}{subject line transparency (0 = transparent, 1 = opaque)}
 
 \item{facet_ncol}{number of facets per row.}
+
+\item{facet_scales}{passed to \code{scales} in \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap}}. Should scales be fixed (\code{"fixed"},
+the default), free (\code{"free"}), or free in one dimension (\code{"free_x"}, \code{"free_y"})?}
 
 \item{xtick}{a vector to define the tick values of time in x-axis.
 Default value is \code{ggplot2::waiver()}.}
@@ -224,6 +228,50 @@ g_spaghettiplot(
   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
   hline_vars = c("ANRHI", "ANRLO")
 )
+
+# removing missing levels from the plot with facet_scales
+
+g_spaghettiplot(
+  data = ADLB,
+  subj_id = "USUBJID",
+  biomarker_var = "PARAMCD",
+  biomarker = "CRP",
+  value_var = "AVAL",
+  trt_group = "ARM",
+  time = "RACE",
+  color_manual = color_manual,
+  color_comb = "#39ff14",
+  alpha = .02,
+  facet_scales = "fixed",
+  rotate_xlab = FALSE,
+  group_stats = "median",
+  hline_arb = c(.5, .7, 1),
+  hline_arb_color = c("blue", "red", "green"),
+  hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
+  hline_vars = c("ANRHI", "ANRLO")
+)
+
+g_spaghettiplot(
+  data = ADLB,
+  subj_id = "USUBJID",
+  biomarker_var = "PARAMCD",
+  biomarker = "CRP",
+  value_var = "AVAL",
+  trt_group = "ARM",
+  time = "RACE",
+  color_manual = color_manual,
+  color_comb = "#39ff14",
+  alpha = .02,
+  facet_scales = "free_x",
+  rotate_xlab = FALSE,
+  group_stats = "median",
+  hline_arb = c(.5, .7, 1),
+  hline_arb_color = c("blue", "red", "green"),
+  hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
+  hline_vars = c("ANRHI", "ANRLO")
+)
+
+
 }
 \author{
 Wenyi Liu (wenyi.liu@roche.com)
