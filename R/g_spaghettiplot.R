@@ -211,7 +211,6 @@
 #'   hline_vars = c("ANRHI", "ANRLO")
 #' )
 #'
-#'
 g_spaghettiplot <- function(data,
                             subj_id = "USUBJID",
                             biomarker_var = "PARAMCD",
