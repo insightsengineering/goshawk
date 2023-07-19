@@ -271,7 +271,6 @@ g_spaghettiplot(
   hline_vars = c("ANRHI", "ANRLO")
 )
 
-
 }
 \author{
 Wenyi Liu (wenyi.liu@roche.com)
