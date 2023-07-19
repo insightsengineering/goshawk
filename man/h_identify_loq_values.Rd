@@ -2,24 +2,24 @@
 % Please edit documentation in R/utils.R
 \name{h_identify_loq_values}
 \alias{h_identify_loq_values}
-\title{Helper for identifying any LLOQ and ULOQ values in LBSTRESC. Outcome drives
+\title{Helper for identifying any \code{LLOQ} and \code{ULOQ} values in \code{LBSTRESC}. Outcome drives
 horizontal line functionality display and legend labeling along with display
 of values in footnote.}
 \usage{
 h_identify_loq_values(loqs_data)
 }
 \arguments{
-\item{loqs_data}{(\verb{data frame})\cr loqs_data data set containing assay data with potential LOQ values}
+\item{loqs_data}{(\verb{data frame})\cr \code{loqs_data} data set containing assay data with potential \code{LOQ} values}
 }
 \description{
-Helper for identifying any LLOQ and ULOQ values in LBSTRESC. Outcome drives
+Helper for identifying any \code{LLOQ} and \code{ULOQ} values in \code{LBSTRESC}. Outcome drives
 horizontal line functionality display and legend labeling along with display
 of values in footnote.
 }
 \details{
-Biomarker Sciences would like to have LLOQ and ULOQ values available for
+Biomarker Sciences would like to have \code{LLOQ} and \code{ULOQ} values available for
 reference in the visualizations. This also aids in setting the data constraint
-ranges when goshawk functions are run from teal.goshawk UI.
+ranges when \code{goshawk} functions are run from \code{teal.goshawk} \code{UI}.
 }
 \examples{
 

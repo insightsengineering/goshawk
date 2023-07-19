@@ -11,7 +11,7 @@
 #' @param value_var name of variable containing biomarker results.
 #' @param unit_var name of variable containing biomarker units.
 #' @param trt_group name of variable representing treatment group.
-#' @param trt_group_level vector that can be used to define the factor level of trt_group.
+#' @param trt_group_level vector that can be used to define the factor level of `trt_group`.
 #' @param time name of variable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when
 #' x-axis variable is character or factor.
@@ -24,9 +24,9 @@
 #' @param facet_scales passed to `scales` in [`ggplot2::facet_wrap`]. Should scales be fixed (`"fixed"`,
 #' the default), free (`"free"`), or free in one dimension (`"free_x"`, `"free_y"`)?
 #' @param xtick a vector to define the tick values of time in x-axis.
-#' Default value is ggplot2::waiver().
-#' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default
-#'  value is ggplot2::waiver().
+#' Default value is `ggplot2::waiver()`.
+#' @param xlabel vector with same length of `xtick` to define the label of x-axis tick values. Default
+#'  value is `ggplot2::waiver()`.
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param group_stats control group mean or median overlay.
@@ -34,7 +34,7 @@
 #' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
 #' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
 #' @param hline_vars ('character vector'), names of variables `(ANR*)` or values `(*LOQ)` identifying intercept values.
-#'   The data inside of the ggplot2 object must also contain the columns with these variable names
+#'   The data inside of the `ggplot2` object must also contain the columns with these variable names
 #' @param hline_vars_colors ('character vector') colors for the horizontal lines defined by variables.
 #' @param hline_vars_labels ('character vector') labels for the legend to the horizontal lines defined by variables.
 #'

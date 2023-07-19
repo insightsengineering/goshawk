@@ -1,12 +1,12 @@
-#' Helper for identifying any LLOQ and ULOQ values in LBSTRESC. Outcome drives
+#' Helper for identifying any `LLOQ` and `ULOQ` values in `LBSTRESC`. Outcome drives
 #' horizontal line functionality display and legend labeling along with display
 #' of values in footnote.
 #'
-#' @details Biomarker Sciences would like to have LLOQ and ULOQ values available for
+#' @details Biomarker Sciences would like to have `LLOQ` and `ULOQ` values available for
 #' reference in the visualizations. This also aids in setting the data constraint
-#' ranges when goshawk functions are run from teal.goshawk UI.
+#' ranges when `goshawk` functions are run from `teal.goshawk` `UI`.
 #'
-#' @param loqs_data (`data frame`)\cr loqs_data data set containing assay data with potential LOQ values
+#' @param loqs_data (`data frame`)\cr `loqs_data` data set containing assay data with potential `LOQ` values
 #'
 #' @import dplyr
 #' @keywords internal
@@ -68,9 +68,9 @@ h_identify_loq_values <- function(loqs_data) {
   return(loq_values)
 }
 
-#' Add footnote to identify LLOQ and ULOQ values identified from data
+#' Add footnote to identify `LLOQ` and `ULOQ` values identified from data
 #'
-#' @param loqs_data (`data frame`)\cr loqs_data data set containing assay data with potential LOQ values
+#' @param loqs_data (`data frame`)\cr `loqs_data` data set containing assay data with potential `LOQ` values
 #'
 #' @import dplyr
 #' @keywords internal

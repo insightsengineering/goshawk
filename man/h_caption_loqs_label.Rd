@@ -2,15 +2,15 @@
 % Please edit documentation in R/utils.R
 \name{h_caption_loqs_label}
 \alias{h_caption_loqs_label}
-\title{Add footnote to identify LLOQ and ULOQ values identified from data}
+\title{Add footnote to identify \code{LLOQ} and \code{ULOQ} values identified from data}
 \usage{
 h_caption_loqs_label(loqs_data)
 }
 \arguments{
-\item{loqs_data}{(\verb{data frame})\cr loqs_data data set containing assay data with potential LOQ values}
+\item{loqs_data}{(\verb{data frame})\cr \code{loqs_data} data set containing assay data with potential \code{LOQ} values}
 }
 \description{
-Add footnote to identify LLOQ and ULOQ values identified from data
+Add footnote to identify \code{LLOQ} and \code{ULOQ} values identified from data
 }
 \examples{
 caption_label <- goshawk:::h_caption_loqs_label(loqs_data = goshawk::rADLB)
