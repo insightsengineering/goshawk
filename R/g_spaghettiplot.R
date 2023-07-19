@@ -168,6 +168,50 @@
 #'   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
 #'   hline_vars = c("ANRHI", "ANRLO")
 #' )
+#'
+#' # removing missing levels from the plot with facet_scales
+#'
+#' g_spaghettiplot(
+#'   data = ADLB,
+#'   subj_id = "USUBJID",
+#'   biomarker_var = "PARAMCD",
+#'   biomarker = "CRP",
+#'   value_var = "AVAL",
+#'   trt_group = "ARM",
+#'   time = "RACE",
+#'   color_manual = color_manual,
+#'   color_comb = "#39ff14",
+#'   alpha = .02,
+#'   facet_scales = "fixed",
+#'   rotate_xlab = FALSE,
+#'   group_stats = "median",
+#'   hline_arb = c(.5, .7, 1),
+#'   hline_arb_color = c("blue", "red", "green"),
+#'   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
+#'   hline_vars = c("ANRHI", "ANRLO")
+#' )
+#'
+#' g_spaghettiplot(
+#'   data = ADLB,
+#'   subj_id = "USUBJID",
+#'   biomarker_var = "PARAMCD",
+#'   biomarker = "CRP",
+#'   value_var = "AVAL",
+#'   trt_group = "ARM",
+#'   time = "RACE",
+#'   color_manual = color_manual,
+#'   color_comb = "#39ff14",
+#'   alpha = .02,
+#'   facet_scales = "free_x",
+#'   rotate_xlab = FALSE,
+#'   group_stats = "median",
+#'   hline_arb = c(.5, .7, 1),
+#'   hline_arb_color = c("blue", "red", "green"),
+#'   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
+#'   hline_vars = c("ANRHI", "ANRLO")
+#' )
+#'
+#'
 g_spaghettiplot <- function(data,
                             subj_id = "USUBJID",
                             biomarker_var = "PARAMCD",
