@@ -14,6 +14,7 @@
 ### Enhancements
 
 * Implemented `nestcolor` with slight refactoring to `g_lineplot`, `g_density_distribution_plot` and added `nestcolor` in examples without custom color manuals.
+* `g_spaghettiplot` has new `facet_scales` parameter that allow to free the scales for missing factor levels within a piece of the grid in the final plot.
 
 ### Miscellaneous
 

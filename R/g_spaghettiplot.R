@@ -21,6 +21,8 @@
 #'   if the default limits are not suitable.
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
+#' @param facet_scales passed to \link{ggplot2::facet_wrap} \code{scales} parameter. Should scales be fixed (`"fixed"`,
+#' the default), free (`"free"`), or free in one dimension (`"free_x"`, `"free_y"`)?
 #' @param xtick a vector to define the tick values of time in x-axis.
 #' Default value is ggplot2::waiver().
 #' @param xlabel vector with same length of xtick to define the label of x-axis tick values. Default
@@ -182,6 +184,7 @@ g_spaghettiplot <- function(data,
                             ylim = c(NA, NA),
                             alpha = 1.0,
                             facet_ncol = 2,
+                            facet_scales = "fixed",
                             xtick = ggplot2::waiver(),
                             xlabel = xtick,
                             rotate_xlab = FALSE,
@@ -242,7 +245,7 @@ g_spaghettiplot <- function(data,
   ) +
     ggplot2::geom_point(size = 0.8, na.rm = TRUE) +
     ggplot2::geom_line(size = 0.4, alpha = alpha, na.rm = TRUE) +
-    ggplot2::facet_wrap(trt_group, ncol = facet_ncol) +
+    ggplot2::facet_wrap(trt_group, ncol = facet_ncol, scales = facet_scales) +
     ggplot2::labs(caption = caption_loqs_label) +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(gtitle) +
