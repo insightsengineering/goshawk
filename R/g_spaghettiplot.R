@@ -21,6 +21,8 @@
 #'   if the default limits are not suitable.
 #' @param alpha subject line transparency (0 = transparent, 1 = opaque)
 #' @param facet_ncol number of facets per row.
+#' @param facet_scales passed to `scales` in [`ggplot2::facet_wrap`]. Should scales be fixed (`"fixed"`,
+#' the default), free (`"free"`), or free in one dimension (`"free_x"`, `"free_y"`)?
 #' @param xtick a vector to define the tick values of time in x-axis.
 #' Default value is `ggplot2::waiver()`.
 #' @param xlabel vector with same length of `xtick` to define the label of x-axis tick values. Default
@@ -166,6 +168,49 @@
 #'   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
 #'   hline_vars = c("ANRHI", "ANRLO")
 #' )
+#'
+#' # removing missing levels from the plot with facet_scales
+#'
+#' g_spaghettiplot(
+#'   data = ADLB,
+#'   subj_id = "USUBJID",
+#'   biomarker_var = "PARAMCD",
+#'   biomarker = "CRP",
+#'   value_var = "AVAL",
+#'   trt_group = "ARM",
+#'   time = "RACE",
+#'   color_manual = color_manual,
+#'   color_comb = "#39ff14",
+#'   alpha = .02,
+#'   facet_scales = "fixed",
+#'   rotate_xlab = FALSE,
+#'   group_stats = "median",
+#'   hline_arb = c(.5, .7, 1),
+#'   hline_arb_color = c("blue", "red", "green"),
+#'   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
+#'   hline_vars = c("ANRHI", "ANRLO")
+#' )
+#'
+#' g_spaghettiplot(
+#'   data = ADLB,
+#'   subj_id = "USUBJID",
+#'   biomarker_var = "PARAMCD",
+#'   biomarker = "CRP",
+#'   value_var = "AVAL",
+#'   trt_group = "ARM",
+#'   time = "RACE",
+#'   color_manual = color_manual,
+#'   color_comb = "#39ff14",
+#'   alpha = .02,
+#'   facet_scales = "free_x",
+#'   rotate_xlab = FALSE,
+#'   group_stats = "median",
+#'   hline_arb = c(.5, .7, 1),
+#'   hline_arb_color = c("blue", "red", "green"),
+#'   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
+#'   hline_vars = c("ANRHI", "ANRLO")
+#' )
+#'
 g_spaghettiplot <- function(data,
                             subj_id = "USUBJID",
                             biomarker_var = "PARAMCD",
@@ -182,6 +227,7 @@ g_spaghettiplot <- function(data,
                             ylim = c(NA, NA),
                             alpha = 1.0,
                             facet_ncol = 2,
+                            facet_scales = c("fixed", "free", "free_x", "free_y"),
                             xtick = ggplot2::waiver(),
                             xlabel = xtick,
                             rotate_xlab = FALSE,
@@ -194,6 +240,7 @@ g_spaghettiplot <- function(data,
                             hline_vars_colors = "green",
                             hline_vars_labels = hline_vars) {
   checkmate::assert_numeric(ylim, len = 2)
+  facet_scales <- match.arg(facet_scales)
 
   ## Pre-process data
   label_trt_group <- attr(data[[trt_group]], "label")
@@ -242,7 +289,7 @@ g_spaghettiplot <- function(data,
   ) +
     ggplot2::geom_point(size = 0.8, na.rm = TRUE) +
     ggplot2::geom_line(size = 0.4, alpha = alpha, na.rm = TRUE) +
-    ggplot2::facet_wrap(trt_group, ncol = facet_ncol) +
+    ggplot2::facet_wrap(trt_group, ncol = facet_ncol, scales = facet_scales) +
     ggplot2::labs(caption = caption_loqs_label) +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(gtitle) +
