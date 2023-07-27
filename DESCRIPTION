@@ -5,15 +5,15 @@ Version: 0.1.14.9015
 Date: 2023-07-25
 Authors@R: c(
     person("Nick", "Paszty", , "nick.paszty@gene.com", role = c("aut", "cre")),
-    person("Junlue", "Zhao", , "zhaoj88@gene.com", role = "aut"),
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = "aut"),
-    person("Maciej", "Nasinski", , "maciej.nasinski@contractors.roche.com", role = "aut"),
-    person("Konrad", "Pagacz", , "konrad.pagacz@contractors.roche.com", role = "aut"),
-    person("Ondrej", "Slama", , "ondrej.slama@roche.com", role = "aut"),
+    person("Ondrej", "Slama", email = "ondrej.slama@roche.com", role = "aut"),
     person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
     person("Wenyi", "Liu", , "liu.wenyi@roche.com", role = "aut"),
     person("Jeffrey", "Tomlinson", , "tomlinson.jeffrey@roche.com", role = "aut"),
     person("Bali", "Toth", , "toth.balazs@gene.com", role = "aut"),
+    person("Junlue", "Zhao", role = "aut"),
+    person("Maciej", "Nasinski", role = "aut"),
+    person("Konrad", "Pagacz", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
 Description: Functions that plot and summarize biomarkers/labs of
