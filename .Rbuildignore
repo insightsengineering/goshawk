@@ -51,3 +51,4 @@ data-raw/data.R
 .github
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^pkgdown$
