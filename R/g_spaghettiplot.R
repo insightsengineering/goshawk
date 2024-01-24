@@ -46,7 +46,6 @@
 #' @export
 #'
 #' @examples
-#'
 #' # Example using ADaM structure analysis dataset.
 #'
 #' library(stringr)
@@ -57,7 +56,7 @@
 #' )
 #' color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #'
-#' ADLB <- goshawk::rADLB
+#' ADLB <- rADLB
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(

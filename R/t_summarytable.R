@@ -32,7 +32,7 @@
 #'   "A: Drug X" = "150mg QD", "B: Placebo" = "Placebo", "C: Combination" = "Combination"
 #' )
 #'
-#' ADLB <- goshawk::rADLB
+#' ADLB <- rADLB
 #' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
 #'     AVISIT == "SCREENING" ~ "SCR",

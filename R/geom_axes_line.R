@@ -192,8 +192,6 @@ NULL
 #' @rdname geom_straight_lines
 #' @examples
 #' # horizontal arbitrary lines
-#' library(ggplot2)
-#'
 #' data <- data.frame(x = seq_len(10), y = seq_len(10), color = rep(c("a", "b"), each = 5))
 #' ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
 #'   ggplot2::geom_point() +
@@ -238,10 +236,7 @@ geom_arb_hline <- function(yintercept,
 
 #' @rdname geom_straight_lines
 #' @examples
-#'
 #' # vertical arbitrary lines
-#' library(ggplot2)
-#'
 #' data <- data.frame(x = seq_len(10), y = seq_len(10), color = rep(c("a", "b"), each = 5))
 #' ggplot2::ggplot(data, ggplot2::aes(x = x, y = y, color = color)) +
 #'   ggplot2::geom_point() +
@@ -288,9 +283,7 @@ geom_arb_vline <- function(xintercept,
 
 #' @rdname geom_straight_lines
 #' @examples
-#'
 #' # horizontal range
-#' library(ggplot2)
 #'
 #' data <- data.frame(
 #'   x = seq_len(10),
@@ -330,10 +323,7 @@ geom_range_hline <- function(vars,
 
 #' @rdname geom_straight_lines
 #' @examples
-#'
 #' # vertical range
-#' library(ggplot2)
-#'
 #' data <- data.frame(
 #'   x = seq_len(10),
 #'   y = seq_len(10),

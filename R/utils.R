@@ -12,8 +12,7 @@
 #' @keywords internal
 #'
 #' @examples
-#'
-#' goshawk:::h_identify_loq_values(loqs_data = goshawk::rADLB)
+#' goshawk:::h_identify_loq_values(loqs_data = rADLB)
 h_identify_loq_values <- function(loqs_data) {
   ifelse(
     !grep("PARAM", names(loqs_data)),
@@ -76,7 +75,7 @@ h_identify_loq_values <- function(loqs_data) {
 #' @keywords internal
 #'
 #' @examples
-#' caption_label <- goshawk:::h_caption_loqs_label(loqs_data = goshawk::rADLB)
+#' caption_label <- goshawk:::h_caption_loqs_label(loqs_data = rADLB)
 h_caption_loqs_label <- function(loqs_data) {
   loq_values <- h_identify_loq_values(loqs_data)
 

@@ -106,7 +106,6 @@ The data inside of the \code{ggplot2} object must also contain the columns with 
 This function is rendered by teal.goshawk module
 }
 \examples{
-
 # Example using ADaM structure analysis dataset.
 
 library(stringr)
@@ -117,7 +116,7 @@ arm_mapping <- list(
 )
 color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 
-ADLB <- goshawk::rADLB
+ADLB <- rADLB
 var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 ADLB <- ADLB \%>\%
   mutate(AVISITCD = case_when(
