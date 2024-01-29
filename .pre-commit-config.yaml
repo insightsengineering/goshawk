@@ -15,26 +15,18 @@ repos:
       - id: roxygenize
         name: Regenerate package documentation
         additional_dependencies:
-          - checkmate
-          - digest
           - dplyr
+          - checkmate
+          - cowplot
+          - ggnewscale
           - ggplot2
-          - glue
           - grDevices
+          - grid
           - lifecycle
-          - logger
           - magrittr
-          - methods
-          - bioc::MultiAssayExperiment
-          - R6
+          - mcr
           - rlang
-          - rtables
-          - shinyjs
-          - shinyWidgets
-          - stats
-          - bioc::SummarizedExperiment
-          - utils
-          - yaml
+          - stringr
       - id: spell-check
         name: Check spelling with `spelling`
         exclude: >
