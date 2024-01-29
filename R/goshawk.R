@@ -6,6 +6,8 @@
 #' @importFrom ggplot2 ggplot
 #' @importFrom magrittr extract2
 #' @importFrom rlang .data := !!
+#'
+#' @keywords internal
 "_PACKAGE"
 
 #' @import mcr
