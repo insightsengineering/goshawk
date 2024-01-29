@@ -2,9 +2,32 @@
 % Please edit documentation in R/goshawk.R
 \docType{package}
 \name{goshawk}
+\alias{goshawk-package}
 \alias{goshawk}
 \title{The goshawk package provides longitudinal visualizations of lab/biomarker data}
 \description{
 The goshawk package provides longitudinal visualizations of lab/biomarker data
+}
+\author{
+\strong{Maintainer}: Nick Paszty \email{nick.paszty@gene.com}
+
+Authors:
+\itemize{
+  \item Dawid Kaledkowski \email{dawid.kaledkowski@roche.com}
+  \item Ondrej Slama \email{ondrej.slama@roche.com}
+  \item Adrian Waddell \email{adrian.waddell@gene.com}
+  \item Wenyi Liu \email{liu.wenyi@roche.com}
+  \item Jeffrey Tomlinson \email{tomlinson.jeffrey@roche.com}
+  \item Bali Toth \email{toth.balazs@gene.com}
+  \item Junlue Zhao
+  \item Maciej Nasinski
+  \item Konrad Pagacz
+}
+
+Other contributors:
+\itemize{
+  \item F. Hoffmann-La Roche AG [copyright holder, funder]
+}
+
 }
 \keyword{internal}
