@@ -285,7 +285,7 @@ g_correlationplot(
   vline_arb_label = c("Vertical Line A", "Vertical Line B"),
   hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
   hline_vars_colors = c("green", "blue", "purple", "cyan"),
-  hline_vars_label = c("ANRHI ALT Label", "ANRLO ALT Label", "ULOQN ALT Label", "LLOQN ALT Label"),
+  hline_vars_labels = c("ANRHI ALT Label", "ANRLO ALT Label", "ULOQN ALT Label", "LLOQN ALT Label"),
   vline_vars = c("ANRHI.CRP", "ANRLO.CRP", "ULOQN.CRP", "LLOQN.CRP"),
   vline_vars_colors = c("yellow", "orange", "brown", "gold"),
   vline_vars_labels = c("ANRHI CRP Label", "ANRLO CRP Label", "ULOQN CRP Label", "LLOQN CRP Label"),

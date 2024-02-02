@@ -313,9 +313,9 @@ geom_range_hline <- function(vars,
     color = color
   )
   geom_arb_hline(
-    yintercept = line_data$value,
-    label = line_data$label,
-    color = line_data$color,
+    yintercept = line_data$values,
+    label = line_data$labels,
+    color = line_data$colors,
     legend_title = legend_title,
     ...
   )
@@ -352,9 +352,9 @@ geom_range_vline <- function(vars,
     color = color
   )
   geom_arb_vline(
-    xintercept = line_data$value,
-    label = line_data$label,
-    color = line_data$color,
+    xintercept = line_data$values,
+    label = line_data$labels,
+    color = line_data$colors,
     legend_title = legend_title,
     ...
   )

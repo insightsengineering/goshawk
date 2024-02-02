@@ -203,9 +203,9 @@ g_boxplot <- function(data,
     plot1 <- plot1 +
       ggplot2::geom_boxplot(
         data = data,
-        ggplot2::aes_string(
-          x = xaxis_var,
-          y = yaxis_var,
+        ggplot2::aes(
+          x = .data[[xaxis_var]],
+          y = .data[[yaxis_var]],
           fill = NULL
         ),
         outlier.shape = NA,
@@ -250,8 +250,16 @@ g_boxplot <- function(data,
   plot1 <- plot1 +
     ggplot2::geom_jitter(
       data = data,
-      ggplot2::aes_string(x = xaxis_var, y = yaxis_var, shape = loq_flag_var, color = trt_group),
-      alpha = alpha, position = ggplot2::position_jitter(width = 0.1, height = 0), size = dot_size, na.rm = TRUE
+      ggplot2::aes(
+        x = .data[[xaxis_var]],
+        y = .data[[yaxis_var]],
+        shape = .data[[loq_flag_var]],
+        color = .data[[trt_group]]
+      ),
+      alpha = alpha,
+      position = ggplot2::position_jitter(width = 0.1, height = 0),
+      size = dot_size,
+      na.rm = TRUE
     )
 
   # Any limits for the Y axis?
