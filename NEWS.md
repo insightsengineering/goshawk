@@ -1,4 +1,4 @@
-# goshawk 0.1.15.9002
+# goshawk 0.1.15.9003
 
 ### Fixes
 * Update `h_identify_loq_values` to filter for `LOQFL` records before calculating `LOQ`
