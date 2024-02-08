@@ -1,8 +1,8 @@
 Type: Package
 Package: goshawk
 Title: Longitudinal Visualization Functions
-Version: 0.1.15.9002
-Date: 2023-12-13
+Version: 0.1.15.9004
+Date: 2024-02-08
 Authors@R: c(
     person("Nick", "Paszty", , "nick.paszty@gene.com", role = c("aut", "cre")),
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = "aut"),
@@ -24,6 +24,9 @@ Description: Functions that plot and summarize biomarkers/labs of
     Quantification flag variable (LOQFL) is expected with levels 'Y', 'N'
     or NA.
 License: Apache License 2.0 | file LICENSE
+URL: https://insightsengineering.github.io/goshawk/,
+    https://github.com/insightsengineering/goshawk/
+BugReports: https://github.com/insightsengineering/goshawk/issues
 Depends:
     dplyr,
     R (>= 3.6)
