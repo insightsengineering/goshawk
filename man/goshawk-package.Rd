@@ -8,6 +8,15 @@
 \description{
 The goshawk package provides longitudinal visualizations of lab/biomarker data
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://insightsengineering.github.io/goshawk/}
+  \item \url{https://github.com/insightsengineering/goshawk/}
+  \item Report bugs at \url{https://github.com/insightsengineering/goshawk/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Nick Paszty \email{nick.paszty@gene.com}
 
