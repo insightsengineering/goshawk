@@ -172,7 +172,14 @@ g_scatterplot <- function(label = "Scatter Plot",
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
   # create plot foundation
-  plot1 <- ggplot2::ggplot(data = plot_data, ggplot2::aes(x = .data[[xaxis_var]], y = .data[[yaxis_var]], color = .data[[trt_group]])) +
+  plot1 <- ggplot2::ggplot(
+    data = plot_data,
+    ggplot2::aes(
+      x = .data[[xaxis_var]],
+      y = .data[[yaxis_var]],
+      color = .data[[trt_group]]
+    )
+  ) +
     ggplot2::geom_point(ggplot2::aes(shape = .data[[loq_flag_var]]), size = dot_size, na.rm = TRUE) +
     ggplot2::coord_cartesian(xlim = xlim, ylim = ylim) +
     ggplot2::facet_wrap(stats::as.formula(paste0(" ~ ", visit)), ncol = facet_ncol) +

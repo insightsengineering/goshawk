@@ -394,7 +394,13 @@ g_lineplot <- function(label = "Line Plot",
   if (is.null(shape)) {
     plot1 <- ggplot2::ggplot(
       data = sum_data,
-      ggplot2::aes(x = .data[[time]], y = .data[[line]], color = .data[[trt_group]], linetype = .data[[trt_group]], group = .data[[int]])
+      ggplot2::aes(
+        x = .data[[time]],
+        y = .data[[line]],
+        color = .data[[trt_group]],
+        linetype = .data[[trt_group]],
+        group = .data[[int]]
+      )
     ) +
       ggplot2::theme_bw() +
       ggplot2::geom_point(position = pd) +
