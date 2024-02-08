@@ -24,6 +24,9 @@ Description: Functions that plot and summarize biomarkers/labs of
     Quantification flag variable (LOQFL) is expected with levels 'Y', 'N'
     or NA.
 License: Apache License 2.0 | file LICENSE
+URL: https://insightsengineering.github.io/goshawk/,
+    https://github.com/insightsengineering/goshawk/
+BugReports: https://github.com/insightsengineering/goshawk/issues
 Depends:
     dplyr,
     R (>= 3.6)
