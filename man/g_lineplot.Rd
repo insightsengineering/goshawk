@@ -114,7 +114,6 @@ error bar denotes
 quartile.
 }
 \examples{
-
 # Example using ADaM structure analysis dataset.
 
 library(stringr)
@@ -128,8 +127,8 @@ arm_mapping <- list(
 color_manual <- c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
 type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "dotted")
 
-ADSL <- goshawk::rADSL \%>\% filter(!(ARM == "B: Placebo" & AGE < 40))
-ADLB <- goshawk::rADLB
+ADSL <- rADSL \%>\% filter(!(ARM == "B: Placebo" & AGE < 40))
+ADLB <- rADLB
 ADLB <- right_join(ADLB, ADSL[, c("STUDYID", "USUBJID")])
 var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 

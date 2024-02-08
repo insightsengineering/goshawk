@@ -74,7 +74,7 @@
 #' # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
 #' shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 #'
-#' ADLB <- goshawk::rADLB
+#' ADLB <- rADLB
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
@@ -197,7 +197,7 @@
 #'   vline_arb_label = c("Vertical Line A", "Vertical Line B"),
 #'   hline_vars = c("ANRHI.ALT", "ANRLO.ALT", "ULOQN.ALT", "LLOQN.ALT"),
 #'   hline_vars_colors = c("green", "blue", "purple", "cyan"),
-#'   hline_vars_label = c("ANRHI ALT Label", "ANRLO ALT Label", "ULOQN ALT Label", "LLOQN ALT Label"),
+#'   hline_vars_labels = c("ANRHI ALT Label", "ANRLO ALT Label", "ULOQN ALT Label", "LLOQN ALT Label"),
 #'   vline_vars = c("ANRHI.CRP", "ANRLO.CRP", "ULOQN.CRP", "LLOQN.CRP"),
 #'   vline_vars_colors = c("yellow", "orange", "brown", "gold"),
 #'   vline_vars_labels = c("ANRHI CRP Label", "ANRLO CRP Label", "ULOQN CRP Label", "LLOQN CRP Label"),
@@ -282,10 +282,10 @@ g_correlationplot <- function(label = "Correlation Plot",
   # teal.goshawk.tm_g_correlationplot.R
   plot1 <- ggplot2::ggplot(
     data = plot_data,
-    ggplot2::aes_string(
-      x = xvar,
-      y = yvar,
-      color = trt_group
+    ggplot2::aes(
+      x = .data[[xvar]],
+      y = .data[[yvar]],
+      color = .data[[trt_group]]
     )
   ) +
     ggplot2::coord_cartesian(xlim = xlim, ylim = ylim) +
@@ -311,7 +311,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   }
 
   plot1 <- plot1 +
-    ggplot2::geom_point(ggplot2::aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
+    ggplot2::geom_point(ggplot2::aes(shape = .data[[loq_flag_var]]), size = dot_size, na.rm = TRUE)
 
   # add regression line
   if (reg_line) {
@@ -340,7 +340,7 @@ g_correlationplot <- function(label = "Correlation Plot",
     plot1 <- plot1 +
       ggplot2::geom_abline(
         data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by
-        ggplot2::aes_string(intercept = "intercept", slope = "slope", color = trt_group)
+        ggplot2::aes(intercept = .data$intercept, slope = .data$slope, color = .data[[trt_group]])
       ) +
       ggplot2::geom_text(
         data = filter(sub_data, row_number() == 1),

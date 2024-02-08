@@ -46,7 +46,6 @@
 #' @export
 #'
 #' @examples
-#'
 #' # Example using ADaM structure analysis dataset.
 #'
 #' library(stringr)
@@ -57,7 +56,7 @@
 #' )
 #' color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #'
-#' ADLB <- goshawk::rADLB
+#' ADLB <- rADLB
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
@@ -285,10 +284,10 @@ g_spaghettiplot <- function(data,
 
   plot <- ggplot2::ggplot(
     data = plot_data,
-    ggplot2::aes_string(x = time, y = value_var, color = trt_group, group = subj_id)
+    ggplot2::aes(x = .data[[time]], y = .data[[value_var]], color = .data[[trt_group]], group = .data[[subj_id]])
   ) +
     ggplot2::geom_point(size = 0.8, na.rm = TRUE) +
-    ggplot2::geom_line(size = 0.4, alpha = alpha, na.rm = TRUE) +
+    ggplot2::geom_line(linewidth = 0.4, alpha = alpha, na.rm = TRUE) +
     ggplot2::facet_wrap(trt_group, ncol = facet_ncol, scales = facet_scales) +
     ggplot2::labs(caption = caption_loqs_label) +
     ggplot2::theme_bw() +
@@ -318,7 +317,7 @@ g_spaghettiplot <- function(data,
     }
     plot <- plot +
       ggplot2::geom_line(
-        ggplot2::aes_string(x = time, y = "AGG_VAL", group = 1, linetype = "metric"),
+        ggplot2::aes(x = .data[[time]], y = .data$AGG_VAL, group = 1, linetype = "metric"),
         data = plot_data_groupped,
         lwd = 1,
         color = color_comb,

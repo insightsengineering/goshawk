@@ -55,7 +55,7 @@
 #' # assign LOQ flag symbols: circles for "N" and triangles for "Y", squares for "NA"
 #' shape_manual <- c("N" = 1, "Y" = 2, "NA" = 0)
 #'
-#' ADLB <- goshawk::rADLB
+#' ADLB <- rADLB
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
@@ -172,8 +172,15 @@ g_scatterplot <- function(label = "Scatter Plot",
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
   # create plot foundation
-  plot1 <- ggplot2::ggplot(data = plot_data, ggplot2::aes_string(x = xaxis_var, y = yaxis_var, color = trt_group)) +
-    ggplot2::geom_point(ggplot2::aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE) +
+  plot1 <- ggplot2::ggplot(
+    data = plot_data,
+    ggplot2::aes(
+      x = .data[[xaxis_var]],
+      y = .data[[yaxis_var]],
+      color = .data[[trt_group]]
+    )
+  ) +
+    ggplot2::geom_point(ggplot2::aes(shape = .data[[loq_flag_var]]), size = dot_size, na.rm = TRUE) +
     ggplot2::coord_cartesian(xlim = xlim, ylim = ylim) +
     ggplot2::facet_wrap(stats::as.formula(paste0(" ~ ", visit)), ncol = facet_ncol) +
     ggplot2::theme_bw() +
@@ -283,7 +290,7 @@ g_scatterplot <- function(label = "Scatter Plot",
   # Format dot size
   if (!is.null(dot_size)) {
     plot1 <- plot1 +
-      ggplot2::geom_point(ggplot2::aes_string(shape = loq_flag_var), size = dot_size, na.rm = TRUE)
+      ggplot2::geom_point(ggplot2::aes(shape = .data[[loq_flag_var]]), size = dot_size, na.rm = TRUE)
   }
   # Format x-label
   if (rotate_xlab) {
