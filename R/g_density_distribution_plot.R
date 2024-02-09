@@ -9,6 +9,7 @@
 #' @param param biomarker to visualize e.g. `IGG`.
 #' @param xaxis_var name of variable containing biomarker results displayed on X-axis e.g. `AVAL`.
 #' @param trt_group name of variable representing treatment group e.g. `ARM`.
+#' @param loq_flag_var name of flag variable indicating records used for LOQ. e.g. `LOQFL`
 #' @param unit name of variable containing biomarker unit e.g. `AVALU`.
 #' @param xlim ('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
 #'   if the default limits are not suitable.
@@ -108,6 +109,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
                                         xaxis_var = "AVAL",
                                         trt_group = "ARM",
                                         unit = "AVALU",
+                                        loq_flag_var = "LOQFL",
                                         xlim = c(NA, NA),
                                         ylim = c(NA, NA),
                                         color_manual = NULL,
@@ -182,7 +184,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
   }
 
   # Add footnote to identify LLOQ and ULOQ values pulled from data
-  caption_loqs_label <- h_caption_loqs_label(loqs_data = plot_data)
+  caption_loqs_label <- h_caption_loqs_label(loqs_data = plot_data, flag_var = loq_flag_var)
 
   plot1 <- ggplot2::ggplot(plot_data) +
     ggplot2::stat_density(

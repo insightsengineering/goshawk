@@ -151,7 +151,7 @@ attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
 attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
 
 # add LLOQ and ULOQ variables
-ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB, "LOQFL")
 ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 
 g_boxplot(ADLB,

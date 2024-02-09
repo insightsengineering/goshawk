@@ -6,7 +6,7 @@
 horizontal line functionality display and legend labeling along with display
 of values in footnote.}
 \usage{
-h_identify_loq_values(loqs_data)
+h_identify_loq_values(loqs_data, flag_var)
 }
 \arguments{
 \item{loqs_data}{(\verb{data frame})\cr \code{loqs_data} data set containing assay data with potential \code{LOQ} values}
@@ -23,6 +23,6 @@ ranges when \code{goshawk} functions are run from \code{teal.goshawk} \code{UI}.
 }
 \examples{
 
-goshawk:::h_identify_loq_values(loqs_data = goshawk::rADLB)
+goshawk:::h_identify_loq_values(loqs_data = goshawk::rADLB, flag_var = "LOQFL")
 }
 \keyword{internal}
