@@ -96,7 +96,7 @@
 #' attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
 #'
 #' # add LLOQ and ULOQ variables
-#' ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+#' ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB, "LOQFL")
 #' ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 #'
 #' g_boxplot(ADLB,
@@ -195,7 +195,7 @@ g_boxplot <- function(data,
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # add footnote to identify LLOQ and ULOQ values pulled from data
-  caption_loqs_label <- h_caption_loqs_label(loqs_data = data)
+  caption_loqs_label <- h_caption_loqs_label(loqs_data = data, flag_var = loq_flag_var)
   # Base plot
   plot1 <- ggplot2::ggplot(data)
   # Add boxes if required

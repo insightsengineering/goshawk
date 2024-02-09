@@ -12,6 +12,7 @@ g_density_distribution_plot(
   xaxis_var = "AVAL",
   trt_group = "ARM",
   unit = "AVALU",
+  loq_flag_var = "LOQFL",
   xlim = c(NA, NA),
   ylim = c(NA, NA),
   color_manual = NULL,
@@ -42,6 +43,8 @@ g_density_distribution_plot(
 \item{trt_group}{name of variable representing treatment group e.g. \code{ARM}.}
 
 \item{unit}{name of variable containing biomarker unit e.g. \code{AVALU}.}
+
+\item{loq_flag_var}{name of flag variable indicating records used for LOQ. e.g. \code{LOQFL}}
 
 \item{xlim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
 if the default limits are not suitable.}

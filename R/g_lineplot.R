@@ -4,6 +4,7 @@
 #' @param data `ADaM` structured analysis laboratory data frame e.g. `ADLB`.
 #' @param biomarker_var name of variable containing biomarker names.
 #' @param biomarker_var_label name of variable containing biomarker labels.
+#' @param loq_flag_var  name of variable containing `LOQ` flag e.g. `LOQFL`.
 #' @param biomarker biomarker name to be analyzed.
 #' @param value_var name of variable containing biomarker results.
 #' @param unit_var name of variable containing biomarker result unit.
@@ -235,6 +236,7 @@ g_lineplot <- function(label = "Line Plot",
                        biomarker,
                        value_var = "AVAL",
                        unit_var = "AVALU",
+                       loq_flag_var = "LOQFL",
                        ylim = c(NA, NA),
                        trt_group,
                        trt_group_level = NULL,
@@ -389,7 +391,7 @@ g_lineplot <- function(label = "Line Plot",
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # Add footnote to identify LLOQ and ULOQ values pulled from data
-  caption_loqs_label <- h_caption_loqs_label(loqs_data = filtered_data)
+  caption_loqs_label <- h_caption_loqs_label(loqs_data = filtered_data, flag_var = loq_flag_var)
 
   if (is.null(shape)) {
     plot1 <- ggplot2::ggplot(
