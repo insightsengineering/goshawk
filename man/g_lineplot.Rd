@@ -12,6 +12,7 @@ g_lineplot(
   biomarker,
   value_var = "AVAL",
   unit_var = "AVALU",
+  loq_flag_var = "LOQFL",
   ylim = c(NA, NA),
   trt_group,
   trt_group_level = NULL,
@@ -50,6 +51,8 @@ g_lineplot(
 \item{value_var}{name of variable containing biomarker results.}
 
 \item{unit_var}{name of variable containing biomarker result unit.}
+
+\item{loq_flag_var}{name of flag variable indicating records used for LOQ. e.g. \code{LOQFL}}
 
 \item{ylim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
 if the default limits are not suitable.}

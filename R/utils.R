@@ -12,8 +12,8 @@
 #' @keywords internal
 #'
 #' @examples
-#' goshawk:::h_identify_loq_values(loqs_data = rADLB)
-h_identify_loq_values <- function(loqs_data) {
+#' goshawk:::h_identify_loq_values(loqs_data = goshawk::rADLB, flag_var = "LOQFL")
+h_identify_loq_values <- function(loqs_data, flag_var) {
   ifelse(
     !grep("PARAM", names(loqs_data)),
     stop("Assay dataset must include variable PARAM to use the caption_loqs_label function."),
@@ -25,26 +25,30 @@ h_identify_loq_values <- function(loqs_data) {
     1
   )
 
+  # filter for records only relevant to loq.
   # get LLOQ value
+    lloq <- loqs_data %>%
+      filter(!!sym(flag_var) == "Y") %>%
+      select("PARAM", "LBSTRESC") %>%
+      filter(grepl("<", .data$LBSTRESC, fixed = FALSE)) %>%
+      mutate(LLOQC = .data$LBSTRESC, LLOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
+      group_by(.data$PARAM) %>%
+      slice(1) %>%
+      ungroup() %>%
+      select(-"LBSTRESC")
 
-  lloq <- loqs_data %>%
-    select("PARAM", "LBSTRESC") %>%
-    filter(grepl("<", .data$LBSTRESC, fixed = FALSE)) %>%
-    mutate(LLOQC = .data$LBSTRESC, LLOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
-    group_by(.data$PARAM) %>%
-    slice(1) %>%
-    ungroup() %>%
-    select(-"LBSTRESC")
 
   # get ULOQ value
-  uloq <- loqs_data %>%
-    select("PARAM", "LBSTRESC") %>%
-    filter(grepl(">", .data$LBSTRESC, fixed = FALSE)) %>%
-    mutate(ULOQC = .data$LBSTRESC, ULOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
-    group_by(.data$PARAM) %>%
-    slice(1) %>%
-    ungroup() %>%
-    select(-"LBSTRESC")
+    uloq <- loqs_data %>%
+      filter(!!sym(flag_var) == "Y") %>%
+      select("PARAM", "LBSTRESC") %>%
+      filter(grepl(">", .data$LBSTRESC, fixed = FALSE)) %>%
+      mutate(ULOQC = .data$LBSTRESC, ULOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
+      group_by(.data$PARAM) %>%
+      slice(1) %>%
+      ungroup() %>%
+      select(-"LBSTRESC")
+
 
   # return LOQ data
   loq_values <- merge(lloq, uloq, by = "PARAM", all = TRUE)
@@ -75,9 +79,9 @@ h_identify_loq_values <- function(loqs_data) {
 #' @keywords internal
 #'
 #' @examples
-#' caption_label <- goshawk:::h_caption_loqs_label(loqs_data = rADLB)
-h_caption_loqs_label <- function(loqs_data) {
-  loq_values <- h_identify_loq_values(loqs_data)
+#' caption_label <- goshawk:::h_caption_loqs_label(loqs_data = goshawk::rADLB, flag_var = "LOQFL")
+h_caption_loqs_label <- function(loqs_data, flag_var) {
+  loq_values <- h_identify_loq_values(loqs_data, flag_var)
 
   lloqc <- ifelse(is.na(loq_values$LLOQC), "NA", loq_values$LLOQC)
   uloqc <- ifelse(is.na(loq_values$ULOQC), "NA", loq_values$ULOQC)

@@ -138,7 +138,7 @@
 #' attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
 #'
 #' # add LLOQ and ULOQ variables
-#' ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+#' ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB, flag_var = "LOQFL")
 #' ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 #'
 #' # given the 2 param and 2 analysis vars we need to transform the data
@@ -263,16 +263,16 @@ g_correlationplot <- function(label = "Correlation Plot",
   t_lbstresc_var_y <- paste("LBSTRESC", yaxis_param, sep = "_")
 
   xaxis_param_loqs_data <- data %>%
-    mutate(PARAM = !!sym(t_param_var_x), LBSTRESC = !!sym(t_lbstresc_var_x)) %>%
-    select("PARAM", "LBSTRESC")
+    mutate(PARAM = !!sym(t_param_var_x), LBSTRESC = !!sym(t_lbstresc_var_x), sym(loq_flag_var) == !!sym(loq_flag_var)) %>%
+    select("PARAM", "LBSTRESC", loq_flag_var)
 
   yaxis_param_loqs_data <- data %>%
-    mutate(PARAM = !!sym(t_param_var_y), LBSTRESC = !!sym(t_lbstresc_var_y)) %>%
-    select("PARAM", "LBSTRESC")
+    mutate(PARAM = !!sym(t_param_var_y), LBSTRESC = !!sym(t_lbstresc_var_y), sym(loq_flag_var) == !!sym(loq_flag_var)) %>%
+    select("PARAM", "LBSTRESC", loq_flag_var)
 
   # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data
-  caption_loqs_label_x <- h_caption_loqs_label(loqs_data = xaxis_param_loqs_data)
-  caption_loqs_label_y <- h_caption_loqs_label(loqs_data = yaxis_param_loqs_data)
+  caption_loqs_label_x <- h_caption_loqs_label(loqs_data = xaxis_param_loqs_data, flag_var = loq_flag_var)
+  caption_loqs_label_y <- h_caption_loqs_label(loqs_data = yaxis_param_loqs_data, flag_var = loq_flag_var)
   caption_loqs_label_x_y <- paste0(union(caption_loqs_label_x, caption_loqs_label_y), collapse = "\n")
 
   # Setup legend label

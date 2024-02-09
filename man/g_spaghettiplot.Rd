@@ -14,6 +14,7 @@ g_spaghettiplot(
   unit_var = "AVALU",
   trt_group,
   trt_group_level = NULL,
+  loq_flag_var = "LOQFL",
   time,
   time_level = NULL,
   color_manual = NULL,
@@ -54,6 +55,8 @@ in the plot.}
 \item{trt_group}{name of variable representing treatment group.}
 
 \item{trt_group_level}{vector that can be used to define the factor level of \code{trt_group}.}
+
+\item{loq_flag_var}{name of flag variable indicating records used for LOQ. e.g. \code{LOQFL}}
 
 \item{time}{name of variable containing visit names.}
 
@@ -165,7 +168,7 @@ attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
 attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
 
 # add LLOQ and ULOQ variables
-ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB, "LOQFL")
 ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 
 g_spaghettiplot(
