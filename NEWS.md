@@ -1,5 +1,6 @@
 # goshawk 0.1.15.9006
 
+* add `loq_flag_var` argument to plots. 
 * Remove package prefix from examples.
 * Replace soft deprecated `ggplot2` functions with their current equivalents, e.g. `aes_string()` with `aes()`.
 * Fix partial attribute matching.
