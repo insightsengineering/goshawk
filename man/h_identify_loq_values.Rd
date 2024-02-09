@@ -22,8 +22,6 @@ reference in the visualizations. This also aids in setting the data constraint
 ranges when \code{goshawk} functions are run from \code{teal.goshawk} \code{UI}.
 }
 \examples{
-
 goshawk:::h_identify_loq_values(loqs_data = goshawk::rADLB, flag_var = "LOQFL")
-
 }
 \keyword{internal}
