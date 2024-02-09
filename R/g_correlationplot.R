@@ -263,11 +263,13 @@ g_correlationplot <- function(label = "Correlation Plot",
   t_lbstresc_var_y <- paste("LBSTRESC", yaxis_param, sep = "_")
 
   xaxis_param_loqs_data <- data %>%
-    mutate(PARAM = !!sym(t_param_var_x), LBSTRESC = !!sym(t_lbstresc_var_x), sym(loq_flag_var) == !!sym(loq_flag_var)) %>%
+    mutate(PARAM = !!sym(t_param_var_x), LBSTRESC = !!sym(t_lbstresc_var_x),
+           sym(loq_flag_var) == !!sym(loq_flag_var)) %>%
     select("PARAM", "LBSTRESC", loq_flag_var)
 
   yaxis_param_loqs_data <- data %>%
-    mutate(PARAM = !!sym(t_param_var_y), LBSTRESC = !!sym(t_lbstresc_var_y), sym(loq_flag_var) == !!sym(loq_flag_var)) %>%
+    mutate(PARAM = !!sym(t_param_var_y), LBSTRESC = !!sym(t_lbstresc_var_y),
+           sym(loq_flag_var) == !!sym(loq_flag_var)) %>%
     select("PARAM", "LBSTRESC", loq_flag_var)
 
   # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data

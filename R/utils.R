@@ -27,27 +27,27 @@ h_identify_loq_values <- function(loqs_data, flag_var) {
 
   # filter for records only relevant to loq.
   # get LLOQ value
-    lloq <- loqs_data %>%
-      filter(!!sym(flag_var) == "Y") %>%
-      select("PARAM", "LBSTRESC") %>%
-      filter(grepl("<", .data$LBSTRESC, fixed = FALSE)) %>%
-      mutate(LLOQC = .data$LBSTRESC, LLOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
-      group_by(.data$PARAM) %>%
-      slice(1) %>%
-      ungroup() %>%
-      select(-"LBSTRESC")
+  lloq <- loqs_data %>%
+    filter(!!sym(flag_var) == "Y") %>%
+    select("PARAM", "LBSTRESC") %>%
+    filter(grepl("<", .data$LBSTRESC, fixed = FALSE)) %>%
+    mutate(LLOQC = .data$LBSTRESC, LLOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
+    group_by(.data$PARAM) %>%
+    slice(1) %>%
+    ungroup() %>%
+    select(-"LBSTRESC")
 
 
   # get ULOQ value
-    uloq <- loqs_data %>%
-      filter(!!sym(flag_var) == "Y") %>%
-      select("PARAM", "LBSTRESC") %>%
-      filter(grepl(">", .data$LBSTRESC, fixed = FALSE)) %>%
-      mutate(ULOQC = .data$LBSTRESC, ULOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
-      group_by(.data$PARAM) %>%
-      slice(1) %>%
-      ungroup() %>%
-      select(-"LBSTRESC")
+  uloq <- loqs_data %>%
+    filter(!!sym(flag_var) == "Y") %>%
+    select("PARAM", "LBSTRESC") %>%
+    filter(grepl(">", .data$LBSTRESC, fixed = FALSE)) %>%
+    mutate(ULOQC = .data$LBSTRESC, ULOQN = as.numeric(gsub("[^0-9.-]", "", .data$LBSTRESC))) %>%
+    group_by(.data$PARAM) %>%
+    slice(1) %>%
+    ungroup() %>%
+    select(-"LBSTRESC")
 
 
   # return LOQ data

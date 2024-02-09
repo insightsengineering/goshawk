@@ -56,7 +56,7 @@ in the plot.}
 
 \item{trt_group_level}{vector that can be used to define the factor level of \code{trt_group}.}
 
-\item{loq_flag_var}{name of flag variable indicating records used for LOQ. e.g. \code{LOQFL}}
+\item{loq_flag_var}{name of variable containing \code{LOQ} flag e.g. \code{LOQFL}.}
 
 \item{time}{name of variable containing visit names.}
 
