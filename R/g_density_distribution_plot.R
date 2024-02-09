@@ -35,8 +35,6 @@
 #' @export
 #'
 #' @examples
-#'
-#'
 #' # Example using ADaM structure analysis dataset.
 #'
 #' library(stringr)
@@ -47,7 +45,7 @@
 #' )
 #' color_manual <- c("150mg QD" = "#000000", "Placebo" = "#3498DB", "Combination" = "#E74C3C")
 #'
-#' ADLB <- goshawk::rADLB
+#' ADLB <- rADLB
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #' ADLB <- ADLB %>%
 #'   mutate(AVISITCD = case_when(
@@ -188,8 +186,8 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
 
   plot1 <- ggplot2::ggplot(plot_data) +
     ggplot2::stat_density(
-      ggplot2::aes_string(x = xaxis_var, colour = trt_group),
-      size = line_size,
+      ggplot2::aes(x = .data[[xaxis_var]], colour = .data[[trt_group]]),
+      linewidth = line_size,
       geom = "line",
       position = "identity"
     ) +

@@ -12,7 +12,6 @@
 #' @keywords internal
 #'
 #' @examples
-#'
 #' goshawk:::h_identify_loq_values(loqs_data = goshawk::rADLB, flag_var = "LOQFL")
 h_identify_loq_values <- function(loqs_data, flag_var) {
   ifelse(

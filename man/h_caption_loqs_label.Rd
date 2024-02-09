@@ -14,5 +14,6 @@ Add footnote to identify \code{LLOQ} and \code{ULOQ} values identified from data
 }
 \examples{
 caption_label <- goshawk:::h_caption_loqs_label(loqs_data = goshawk::rADLB, flag_var = "LOQFL")
+
 }
 \keyword{internal}

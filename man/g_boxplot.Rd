@@ -104,12 +104,11 @@ to visually estimate various L-estimators, notably the interquartile range,
 midhinge, range, mid-range, and trimean.
 }
 \examples{
-
 # Example using ADaM structure analysis dataset.
 
 library(nestcolor)
 
-ADLB <- goshawk::rADLB
+ADLB <- rADLB
 var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 ADLB <- ADLB \%>\%
   mutate(AVISITCD = case_when(

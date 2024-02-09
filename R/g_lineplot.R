@@ -51,7 +51,6 @@
 #' @export
 #'
 #' @examples
-#'
 #' # Example using ADaM structure analysis dataset.
 #'
 #' library(stringr)
@@ -65,8 +64,8 @@
 #' color_manual <- c("150mg QD" = "thistle", "Placebo" = "orange", "Combination" = "steelblue")
 #' type_manual <- c("150mg QD" = "solid", "Placebo" = "dashed", "Combination" = "dotted")
 #'
-#' ADSL <- goshawk::rADSL %>% filter(!(ARM == "B: Placebo" & AGE < 40))
-#' ADLB <- goshawk::rADLB
+#' ADSL <- rADSL %>% filter(!(ARM == "B: Placebo" & AGE < 40))
+#' ADLB <- rADLB
 #' ADLB <- right_join(ADLB, ADSL[, c("STUDYID", "USUBJID")])
 #' var_labels <- lapply(ADLB, function(x) attributes(x)$label)
 #'
@@ -397,7 +396,13 @@ g_lineplot <- function(label = "Line Plot",
   if (is.null(shape)) {
     plot1 <- ggplot2::ggplot(
       data = sum_data,
-      ggplot2::aes_string(x = time, y = line, color = trt_group, linetype = trt_group, group = int)
+      ggplot2::aes(
+        x = .data[[time]],
+        y = .data[[line]],
+        color = .data[[trt_group]],
+        linetype = .data[[trt_group]],
+        group = .data[[int]]
+      )
     ) +
       ggplot2::theme_bw() +
       ggplot2::geom_point(position = pd) +
@@ -424,7 +429,14 @@ g_lineplot <- function(label = "Line Plot",
 
     plot1 <- ggplot2::ggplot(
       data = sum_data,
-      ggplot2::aes_string(x = time, y = line, color = int, linetype = int, group = int, shape = int)
+      ggplot2::aes(
+        x = .data[[time]],
+        y = .data[[line]],
+        color = .data[[int]],
+        linetype = .data[[int]],
+        group = .data[[int]],
+        shape = .data[[int]]
+      )
     ) +
       ggplot2::theme_bw() +
       ggplot2::scale_color_manual(" ", values = col_mapping, guide = ggplot2::guide_legend(ncol = 3, order = 1)) +
@@ -437,7 +449,7 @@ g_lineplot <- function(label = "Line Plot",
   plot1 <- plot1 +
     ggplot2::geom_line(position = pd) +
     ggplot2::geom_errorbar(
-      ggplot2::aes_string(ymin = down_limit, ymax = up_limit),
+      ggplot2::aes(ymin = .data[[down_limit]], ymax = .data[[up_limit]]),
       width = 0.45, position = pd, linetype = "solid"
     ) +
     ggplot2::ggtitle(gtitle) +
@@ -515,7 +527,10 @@ g_lineplot <- function(label = "Line Plot",
       sprintf(ifelse(unfiltered_data$count > 0, "%.2f", ""), unfiltered_data$mean)
     }
     tbl_central_value_title <- if (median) "Median" else "Mean"
-    tbl_central_value <- ggplot2::ggplot(unfiltered_data, ggplot2::aes_string(x = time, y = int, label = "center")) +
+    tbl_central_value <- ggplot2::ggplot(
+      unfiltered_data,
+      ggplot2::aes(x = .data[[time]], y = .data[[int]], label = "center")
+    ) +
       ggplot2::geom_text(ggplot2::aes(color = .data[["met_threshold"]]), size = table_font_size) +
       ggplot2::ggtitle(tbl_central_value_title) +
       ggplot2::theme_minimal() +
@@ -534,7 +549,10 @@ g_lineplot <- function(label = "Line Plot",
       ggplot2::scale_color_manual(values = c("FALSE" = "red", "TRUE" = "black"))
   }
 
-  tbl <- ggplot2::ggplot(unfiltered_data, ggplot2::aes_string(x = time, y = int, label = "count")) +
+  tbl <- ggplot2::ggplot(
+    unfiltered_data,
+    ggplot2::aes(x = .data[[time]], y = .data[[int]], label = "count")
+  ) +
     ggplot2::geom_text(ggplot2::aes(color = .data[["met_threshold"]]), size = table_font_size) +
     ggplot2::ggtitle("Number of observations") +
     ggplot2::theme_minimal() +
