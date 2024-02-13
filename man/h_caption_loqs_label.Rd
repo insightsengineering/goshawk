@@ -4,7 +4,7 @@
 \alias{h_caption_loqs_label}
 \title{Add footnote to identify \code{LLOQ} and \code{ULOQ} values identified from data}
 \usage{
-h_caption_loqs_label(loqs_data)
+h_caption_loqs_label(loqs_data, flag_var)
 }
 \arguments{
 \item{loqs_data}{(\verb{data frame})\cr \code{loqs_data} data set containing assay data with potential \code{LOQ} values}
@@ -13,6 +13,6 @@ h_caption_loqs_label(loqs_data)
 Add footnote to identify \code{LLOQ} and \code{ULOQ} values identified from data
 }
 \examples{
-caption_label <- goshawk:::h_caption_loqs_label(loqs_data = rADLB)
+caption_label <- goshawk:::h_caption_loqs_label(loqs_data = goshawk::rADLB, flag_var = "LOQFL")
 }
 \keyword{internal}

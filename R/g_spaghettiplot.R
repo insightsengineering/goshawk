@@ -12,6 +12,7 @@
 #' @param unit_var name of variable containing biomarker units.
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of `trt_group`.
+#' @param loq_flag_var name of variable containing `LOQ` flag e.g. `LOQFL`.
 #' @param time name of variable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when
 #' x-axis variable is character or factor.
@@ -105,7 +106,7 @@
 #' attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
 #'
 #' # add LLOQ and ULOQ variables
-#' ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB)
+#' ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB, "LOQFL")
 #' ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 #'
 #' g_spaghettiplot(
@@ -219,6 +220,7 @@ g_spaghettiplot <- function(data,
                             unit_var = "AVALU",
                             trt_group,
                             trt_group_level = NULL,
+                            loq_flag_var = "LOQFL",
                             time,
                             time_level = NULL,
                             color_manual = NULL,
@@ -280,7 +282,7 @@ g_spaghettiplot <- function(data,
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
 
   # Add footnote to identify LLOQ and ULOQ values pulled from data
-  caption_loqs_label <- h_caption_loqs_label(loqs_data = plot_data)
+  caption_loqs_label <- h_caption_loqs_label(loqs_data = plot_data, flag_var = loq_flag_var)
 
   plot <- ggplot2::ggplot(
     data = plot_data,
