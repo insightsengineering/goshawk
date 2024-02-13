@@ -12,7 +12,7 @@
 #' @param unit_var name of variable containing biomarker units.
 #' @param trt_group name of variable representing treatment group.
 #' @param trt_group_level vector that can be used to define the factor level of `trt_group`.
-#' @param loq_flag_var  name of variable containing `LOQ` flag e.g. `LOQFL`.
+#' @param loq_flag_var name of variable containing `LOQ` flag e.g. `LOQFL`.
 #' @param time name of variable containing visit names.
 #' @param time_level vector that can be used to define the factor level of time. Only use it when
 #' x-axis variable is character or factor.

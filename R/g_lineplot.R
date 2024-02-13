@@ -4,7 +4,7 @@
 #' @param data `ADaM` structured analysis laboratory data frame e.g. `ADLB`.
 #' @param biomarker_var name of variable containing biomarker names.
 #' @param biomarker_var_label name of variable containing biomarker labels.
-#' @param loq_flag_var  name of variable containing `LOQ` flag e.g. `LOQFL`.
+#' @param loq_flag_var name of variable containing `LOQ` flag e.g. `LOQFL`.
 #' @param biomarker biomarker name to be analyzed.
 #' @param value_var name of variable containing biomarker results.
 #' @param unit_var name of variable containing biomarker result unit.
