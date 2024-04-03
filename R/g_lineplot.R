@@ -529,7 +529,7 @@ g_lineplot <- function(label = "Line Plot",
     tbl_central_value_title <- if (median) "Median" else "Mean"
     tbl_central_value <- ggplot2::ggplot(
       unfiltered_data,
-      ggplot2::aes(x = .data[[time]], y = .data[[int]], label = "center")
+      ggplot2::aes(x = .data[[time]], y = .data[[int]], label = .data[["center"]])
     ) +
       ggplot2::geom_text(ggplot2::aes(color = .data[["met_threshold"]]), size = table_font_size) +
       ggplot2::ggtitle(tbl_central_value_title) +
@@ -551,7 +551,7 @@ g_lineplot <- function(label = "Line Plot",
 
   tbl <- ggplot2::ggplot(
     unfiltered_data,
-    ggplot2::aes(x = .data[[time]], y = .data[[int]], label = "count")
+    ggplot2::aes(x = .data[[time]], y = .data[[int]], label = .data[["count"]])
   ) +
     ggplot2::geom_text(ggplot2::aes(color = .data[["met_threshold"]]), size = table_font_size) +
     ggplot2::ggtitle("Number of observations") +
