@@ -1,4 +1,4 @@
-# goshawk 0.1.15.9007
+# goshawk 0.1.15.9008
 
 * Add `loq_flag_var` argument to plots. 
 * Remove package prefix from examples.
