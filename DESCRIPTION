@@ -1,8 +1,8 @@
 Type: Package
 Package: goshawk
 Title: Longitudinal Visualization Functions
-Version: 0.1.15.9008
-Date: 2024-04-08
+Version: 0.1.15.9009
+Date: 2024-04-22
 Authors@R: c(
     person("Nick", "Paszty", , "nick.paszty@gene.com", role = c("aut", "cre")),
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = "aut"),
@@ -28,10 +28,10 @@ URL: https://insightsengineering.github.io/goshawk/,
     https://github.com/insightsengineering/goshawk/
 BugReports: https://github.com/insightsengineering/goshawk/issues
 Depends:
-    dplyr (>= 1.1.0) ,
+    dplyr (>= 1.1.0),
     R (>= 3.6)
 Imports:
-    checkmate (>= 2.1.0) ,
+    checkmate (>= 2.1.0),
     cowplot,
     ggnewscale,
     ggplot2,
@@ -50,14 +50,12 @@ Suggests:
     tidyr
 VignetteBuilder:
     knitr
-Config/Needs/website: insightsengineering/nesttemplate
-Config/Needs/verdepcheck:
-    tidyverse/dplyr, mllg/checkmate, wilkelab/cowplot,
-    eliocamp/ggnewscale, tidyverse/ggplot2, r-lib/lifecycle,
-    tidyverse/magrittr, 
-    r-lib/rlang, tidyverse/stringr,
+Config/Needs/verdepcheck: tidyverse/dplyr, mllg/checkmate,
+    wilkelab/cowplot, eliocamp/ggnewscale, tidyverse/ggplot2,
+    r-lib/lifecycle, tidyverse/magrittr, r-lib/rlang, tidyverse/stringr,
     yihui/knitr, insightsengineering/nestcolor, rstudio/rmarkdown,
     r-lib/testthat, tidyverse/tidyr
+Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
 LazyData: true
