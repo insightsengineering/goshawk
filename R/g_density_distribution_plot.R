@@ -186,7 +186,7 @@ g_density_distribution_plot <- function(label = "Density Distribution Plot",
 
   plot1 <- ggplot2::ggplot(plot_data) +
     ggplot2::stat_density(
-      ggplot2::aes(x = .data[[xaxis_var]], colour = .data[[trt_group]]),
+      ggplot2::aes(x = !!sym(xaxis_var), colour = !!sym(trt_group)),
       linewidth = line_size,
       geom = "line",
       position = "identity"

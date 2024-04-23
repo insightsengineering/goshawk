@@ -204,8 +204,8 @@ g_boxplot <- function(data,
       ggplot2::geom_boxplot(
         data = data,
         ggplot2::aes(
-          x = .data[[xaxis_var]],
-          y = .data[[yaxis_var]],
+          x = !!sym(xaxis_var),
+          y = !!sym(yaxis_var),
           fill = NULL
         ),
         outlier.shape = NA,
@@ -251,10 +251,10 @@ g_boxplot <- function(data,
     ggplot2::geom_jitter(
       data = data,
       ggplot2::aes(
-        x = .data[[xaxis_var]],
-        y = .data[[yaxis_var]],
-        shape = .data[[loq_flag_var]],
-        color = .data[[trt_group]]
+        x = !!sym(xaxis_var),
+        y = !!sym(yaxis_var),
+        shape = !!sym(loq_flag_var),
+        color = !!sym(trt_group)
       ),
       alpha = alpha,
       position = ggplot2::position_jitter(width = 0.1, height = 0),
