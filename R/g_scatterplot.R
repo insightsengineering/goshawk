@@ -216,7 +216,7 @@ g_scatterplot <- function(label = "Scatter Plot",
       select(!!sym(trt_group), !!sym(visit), !!sym(xaxis_var), !!sym(yaxis_var)) %>%
       filter(!is.na(!!sym(yaxis_var)) & !is.na(!!sym(xaxis_var))) %>%
       group_by(!!sym(trt_group), !!sym(visit)) %>%
-      do(slope(!!sym(yaxis_var), !!sym(xaxis_var)))
+      do(slope(.data[[yaxis_var]], .data[[xaxis_var]]))
 
     if (!(all(is.na(sub_data$intercept)) && all(is.na(sub_data$slope)))) {
       plot1 <- plot1 +
