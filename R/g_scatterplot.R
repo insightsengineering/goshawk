@@ -175,12 +175,12 @@ g_scatterplot <- function(label = "Scatter Plot",
   plot1 <- ggplot2::ggplot(
     data = plot_data,
     ggplot2::aes(
-      x = .data[[xaxis_var]],
-      y = .data[[yaxis_var]],
-      color = .data[[trt_group]]
+      x = !!sym(xaxis_var),
+      y = !!sym(yaxis_var),
+      color = !!sym(trt_group)
     )
   ) +
-    ggplot2::geom_point(ggplot2::aes(shape = .data[[loq_flag_var]]), size = dot_size, na.rm = TRUE) +
+    ggplot2::geom_point(ggplot2::aes(shape = !!sym(loq_flag_var)), size = dot_size, na.rm = TRUE) +
     ggplot2::coord_cartesian(xlim = xlim, ylim = ylim) +
     ggplot2::facet_wrap(stats::as.formula(paste0(" ~ ", visit)), ncol = facet_ncol) +
     ggplot2::theme_bw() +
@@ -290,7 +290,7 @@ g_scatterplot <- function(label = "Scatter Plot",
   # Format dot size
   if (!is.null(dot_size)) {
     plot1 <- plot1 +
-      ggplot2::geom_point(ggplot2::aes(shape = .data[[loq_flag_var]]), size = dot_size, na.rm = TRUE)
+      ggplot2::geom_point(ggplot2::aes(shape = !!sym(loq_flag_var)), size = dot_size, na.rm = TRUE)
   }
   # Format x-label
   if (rotate_xlab) {

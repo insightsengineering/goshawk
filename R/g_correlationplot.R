@@ -289,9 +289,9 @@ g_correlationplot <- function(label = "Correlation Plot",
   plot1 <- ggplot2::ggplot(
     data = plot_data,
     ggplot2::aes(
-      x = .data[[xvar]],
-      y = .data[[yvar]],
-      color = .data[[trt_group]]
+      x = !!sym(xvar),
+      y = !!sym(yvar),
+      color = !!sym(trt_group)
     )
   ) +
     ggplot2::coord_cartesian(xlim = xlim, ylim = ylim) +
@@ -317,7 +317,7 @@ g_correlationplot <- function(label = "Correlation Plot",
   }
 
   plot1 <- plot1 +
-    ggplot2::geom_point(ggplot2::aes(shape = .data[[loq_flag_var]]), size = dot_size, na.rm = TRUE)
+    ggplot2::geom_point(ggplot2::aes(shape = !!sym(loq_flag_var)), size = dot_size, na.rm = TRUE)
 
   # add regression line
   if (reg_line) {
@@ -346,7 +346,7 @@ g_correlationplot <- function(label = "Correlation Plot",
     plot1 <- plot1 +
       ggplot2::geom_abline(
         data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by
-        ggplot2::aes(intercept = .data$intercept, slope = .data$slope, color = .data[[trt_group]])
+        ggplot2::aes(intercept = .data$intercept, slope = .data$slope, color = !!sym(trt_group))
       ) +
       ggplot2::geom_text(
         data = filter(sub_data, row_number() == 1),
