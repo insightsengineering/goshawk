@@ -286,7 +286,7 @@ g_spaghettiplot <- function(data,
 
   plot <- ggplot2::ggplot(
     data = plot_data,
-    ggplot2::aes(x = .data[[time]], y = .data[[value_var]], color = .data[[trt_group]], group = .data[[subj_id]])
+    ggplot2::aes(x = !!sym(time), y = !!sym(value_var), color = !!sym(trt_group), group = !!sym(subj_id))
   ) +
     ggplot2::geom_point(size = 0.8, na.rm = TRUE) +
     ggplot2::geom_line(linewidth = 0.4, alpha = alpha, na.rm = TRUE) +
@@ -319,7 +319,7 @@ g_spaghettiplot <- function(data,
     }
     plot <- plot +
       ggplot2::geom_line(
-        ggplot2::aes(x = .data[[time]], y = .data$AGG_VAL, group = 1, linetype = "metric"),
+        ggplot2::aes(x = !!sym(time), y = .data$AGG_VAL, group = 1, linetype = "metric"),
         data = plot_data_groupped,
         lwd = 1,
         color = color_comb,

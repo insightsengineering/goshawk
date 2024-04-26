@@ -1,8 +1,8 @@
 Type: Package
 Package: goshawk
 Title: Longitudinal Visualization Functions
-Version: 0.1.15.9008
-Date: 2024-04-08
+Version: 0.1.15.9010
+Date: 2024-04-25
 Authors@R: c(
     person("Nick", "Paszty", , "nick.paszty@gene.com", role = c("aut", "cre")),
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = "aut"),
@@ -28,28 +28,33 @@ URL: https://insightsengineering.github.io/goshawk/,
     https://github.com/insightsengineering/goshawk/
 BugReports: https://github.com/insightsengineering/goshawk/issues
 Depends:
-    dplyr,
+    dplyr (>= 1.1.0),
     R (>= 3.6)
 Imports:
-    checkmate,
+    checkmate (>= 2.1.0),
     cowplot,
     ggnewscale,
     ggplot2,
     grDevices,
     grid,
-    lifecycle,
+    lifecycle (>= 0.2.0),
     magrittr,
     mcr,
-    rlang,
-    stringr
+    rlang (>= 1.1.0),
+    stringr (>= 1.4.1)
 Suggests:
-    knitr,
+    knitr (>= 1.42),
     nestcolor (>= 0.1.0),
-    rmarkdown,
-    testthat (>= 2.0),
+    rmarkdown (>= 1.11),
+    testthat (>= 3.0.4),
     tidyr
 VignetteBuilder:
     knitr
+Config/Needs/verdepcheck: tidyverse/dplyr, mllg/checkmate,
+    wilkelab/cowplot, eliocamp/ggnewscale, tidyverse/ggplot2,
+    r-lib/lifecycle, tidyverse/magrittr, r-lib/rlang, tidyverse/stringr,
+    yihui/knitr, insightsengineering/nestcolor, rstudio/rmarkdown,
+    r-lib/testthat, tidyverse/tidyr
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US

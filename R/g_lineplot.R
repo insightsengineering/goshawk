@@ -397,11 +397,11 @@ g_lineplot <- function(label = "Line Plot",
     plot1 <- ggplot2::ggplot(
       data = sum_data,
       ggplot2::aes(
-        x = .data[[time]],
-        y = .data[[line]],
-        color = .data[[trt_group]],
-        linetype = .data[[trt_group]],
-        group = .data[[int]]
+        x = !!sym(time),
+        y = !!sym(line),
+        color = !!sym(trt_group),
+        linetype = !!sym(trt_group),
+        group = !!sym(int)
       )
     ) +
       ggplot2::theme_bw() +
@@ -430,12 +430,12 @@ g_lineplot <- function(label = "Line Plot",
     plot1 <- ggplot2::ggplot(
       data = sum_data,
       ggplot2::aes(
-        x = .data[[time]],
-        y = .data[[line]],
-        color = .data[[int]],
-        linetype = .data[[int]],
-        group = .data[[int]],
-        shape = .data[[int]]
+        x = !!sym(time),
+        y = !!sym(line),
+        color = !!sym(int),
+        linetype = !!sym(int),
+        group = !!sym(int),
+        shape = !!sym(int)
       )
     ) +
       ggplot2::theme_bw() +
@@ -449,7 +449,7 @@ g_lineplot <- function(label = "Line Plot",
   plot1 <- plot1 +
     ggplot2::geom_line(position = pd) +
     ggplot2::geom_errorbar(
-      ggplot2::aes(ymin = .data[[down_limit]], ymax = .data[[up_limit]]),
+      ggplot2::aes(ymin = !!sym(down_limit), ymax = !!sym(up_limit)),
       width = 0.45, position = pd, linetype = "solid"
     ) +
     ggplot2::ggtitle(gtitle) +
@@ -529,7 +529,7 @@ g_lineplot <- function(label = "Line Plot",
     tbl_central_value_title <- if (median) "Median" else "Mean"
     tbl_central_value <- ggplot2::ggplot(
       unfiltered_data,
-      ggplot2::aes(x = .data[[time]], y = .data[[int]], label = .data[["center"]])
+      ggplot2::aes(x = !!sym(time), y = !!sym(int), label = .data[["center"]])
     ) +
       ggplot2::geom_text(ggplot2::aes(color = .data[["met_threshold"]]), size = table_font_size) +
       ggplot2::ggtitle(tbl_central_value_title) +
@@ -551,7 +551,7 @@ g_lineplot <- function(label = "Line Plot",
 
   tbl <- ggplot2::ggplot(
     unfiltered_data,
-    ggplot2::aes(x = .data[[time]], y = .data[[int]], label = .data[["count"]])
+    ggplot2::aes(x = !!sym(time), y = !!sym(int), label = .data[["count"]])
   ) +
     ggplot2::geom_text(ggplot2::aes(color = .data[["met_threshold"]]), size = table_font_size) +
     ggplot2::ggtitle("Number of observations") +
