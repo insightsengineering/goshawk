@@ -26,3 +26,5 @@ tmp.*
 vignettes/*.html
 vignettes/*.md
 vignettes/*.Rcoverage.*
+tests/testthat/_snaps/**/*.new.md
+tests/testthat/_snaps/**/*.new.svg

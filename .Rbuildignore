@@ -52,3 +52,6 @@ data-raw/data.R
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^pkgdown$
+^.revdeprefs\.yaml$
+^revdep$
+^\.covrignore$
