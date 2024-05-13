@@ -4,8 +4,6 @@
 #' \code{\link{g_spaghettiplot}}, and ('g_density_distribution_plot'), but may also work in general.
 #'
 #' @param data ('data.frame') data where `hline_vars` and `vline_var` columns are taken from.
-#' @param agg_label ('character') label for the line denoting the Mean or Median.
-#' @param color_comb ('character') denoting the color of the Mean or Median line.
 #' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
 #' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
 #' @param hline_arb_label ('character vector') optional, label for the legend to the arbitrary horizontal lines.
