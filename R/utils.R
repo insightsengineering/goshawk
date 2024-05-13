@@ -82,7 +82,7 @@ h_identify_loq_values <- function(loqs_data, flag_var) {
 #' caption_label <- goshawk:::h_caption_loqs_label(loqs_data = goshawk::rADLB, flag_var = "LOQFL")
 h_caption_loqs_label <- function(loqs_data, flag_var) {
   loq_values <- h_identify_loq_values(loqs_data, flag_var)
-  
+
   lloqc <- ifelse(is.na(loq_values$LLOQC), "NA", as.character(loq_values$LLOQC))
   uloqc <- ifelse(is.na(loq_values$ULOQC), "NA", as.character(loq_values$ULOQC))
 
