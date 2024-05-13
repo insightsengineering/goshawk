@@ -48,10 +48,6 @@ Needs \code{data} to be specified.}
 \item{vline_vars_colors}{('character vector') colors for the vertical lines defined by variables.}
 
 \item{vline_vars_labels}{('character vector') labels for the legend to the vertical lines defined by variables.}
-
-\item{agg_label}{('character') label for the line denoting the Mean or Median.}
-
-\item{color_comb}{('character') denoting the color of the Mean or Median line.}
 }
 \value{
 \code{ggplot} object
