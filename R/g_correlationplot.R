@@ -264,8 +264,7 @@ g_correlationplot <- function(label = "Correlation Plot",
 
   xaxis_param_loqs_data <- data %>%
     mutate(
-      PARAM = !!sym(t_param_var_x),
-      LBSTRESC = !!sym(t_lbstresc_var_x),
+      PARAM = !!sym(t_param_var_x), LBSTRESC = !!sym(t_lbstresc_var_x),
       sym(loq_flag_var) == !!sym(loq_flag_var)
     ) %>%
     select("PARAM", "LBSTRESC", loq_flag_var)
