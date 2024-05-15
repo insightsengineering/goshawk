@@ -288,7 +288,7 @@ g_spaghettiplot <- function(data,
     data = plot_data,
     ggplot2::aes(x = !!sym(time), y = !!sym(value_var), color = !!sym(trt_group), group = !!sym(subj_id))
   ) +
-    ggplot2::geom_point(size = 0.8, na.rm = TRUE) +
+    ggplot2::geom_point(size = 0.8, na.rm = TRUE, ggplot2::aes(shape = !!sym(loq_flag_var))) +
     ggplot2::geom_line(linewidth = 0.4, alpha = alpha, na.rm = TRUE) +
     ggplot2::facet_wrap(trt_group, ncol = facet_ncol, scales = facet_scales) +
     ggplot2::labs(caption = caption_loqs_label) +
