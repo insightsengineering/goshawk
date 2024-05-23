@@ -49,10 +49,10 @@ data brushing:
 - box, correlation and spaghetti plots include data brushing functionality used to display details
 of data points displayed in the plots
 
-The reference of `goshawk` functions is available on [the goshawk website functions reference](https://insightsengineering.github.io/goshawk/reference/index.html).
+The reference of `goshawk` functions is available on [the goshawk website functions reference](https://insightsengineering.github.io/goshawk/latest-tag/reference/index.html).
 
 The `goshawk` functions used for plot generation are `g_` prefixed.
-All `goshawk` plot functions are listed on [the goshawk website functions reference](https://insightsengineering.github.io/goshawk/reference/index.html) and
+All `goshawk` plot functions are listed on [the goshawk website functions reference](https://insightsengineering.github.io/goshawk/latest-tag/reference/index.html) and
 include examples of data pre-processing and function usage. Please see the Articles
 for more information on data pre-processing and data expectations for `goshawk`.
 
