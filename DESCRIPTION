@@ -34,7 +34,7 @@ Imports:
     checkmate (>= 2.1.0),
     cowplot,
     ggnewscale,
-    ggplot2 (>= 3.4.3),
+    ggplot2 (>= 3.4.4),
     grDevices,
     grid,
     lifecycle (>= 0.2.0),
