@@ -31,9 +31,6 @@
     <loc>https://insightsengineering.github.io/goshawk/news/index.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/goshawk/pull_request_template.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/check_color.html</loc>
   </url>
   <url>
@@ -61,7 +58,7 @@
     <loc>https://insightsengineering.github.io/goshawk/reference/geom_straight_lines.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/goshawk/reference/goshawk.html</loc>
+    <loc>https://insightsengineering.github.io/goshawk/reference/goshawk-package.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/goshawk/reference/h_caption_loqs_label.html</loc>
