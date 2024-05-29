@@ -1,5 +1,6 @@
 # goshawk 0.1.15.9014
 
+* Fix an issue with vertical range lines displayed only when there are any other lines included.
 * Add `loq_flag_var` argument to plots. 
 * Remove package prefix from examples.
 * Replace soft deprecated `ggplot2` functions with their current equivalents, e.g. `aes_string()` with `aes()`.
