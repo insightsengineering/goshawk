@@ -18,7 +18,7 @@
 #' @author Balazs Toth (tothb2)  toth.balazs@gene.com
 #'
 #' @details provide additional information as needed. link to specification file
-#' \url{https://www.rstudio.com/}
+#' \url{https://posit.co/}
 #'
 #' @export
 #'

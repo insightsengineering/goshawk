@@ -40,7 +40,7 @@ n, mean, median, SD, min, max, \%missing values, \% \code{LOQ} values.
 }
 \details{
 provide additional information as needed. link to specification file
-\url{https://www.rstudio.com/}
+\url{https://posit.co/}
 }
 \examples{
 # Example using ADaM structure analysis dataset.
