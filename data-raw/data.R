@@ -1,6 +1,5 @@
-library(scda)
-rADLB <- synthetic_cdisc_data("latest")$adlb # nolint
+rADLB <- random.cdisc.data::cadlb # nolint
 usethis::use_data(rADLB)
 
-rADSL <- synthetic_cdisc_data("latest")$adsl # nolint
+rADSL <- random.cdisc.data::cadsl # nolint
 usethis::use_data(rADSL)
