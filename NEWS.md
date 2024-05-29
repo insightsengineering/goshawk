@@ -1,4 +1,4 @@
-# goshawk 0.1.15.9013
+# goshawk 0.1.15.9014
 
 * Fix an issue with vertical range lines displayed only when there are any other lines included.
 * Add `loq_flag_var` argument to plots. 
