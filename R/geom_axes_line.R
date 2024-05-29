@@ -84,7 +84,7 @@ geom_axes_lines <- function(data,
   }
 
   Filter(
-    Negate(is.na),
+    function(x) !is.null(x) || !is.na(x),
     list(
       arb_hlines,
       range_hlines,

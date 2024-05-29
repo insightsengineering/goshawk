@@ -1,12 +1,18 @@
-# goshawk 0.1.15.9014
+# goshawk 0.1.16.9000
 
+# goshawk 0.1.16
+
+### Miscellaneous
 * Add `loq_flag_var` argument to plots. 
 * Remove package prefix from examples.
 * Replace soft deprecated `ggplot2` functions with their current equivalents, e.g. `aes_string()` with `aes()`.
-* Fix partial attribute matching.
 
 ### Fixes
+
 * Update `h_identify_loq_values` to filter for records with `LOQFL == "Y"` before calculating `LOQ`.
+* Fix an issue with vertical range lines displayed only when there are any other lines included.
+* Fix partial attribute matching.
+
 
 # goshawk 0.1.15
 
