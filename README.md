@@ -1,7 +1,6 @@
 # goshawk R package
 
 <!-- start badges -->
-[![Check 🛠](https://github.com/insightsengineering/goshawk/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/goshawk/main/unit-test-report/)
 [![Docs 📚](https://github.com/insightsengineering/goshawk/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/goshawk/)
 [![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/goshawk/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/goshawk/main/coverage-report/)
 
