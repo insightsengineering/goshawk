@@ -93,7 +93,7 @@ Default value is \code{ggplot2::waiver()}.}
 
 \item{plot_font_size}{control font size for title, x-axis, y-axis and legend font.}
 
-\item{dot_size}{plot dot size.}
+\item{dot_size}{plot dot size. Default to 3.}
 
 \item{dodge}{control position dodge.}
 
@@ -276,7 +276,8 @@ g_lineplot(
   xtick = c(0, 1, 5),
   xlabel = c("Baseline", "Week 1", "Week 5"),
   rotate_xlab = FALSE,
-  plot_height = 1500
+  plot_height = 1500,
+  dot_size = 1
 )
 
 g_lineplot(
@@ -296,7 +297,8 @@ g_lineplot(
   xtick = c(0, 1, 5),
   xlabel = c("Baseline", "Week 1", "Week 5"),
   rotate_xlab = FALSE,
-  plot_height = 1500
+  plot_height = 1500,
+  dot_size = 4
 )
 }
 \author{

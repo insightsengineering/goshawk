@@ -88,7 +88,7 @@ value is \code{ggplot2::waiver()}.}
 
 \item{font_size}{control font size for title, x-axis, y-axis and legend font.}
 
-\item{dot_size}{plot dot size.}
+\item{dot_size}{plot dot size. Default to 2.}
 
 \item{group_stats}{control group mean or median overlay.}
 
@@ -210,7 +210,8 @@ g_spaghettiplot(
   group_stats = "median",
   hline_arb = 1.3,
   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-  hline_vars_colors = c("pink", "brown", "purple", "gray")
+  hline_vars_colors = c("pink", "brown", "purple", "gray"),
+  dot_size = 3
 )
 
 g_spaghettiplot(
@@ -231,7 +232,8 @@ g_spaghettiplot(
   hline_arb = c(.5, .7, 1),
   hline_arb_color = c("blue", "red", "green"),
   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
-  hline_vars = c("ANRHI", "ANRLO")
+  hline_vars = c("ANRHI", "ANRLO"),
+  dot_size = 4
 )
 
 # removing missing levels from the plot with facet_scales
@@ -273,7 +275,8 @@ g_spaghettiplot(
   hline_arb = c(.5, .7, 1),
   hline_arb_color = c("blue", "red", "green"),
   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
-  hline_vars = c("ANRHI", "ANRLO")
+  hline_vars = c("ANRHI", "ANRLO"),
+  dot_size = 1
 )
 
 }

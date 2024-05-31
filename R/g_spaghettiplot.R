@@ -30,7 +30,7 @@
 #'  value is `ggplot2::waiver()`.
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
-#' @param dot_size plot dot size.
+#' @param dot_size plot dot size. Default to 2.
 #' @param group_stats control group mean or median overlay.
 #' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
 #' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
@@ -146,7 +146,8 @@
 #'   group_stats = "median",
 #'   hline_arb = 1.3,
 #'   hline_vars = c("ANRHI", "ANRLO", "ULOQN", "LLOQN"),
-#'   hline_vars_colors = c("pink", "brown", "purple", "gray")
+#'   hline_vars_colors = c("pink", "brown", "purple", "gray"),
+#'   dot_size = 3
 #' )
 #'
 #' g_spaghettiplot(
@@ -167,7 +168,8 @@
 #'   hline_arb = c(.5, .7, 1),
 #'   hline_arb_color = c("blue", "red", "green"),
 #'   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
-#'   hline_vars = c("ANRHI", "ANRLO")
+#'   hline_vars = c("ANRHI", "ANRLO"),
+#'   dot_size = 4
 #' )
 #'
 #' # removing missing levels from the plot with facet_scales
@@ -209,7 +211,8 @@
 #'   hline_arb = c(.5, .7, 1),
 #'   hline_arb_color = c("blue", "red", "green"),
 #'   hline_arb_label = c("Arb_Hori_line_A", "Arb_Hori_line_B", "Arb_Hori_line_C"),
-#'   hline_vars = c("ANRHI", "ANRLO")
+#'   hline_vars = c("ANRHI", "ANRLO"),
+#'   dot_size = 1
 #' )
 #'
 g_spaghettiplot <- function(data,
