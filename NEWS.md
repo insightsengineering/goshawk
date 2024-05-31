@@ -1,4 +1,8 @@
-# goshawk 0.1.16.9001
+# goshawk 0.1.17
+
+### Miscellaneous
+
+* Update `g_lineplot` and `g_spaghettiplot` to include a `dot_size` parameter for adjusting the size of plot points.
 
 # goshawk 0.1.16
 
