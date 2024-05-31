@@ -27,6 +27,7 @@ g_spaghettiplot(
   xlabel = xtick,
   rotate_xlab = FALSE,
   font_size = 12,
+  dot_size = 2,
   group_stats = "NONE",
   hline_arb = numeric(0),
   hline_arb_color = "red",
@@ -86,6 +87,8 @@ value is \code{ggplot2::waiver()}.}
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 
 \item{font_size}{control font size for title, x-axis, y-axis and legend font.}
+
+\item{dot_size}{plot dot size.}
 
 \item{group_stats}{control group mean or median overlay.}
 

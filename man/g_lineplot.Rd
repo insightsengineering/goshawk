@@ -30,6 +30,7 @@ g_lineplot(
   xlabel = xtick,
   rotate_xlab = FALSE,
   plot_font_size = 12,
+  dot_size = 3,
   dodge = 0.4,
   plot_height = 989,
   count_threshold = 0,
@@ -91,6 +92,8 @@ Default value is \code{ggplot2::waiver()}.}
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 
 \item{plot_font_size}{control font size for title, x-axis, y-axis and legend font.}
+
+\item{dot_size}{plot dot size.}
 
 \item{dodge}{control position dodge.}
 

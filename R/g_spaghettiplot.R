@@ -30,6 +30,7 @@
 #'  value is `ggplot2::waiver()`.
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
+#' @param dot_size plot dot size.
 #' @param group_stats control group mean or median overlay.
 #' @param hline_arb ('numeric vector') value identifying intercept for arbitrary horizontal lines.
 #' @param hline_arb_color ('character vector') optional, color for the arbitrary horizontal lines.
@@ -233,6 +234,7 @@ g_spaghettiplot <- function(data,
                             xlabel = xtick,
                             rotate_xlab = FALSE,
                             font_size = 12,
+                            dot_size = 2,
                             group_stats = "NONE",
                             hline_arb = numeric(0),
                             hline_arb_color = "red",
@@ -288,7 +290,7 @@ g_spaghettiplot <- function(data,
     data = plot_data,
     ggplot2::aes(x = !!sym(time), y = !!sym(value_var), color = !!sym(trt_group), group = !!sym(subj_id))
   ) +
-    ggplot2::geom_point(size = 0.8, na.rm = TRUE, ggplot2::aes(shape = !!sym(loq_flag_var))) +
+    ggplot2::geom_point(size = dot_size, na.rm = TRUE, ggplot2::aes(shape = !!sym(loq_flag_var))) +
     ggplot2::geom_line(linewidth = 0.4, alpha = alpha, na.rm = TRUE) +
     ggplot2::facet_wrap(trt_group, ncol = facet_ncol, scales = facet_scales) +
     ggplot2::labs(caption = caption_loqs_label) +
