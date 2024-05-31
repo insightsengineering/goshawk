@@ -29,6 +29,7 @@
 #' Default value is `ggplot2::waiver()`.
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param plot_font_size control font size for title, x-axis, y-axis and legend font.
+#' @param dot_size plot dot size. Default to 3.
 #' @param dodge control position dodge.
 #' @param plot_height height of produced plot. 989 pixels by default.
 #' @param count_threshold \code{integer} minimum number observations needed to show the appropriate
@@ -207,7 +208,8 @@
 #'   xtick = c(0, 1, 5),
 #'   xlabel = c("Baseline", "Week 1", "Week 5"),
 #'   rotate_xlab = FALSE,
-#'   plot_height = 1500
+#'   plot_height = 1500,
+#'   dot_size = 1
 #' )
 #'
 #' g_lineplot(
@@ -227,7 +229,8 @@
 #'   xtick = c(0, 1, 5),
 #'   xlabel = c("Baseline", "Week 1", "Week 5"),
 #'   rotate_xlab = FALSE,
-#'   plot_height = 1500
+#'   plot_height = 1500,
+#'   dot_size = 4
 #' )
 g_lineplot <- function(label = "Line Plot",
                        data,
@@ -254,6 +257,7 @@ g_lineplot <- function(label = "Line Plot",
                        xlabel = xtick,
                        rotate_xlab = FALSE,
                        plot_font_size = 12,
+                       dot_size = 3,
                        dodge = 0.4,
                        plot_height = 989,
                        count_threshold = 0,
@@ -405,7 +409,7 @@ g_lineplot <- function(label = "Line Plot",
       )
     ) +
       ggplot2::theme_bw() +
-      ggplot2::geom_point(position = pd) +
+      ggplot2::geom_point(position = pd, size = dot_size) +
       ggplot2::scale_color_manual(
         values = color_manual, name = trt_label, guide = ggplot2::guide_legend(ncol = 3, order = 1)
       ) +
@@ -443,7 +447,7 @@ g_lineplot <- function(label = "Line Plot",
       ggplot2::scale_linetype_manual(" ", values = type_mapping, guide = ggplot2::guide_legend(ncol = 3, order = 1)) +
       ggplot2::scale_shape_manual(" ", values = shape_mapping, guide = ggplot2::guide_legend(ncol = 3, order = 1)) +
       ggplot2::theme(legend.key.size = grid::unit(1, "cm")) +
-      ggplot2::geom_point(position = pd, size = 3)
+      ggplot2::geom_point(position = pd, size = dot_size)
   }
 
   plot1 <- plot1 +
