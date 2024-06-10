@@ -33,7 +33,7 @@ Depends:
 Imports:
     checkmate (>= 2.1.0),
     cowplot,
-    ggnewscale,
+    ggnewscale (>= 0.4.1),
     ggplot2 (>= 3.4.4),
     grDevices,
     grid,
