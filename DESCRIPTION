@@ -33,8 +33,8 @@ Depends:
 Imports:
     checkmate (>= 2.1.0),
     cowplot,
-    ggnewscale,
-    ggplot2,
+    ggnewscale (>= 0.4.1),
+    ggplot2 (>= 3.4.4),
     grDevices,
     grid,
     lifecycle (>= 0.2.0),
@@ -45,9 +45,9 @@ Imports:
 Suggests:
     knitr (>= 1.42),
     nestcolor (>= 0.1.0),
-    rmarkdown (>= 1.11),
+    rmarkdown (>= 2.23),
     testthat (>= 3.0.4),
-    tidyr
+    tidyr (>= 1.3.1)
 VignetteBuilder:
     knitr
 Config/Needs/verdepcheck: tidyverse/dplyr, mllg/checkmate,
