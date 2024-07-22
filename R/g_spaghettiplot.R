@@ -324,7 +324,7 @@ g_spaghettiplot <- function(data,
     }
     plot <- plot +
       ggplot2::geom_line(
-        ggplot2::aes(x = !!sym(time), y = .data$AGG_VAL, group = 1, linetype = metric),
+        ggplot2::aes(x = !!sym(time), y = .data$AGG_VAL, group = 1, linetype =.data$metric),
         data = plot_data_groupped,
         lwd = 1,
         color = color_comb,
