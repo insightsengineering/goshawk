@@ -28,6 +28,7 @@ g_lineplot(
   hline_arb_label = "Horizontal line",
   xtick = ggplot2::waiver(),
   xlabel = xtick,
+  xlab = time,
   rotate_xlab = FALSE,
   plot_font_size = 12,
   dot_size = 3,
@@ -88,6 +89,8 @@ Default value is \code{ggplot2::waiver()}.}
 
 \item{xlabel}{vector with same length of \code{xtick} to define the label of x-axis tick values.
 Default value is \code{ggplot2::waiver()}.}
+
+\item{xlab}{an x-axis label, by default uses the value passed in \code{time} argument}
 
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 
@@ -181,6 +184,7 @@ g_lineplot(
   trt_group = "ARM",
   shape = NULL,
   time = "AVISITCDN",
+  xlab = "Analysis Visits N",
   color_manual = color_manual,
   line_type = type_manual,
   median = FALSE,

@@ -27,6 +27,7 @@
 #' Default value is `ggplot2::waiver()`.
 #' @param xlabel vector with same length of `xtick` to define the label of x-axis tick values.
 #' Default value is `ggplot2::waiver()`.
+#' @param xlab an x-axis label, by default uses the value passed in `time` argument
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param plot_font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dot_size plot dot size. Default to 3.
@@ -113,6 +114,7 @@
 #'   trt_group = "ARM",
 #'   shape = NULL,
 #'   time = "AVISITCDN",
+#'   xlab = "Analysis Visits N",
 #'   color_manual = color_manual,
 #'   line_type = type_manual,
 #'   median = FALSE,
@@ -255,6 +257,7 @@ g_lineplot <- function(label = "Line Plot",
                        hline_arb_label = "Horizontal line",
                        xtick = ggplot2::waiver(),
                        xlabel = xtick,
+                       xlab = time,
                        rotate_xlab = FALSE,
                        plot_font_size = 12,
                        dot_size = 3,
@@ -463,7 +466,7 @@ g_lineplot <- function(label = "Line Plot",
       "For median, the bar denotes the first to third quartile.\n",
       caption_loqs_label
     )) +
-    ggplot2::xlab(time) +
+    ggplot2::xlab(xlab) +
     ggplot2::ylab(gylab) +
     ggplot2::theme(
       legend.box = "vertical",
