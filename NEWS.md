@@ -1,6 +1,8 @@
-# goshawk 0.1.17.9003
+# goshawk 0.1.18
 
-# goshawk 0.1.17.9000
+### Fixes
+
+* Change the automated label on `g_spaghettiplot`.
 
 # goshawk 0.1.17
 
@@ -11,7 +13,7 @@
 # goshawk 0.1.16
 
 ### Miscellaneous
-* Add `loq_flag_var` argument to plots. 
+* Add `loq_flag_var` argument to plots.
 * Remove package prefix from examples.
 * Replace soft deprecated `ggplot2` functions with their current equivalents, e.g. `aes_string()` with `aes()`.
 
