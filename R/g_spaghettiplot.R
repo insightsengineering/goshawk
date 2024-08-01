@@ -28,6 +28,7 @@
 #' Default value is `ggplot2::waiver()`.
 #' @param xlabel vector with same length of `xtick` to define the label of x-axis tick values. Default
 #'  value is `ggplot2::waiver()`.
+#' @param xlab an x-axis label, by default uses the `label` attribute of `time` column
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dot_size plot dot size. Default to 2.
@@ -123,6 +124,7 @@
 #'   alpha = .02,
 #'   xtick = c("BL", "W 1", "W 4"),
 #'   xlabel = c("Baseline", "Week 1", "Week 4"),
+#'   xlab = "Custom X label",
 #'   rotate_xlab = FALSE,
 #'   group_stats = "median",
 #'   hline_vars = c("ANRHI", "ANRLO"),
@@ -235,6 +237,7 @@ g_spaghettiplot <- function(data,
                             facet_scales = c("fixed", "free", "free_x", "free_y"),
                             xtick = ggplot2::waiver(),
                             xlabel = xtick,
+                            xlab = NULL,
                             rotate_xlab = FALSE,
                             font_size = 12,
                             dot_size = 2,
@@ -280,7 +283,16 @@ g_spaghettiplot <- function(data,
     unique() %>%
     magrittr::extract2(1)
   gtitle <- paste0(biomarker1, unit1, value_var, " Values by Treatment @ Visits")
-  gxlab <- if (is.null(attr(data[[time]], "label"))) time else attr(data[[time]], "label")
+  gxlab <-
+    if (is.null(xlab)) {
+      if (is.null(attr(data[[time]], "label"))) {
+        time
+      } else {
+        attr(data[[time]], "label")
+      }
+    } else {
+      xlab
+    }
   gylab <- paste0(biomarker1, " ", value_var, " Values")
 
   # Setup legend label

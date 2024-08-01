@@ -25,6 +25,7 @@ g_spaghettiplot(
   facet_scales = c("fixed", "free", "free_x", "free_y"),
   xtick = ggplot2::waiver(),
   xlabel = xtick,
+  xlab = NULL,
   rotate_xlab = FALSE,
   font_size = 12,
   dot_size = 2,
@@ -83,6 +84,8 @@ Default value is \code{ggplot2::waiver()}.}
 
 \item{xlabel}{vector with same length of \code{xtick} to define the label of x-axis tick values. Default
 value is \code{ggplot2::waiver()}.}
+
+\item{xlab}{an x-axis label, by default uses the \code{label} attribute of \code{time} column}
 
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 
@@ -187,6 +190,7 @@ g_spaghettiplot(
   alpha = .02,
   xtick = c("BL", "W 1", "W 4"),
   xlabel = c("Baseline", "Week 1", "Week 4"),
+  xlab = "Custom X label",
   rotate_xlab = FALSE,
   group_stats = "median",
   hline_vars = c("ANRHI", "ANRLO"),
