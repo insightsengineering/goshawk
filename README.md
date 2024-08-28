@@ -28,7 +28,7 @@ inside [`teal`](https://insightsengineering.github.io/teal/) applications.
 -   correlation plot ([`g_correlationplot`](https://insightsengineering.github.io/goshawk/latest-tag/reference/g_correlationplot.html))
 -   density distribution plot ([`g_density_distribution_plot`](https://insightsengineering.github.io/goshawk/latest-tag/reference/g_density_distribution_plot.html))
 -   line plot ([`g_lineplot`](https://insightsengineering.github.io/goshawk/latest-tag/reference/g_lineplot.html))
--   spagetti plot ([`g_spaghettiplot`](https://insightsengineering.github.io/goshawk/latest-tag/reference/g_spaghettiplot.html))
+-   spaghetti plot ([`g_spaghettiplot`](https://insightsengineering.github.io/goshawk/latest-tag/reference/g_spaghettiplot.html))
 -   summary table ([`t_summarytable`](https://insightsengineering.github.io/goshawk/latest-tag/reference/t_summarytable.html))
 <!-- markdownlint-enable MD007 MD030 -->
 
