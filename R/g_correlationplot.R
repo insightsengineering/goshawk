@@ -322,12 +322,14 @@ g_correlationplot <- function(label = "Correlation Plot",
   # add regression line
   if (reg_line) {
     slope <- function(x, y) {
-      ratio <- stats::sd(x) / stats::sd(y)
-      if (!is.na(ratio) && ratio > 0) {
-        reg <- mc.deming(y, x, ratio)
-        # return the evaluation of the ratio condition as third value in numeric vector to control
-        # downstream processing
-        return(c(round(reg$b0, 2), round(reg$b1, 2), !is.na(ratio) & ratio > 0))
+      if (stats::sd(y) != 0) {
+        ratio <- stats::sd(x) / stats::sd(y)
+        if (!is.na(ratio) && ratio > 0) {
+          reg <- mc.deming(y, x, ratio)
+          # return the evaluation of the ratio condition as third value in numeric vector to control
+          # downstream processing
+          return(c(round(reg$b0, 2), round(reg$b1, 2), !is.na(ratio) & ratio > 0))
+        }
       }
       # if ratio condition is not met then assign NA to vector so that NULL condition does not throw
       # the error below
