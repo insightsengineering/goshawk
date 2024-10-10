@@ -19,29 +19,29 @@
 <!-- end badges -->
 
 Longitudinal biomarker/lab visualizations functions. These can be used stand alone but are also called by the
-[teal.goshawk](https://insightsengineering.github.io/teal.goshawk/) package which provides `teal` modules to be used
-inside `teal` applications.
+[teal.goshawk](https://insightsengineering.github.io/teal.goshawk/) package which provides modules to be used
+inside [`teal`](https://insightsengineering.github.io/teal/) applications.
 
 ## Functions
 <!-- markdownlint-disable MD007 MD030 -->
--   `g_boxplot`
--   `g_correlationplot`
--   `g_density_distribution_plot`
--   `g_lineplot`
--   `g_spaghettiplot`
--   `t_summarytable`
+-   box plot ([`g_boxplot`](https://insightsengineering.github.io/goshawk/latest-tag/reference/g_boxplot.html))
+-   correlation plot ([`g_correlationplot`](https://insightsengineering.github.io/goshawk/latest-tag/reference/g_correlationplot.html))
+-   density distribution plot ([`g_density_distribution_plot`](https://insightsengineering.github.io/goshawk/latest-tag/reference/g_density_distribution_plot.html))
+-   line plot ([`g_lineplot`](https://insightsengineering.github.io/goshawk/latest-tag/reference/g_lineplot.html))
+-   spaghetti plot ([`g_spaghettiplot`](https://insightsengineering.github.io/goshawk/latest-tag/reference/g_spaghettiplot.html))
+-   summary table ([`t_summarytable`](https://insightsengineering.github.io/goshawk/latest-tag/reference/t_summarytable.html))
 <!-- markdownlint-enable MD007 MD030 -->
 
 ## Installation
 
-From July 2023 `insightsengineering` packages are available on [r-universe](https://r-universe.dev/).
-
 ```r
 # stable versions
-install.packages('goshawk', repos = c('https://insightsengineering.r-universe.dev', 'https://cloud.r-project.org'))
+# install.packages("pak")
+pak::pkg_install("insightsengineering/goshawk@*release")
 
 # beta versions
-install.packages('goshawk', repos = c('https://pharmaverse.r-universe.dev', 'https://cloud.r-project.org'))
+# install.packages("pak")
+pak::pkg_install("insightsengineering/goshawk")
 ```
 
 ## Stargazers and Forkers
