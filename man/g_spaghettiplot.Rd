@@ -85,7 +85,7 @@ Default value is \code{ggplot2::waiver()}.}
 \item{xlabel}{vector with same length of \code{xtick} to define the label of x-axis tick values. Default
 value is \code{ggplot2::waiver()}.}
 
-\item{xlab}{an x-axis label, by default uses the \code{label} attribute of \code{time} column}
+\item{xlab}{an x-axis label, by default uses the \code{label} attribute of \code{time} column, or \code{time} column if the \code{label} is missing}
 
 \item{rotate_xlab}{boolean whether to rotate x-axis labels.}
 
