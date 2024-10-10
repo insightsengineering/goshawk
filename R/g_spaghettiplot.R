@@ -28,7 +28,7 @@
 #' Default value is `ggplot2::waiver()`.
 #' @param xlabel vector with same length of `xtick` to define the label of x-axis tick values. Default
 #'  value is `ggplot2::waiver()`.
-#' @param xlab an x-axis label, by default uses the `label` attribute of `time` column
+#' @param xlab an x-axis label, by default uses the `label` attribute of `time` column, or `time` column if the `label` is missing
 #' @param rotate_xlab boolean whether to rotate x-axis labels.
 #' @param font_size control font size for title, x-axis, y-axis and legend font.
 #' @param dot_size plot dot size. Default to 2.
