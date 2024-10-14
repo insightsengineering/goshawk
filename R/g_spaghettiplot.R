@@ -282,7 +282,8 @@ g_spaghettiplot <- function(data,
     select(!!sym(biomarker_var_label)) %>%
     unique() %>%
     magrittr::extract2(1)
-  gtitle <- paste0(biomarker1, unit1, value_var, " Values by Treatment @ Visits")
+
+  gtitle <- paste0(biomarker1, unit1, " Values by Treatment @ Visits")
   gxlab <-
     if (is.null(xlab)) {
       if (is.null(attr(data[[time]], "label"))) {
