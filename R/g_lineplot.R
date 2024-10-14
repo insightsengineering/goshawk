@@ -390,6 +390,7 @@ g_lineplot <- function(label = "Line Plot",
 
   gtitle <- paste0(biomarker1, unit1, stringr::str_to_title(line), " by Treatment @ Visits")
   gylab <- paste0(biomarker1, " ", stringr::str_to_title(line), " of ", value_var, " Values")
+  gxlab <- if (is.null(attr(data[[time]], "label"))) time else attr(data[[time]], "label")
 
   # Setup legend label
   trt_label <- `if`(is.null(attr(data[[trt_group]], "label")), "Dose", attr(data[[trt_group]], "label"))
@@ -463,7 +464,7 @@ g_lineplot <- function(label = "Line Plot",
       "For median, the bar denotes the first to third quartile.\n",
       caption_loqs_label
     )) +
-    ggplot2::xlab(time) +
+    ggplot2::xlab(gxlab) +
     ggplot2::ylab(gylab) +
     ggplot2::theme(
       legend.box = "vertical",
