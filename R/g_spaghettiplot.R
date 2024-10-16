@@ -259,6 +259,7 @@ g_spaghettiplot <- function(data,
 
 
   xtype <- ifelse(is.factor(data[[time]]) | is.character(data[[time]]), "discrete", "continuous")
+  gxlab <- if (is.null(attr(data[[time]], "label"))) time else attr(data[[time]], "label")
   if (xtype == "discrete") {
     data[[time]] <- if (!is.null(time_level)) {
       factor(data[[time]], levels = time_level)
@@ -280,7 +281,6 @@ g_spaghettiplot <- function(data,
     unique() %>%
     magrittr::extract2(1)
   gtitle <- paste0(biomarker1, unit1, " Values by Treatment @ Visits")
-  gxlab <- if (is.null(attr(data[[time]], "label"))) time else attr(data[[time]], "label")
   gylab <- paste0(biomarker1, " ", value_var, " Values")
 
   # Setup legend label
