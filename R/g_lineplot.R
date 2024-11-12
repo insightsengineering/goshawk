@@ -51,7 +51,7 @@
 #'
 #' @export
 #'
-#' @examples
+#' @examplesIf require("nestcolor")
 #' # Example using ADaM structure analysis dataset.
 #'
 #' library(stringr)

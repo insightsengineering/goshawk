@@ -147,6 +147,7 @@ symbol attributed \code{LOQ} values.
 Regression uses \code{deming} model.
 }
 \examples{
+\dontshow{if (require("tidyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Example using ADaM structure analysis dataset.
 
 library(stringr)
@@ -294,6 +295,7 @@ g_correlationplot(
   dot_size = 2,
   reg_text_size = 3
 )
+\dontshow{\}) # examplesIf}
 }
 \author{
 Nick Paszty (npaszty) paszty.nicholas@gene.com

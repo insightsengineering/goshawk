@@ -120,6 +120,7 @@ error bar denotes
 quartile.
 }
 \examples{
+\dontshow{if (require("nestcolor")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Example using ADaM structure analysis dataset.
 
 library(stringr)
@@ -300,6 +301,7 @@ g_lineplot(
   plot_height = 1500,
   dot_size = 4
 )
+\dontshow{\}) # examplesIf}
 }
 \author{
 Balazs Toth (toth.balazs@gene.com)
