@@ -58,7 +58,7 @@
 #'
 #' @export
 #'
-#' @examples
+#' @examplesIf require("tidyr")
 #' # Example using ADaM structure analysis dataset.
 #'
 #' library(stringr)

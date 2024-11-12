@@ -49,7 +49,8 @@ Suggests:
     testthat (>= 3.0.4),
     tidyr (>= 1.3.1)
 VignetteBuilder:
-    knitr
+    knitr,
+    rmarkdown
 Config/Needs/verdepcheck: tidyverse/dplyr, mllg/checkmate,
     wilkelab/cowplot, eliocamp/ggnewscale, tidyverse/ggplot2,
     r-lib/lifecycle, tidyverse/magrittr, r-lib/rlang, tidyverse/stringr,

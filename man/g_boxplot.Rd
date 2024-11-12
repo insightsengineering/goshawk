@@ -104,6 +104,7 @@ to visually estimate various L-estimators, notably the interquartile range,
 midhinge, range, mid-range, and trimean.
 }
 \examples{
+\dontshow{if (require("nestcolor")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Example using ADaM structure analysis dataset.
 
 library(nestcolor)
@@ -173,6 +174,7 @@ g_boxplot(ADLB,
   hline_vars_colors = c("pink", "brown", "purple", "gray"),
   hline_vars_labels = c("A", "B", "C", "D")
 )
+\dontshow{\}) # examplesIf}
 }
 \author{
 Balazs Toth
