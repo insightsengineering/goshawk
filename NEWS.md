@@ -1,4 +1,11 @@
-# goshawk 0.1.18.9010
+# goshawk 0.1.19
+
+### Fixes
+
+* Enhance slope functions that is used in `g_correlationplot` when `reg_line = TRUE` (#255).
+* Remove analysis variable name from plot title in `g_spaghettiplot` (#249).
+* User can pass custom x-axis label to `g_lineplot` and `g_spaghettiplot` (#250).
+* Update links and installation instructions in README.
 
 # goshawk 0.1.18
 
