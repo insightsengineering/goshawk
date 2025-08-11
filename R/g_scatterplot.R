@@ -139,7 +139,7 @@ g_scatterplot <- function(label = "Scatter Plot",
                           font_size = 12,
                           dot_size = NULL,
                           reg_text_size = 3) {
-  lifecycle::deprecate_soft(
+  lifecycle::deprecate_stop(
     when = "0.1.15",
     what = "g_scatterplot()",
     details = "You should use goshawk::g_correlationplot instead of goshawk::g_scatterplot"
