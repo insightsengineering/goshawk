@@ -1,4 +1,4 @@
-# goshawk 0.1.19.9000
+# goshawk 0.1.19.9001
 
 * `g_scatterplot` was hard deprecated (#267).
 
