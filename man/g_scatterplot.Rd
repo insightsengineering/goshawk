@@ -4,97 +4,14 @@
 \alias{g_scatterplot}
 \title{Function to create a scatter plot.}
 \usage{
-g_scatterplot(
-  label = "Scatter Plot",
-  data,
-  param_var = "PARAMCD",
-  param = "CRP",
-  xaxis_var = "BASE",
-  yaxis_var = "AVAL",
-  trt_group = "ARM",
-  visit = "AVISITCD",
-  loq_flag_var = "LOQFL",
-  unit = "AVALU",
-  xlim = c(NA, NA),
-  ylim = c(NA, NA),
-  color_manual = NULL,
-  shape_manual = NULL,
-  facet_ncol = 2,
-  facet = FALSE,
-  facet_var = "ARM",
-  reg_line = FALSE,
-  hline = NULL,
-  vline = NULL,
-  rotate_xlab = FALSE,
-  font_size = 12,
-  dot_size = NULL,
-  reg_text_size = 3
-)
+g_scatterplot(...)
 }
 \arguments{
-\item{label}{text string to used to identify plot.}
-
-\item{data}{\code{ADaM} structured analysis laboratory data frame e.g. \code{ADLB}.}
-
-\item{param_var}{name of variable containing biomarker codes e.g. \code{PARAMCD}.}
-
-\item{param}{biomarker to visualize e.g. \code{IGG}.}
-
-\item{xaxis_var}{name of variable containing biomarker results displayed on X-axis e.g. \code{BASE}.}
-
-\item{yaxis_var}{name of variable containing biomarker results displayed on Y-axis e.g. \code{AVAL}.}
-
-\item{trt_group}{name of variable representing treatment group e.g. \code{ARM}.}
-
-\item{visit}{name of variable containing nominal visits e.g. \code{AVISITCD}.}
-
-\item{loq_flag_var}{name of variable containing \code{LOQ} flag e.g. \code{LOQFL}.}
-
-\item{unit}{name of variable containing biomarker unit e.g. \code{AVALU}.}
-
-\item{xlim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the x-axis
-if the default limits are not suitable.}
-
-\item{ylim}{('numeric vector') optional, a vector of length 2 to specify the minimum and maximum of the y-axis
-if the default limits are not suitable.}
-
-\item{color_manual}{vector of colors applied to treatment values.}
-
-\item{shape_manual}{vector of symbols applied to \code{LOQ} values.}
-
-\item{facet_ncol}{number of facets per row.}
-
-\item{facet}{set layout to use treatment facetting.}
-
-\item{facet_var}{variable to use for treatment facetting.}
-
-\item{reg_line}{include regression line and annotations for slope and coefficient in
-visualization. Use with facet = TRUE.}
-
-\item{hline}{y-axis value to position a horizontal line.}
-
-\item{vline}{x-axis value to position a vertical line.}
-
-\item{rotate_xlab}{45 degree rotation of x-axis label values.}
-
-\item{font_size}{font size control for title, x-axis label, y-axis label and legend.}
-
-\item{dot_size}{plot dot size.}
-
-\item{reg_text_size}{font size control for regression line annotations.}
+\item{...}{function is deprecated.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-\code{g_scatterplot()} is deprecated. Please use
-\code{\link[=g_correlationplot]{g_correlationplot()}} instead. Default plot displays scatter facetted by
-visit with color attributed treatment arms and symbol attributed \code{LOQ} values.
-}
-\details{
-Regression uses \code{deming} model.
-}
-\author{
-Nick Paszty (npaszty) paszty.nicholas@gene.com
-
-Balazs Toth (tothb2)  toth.balazs@gene.com
+\code{g_scatterplot()} is deprecated.
+Please use \code{\link[=g_correlationplot]{g_correlationplot()}} instead.
 }
