@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0" branch-rate="0" lines-covered="0" lines-valid="1060" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-08-12 07:21:01.889513">
+<coverage line-rate="0" branch-rate="0" lines-covered="0" lines-valid="1060" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-08-12 07:29:45.558203">
   <sources>
     <source>/__w/goshawk/goshawk/goshawk</source>
   </sources>
@@ -1293,20 +1293,20 @@
           <methods>
             <method name="g_scatterplot" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
-                <line number="69" hits="0" branch="false"/>
-                <line number="70" hits="0" branch="false"/>
-                <line number="71" hits="0" branch="false"/>
-                <line number="72" hits="0" branch="false"/>
-                <line number="73" hits="0" branch="false"/>
+                <line number="14" hits="0" branch="false"/>
+                <line number="15" hits="0" branch="false"/>
+                <line number="16" hits="0" branch="false"/>
+                <line number="17" hits="0" branch="false"/>
+                <line number="18" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="69" hits="0" branch="false"/>
-            <line number="70" hits="0" branch="false"/>
-            <line number="71" hits="0" branch="false"/>
-            <line number="72" hits="0" branch="false"/>
-            <line number="73" hits="0" branch="false"/>
+            <line number="14" hits="0" branch="false"/>
+            <line number="15" hits="0" branch="false"/>
+            <line number="16" hits="0" branch="false"/>
+            <line number="17" hits="0" branch="false"/>
+            <line number="18" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="g_spaghettiplot.R" filename="R/g_spaghettiplot.R" line-rate="0" branch-rate="0" complexity="0">
