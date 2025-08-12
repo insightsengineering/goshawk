@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("deprecated")`
 #'
-#' `g_scatterplot()` is deprecated. 
+#' `g_scatterplot()` is deprecated.
 #' Please use [g_correlationplot()] instead.
 #'
 #' @param ... function is deprecated.
