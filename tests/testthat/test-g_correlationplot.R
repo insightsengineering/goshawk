@@ -60,7 +60,8 @@ test_that("g_correlationplot supports the different facetting options", {
     yaxis_lab = "ALT",
     visit_facet = TRUE,
     facet = TRUE,
-    facet_var = "ARM")
+    facet_var = "ARM"
+  )
   expect_s3_class(p_visit_arm, "ggplot")
   expect_s3_class(p_visit_arm$facet, "Facet")
 
@@ -81,7 +82,8 @@ test_that("g_correlationplot supports the different facetting options", {
     yaxis_lab = "ALT",
     visit_facet = TRUE,
     facet = TRUE,
-    facet_var = "ARM")
+    facet_var = "ARM"
+  )
   expect_s3_class(p_visit$facet, "Facet")
 
   p_arm <- g_correlationplot(
@@ -101,7 +103,8 @@ test_that("g_correlationplot supports the different facetting options", {
     yaxis_lab = "ALT",
     facet = TRUE,
     facet_var = "ARM",
-    visit_facet = FALSE)
+    visit_facet = FALSE
+  )
   expect_s3_class(p_arm$facet, "Facet")
 
   p_none <- g_correlationplot(
@@ -121,7 +124,8 @@ test_that("g_correlationplot supports the different facetting options", {
     yaxis_lab = "ALT",
     facet = FALSE,
     visit_facet = FALSE,
-    facet_var = "ARM")
+    facet_var = "ARM"
+  )
 
   expect_s3_class(p_none$facet, "FacetNull")
 })
@@ -327,6 +331,6 @@ test_that("g_correlationplot reg_line drops rows with missing x or y", {
 
 test_that("g_correlationplot reg_line errors for a group with a single observation", {
   d <- corr[!(corr$ARM == "A: Drug X" & corr$AVISITCD == "BL") |
-              corr$USUBJID == "S-01", ]
+    corr$USUBJID == "S-01", ]
   expect_error(do.call(g_correlationplot, corr_args(data = d, reg_line = TRUE)))
 })
