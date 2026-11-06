@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.995283018867924" branch-rate="0" lines-covered="1055" lines-valid="1060" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-11-06 13:19:27.571273">
+<coverage line-rate="0.995283018867924" branch-rate="0" lines-covered="1055" lines-valid="1060" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-11-06 13:23:36.651042">
   <sources>
     <source>/__w/goshawk/goshawk/goshawk</source>
   </sources>
@@ -1601,7 +1601,7 @@
                 <line number="146" hits="11" branch="false"/>
                 <line number="147" hits="11" branch="false"/>
                 <line number="148" hits="11" branch="false"/>
-                <line number="149" hits="3" branch="false"/>
+                <line number="149" hits="2" branch="false"/>
                 <line number="150" hits="11" branch="false"/>
                 <line number="151" hits="11" branch="false"/>
                 <line number="152" hits="11" branch="false"/>
@@ -1788,7 +1788,7 @@
             <line number="146" hits="11" branch="false"/>
             <line number="147" hits="11" branch="false"/>
             <line number="148" hits="11" branch="false"/>
-            <line number="149" hits="3" branch="false"/>
+            <line number="149" hits="2" branch="false"/>
             <line number="150" hits="11" branch="false"/>
             <line number="151" hits="11" branch="false"/>
             <line number="152" hits="11" branch="false"/>
