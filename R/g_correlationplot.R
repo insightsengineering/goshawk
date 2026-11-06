@@ -267,14 +267,14 @@ g_correlationplot <- function(label = "Correlation Plot",
       PARAM = !!sym(t_param_var_x), LBSTRESC = !!sym(t_lbstresc_var_x),
       sym(loq_flag_var) == !!sym(loq_flag_var)
     ) %>%
-    select("PARAM", "LBSTRESC", loq_flag_var)
+    select("PARAM", "LBSTRESC", all_of(loq_flag_var))
 
   yaxis_param_loqs_data <- data %>%
     mutate(
       PARAM = !!sym(t_param_var_y), LBSTRESC = !!sym(t_lbstresc_var_y),
       sym(loq_flag_var) == !!sym(loq_flag_var)
     ) %>%
-    select("PARAM", "LBSTRESC", loq_flag_var)
+    select("PARAM", "LBSTRESC", all_of(loq_flag_var))
 
   # add footnote to identify xaxis assay LLOQ and ULOQ values pulled from data
   caption_loqs_label_x <- h_caption_loqs_label(loqs_data = xaxis_param_loqs_data, flag_var = loq_flag_var)
@@ -345,6 +345,8 @@ g_correlationplot <- function(label = "Correlation Plot",
         stats::cor(!!sym(yvar), !!sym(xvar), method = "spearman", use = "complete.obs"),
         NA
       ))
+    # To avoid Note: no visible binding for global variable
+    corr <- intercept <- NULL
     plot1 <- plot1 +
       ggplot2::geom_abline(
         data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by
@@ -352,17 +354,17 @@ g_correlationplot <- function(label = "Correlation Plot",
       ) +
       ggplot2::geom_text(
         data = filter(sub_data, row_number() == 1),
-        ggplot2::aes_(
+        ggplot2::aes(
           x = -Inf,
           y = Inf,
           hjust = 0,
           vjust = 1,
-          label = ~ ifelse(
+          label = ifelse(
             !is.na(intercept) & !is.na(slope) & !is.na(corr),
             sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
-            paste0("Insufficient Data For Regression")
+            "Insufficient Data For Regression"
           ),
-          color = sym(trt_group)
+          color = !!trt_group
         ),
         size = reg_text_size,
         show.legend = FALSE
