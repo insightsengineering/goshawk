@@ -147,7 +147,7 @@ symbol attributed \code{LOQ} values.
 Regression uses \code{deming} model.
 }
 \examples{
-\dontshow{if (require("tidyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("tidyr")) withAutoprint(\{ # examplesIf}
 # Example using ADaM structure analysis dataset.
 
 library(stringr)
