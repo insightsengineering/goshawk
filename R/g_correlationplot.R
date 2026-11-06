@@ -345,6 +345,8 @@ g_correlationplot <- function(label = "Correlation Plot",
         stats::cor(!!sym(yvar), !!sym(xvar), method = "spearman", use = "complete.obs"),
         NA
       ))
+    # To avoid Note: no visible binding for global variable
+    corr <- intercept <- NULL
     plot1 <- plot1 +
       ggplot2::geom_abline(
         data = filter(sub_data, row_number() == 1), # only need to return 1 row within group_by
@@ -360,7 +362,7 @@ g_correlationplot <- function(label = "Correlation Plot",
           label = ifelse(
             !is.na(intercept) & !is.na(slope) & !is.na(corr),
             sprintf("y = %.2f+%.2fX\ncor = %.2f", intercept, slope, corr),
-            paste0("Insufficient Data For Regression")
+            "Insufficient Data For Regression"
           ),
           color = !!trt_group
         ),

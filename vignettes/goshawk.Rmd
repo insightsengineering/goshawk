@@ -60,7 +60,7 @@ for more information on data pre-processing and data expectations for `goshawk`.
 
 The `goshawk` outputs can be easily accommodated into `shiny` apps.
 We recommend applying `goshawk` outputs into `teal` apps.
-The [`teal` package](https://insightsengineering.github.io/teal/) is a shiny-based interactive exploration framework for analyzing data.
+The [`teal` package](https://pharmaverse.github.io/teal/) is a shiny-based interactive exploration framework for analyzing data.
 `teal` shiny apps with `goshawk` outputs are available in the [`teal.goshawk` package](https://insightsengineering.github.io/teal.goshawk/).
 
 
