@@ -143,7 +143,7 @@ test_that("Example", {
 
   ADLB <- rADLB
   var_labels <- lapply(ADLB, function(x) attributes(x)$label)
-  ADLB <- ADLB |>
+  ADLB <- ADLB %>%
     mutate(AVISITCD = case_when(
       AVISIT == "SCREENING" ~ "SCR",
       AVISIT == "BASELINE" ~ "BL",
@@ -159,22 +159,22 @@ test_that("Example", {
           )
         ),
       TRUE ~ NA_character_
-    )) |>
+    )) %>%
     mutate(AVISITCDN = case_when(
       AVISITCD == "SCR" ~ -2,
       AVISITCD == "BL" ~ 0,
       grepl("W", AVISITCD) ~ as.numeric(gsub("\\D+", "", AVISITCD)),
       TRUE ~ NA_real_
-    )) |>
+    )) %>%
     # use ARMCD values to order treatment in visualization legend
     mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
       ifelse(grepl("B", ARMCD), 2,
         ifelse(grepl("A", ARMCD), 3, NA)
       )
-    )) |>
-    mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) |>
-    mutate(ARM = factor(ARM) |>
-      reorder(TRTORD)) |>
+    )) %>%
+    mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
+    mutate(ARM = factor(ARM) %>%
+      reorder(TRTORD)) %>%
     mutate(
       ANRHI = case_when(
         PARAMCD == "ALT" ~ 60,
@@ -188,17 +188,17 @@ test_that("Example", {
         PARAMCD == "IGA" ~ 40,
         TRUE ~ NA_real_
       )
-    ) |>
-    rowwise() |>
-    group_by(PARAMCD) |>
+    ) %>%
+    rowwise() %>%
+    group_by(PARAMCD) %>%
     mutate(LBSTRESC = ifelse(
       USUBJID %in% sample(USUBJID, 1, replace = TRUE),
       paste("<", round(runif(1, min = 25, max = 30))), LBSTRESC
-    )) |>
+    )) %>%
     mutate(LBSTRESC = ifelse(
       USUBJID %in% sample(USUBJID, 1, replace = TRUE),
       paste(">", round(runif(1, min = 70, max = 75))), LBSTRESC
-    )) |>
+    )) %>%
     ungroup()
   attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
   attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
@@ -209,30 +209,30 @@ test_that("Example", {
   ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 
   # given the 2 param and 2 analysis vars we need to transform the data
-  plot_data_t1 <- suppressWarnings(ADLB |>
+  plot_data_t1 <- suppressWarnings(ADLB %>%
     gather(
       ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL,
       ANRHI, ANRLO, ULOQN, LLOQN
-    ) |>
+    ) %>%
     mutate(ANL.PARAM = ifelse(ANLVARS %in% c("PARAM", "LBSTRESC", "LOQFL"),
       paste0(ANLVARS, "_", PARAMCD),
       paste0(ANLVARS, ".", PARAMCD)
-    )) |>
-    select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) |>
+    )) %>%
+    select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
     spread(ANL.PARAM, ANLVALS))
 
   # the transformed analysis value variables are character and need to be converted to numeric for
   # ggplot
   # remove records where either of the analysis variables are NA since they will not appear on the
   # plot and will ensure that LOQFL = NA level is removed
-  plot_data_t2 <- plot_data_t1 |>
-    filter(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) |>
-    mutate_at(vars(contains(".")), as.numeric) |>
+  plot_data_t2 <- plot_data_t1 %>%
+    filter(!is.na(BASE.CRP) & !is.na(AVAL.ALT)) %>%
+    mutate_at(vars(contains(".")), as.numeric) %>%
     mutate(
       LOQFL_COMB = ifelse(LOQFL_CRP == "Y" | LOQFL_ALT == "Y", "Y", "N")
     )
 
-  expect_warning(p <- g_correlationplot(
+  p <- g_correlationplot(
     label = "Correlation Plot",
     data = plot_data_t2,
     param_var = "PARAMCD",
@@ -272,7 +272,61 @@ test_that("Example", {
     font_size = 14,
     dot_size = 2,
     reg_text_size = 3
-  ), "First value is taken from variable", fixed = TRUE)
+  )
   expect_s3_class(p, "ggplot")
   expect_no_error(ggplot2::ggplot_build(p))
+})
+
+
+text_labels <- function(p) {
+  b <- ggplot2::ggplot_build(p)
+  idx <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1)))
+  b$data[[idx]]$label
+}
+
+test_that("g_correlationplot regression text reports fit and correlation per group", {
+  p <- do.call(g_correlationplot, corr_args(reg_line = TRUE))
+  lab <- text_labels(p)
+  expect_length(lab, 9) # 3 arms x 3 visits
+  expect_true(all(grepl("^y = .*\ncor = ", lab)))
+  expect_match(p$labels$caption, "Deming Regression Model, Spearman Correlation Method")
+  expect_match(p$labels$caption, "Limits of quantification")
+})
+
+test_that("g_correlationplot reports insufficient data when plot x is constant", {
+  d <- corr
+  d$AVAL[d$ARM == "A: Drug X"] <- 1 # sd(x) == 0 -> NA branch
+  p <- do.call(g_correlationplot, corr_args(data = d, reg_line = TRUE))
+  lab <- text_labels(p)
+  expect_equal(sum(lab == "Insufficient Data For Regression"), 3)
+  expect_equal(sum(grepl("^y = ", lab)), 6)
+})
+
+test_that("g_correlationplot reports insufficient data when plot y is constant", {
+  d <- corr
+  d$BASE[d$ARM == "B: Placebo"] <- 5 # ratio == 0 -> NA branch
+  p <- do.call(g_correlationplot, corr_args(data = d, reg_line = TRUE))
+  expect_equal(sum(text_labels(p) == "Insufficient Data For Regression"), 3)
+})
+
+test_that("g_correlationplot reg_line works with every facetting option", {
+  for (vf in c(TRUE, FALSE)) {
+    for (f in c(TRUE, FALSE)) {
+      p <- do.call(g_correlationplot, corr_args(reg_line = TRUE, visit_facet = vf, facet = f, facet_var = "ARM"))
+      expect_no_error(ggplot2::ggplot_build(p))
+    }
+  }
+})
+
+test_that("g_correlationplot reg_line drops rows with missing x or y", {
+  d <- corr
+  d$AVAL[1:2] <- NA_real_
+  p <- do.call(g_correlationplot, corr_args(data = d, reg_line = TRUE, reg_text_size = 5))
+  expect_no_error(ggplot2::ggplot_build(p))
+})
+
+test_that("g_correlationplot reg_line errors for a group with a single observation", {
+  d <- corr[!(corr$ARM == "A: Drug X" & corr$AVISITCD == "BL") |
+              corr$USUBJID == "S-01", ]
+  expect_error(do.call(g_correlationplot, corr_args(data = d, reg_line = TRUE)))
 })
