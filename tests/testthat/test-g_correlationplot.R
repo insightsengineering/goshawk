@@ -293,7 +293,8 @@ text_labels <- function(p) {
 test_that("g_correlationplot regression text reports fit and correlation per group", {
   p <- do.call(g_correlationplot, corr_args(reg_line = TRUE))
   lab <- text_labels(p)
-  expect_length(lab, 9) # 3 arms x 3 visits
+  lab_length <- length(unique(corr$ARM)) * length(unique(corr$AVISITCD))
+  expect_length(lab, lab_length)
   expect_true(all(grepl("^y = .*\ncor = ", lab)))
   expect_match(p$labels$caption, "Deming Regression Model, Spearman Correlation Method")
   expect_match(p$labels$caption, "Limits of quantification")
