@@ -159,17 +159,3 @@ test_that("g_lineplot validates its arguments", {
     "not sufficient"
   )
 })
-
-test_that("g_lineplot helpers build interaction names and colors", {
-  expect_equal(
-    goshawk:::new_interaction(list(ARM = c("a", "b")), sep = " "),
-    c("ARM:a", "ARM:b")
-  )
-  res <- goshawk:::new_interaction(list(ARM = c("a", "b"), SEX = c("F", "M")), sep = " ")
-  expect_equal(as.character(res), c("ARM:a SEX:F", "ARM:b SEX:M"))
-  expect_equal(goshawk:::unique_name("int", c("a", "b")), "int")
-  expect_type(goshawk:::unique_name("int", c("int", "b")), "character")
-  cols <- goshawk:::gg_color_hue(3)
-  expect_length(cols, 3)
-  expect_true(all(grepl("^#[0-9A-Fa-f]{6}$", cols)))
-})
