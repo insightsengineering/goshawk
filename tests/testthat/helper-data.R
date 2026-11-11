@@ -55,14 +55,17 @@ make_adlb <- function() {
   attr(dat$ANRLO, "label") <- "Analysis Normal Range Lower Limit"
   attr(dat$ANRHI, "label") <- "Analysis Normal Range Upper Limit"
 
-  loqs <- dat %>% filter(LOQFL == "Y") %>% select(PARAM, LBSTRESC) %>%
+  loqs <- dat %>%
+    filter(LOQFL == "Y") %>%
+    select(PARAM, LBSTRESC) %>%
     mutate(LBSTRESC_n = as.numeric(gsub("[^[:digit:].]", "", LBSTRESC))) %>%
-    summarise(.by = PARAM,
-              LLOQC = LBSTRESC[which.min(LBSTRESC_n)],
-              LLOQN = min(LBSTRESC_n),
-              ULOQC = LBSTRESC[which.max(LBSTRESC_n)],
-              ULOQN = max(LBSTRESC_n)
-              )
+    summarise(
+      .by = PARAM,
+      LLOQC = LBSTRESC[which.min(LBSTRESC_n)],
+      LLOQN = min(LBSTRESC_n),
+      ULOQC = LBSTRESC[which.max(LBSTRESC_n)],
+      ULOQN = max(LBSTRESC_n)
+    )
   # Equivalent to loqs <- goshawk:::h_identify_loq_values(dat, "LOQFL")
   #                  PARAM LLOQC LLOQN ULOQC ULOQN
   # 1 Alanine transaminase  < 20  20.0  > 60  60.0

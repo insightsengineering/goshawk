@@ -171,13 +171,13 @@ test_that("g_correlationplot returns a ggplot2 objects", {
     )) %>%
     # use ARMCD values to order treatment in visualization legend
     mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
-                           ifelse(grepl("B", ARMCD), 2,
-                                  ifelse(grepl("A", ARMCD), 3, NA)
-                           )
+      ifelse(grepl("B", ARMCD), 2,
+        ifelse(grepl("A", ARMCD), 3, NA)
+      )
     )) %>%
     mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
     mutate(ARM = factor(ARM) %>%
-             reorder(TRTORD)) %>%
+      reorder(TRTORD)) %>%
     mutate(
       ANRHI = case_when(
         PARAMCD == "ALT" ~ 60,
@@ -210,13 +210,16 @@ test_that("g_correlationplot returns a ggplot2 objects", {
 
   # add LLOQ and ULOQ variables
   # Equivalent to: ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB_extra, flag_var = "LOQFL")
-  ADLB_LOQS <- ADLB_extra %>% filter(LOQFL == "Y") %>% select(PARAM, LBSTRESC) %>%
+  ADLB_LOQS <- ADLB_extra %>%
+    filter(LOQFL == "Y") %>%
+    select(PARAM, LBSTRESC) %>%
     mutate(LBSTRESC_n = as.numeric(gsub("[^[:digit:].]", "", LBSTRESC))) %>%
-    summarise(.by = PARAM,
-              LLOQC = LBSTRESC[which.min(LBSTRESC_n)],
-              LLOQN = min(LBSTRESC_n),
-              ULOQC = LBSTRESC[which.max(LBSTRESC_n)],
-              ULOQN = max(LBSTRESC_n)
+    summarise(
+      .by = PARAM,
+      LLOQC = LBSTRESC[which.min(LBSTRESC_n)],
+      LLOQN = min(LBSTRESC_n),
+      ULOQC = LBSTRESC[which.max(LBSTRESC_n)],
+      ULOQN = max(LBSTRESC_n)
     )
   ADLB_extra <- left_join(ADLB_extra, ADLB_LOQS, by = "PARAM")
 
@@ -228,8 +231,8 @@ test_that("g_correlationplot returns a ggplot2 objects", {
         ANRHI, ANRLO, ULOQN, LLOQN
       ) %>%
       mutate(ANL.PARAM = ifelse(ANLVARS %in% c("PARAM", "LBSTRESC", "LOQFL"),
-                                paste0(ANLVARS, "_", PARAMCD),
-                                paste0(ANLVARS, ".", PARAMCD)
+        paste0(ANLVARS, "_", PARAMCD),
+        paste0(ANLVARS, ".", PARAMCD)
       )) %>%
       select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
       tidyr::spread(ANL.PARAM, ANLVALS)
@@ -342,6 +345,6 @@ test_that("g_correlationplot reg_line drops rows with missing x or y", {
 
 test_that("g_correlationplot reg_line errors for a group with a single observation", {
   d <- corr[!(corr$ARM == "A: Drug X" & corr$AVISITCD == "BL") |
-              corr$USUBJID == "S-01", ]
+    corr$USUBJID == "S-01", ]
   expect_error(do.call(g_correlationplot, corr_args(data = d, reg_line = TRUE)))
 })
