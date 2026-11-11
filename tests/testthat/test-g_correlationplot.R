@@ -209,7 +209,15 @@ test_that("g_correlationplot returns a ggplot2 objects", {
   attr(ADLB_extra[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
 
   # add LLOQ and ULOQ variables
-  ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB_extra, flag_var = "LOQFL")
+  # Equivalent to: ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB_extra, flag_var = "LOQFL")
+  ADLB_LOQS <- ADLB_extra %>% filter(LOQFL == "Y") %>% select(PARAM, LBSTRESC) %>%
+    mutate(LBSTRESC_n = as.numeric(gsub("[^[:digit:].]", "", LBSTRESC))) %>%
+    summarise(.by = PARAM,
+              LLOQC = LBSTRESC[which.min(LBSTRESC_n)],
+              LLOQN = min(LBSTRESC_n),
+              ULOQC = LBSTRESC[which.max(LBSTRESC_n)],
+              ULOQN = max(LBSTRESC_n)
+    )
   ADLB_extra <- left_join(ADLB_extra, ADLB_LOQS, by = "PARAM")
 
   # given the 2 param and 2 analysis vars we need to transform the data
