@@ -91,11 +91,8 @@ make_corr_data <- function() {
     by = key,
     suffixes = c(".CRP", ".ALT")
   )
-  names(dat)[names(dat) == "LBSTRESC.CRP"] <- "LBSTRESC_CRP"
-  names(dat)[names(dat) == "LBSTRESC.ALT"] <- "LBSTRESC_ALT"
-  names(dat)[names(dat) == "PARAM.CRP"] <- "PARAM_CRP"
-  names(dat)[names(dat) == "PARAM.ALT"] <- "PARAM_ALT"
-  dat$LOQFL_COMB <- ifelse(dat$LOQFL.CRP == "Y" | dat$LOQFL.ALT == "Y", "Y", "N")
+  colnames(dat) <- gsub("\\.", "_", colnames(dat))
+  dat$LOQFL_COMB <- ifelse(dat$LOQFL_CRP == "Y" | dat$LOQFL_ALT == "Y", "Y", "N")
   dat <- dat[!is.na(dat$AVAL) & !is.na(dat$BASE), ]
   dat$ARM <- factor(dat$ARM, levels = levels(adlb$ARM))
   attr(dat$ARM, "label") <- "Description of Planned Arm"
