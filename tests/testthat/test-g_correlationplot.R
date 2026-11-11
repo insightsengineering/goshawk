@@ -130,7 +130,7 @@ test_that("g_correlationplot supports the different facetting options", {
   expect_s3_class(p_none$facet, "FacetNull")
 })
 
-test_that("Example", {
+test_that("g_correlationplot returns a ggplot2 objects", {
   skip_if_not_installed("tidyr")
   library(stringr)
   library(tidyr)
