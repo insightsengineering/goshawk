@@ -1,3 +1,5 @@
+library("dplyr")
+
 # Deterministic, self-contained lab data (ADaM-like) used by all tests.
 # 12 subjects (4 per arm), 3 visits, 2 parameters (CRP, ALT).
 make_adlb <- function() {
@@ -22,7 +24,7 @@ make_adlb <- function() {
     stringsAsFactors = FALSE
   )
   dat <- merge(merge(subj, visits, by = NULL), params, by = NULL)
-  dat <- dat[order(dat$PARAMCD, dat$USUBJID, dat$AVISITCDN), ]
+  dat <- arrange(dat, PARAMCD, USUBJID, AVISITCDN)
   rownames(dat) <- NULL
 
   idx <- seq_len(nrow(dat))
@@ -53,7 +55,18 @@ make_adlb <- function() {
   attr(dat$ANRLO, "label") <- "Analysis Normal Range Lower Limit"
   attr(dat$ANRHI, "label") <- "Analysis Normal Range Upper Limit"
 
-  loqs <- goshawk:::h_identify_loq_values(dat, "LOQFL")
+  loqs <- dat %>% filter(LOQFL == "Y") %>% select(PARAM, LBSTRESC) %>%
+    mutate(LBSTRESC_n = as.numeric(gsub("[^[:digit:].]", "", LBSTRESC))) %>%
+    summarise(.by = PARAM,
+              LLOQC = LBSTRESC[which.min(LBSTRESC_n)],
+              LLOQN = min(LBSTRESC_n),
+              ULOQC = LBSTRESC[which.max(LBSTRESC_n)],
+              ULOQN = max(LBSTRESC_n)
+              )
+  # Equivalent to loqs <- goshawk:::h_identify_loq_values(dat, "LOQFL")
+  #                  PARAM LLOQC LLOQN ULOQC ULOQN
+  # 1 Alanine transaminase  < 20  20.0  > 60  60.0
+  # 2   C-reactive protein < 0.5   0.5 > 1.5   1.5
   dat <- merge(dat, loqs, by = "PARAM", sort = FALSE)
   dat <- dat[order(dat$PARAMCD, dat$USUBJID, dat$AVISITCDN), ]
   rownames(dat) <- NULL
