@@ -64,7 +64,7 @@ test_that("t_summarytable handles the treatment group being the facet variable",
     facet_var = "ARM"
   )
   expect_true("Facet" %in% names(tbl))
-  expect_equal(nrow(tbl), 3 + 3)
+  expect_equal(nrow(tbl), length(unique(adlb$PARAM)) * length(unique(adlb$ARM)))
 })
 
 test_that("t_summarytable returns NA for min and max when all values are missing", {
