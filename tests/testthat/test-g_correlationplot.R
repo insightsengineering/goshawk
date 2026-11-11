@@ -132,8 +132,7 @@ test_that("g_correlationplot supports the different facetting options", {
 
 test_that("g_correlationplot returns a ggplot2 objects", {
   skip_if_not_installed("tidyr")
-  library(stringr)
-  library(tidyr)
+  skip_if_not_installed("stringr")
 
   # original ARM value = dose value
   arm_mapping <- list(
@@ -158,7 +157,7 @@ test_that("g_correlationplot returns a ggplot2 objects", {
             substr(
               AVISIT,
               start = 6,
-              stop = str_locate(AVISIT, "DAY") - 1
+              stop = stringr::str_locate(AVISIT, "DAY") - 1
             )
           )
         ),
@@ -172,13 +171,13 @@ test_that("g_correlationplot returns a ggplot2 objects", {
     )) %>%
     # use ARMCD values to order treatment in visualization legend
     mutate(TRTORD = ifelse(grepl("C", ARMCD), 1,
-      ifelse(grepl("B", ARMCD), 2,
-        ifelse(grepl("A", ARMCD), 3, NA)
-      )
+                           ifelse(grepl("B", ARMCD), 2,
+                                  ifelse(grepl("A", ARMCD), 3, NA)
+                           )
     )) %>%
     mutate(ARM = as.character(arm_mapping[match(ARM, names(arm_mapping))])) %>%
     mutate(ARM = factor(ARM) %>%
-      reorder(TRTORD)) %>%
+             reorder(TRTORD)) %>%
     mutate(
       ANRHI = case_when(
         PARAMCD == "ALT" ~ 60,
@@ -204,6 +203,7 @@ test_that("g_correlationplot returns a ggplot2 objects", {
       paste(">", round(runif(1, min = 70, max = 75))), LBSTRESC
     )) %>%
     ungroup()
+
   attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
   attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
   attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
@@ -213,17 +213,19 @@ test_that("g_correlationplot returns a ggplot2 objects", {
   ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
 
   # given the 2 param and 2 analysis vars we need to transform the data
-  plot_data_t1 <- suppressWarnings(ADLB %>%
-    gather(
-      ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL,
-      ANRHI, ANRLO, ULOQN, LLOQN
-    ) %>%
-    mutate(ANL.PARAM = ifelse(ANLVARS %in% c("PARAM", "LBSTRESC", "LOQFL"),
-      paste0(ANLVARS, "_", PARAMCD),
-      paste0(ANLVARS, ".", PARAMCD)
-    )) %>%
-    select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
-    spread(ANL.PARAM, ANLVALS))
+  plot_data_t1 <- suppressWarnings(
+    ADLB %>%
+      tidyr::gather(
+        ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL,
+        ANRHI, ANRLO, ULOQN, LLOQN
+      ) %>%
+      mutate(ANL.PARAM = ifelse(ANLVARS %in% c("PARAM", "LBSTRESC", "LOQFL"),
+                                paste0(ANLVARS, "_", PARAMCD),
+                                paste0(ANLVARS, ".", PARAMCD)
+      )) %>%
+      select(USUBJID, ARM, ARMCD, AVISITN, AVISITCD, ANL.PARAM, ANLVALS) %>%
+      tidyr::spread(ANL.PARAM, ANLVALS)
+  )
 
   # the transformed analysis value variables are character and need to be converted to numeric for
   # ggplot
@@ -331,6 +333,6 @@ test_that("g_correlationplot reg_line drops rows with missing x or y", {
 
 test_that("g_correlationplot reg_line errors for a group with a single observation", {
   d <- corr[!(corr$ARM == "A: Drug X" & corr$AVISITCD == "BL") |
-    corr$USUBJID == "S-01", ]
+              corr$USUBJID == "S-01", ]
   expect_error(do.call(g_correlationplot, corr_args(data = d, reg_line = TRUE)))
 })
