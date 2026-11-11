@@ -1,4 +1,3 @@
-# Helper functions shared by the plot functions.
 adlb <- make_adlb()
 
 test_that("h_identify_loq_values finds the first LLOQ and ULOQ per parameter", {
