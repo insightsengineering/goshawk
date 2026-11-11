@@ -1,4 +1,3 @@
-# Requirement: Function to create a table of descriptive summary statistics to accompany plots.
 adlb <- make_adlb()
 stat_cols <- c("n", "Mean", "Median", "StdDev", "Min", "Max", "PctMiss", "PctLOQ")
 
@@ -17,8 +16,8 @@ test_that("t_summarytable summarises by treatment and visit", {
     names(tbl),
     c("StudyID", "AnlVar", "Biomarker", "Treatment", "Facet", stat_cols)
   )
-  # 3 arms + combined, for 3 visits
-  expect_equal(nrow(tbl), 12)
+  # arms + combined x visits
+  expect_equal(nrow(tbl), (length(unique(adlb$ARM)) + 1) * length(unique(adlb$AVISITCD)))
   expect_true("Comb." %in% tbl$Treatment)
   expect_equal(unique(as.character(tbl$StudyID)), "STUDY-1")
   expect_equal(unique(as.character(tbl$AnlVar)), "AVAL")
