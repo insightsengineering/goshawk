@@ -126,8 +126,7 @@ test_that("g_lineplot marks cells below the count threshold", {
 })
 
 test_that("g_lineplot uses the ggplot2.discrete.colour option", {
-  old_opts <- options(ggplot2.discrete.colour = c("red", "green", "blue", "black"))
-  on.exit(options(old_opts), add = TRUE)
+  withr::local_options(ggplot2.discrete.colour = c("red", "green", "blue", "black"))
   p <- g_lineplot(data = adlb, biomarker = "CRP", trt_group = "ARM", time = "AVISITCDN")
   expect_s3_class(p, "ggplot")
   expect_no_error(ggplot2::ggplot_build(p))

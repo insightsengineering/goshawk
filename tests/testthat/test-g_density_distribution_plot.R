@@ -82,8 +82,7 @@ test_that("g_density_distribution_plot handles a manual color without the combin
 })
 
 test_that("g_density_distribution_plot uses the ggplot2.discrete.colour option", {
-  old_opts <- options(ggplot2.discrete.colour = c("red", "green", "blue", "black"))
-  on.exit(options(old_opts), add = TRUE)
+  withr::local_options(ggplot2.discrete.colour = c("red", "green", "blue", "black"))
   p <- g_density_distribution_plot(data = adlb, param = "CRP")
   expect_s3_class(p, "ggplot")
   expect_no_error(expect_warning(ggplot2::ggplot_build(p), regexp = "Removed 2 rows", fixed = TRUE))
