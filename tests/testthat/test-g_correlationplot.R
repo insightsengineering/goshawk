@@ -146,7 +146,7 @@ test_that("g_correlationplot returns a ggplot2 objects", {
 
   ADLB <- rADLB
   var_labels <- lapply(ADLB, function(x) attributes(x)$label)
-  ADLB <- ADLB %>%
+  ADLB_extra <- ADLB %>%
     mutate(AVISITCD = case_when(
       AVISIT == "SCREENING" ~ "SCR",
       AVISIT == "BASELINE" ~ "BL",
@@ -204,17 +204,17 @@ test_that("g_correlationplot returns a ggplot2 objects", {
     )) %>%
     ungroup()
 
-  attr(ADLB[["ARM"]], "label") <- var_labels[["ARM"]]
-  attr(ADLB[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
-  attr(ADLB[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
+  attr(ADLB_extra[["ARM"]], "label") <- var_labels[["ARM"]]
+  attr(ADLB_extra[["ANRHI"]], "label") <- "Analysis Normal Range Upper Limit"
+  attr(ADLB_extra[["ANRLO"]], "label") <- "Analysis Normal Range Lower Limit"
 
   # add LLOQ and ULOQ variables
-  ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB, flag_var = "LOQFL")
-  ADLB <- left_join(ADLB, ADLB_LOQS, by = "PARAM")
+  ADLB_LOQS <- goshawk:::h_identify_loq_values(ADLB_extra, flag_var = "LOQFL")
+  ADLB_extra <- left_join(ADLB_extra, ADLB_LOQS, by = "PARAM")
 
   # given the 2 param and 2 analysis vars we need to transform the data
   plot_data_t1 <- suppressWarnings(
-    ADLB %>%
+    ADLB_extra %>%
       tidyr::gather(
         ANLVARS, ANLVALS, PARAM, LBSTRESC, BASE2, BASE, AVAL, BASE, LOQFL,
         ANRHI, ANRLO, ULOQN, LLOQN
