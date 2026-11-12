@@ -23,7 +23,8 @@ make_adlb <- function() {
     ANRHI = c(1.5, 60),
     stringsAsFactors = FALSE
   )
-  dat <- merge(merge(subj, visits, by = NULL), params, by = NULL)
+  dat <- merge(subj, visits, by = NULL) %>%
+    merge(params, by = NULL)
   dat <- arrange(dat, PARAMCD, USUBJID, AVISITCDN)
   rownames(dat) <- NULL
 
