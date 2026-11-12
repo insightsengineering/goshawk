@@ -281,8 +281,6 @@ g_boxplot <- function(data,
   }
 
 
-
-
   # Format font size
   if (is_finite(font_size)) {
     plot1 <- plot1 +
