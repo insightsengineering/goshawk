@@ -127,6 +127,7 @@ describe("g_lineplot", {
   })
 
   it("uses the ggplot2.discrete.colour option", {
+    skip_if_not_installed("withr")
     withr::local_options(ggplot2.discrete.colour = c("red", "green", "blue", "black"))
     p <- g_lineplot(data = adlb, biomarker = "CRP", trt_group = "ARM", time = "AVISITCDN")
     expect_s3_class(p, "ggplot")

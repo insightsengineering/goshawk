@@ -83,6 +83,7 @@ describe("g_density_distribution_plot", {
   })
 
   it("uses the ggplot2.discrete.colour option", {
+    skip_if_not_installed("withr")
     withr::local_options(ggplot2.discrete.colour = c("red", "green", "blue", "black"))
     p <- g_density_distribution_plot(data = adlb, param = "CRP")
     expect_s3_class(p, "ggplot")
