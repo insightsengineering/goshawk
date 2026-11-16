@@ -133,29 +133,46 @@ describe("g_lineplot", {
     expect_s3_class(p, "ggplot")
     expect_no_error(ggplot2::ggplot_build(p))
   })
+})
 
-  it("validates its arguments", {
+describe("g_lineplot validates its arguments", {
+
+  adlb <- make_adlb()
+  line_types <- c("A: Drug X" = "solid", "B: Placebo" = "dashed", "C: Combination" = "dotted")
+
+  it("ylim", {
     expect_error(
       g_lineplot(data = adlb, biomarker = "CRP", trt_group = "ARM", time = "AVISITCDN", ylim = 1)
     )
+
+  })
+
+  it("color_manual", {
     expect_error(
       g_lineplot(
         data = adlb, biomarker = "CRP", trt_group = "ARM", time = "AVISITCDN",
         color_manual = c("A: Drug X" = "red")
       )
     )
+  })
+
+  it("trt_group", {
     expect_error(
       g_lineplot(
         data = adlb, biomarker = "CRP", trt_group = "ARM", time = "AVISITCDN",
         line_type = c("A: Drug X" = "solid")
       )
     )
+  })
+  it("sahpe", {
     expect_error(
       g_lineplot(
         data = adlb, biomarker = "CRP", trt_group = "ARM", shape = "SEX", time = "AVISITCDN",
         shape_type = c("F" = 16), plot_height = 3000
       )
     )
+  })
+  it("sahpe", {
     expect_error(
       g_lineplot(data = adlb, biomarker = "CRP", trt_group = "ARM", time = "AVISITCDN", plot_height = 100),
       "not sufficient"

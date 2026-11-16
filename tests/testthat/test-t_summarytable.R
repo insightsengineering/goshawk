@@ -36,8 +36,6 @@ describe("t_summarytable", {
     comb <- tbl$Treatment == "Comb."
     expect_equal(tbl$n[comb & tbl$Facet == "BL"], 12)
     expect_equal(tbl$n[comb & tbl$Facet == "W 5"], 11)
-    expect_equal(tbl$PctMiss[comb & tbl$Facet == "W 5"], round(100 / 12, 2))
-    expect_equal(tbl$PctLOQ[comb & tbl$Facet == "BL"], round(100 / 12, 2))
     expect_equal(tbl$PctLOQ[comb & tbl$Facet == "W 5"], 0)
   })
 

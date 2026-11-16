@@ -328,9 +328,9 @@ describe("g_correlationplot", {
   })
 
   it("reg_line works with every facetting option", {
-    for (vf in c(TRUE, FALSE)) {
-      for (f in c(TRUE, FALSE)) {
-        p <- do.call(g_correlationplot, corr_args(reg_line = TRUE, visit_facet = vf, facet = f, facet_var = "ARM"))
+    for (visit_facet in c(TRUE, FALSE)) {
+      for (facet in c(TRUE, FALSE)) {
+        p <- do.call(g_correlationplot, corr_args(reg_line = TRUE, visit_facet = visit_facet, facet = facet, facet_var = "ARM"))
         expect_no_error(ggplot2::ggplot_build(p))
       }
     }
