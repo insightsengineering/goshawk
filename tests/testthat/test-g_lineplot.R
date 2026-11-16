@@ -136,7 +136,6 @@ describe("g_lineplot", {
 })
 
 describe("g_lineplot validates its arguments", {
-
   adlb <- make_adlb()
   line_types <- c("A: Drug X" = "solid", "B: Placebo" = "dashed", "C: Combination" = "dotted")
 
@@ -144,7 +143,6 @@ describe("g_lineplot validates its arguments", {
     expect_error(
       g_lineplot(data = adlb, biomarker = "CRP", trt_group = "ARM", time = "AVISITCDN", ylim = 1)
     )
-
   })
 
   it("color_manual", {
