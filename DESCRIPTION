@@ -1,8 +1,8 @@
 Type: Package
 Package: goshawk
 Title: Longitudinal Visualization Functions
-Version: 0.1.19.9001
-Date: 2025-08-12
+Version: 0.1.19.9002
+Date: 2026-11-16
 Authors@R: c(
     person("Nick", "Paszty", , "nick.paszty@gene.com", role = c("aut", "cre")),
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = "aut"),
@@ -58,9 +58,9 @@ Config/Needs/verdepcheck: tidyverse/dplyr, mllg/checkmate,
     yihui/knitr, insightsengineering/nestcolor, rstudio/rmarkdown,
     r-lib/testthat, tidyverse/tidyr
 Config/Needs/website: insightsengineering/nesttemplate
+Config/roxygen2/version: 8.1.1
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-Config/roxygen2/version: 8.1.1
