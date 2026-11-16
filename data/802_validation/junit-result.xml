@@ -1,144 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="g_boxplot" timestamp="2026-11-16T13:45:40Z" hostname="f1b788a85c5d" tests="17" skipped="0" failures="0" errors="0" time="0.495">
-    <testcase time="0.115" classname="g_boxplot" name="g_boxplot_returns_a_ggplot_object"/>
-    <testcase time="0.076" classname="g_boxplot" name="g_boxplot_works_with_units_facets_colors_shapes_and_fonts"/>
+  <testsuite name="g_boxplot" timestamp="2026-11-16T13:45:57Z" hostname="6883d061ac18" tests="17" skipped="0" failures="0" errors="0" time="0.554">
+    <testcase time="0.133" classname="g_boxplot" name="g_boxplot_returns_a_ggplot_object"/>
+    <testcase time="0.083" classname="g_boxplot" name="g_boxplot_works_with_units_facets_colors_shapes_and_fonts"/>
     <testcase time="0.002" classname="g_boxplot" name="g_boxplot_works_with_units_facets_colors_shapes_and_fonts"/>
-    <testcase time="0.005" classname="g_boxplot" name="g_boxplot_works_with_units_facets_colors_shapes_and_fonts"/>
-    <testcase time="0.044" classname="g_boxplot" name="g_boxplot_handles_facet_ncol_not_set_no_box_and_an_empty_unit"/>
-    <testcase time="0.044" classname="g_boxplot" name="g_boxplot_handles_facet_ncol_not_set_no_box_and_an_empty_unit"/>
-    <testcase time="0.002" classname="g_boxplot" name="g_boxplot_handles_facet_ncol_not_set_no_box_and_an_empty_unit"/>
-    <testcase time="0.0429999999999999" classname="g_boxplot" name="g_boxplot_skips_facetting_for_facet_var_None_"/>
-    <testcase time="0.044" classname="g_boxplot" name="g_boxplot_takes_the_most_common_unit_of_a_factor_unit_variable"/>
-    <testcase time="0.0580000000000001" classname="g_boxplot" name="g_boxplot_adds_horizontal_lines_from_values_and_variables"/>
+    <testcase time="0.00500000000000012" classname="g_boxplot" name="g_boxplot_works_with_units_facets_colors_shapes_and_fonts"/>
+    <testcase time="0.048" classname="g_boxplot" name="g_boxplot_handles_facet_ncol_not_set_no_box_and_an_empty_unit"/>
+    <testcase time="0.05" classname="g_boxplot" name="g_boxplot_handles_facet_ncol_not_set_no_box_and_an_empty_unit"/>
+    <testcase time="0.00299999999999989" classname="g_boxplot" name="g_boxplot_handles_facet_ncol_not_set_no_box_and_an_empty_unit"/>
+    <testcase time="0.048" classname="g_boxplot" name="g_boxplot_skips_facetting_for_facet_var_None_"/>
+    <testcase time="0.048" classname="g_boxplot" name="g_boxplot_takes_the_most_common_unit_of_a_factor_unit_variable"/>
+    <testcase time="0.0669999999999999" classname="g_boxplot" name="g_boxplot_adds_horizontal_lines_from_values_and_variables"/>
     <testcase time="0.00299999999999989" classname="g_boxplot" name="g_boxplot_adds_horizontal_lines_from_values_and_variables"/>
-    <testcase time="0.04" classname="g_boxplot" name="g_boxplot_validates_its_arguments"/>
+    <testcase time="0.044" classname="g_boxplot" name="g_boxplot_validates_its_arguments"/>
+    <testcase time="0.00500000000000012" classname="g_boxplot" name="g_boxplot_validates_its_arguments"/>
     <testcase time="0.004" classname="g_boxplot" name="g_boxplot_validates_its_arguments"/>
     <testcase time="0.004" classname="g_boxplot" name="g_boxplot_validates_its_arguments"/>
     <testcase time="0.004" classname="g_boxplot" name="g_boxplot_validates_its_arguments"/>
-    <testcase time="0.00300000000000011" classname="g_boxplot" name="g_boxplot_validates_its_arguments"/>
-    <testcase time="0.004" classname="g_boxplot" name="g_boxplot_validates_its_arguments"/>
+    <testcase time="0.00299999999999989" classname="g_boxplot" name="g_boxplot_validates_its_arguments"/>
   </testsuite>
-  <testsuite name="g_correlationplot" timestamp="2026-11-16T13:45:40Z" hostname="f1b788a85c5d" tests="22" skipped="0" failures="0" errors="0" time="1.998">
-    <testcase time="0.101" classname="g_correlationplot" name="g_correlationplot_returns_a_ggplot_object"/>
+  <testsuite name="g_correlationplot" timestamp="2026-11-16T13:45:58Z" hostname="6883d061ac18" tests="22" skipped="0" failures="0" errors="0" time="2.291">
+    <testcase time="0.113" classname="g_correlationplot" name="g_correlationplot_returns_a_ggplot_object"/>
     <testcase time="0.002" classname="g_correlationplot" name="g_correlationplot_returns_a_ggplot_object"/>
-    <testcase time="0.0599999999999998" classname="g_correlationplot" name="g_correlationplot_supports_the_different_facetting_options"/>
-    <testcase time="0.00100000000000011" classname="g_correlationplot" name="g_correlationplot_supports_the_different_facetting_options"/>
-    <testcase time="0.0580000000000001" classname="g_correlationplot" name="g_correlationplot_supports_the_different_facetting_options"/>
-    <testcase time="0.0619999999999998" classname="g_correlationplot" name="g_correlationplot_supports_the_different_facetting_options"/>
-    <testcase time="0.0600000000000001" classname="g_correlationplot" name="g_correlationplot_supports_the_different_facetting_options"/>
-    <testcase time="0.53" classname="g_correlationplot" name="g_correlationplot_returns_a_ggplot2_objects"/>
-    <testcase time="0.0759999999999996" classname="g_correlationplot" name="g_correlationplot_returns_a_ggplot2_objects"/>
-    <testcase time="0.115" classname="g_correlationplot" name="g_correlationplot_regression_text_reports_fit_and_correlation_per_group"/>
-    <testcase time="0.00199999999999978" classname="g_correlationplot" name="g_correlationplot_regression_text_reports_fit_and_correlation_per_group"/>
-    <testcase time="0.00100000000000033" classname="g_correlationplot" name="g_correlationplot_regression_text_reports_fit_and_correlation_per_group"/>
-    <testcase time="0" classname="g_correlationplot" name="g_correlationplot_regression_text_reports_fit_and_correlation_per_group"/>
-    <testcase time="0.112" classname="g_correlationplot" name="g_correlationplot_reports_insufficient_data_when_plot_x_is_constant"/>
-    <testcase time="0.00200000000000022" classname="g_correlationplot" name="g_correlationplot_reports_insufficient_data_when_plot_x_is_constant"/>
-    <testcase time="0.116" classname="g_correlationplot" name="g_correlationplot_reports_insufficient_data_when_plot_y_is_constant"/>
-    <testcase time="0.111" classname="g_correlationplot" name="g_correlationplot_reg_line_works_with_every_facetting_option"/>
-    <testcase time="0.25" classname="g_correlationplot" name="g_correlationplot_reg_line_works_with_every_facetting_option"/>
-    <testcase time="0.11" classname="g_correlationplot" name="g_correlationplot_reg_line_works_with_every_facetting_option"/>
-    <testcase time="0.107" classname="g_correlationplot" name="g_correlationplot_reg_line_works_with_every_facetting_option"/>
-    <testcase time="0.115" classname="g_correlationplot" name="g_correlationplot_reg_line_drops_rows_with_missing_x_or_y"/>
-    <testcase time="0.00699999999999967" classname="g_correlationplot" name="g_correlationplot_reg_line_errors_for_a_group_with_a_single_observation"/>
+    <testcase time="0.0700000000000001" classname="g_correlationplot" name="g_correlationplot_supports_the_different_facetting_options"/>
+    <testcase time="0.00099999999999989" classname="g_correlationplot" name="g_correlationplot_supports_the_different_facetting_options"/>
+    <testcase time="0.0660000000000001" classname="g_correlationplot" name="g_correlationplot_supports_the_different_facetting_options"/>
+    <testcase time="0.0660000000000001" classname="g_correlationplot" name="g_correlationplot_supports_the_different_facetting_options"/>
+    <testcase time="0.0649999999999999" classname="g_correlationplot" name="g_correlationplot_supports_the_different_facetting_options"/>
+    <testcase time="0.597" classname="g_correlationplot" name="g_correlationplot_returns_a_ggplot2_objects"/>
+    <testcase time="0.089" classname="g_correlationplot" name="g_correlationplot_returns_a_ggplot2_objects"/>
+    <testcase time="0.141" classname="g_correlationplot" name="g_correlationplot_regression_text_reports_fit_and_correlation_per_group"/>
+    <testcase time="0.00200000000000022" classname="g_correlationplot" name="g_correlationplot_regression_text_reports_fit_and_correlation_per_group"/>
+    <testcase time="0.00099999999999989" classname="g_correlationplot" name="g_correlationplot_regression_text_reports_fit_and_correlation_per_group"/>
+    <testcase time="0.00099999999999989" classname="g_correlationplot" name="g_correlationplot_regression_text_reports_fit_and_correlation_per_group"/>
+    <testcase time="0.132" classname="g_correlationplot" name="g_correlationplot_reports_insufficient_data_when_plot_x_is_constant"/>
+    <testcase time="0.00300000000000011" classname="g_correlationplot" name="g_correlationplot_reports_insufficient_data_when_plot_x_is_constant"/>
+    <testcase time="0.133" classname="g_correlationplot" name="g_correlationplot_reports_insufficient_data_when_plot_y_is_constant"/>
+    <testcase time="0.131" classname="g_correlationplot" name="g_correlationplot_reg_line_works_with_every_facetting_option"/>
+    <testcase time="0.284" classname="g_correlationplot" name="g_correlationplot_reg_line_works_with_every_facetting_option"/>
+    <testcase time="0.125" classname="g_correlationplot" name="g_correlationplot_reg_line_works_with_every_facetting_option"/>
+    <testcase time="0.126" classname="g_correlationplot" name="g_correlationplot_reg_line_works_with_every_facetting_option"/>
+    <testcase time="0.134" classname="g_correlationplot" name="g_correlationplot_reg_line_drops_rows_with_missing_x_or_y"/>
+    <testcase time="0.0089999999999999" classname="g_correlationplot" name="g_correlationplot_reg_line_errors_for_a_group_with_a_single_observation"/>
   </testsuite>
-  <testsuite name="g_density_distribution_plot" timestamp="2026-11-16T13:45:42Z" hostname="f1b788a85c5d" tests="22" skipped="0" failures="0" errors="0" time="0.713">
-    <testcase time="0.0630000000000002" classname="g_density_distribution_plot" name="g_density_distribution_plot_returns_a_ggplot_object"/>
-    <testcase time="0.0489999999999999" classname="g_density_distribution_plot" name="g_density_distribution_plot_returns_a_ggplot_object"/>
-    <testcase time="0" classname="g_density_distribution_plot" name="g_density_distribution_plot_returns_a_ggplot_object"/>
-    <testcase time="0.056" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_with_all_options"/>
-    <testcase time="0.048" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_with_all_options"/>
-    <testcase time="0.0409999999999999" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
-    <testcase time="0.0409999999999999" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
+  <testsuite name="g_density_distribution_plot" timestamp="2026-11-16T13:46:00Z" hostname="6883d061ac18" tests="22" skipped="0" failures="0" errors="0" time="0.89">
+    <testcase time="0.0760000000000001" classname="g_density_distribution_plot" name="g_density_distribution_plot_returns_a_ggplot_object"/>
+    <testcase time="0.0649999999999999" classname="g_density_distribution_plot" name="g_density_distribution_plot_returns_a_ggplot_object"/>
+    <testcase time="0.00100000000000033" classname="g_density_distribution_plot" name="g_density_distribution_plot_returns_a_ggplot_object"/>
+    <testcase time="0.0699999999999998" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_with_all_options"/>
+    <testcase time="0.0610000000000004" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_with_all_options"/>
+    <testcase time="0.0509999999999993" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
+    <testcase time="0.0529999999999999" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
     <testcase time="0.00100000000000033" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
-    <testcase time="0.0449999999999999" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
-    <testcase time="0.0429999999999997" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
-    <testcase time="0.00100000000000033" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
-    <testcase time="0.0499999999999998" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
-    <testcase time="0.0449999999999999" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
-    <testcase time="0" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
-    <testcase time="0.052" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
-    <testcase time="0.0649999999999999" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
-    <testcase time="0.00099999999999989" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
-    <testcase time="0.0530000000000004" classname="g_density_distribution_plot" name="g_density_distribution_plot_uses_the_ggplot2.discrete.colour_option"/>
-    <testcase time="0.0429999999999997" classname="g_density_distribution_plot" name="g_density_distribution_plot_uses_the_ggplot2.discrete.colour_option"/>
-    <testcase time="0.004" classname="g_density_distribution_plot" name="g_density_distribution_plot_uses_the_ggplot2.discrete.colour_option"/>
-    <testcase time="0.00700000000000012" classname="g_density_distribution_plot" name="g_density_distribution_plot_validates_its_arguments"/>
-    <testcase time="0.00499999999999989" classname="g_density_distribution_plot" name="g_density_distribution_plot_validates_its_arguments"/>
+    <testcase time="0.0579999999999998" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
+    <testcase time="0.0520000000000005" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
+    <testcase time="0.000999999999999446" classname="g_density_distribution_plot" name="g_density_distribution_plot_works_without_units_and_combined_line"/>
+    <testcase time="0.0680000000000005" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
+    <testcase time="0.0549999999999997" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
+    <testcase time="0.00100000000000033" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
+    <testcase time="0.0599999999999996" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
+    <testcase time="0.0789999999999997" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
+    <testcase time="0.00100000000000033" classname="g_density_distribution_plot" name="g_density_distribution_plot_handles_a_manual_color_without_the_combined_entry"/>
+    <testcase time="0.0680000000000005" classname="g_density_distribution_plot" name="g_density_distribution_plot_uses_the_ggplot2.discrete.colour_option"/>
+    <testcase time="0.0549999999999997" classname="g_density_distribution_plot" name="g_density_distribution_plot_uses_the_ggplot2.discrete.colour_option"/>
+    <testcase time="0.000999999999999446" classname="g_density_distribution_plot" name="g_density_distribution_plot_uses_the_ggplot2.discrete.colour_option"/>
+    <testcase time="0.00900000000000034" classname="g_density_distribution_plot" name="g_density_distribution_plot_validates_its_arguments"/>
+    <testcase time="0.00400000000000045" classname="g_density_distribution_plot" name="g_density_distribution_plot_validates_its_arguments"/>
   </testsuite>
-  <testsuite name="g_lineplot" timestamp="2026-11-16T13:45:43Z" hostname="f1b788a85c5d" tests="23" skipped="0" failures="0" errors="0" time="3.834">
-    <testcase time="0.419" classname="g_lineplot" name="g_lineplot_returns_a_combined_plot_with_the_mean_table"/>
-    <testcase time="0.0209999999999999" classname="g_lineplot" name="g_lineplot_returns_a_combined_plot_with_the_mean_table"/>
-    <testcase time="0.466" classname="g_lineplot" name="g_lineplot_works_with_median_manual_styling_and_horizontal_lines"/>
-    <testcase time="0.016" classname="g_lineplot" name="g_lineplot_works_with_median_manual_styling_and_horizontal_lines"/>
-    <testcase time="0.289" classname="g_lineplot" name="g_lineplot_supports_discrete_time_and_hides_the_central_value_table"/>
-    <testcase time="0.0129999999999999" classname="g_lineplot" name="g_lineplot_supports_discrete_time_and_hides_the_central_value_table"/>
-    <testcase time="0.438000000000001" classname="g_lineplot" name="g_lineplot_supports_discrete_time_and_hides_the_central_value_table"/>
+  <testsuite name="g_lineplot" timestamp="2026-11-16T13:46:01Z" hostname="6883d061ac18" tests="23" skipped="0" failures="0" errors="0" time="4.388">
+    <testcase time="0.502999999999999" classname="g_lineplot" name="g_lineplot_returns_a_combined_plot_with_the_mean_table"/>
+    <testcase time="0.0200000000000005" classname="g_lineplot" name="g_lineplot_returns_a_combined_plot_with_the_mean_table"/>
+    <testcase time="0.574" classname="g_lineplot" name="g_lineplot_works_with_median_manual_styling_and_horizontal_lines"/>
+    <testcase time="0.0190000000000001" classname="g_lineplot" name="g_lineplot_works_with_median_manual_styling_and_horizontal_lines"/>
+    <testcase time="0.379" classname="g_lineplot" name="g_lineplot_supports_discrete_time_and_hides_the_central_value_table"/>
+    <testcase time="0.0150000000000006" classname="g_lineplot" name="g_lineplot_supports_discrete_time_and_hides_the_central_value_table"/>
+    <testcase time="0.497" classname="g_lineplot" name="g_lineplot_supports_discrete_time_and_hides_the_central_value_table"/>
     <testcase time="0.0190000000000001" classname="g_lineplot" name="g_lineplot_supports_discrete_time_and_hides_the_central_value_table"/>
-    <testcase time="0.681999999999999" classname="g_lineplot" name="g_lineplot_supports_a_shape_variable"/>
-    <testcase time="0.0140000000000002" classname="g_lineplot" name="g_lineplot_supports_a_shape_variable"/>
-    <testcase time="0.322" classname="g_lineplot" name="g_lineplot_supports_a_shape_variable"/>
-    <testcase time="0.0129999999999999" classname="g_lineplot" name="g_lineplot_supports_a_shape_variable"/>
-    <testcase time="0.372" classname="g_lineplot" name="g_lineplot_repeats_default_shapes_when_there_are_many_levels"/>
-    <testcase time="0.0140000000000002" classname="g_lineplot" name="g_lineplot_repeats_default_shapes_when_there_are_many_levels"/>
-    <testcase time="0.304" classname="g_lineplot" name="g_lineplot_marks_cells_below_the_count_threshold"/>
-    <testcase time="0.0139999999999993" classname="g_lineplot" name="g_lineplot_marks_cells_below_the_count_threshold"/>
-    <testcase time="0.303" classname="g_lineplot" name="g_lineplot_uses_the_ggplot2.discrete.colour_option"/>
-    <testcase time="0.0140000000000002" classname="g_lineplot" name="g_lineplot_uses_the_ggplot2.discrete.colour_option"/>
-    <testcase time="0.0179999999999998" classname="g_lineplot" name="g_lineplot_validates_its_arguments_ylim"/>
-    <testcase time="0.00499999999999989" classname="g_lineplot" name="g_lineplot_validates_its_arguments_color_manual"/>
+    <testcase time="0.639" classname="g_lineplot" name="g_lineplot_supports_a_shape_variable"/>
+    <testcase time="0.0149999999999997" classname="g_lineplot" name="g_lineplot_supports_a_shape_variable"/>
+    <testcase time="0.358" classname="g_lineplot" name="g_lineplot_supports_a_shape_variable"/>
+    <testcase time="0.0200000000000005" classname="g_lineplot" name="g_lineplot_supports_a_shape_variable"/>
+    <testcase time="0.451999999999999" classname="g_lineplot" name="g_lineplot_repeats_default_shapes_when_there_are_many_levels"/>
+    <testcase time="0.0170000000000012" classname="g_lineplot" name="g_lineplot_repeats_default_shapes_when_there_are_many_levels"/>
+    <testcase time="0.355" classname="g_lineplot" name="g_lineplot_marks_cells_below_the_count_threshold"/>
+    <testcase time="0.0149999999999988" classname="g_lineplot" name="g_lineplot_marks_cells_below_the_count_threshold"/>
+    <testcase time="0.363" classname="g_lineplot" name="g_lineplot_uses_the_ggplot2.discrete.colour_option"/>
+    <testcase time="0.0150000000000006" classname="g_lineplot" name="g_lineplot_uses_the_ggplot2.discrete.colour_option"/>
+    <testcase time="0.0150000000000006" classname="g_lineplot" name="g_lineplot_validates_its_arguments_ylim"/>
+    <testcase time="0.00600000000000023" classname="g_lineplot" name="g_lineplot_validates_its_arguments_color_manual"/>
     <testcase time="0.00600000000000023" classname="g_lineplot" name="g_lineplot_validates_its_arguments_trt_group"/>
-    <testcase time="0.00499999999999989" classname="g_lineplot" name="g_lineplot_validates_its_arguments_sahpe"/>
-    <testcase time="0.0670000000000002" classname="g_lineplot" name="g_lineplot_validates_its_arguments_sahpe"/>
+    <testcase time="0.00999999999999979" classname="g_lineplot" name="g_lineplot_validates_its_arguments_sahpe"/>
+    <testcase time="0.0760000000000005" classname="g_lineplot" name="g_lineplot_validates_its_arguments_sahpe"/>
   </testsuite>
-  <testsuite name="g_scatterplot" timestamp="2026-11-16T13:45:47Z" hostname="f1b788a85c5d" tests="2" skipped="0" failures="0" errors="0" time="0.032">
-    <testcase time="0.0220000000000002" classname="g_scatterplot" name="g_scatterplot_is_defunct_and_points_to_g_correlationplot"/>
-    <testcase time="0.00999999999999979" classname="g_scatterplot" name="g_scatterplot_is_defunct_and_points_to_g_correlationplot"/>
+  <testsuite name="g_scatterplot" timestamp="2026-11-16T13:46:05Z" hostname="6883d061ac18" tests="2" skipped="0" failures="0" errors="0" time="0.034">
+    <testcase time="0.0190000000000001" classname="g_scatterplot" name="g_scatterplot_is_defunct_and_points_to_g_correlationplot"/>
+    <testcase time="0.0149999999999988" classname="g_scatterplot" name="g_scatterplot_is_defunct_and_points_to_g_correlationplot"/>
   </testsuite>
-  <testsuite name="g_spaghettiplot" timestamp="2026-11-16T13:45:47Z" hostname="f1b788a85c5d" tests="21" skipped="0" failures="0" errors="0" time="0.911">
-    <testcase time="0.0609999999999999" classname="g_spaghettiplot" name="g_spaghettiplot_returns_a_ggplot_object"/>
-    <testcase time="0.0339999999999998" classname="g_spaghettiplot" name="g_spaghettiplot_returns_a_ggplot_object"/>
-    <testcase time="0.0690000000000008" classname="g_spaghettiplot" name="g_spaghettiplot_works_with_continuous_time_and_group_statistics"/>
-    <testcase time="0.0599999999999987" classname="g_spaghettiplot" name="g_spaghettiplot_works_with_continuous_time_and_group_statistics"/>
-    <testcase time="0.0520000000000014" classname="g_spaghettiplot" name="g_spaghettiplot_supports_mean_statistics_and_discrete_time"/>
-    <testcase time="0.0779999999999994" classname="g_spaghettiplot" name="g_spaghettiplot_supports_mean_statistics_and_discrete_time"/>
-    <testcase time="0.0459999999999994" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
-    <testcase time="0.0380000000000003" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
-    <testcase time="0.0449999999999999" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
-    <testcase time="0.0449999999999999" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
-    <testcase time="0.0490000000000013" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
-    <testcase time="0.0459999999999994" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
-    <testcase time="0.0500000000000007" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
-    <testcase time="0.0459999999999994" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
-    <testcase time="0.0579999999999998" classname="g_spaghettiplot" name="g_spaghettiplot_uses_the_unit_and_handles_an_empty_unit"/>
-    <testcase time="0.0329999999999995" classname="g_spaghettiplot" name="g_spaghettiplot_uses_the_unit_and_handles_an_empty_unit"/>
-    <testcase time="0.00100000000000122" classname="g_spaghettiplot" name="g_spaghettiplot_uses_the_unit_and_handles_an_empty_unit"/>
-    <testcase time="0.0569999999999986" classname="g_spaghettiplot" name="g_spaghettiplot_uses_the_unit_and_handles_an_empty_unit"/>
+  <testsuite name="g_spaghettiplot" timestamp="2026-11-16T13:46:05Z" hostname="6883d061ac18" tests="21" skipped="0" failures="0" errors="0" time="1.1">
+    <testcase time="0.0660000000000007" classname="g_spaghettiplot" name="g_spaghettiplot_returns_a_ggplot_object"/>
+    <testcase time="0.0380000000000003" classname="g_spaghettiplot" name="g_spaghettiplot_returns_a_ggplot_object"/>
+    <testcase time="0.264999999999999" classname="g_spaghettiplot" name="g_spaghettiplot_works_with_continuous_time_and_group_statistics"/>
+    <testcase time="0.0649999999999995" classname="g_spaghettiplot" name="g_spaghettiplot_works_with_continuous_time_and_group_statistics"/>
+    <testcase time="0.0649999999999995" classname="g_spaghettiplot" name="g_spaghettiplot_supports_mean_statistics_and_discrete_time"/>
+    <testcase time="0.043000000000001" classname="g_spaghettiplot" name="g_spaghettiplot_supports_mean_statistics_and_discrete_time"/>
+    <testcase time="0.052999999999999" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
+    <testcase time="0.0340000000000007" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
+    <testcase time="0.0429999999999993" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
+    <testcase time="0.0540000000000003" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
+    <testcase time="0.0419999999999998" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
+    <testcase time="0.0540000000000003" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
+    <testcase time="0.043000000000001" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
+    <testcase time="0.0509999999999984" classname="g_spaghettiplot" name="g_spaghettiplot_supports_all_facet_scales_and_no_group_statistics"/>
+    <testcase time="0.0500000000000007" classname="g_spaghettiplot" name="g_spaghettiplot_uses_the_unit_and_handles_an_empty_unit"/>
     <testcase time="0.0340000000000007" classname="g_spaghettiplot" name="g_spaghettiplot_uses_the_unit_and_handles_an_empty_unit"/>
+    <testcase time="0.00199999999999889" classname="g_spaghettiplot" name="g_spaghettiplot_uses_the_unit_and_handles_an_empty_unit"/>
+    <testcase time="0.0549999999999997" classname="g_spaghettiplot" name="g_spaghettiplot_uses_the_unit_and_handles_an_empty_unit"/>
+    <testcase time="0.0330000000000013" classname="g_spaghettiplot" name="g_spaghettiplot_uses_the_unit_and_handles_an_empty_unit"/>
     <testcase time="0.00600000000000023" classname="g_spaghettiplot" name="g_spaghettiplot_validates_its_arguments"/>
-    <testcase time="0.00300000000000011" classname="g_spaghettiplot" name="g_spaghettiplot_validates_its_arguments"/>
+    <testcase time="0.00399999999999956" classname="g_spaghettiplot" name="g_spaghettiplot_validates_its_arguments"/>
   </testsuite>
-  <testsuite name="t_summarytable" timestamp="2026-11-16T13:45:48Z" hostname="f1b788a85c5d" tests="20" skipped="0" failures="0" errors="0" time="0.183">
-    <testcase time="0.0380000000000003" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
+  <testsuite name="t_summarytable" timestamp="2026-11-16T13:46:07Z" hostname="6883d061ac18" tests="20" skipped="0" failures="0" errors="0" time="0.189">
+    <testcase time="0.0399999999999991" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
     <testcase time="0.00300000000000011" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
-    <testcase time="0.00300000000000011" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
-    <testcase time="0.00199999999999889" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
-    <testcase time="0.000999999999999446" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
     <testcase time="0.00200000000000067" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
-    <testcase time="0.000999999999999446" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
+    <testcase time="0.00199999999999889" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
+    <testcase time="0.00100000000000122" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
+    <testcase time="0.00199999999999889" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
+    <testcase time="0.00200000000000067" classname="t_summarytable" name="t_summarytable_summarises_by_treatment_and_visit"/>
     <testcase time="0.0240000000000009" classname="t_summarytable" name="t_summarytable_counts_non_missing_values_and_LOQ_percentages"/>
     <testcase time="0.00199999999999889" classname="t_summarytable" name="t_summarytable_counts_non_missing_values_and_LOQ_percentages"/>
-    <testcase time="0.00200000000000067" classname="t_summarytable" name="t_summarytable_counts_non_missing_values_and_LOQ_percentages"/>
-    <testcase time="0.0190000000000001" classname="t_summarytable" name="t_summarytable_works_without_a_facet_variable"/>
-    <testcase time="0.00300000000000011" classname="t_summarytable" name="t_summarytable_works_without_a_facet_variable"/>
+    <testcase time="0.00100000000000122" classname="t_summarytable" name="t_summarytable_counts_non_missing_values_and_LOQ_percentages"/>
+    <testcase time="0.0220000000000002" classname="t_summarytable" name="t_summarytable_works_without_a_facet_variable"/>
+    <testcase time="0.00199999999999889" classname="t_summarytable" name="t_summarytable_works_without_a_facet_variable"/>
     <testcase time="0.00200000000000067" classname="t_summarytable" name="t_summarytable_works_without_a_facet_variable"/>
-    <testcase time="0.0229999999999997" classname="t_summarytable" name="t_summarytable_handles_the_treatment_group_being_the_facet_variable"/>
-    <testcase time="0.00199999999999889" classname="t_summarytable" name="t_summarytable_handles_the_treatment_group_being_the_facet_variable"/>
-    <testcase time="0.0260000000000016" classname="t_summarytable" name="t_summarytable_returns_NA_for_min_and_max_when_all_values_are_missing"/>
-    <testcase time="0.00299999999999834" classname="t_summarytable" name="t_summarytable_returns_NA_for_min_and_max_when_all_values_are_missing"/>
-    <testcase time="0.00200000000000067" classname="t_summarytable" name="t_summarytable_returns_NA_for_min_and_max_when_all_values_are_missing"/>
-    <testcase time="0.00200000000000067" classname="t_summarytable" name="t_summarytable_returns_NA_for_min_and_max_when_all_values_are_missing"/>
-    <testcase time="0.0229999999999997" classname="t_summarytable" name="t_summarytable_combines_several_studies_in_the_study_id"/>
+    <testcase time="0.0239999999999991" classname="t_summarytable" name="t_summarytable_handles_the_treatment_group_being_the_facet_variable"/>
+    <testcase time="0.00200000000000067" classname="t_summarytable" name="t_summarytable_handles_the_treatment_group_being_the_facet_variable"/>
+    <testcase time="0.0259999999999998" classname="t_summarytable" name="t_summarytable_returns_NA_for_min_and_max_when_all_values_are_missing"/>
+    <testcase time="0.00500000000000078" classname="t_summarytable" name="t_summarytable_returns_NA_for_min_and_max_when_all_values_are_missing"/>
+    <testcase time="0.00199999999999889" classname="t_summarytable" name="t_summarytable_returns_NA_for_min_and_max_when_all_values_are_missing"/>
+    <testcase time="0.00100000000000122" classname="t_summarytable" name="t_summarytable_returns_NA_for_min_and_max_when_all_values_are_missing"/>
+    <testcase time="0.0239999999999991" classname="t_summarytable" name="t_summarytable_combines_several_studies_in_the_study_id"/>
   </testsuite>
 </testsuites>
