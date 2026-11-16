@@ -120,7 +120,7 @@ error bar denotes
 quartile.
 }
 \examples{
-\dontshow{if (require("nestcolor")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("nestcolor")) withAutoprint(\{ # examplesIf}
 # Example using ADaM structure analysis dataset.
 
 library(stringr)

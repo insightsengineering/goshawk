@@ -1,6 +1,8 @@
 # goshawk 0.1.19.9001
 
 * `g_scatterplot` was hard deprecated (#267).
+* Code coverage has increased to over 90% (#268).
+* Updated links to teal for the new location (#268).
 
 # goshawk 0.1.19
 

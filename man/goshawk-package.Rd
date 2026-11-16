@@ -22,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Nick Paszty \email{nick.paszty@gene.com}
   \item Dawid Kaledkowski \email{dawid.kaledkowski@roche.com}
   \item Ondrej Slama \email{ondrej.slama@roche.com}
   \item Adrian Waddell \email{adrian.waddell@gene.com}

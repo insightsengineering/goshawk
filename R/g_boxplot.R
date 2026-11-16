@@ -156,8 +156,7 @@ g_boxplot <- function(data,
   checkmate::assert_numeric(ylim, len = 2)
 
   # filter input data
-  data <- data %>%
-    filter(!!sym(param_var) == biomarker)
+  data <- filter(data, !!sym(param_var) == biomarker)
 
   if (!is.null(unit)) {
     # check unit is in the dataset
@@ -279,8 +278,6 @@ g_boxplot <- function(data,
       }
     }
   }
-
-
 
 
   # Format font size

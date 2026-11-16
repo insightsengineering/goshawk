@@ -20,7 +20,7 @@
 
 Longitudinal biomarker/lab visualizations functions. These can be used stand alone but are also called by the
 [teal.goshawk](https://insightsengineering.github.io/teal.goshawk/) package which provides modules to be used
-inside [`teal`](https://insightsengineering.github.io/teal/) applications.
+inside [`teal`](https://pharmaverse.github.io/teal/) applications.
 
 ## Functions
 <!-- markdownlint-disable MD007 MD030 -->
@@ -43,17 +43,3 @@ pak::pkg_install("insightsengineering/goshawk@*release")
 # install.packages("pak")
 pak::pkg_install("insightsengineering/goshawk")
 ```
-
-## Stargazers and Forkers
-
-### Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/insightsengineering/goshawk.svg)](https://starchart.cc/insightsengineering/goshawk)
-
-### Stargazers
-
-[![Stargazers repo roster for @insightsengineering/goshawk](https://reporoster.com/stars/insightsengineering/goshawk)](https://github.com/insightsengineering/goshawk/stargazers)
-
-### Forkers
-
-[![Forkers repo roster for @insightsengineering/goshawk](https://reporoster.com/forks/insightsengineering/goshawk)](https://github.com/insightsengineering/goshawk/network/members)

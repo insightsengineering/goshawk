@@ -11,7 +11,9 @@ import(dplyr)
 import(mcr)
 importFrom(ggplot2,ggplot)
 importFrom(magrittr,extract2)
-importFrom(rlang,"!!")
-importFrom(rlang,":=")
-importFrom(rlang,.data)
+importFrom(rlang,
+  "!!",
+  ":=",
+  .data
+)
 importFrom(utils,getFromNamespace)
