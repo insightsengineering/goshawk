@@ -1,4 +1,4 @@
-# goshawk 0.1.19.9002
+# goshawk 0.1.20
 
 * `g_scatterplot` was hard deprecated (#267).
 * Code coverage has increased to over 90% (#268).

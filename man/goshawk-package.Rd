@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Nick Paszty \email{nick.paszty@gene.com}
+\strong{Maintainer}: Lluís Revilla Sancho \email{lluis.revilla_sancho@roche.com} (\href{https://orcid.org/0000-0001-9747-2570}{ORCID})
 
 Authors:
 \itemize{

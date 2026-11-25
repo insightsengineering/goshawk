@@ -1,10 +1,12 @@
 Type: Package
 Package: goshawk
 Title: Longitudinal Visualization Functions
-Version: 0.1.19.9002
+Version: 0.1.20
 Date: 2026-11-16
 Authors@R: c(
-    person("Nick", "Paszty", , "nick.paszty@gene.com", role = c("aut", "cre")),
+    person("Lluís", "Revilla Sancho", , "lluis.revilla_sancho@roche.com", role = "cre",
+           comment = c(ORCID = "0000-0001-9747-2570")),
+    person("Nick", "Paszty", , "nick.paszty@gene.com", role = "aut"),
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = "aut"),
     person("Ondrej", "Slama", , "ondrej.slama@roche.com", role = "aut"),
     person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
