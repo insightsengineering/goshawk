@@ -1,6 +1,6 @@
 # Changelog
 
-## goshawk 0.1.19.9002
+## goshawk 0.1.20
 
 - `g_scatterplot` was hard deprecated
   ([\#267](https://github.com/insightsengineering/goshawk/issues/267)).

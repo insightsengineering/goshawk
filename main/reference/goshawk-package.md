@@ -15,7 +15,8 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Nick Paszty <nick.paszty@gene.com>
+**Maintainer**: Lluís Revilla Sancho <lluis.revilla_sancho@roche.com>
+([ORCID](https://orcid.org/0000-0001-9747-2570))
 
 Authors:
 
